@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Hello World, 李金鑫">
+    <meta name="keywords" content="李金鑫">
     <meta name="description" content="李金鑫的个人博客">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Hello World | 李金鑫</title>
+    <title>李金鑫</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Hello World</h1>
+                    <h1 class="description center-align post-title"></h1>
                 </div>
             </div>
         </div>
@@ -443,7 +443,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-12-27
+                    2021-01-04
                 </div>
                 
 
@@ -452,7 +452,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    75
+                    1.6k
                 </div>
                 
 
@@ -472,16 +472,265 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+                <hr>
+<p>title:Spark_SubmitSource<br>data:2020-12-31<br>tags:spark source code<br>categories:spark</p>
+<hr>
+<h1 id="1-Yarn-Client提交源码"><a href="#1-Yarn-Client提交源码" class="headerlink" title="1.Yarn Client提交源码"></a>1.Yarn Client提交源码</h1><p>爱护生命,少肝源码!</p>
+<h2 id="1-任务的提交"><a href="#1-任务的提交" class="headerlink" title="1.任务的提交"></a>1.任务的提交</h2><p>==程序起点==</p>
+<p>spark-submit.cmd</p>
+<p>==脚本启动==</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">bin&#x2F;spark-submit
+--class WordCount
+--master yarn
+--deploy-mode cluster
+.&#x2F;wordCount.jar
+.&#x2F;input .&#x2F;output<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="2-SparkSubmit"><a href="#2-SparkSubmit" class="headerlink" title="2.SparkSubmit"></a>2.SparkSubmit</h2><h4 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">spark-submit --class org.apache.spark.examples.SparkPi --master local[2] ..&#x2F;examples&#x2F;jars&#x2F;spark-examples_2.12-3.0.0.jar 10<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="java-p"><a href="#java-p" class="headerlink" title="java -p"></a>java -p</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">&quot;Java\jdk1.8.0_131\bin\java&quot; -cp &quot;C:\spark-3.0.0-bin-hadoop3.2\bin\..\conf\;
+\spark-3.0.0-bin-hadoop3.2\bin\..\jars\*&quot; 
+-Xmx1g org.apache.spark.deploy.SparkSubmit 
+--master local[2] 
+--class org.apache.spark.examples.SparkPi ..&#x2F;examples&#x2F;jars&#x2F;spark-examples_2.12-3.0.0.jar 10<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>java -cp 等同于classpath</p>
+<p>启动submit的main方法</p>
+<ol>
+<li>java -cp </li>
+<li>开启JVM虚拟机 </li>
+<li>开启Process（SparkSubmit)</li>
+<li>程序入口SparkSubmit.main</li>
+</ol>
+<p>org.apache.spark.deploy.SparkSubmit，找到SparkSubmit的伴生对象，并找到main方法</p>
+<h4 id="main"><a href="#main" class="headerlink" title="main"></a>main</h4><p><em>org/apache/spark/deploy/SparkSubmit.scala</em></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">override def main(args: Array[String]): Unit &#x3D; &#123;
+    val submit &#x3D; new SparkSubmit() &#123;
+      self &#x3D;&gt;
+      override protected def parseArguments(args: Array[String]): SparkSubmitArguments &#x3D; &#123;new SparkSubmitArguments(args) &#123;...&#125;&#125;&#x2F;&#x2F;在主程序中new一个用于解析参数方法的的对象
+        ...&#x2F;&#x2F;日志方法
+    submit.doSubmit(args)&#x2F;&#x2F;调用doSubmit方法
+  &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="doSubmit"><a href="#doSubmit" class="headerlink" title="doSubmit"></a>doSubmit</h4><p><em>org/apache/spark/deploy/SparkSubmit.scala</em></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">def doSubmit(args: Array[String]): Unit &#x3D; &#123;
+    &#x2F;&#x2F; Initialize logging if it hasn&#39;t been done yet. Keep track of whether logging needs to
+    &#x2F;&#x2F; be reset before the application starts.
+    ...
+    val appArgs &#x3D; parseArguments(args)&#x2F;&#x2F;在doSubmit中调用解析参数方法-----------------&gt;parseArguments, appArgs为被解析出来的封装的参数
+   	...
+    appArgs.action match &#123;&#x2F;&#x2F;使用解析出来的参数appArgs判断参数信息的action字段
+      case SparkSubmitAction.SUBMIT &#x3D;&gt; submit(appArgs, uninitLog)&#x2F;&#x2F;----------------&gt;submit
+      case SparkSubmitAction.KILL &#x3D;&gt; kill(appArgs)
+      case SparkSubmitAction.REQUEST_STATUS &#x3D;&gt; requestStatus(appArgs)
+      case SparkSubmitAction.PRINT_VERSION &#x3D;&gt; printVersion()
+    &#125;
+  &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="doSubmit-parseArguments"><a href="#doSubmit-parseArguments" class="headerlink" title="doSubmit/parseArguments"></a>doSubmit/parseArguments</h3><p><em>org/apache/spark/deploy/SparkSubmit.scala</em> </p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">protected def parseArguments(args: Array[String]): SparkSubmitArguments &#x3D; &#123;
+    new SparkSubmitArguments(args)
+  &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="doSubmit-parseArguments-SparkSubmitArguments"><a href="#doSubmit-parseArguments-SparkSubmitArguments" class="headerlink" title="doSubmit/parseArguments/SparkSubmitArguments"></a>doSubmit/parseArguments/SparkSubmitArguments</h3><p><em>org/apache/spark/deploy/SparkSubmitArguments.scala</em></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">private[deploy] class SparkSubmitArguments(args: Seq[String], env: Map[String, String] &#x3D; sys.env)
+  extends SparkSubmitArgumentsParser with Logging &#123;
+  var master: String &#x3D; null
+  var deployMode: String &#x3D; null
+  var executorMemory: String &#x3D; null
+  var executorCores: String &#x3D; null
+  ...&#x2F;&#x2F;各种参数
 
+  &#x2F;** Default properties present in the currently defined defaults file. *&#x2F;
+  lazy val defaultSparkProperties: HashMap[String, String] &#x3D; &#123;
+    val defaultProperties &#x3D; new HashMap[String, String]()
+    ...
+    &#125;
+    defaultProperties&#x2F;&#x2F;使用HashMap存储配置参数
+  &#125;
+&#x2F;&#x2F; Set parameters from command line arguments
+  parse(args.asJava)&#x2F;&#x2F;解析参数----------------------------&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="doSubmit-parseArguments-SparkSubmitArguments-parse"><a href="#doSubmit-parseArguments-SparkSubmitArguments-parse" class="headerlink" title="doSubmit/parseArguments/SparkSubmitArguments/parse"></a>doSubmit/parseArguments/SparkSubmitArguments/parse</h3><p><em>org\apache\spark\launcher\SparkSubmitOptionParser.class</em></p>
+<p>==疑问==</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">protected final void parse(List&lt;String&gt; args) &#123;&#x2F;&#x2F;传入配置String
+        Pattern eqSeparatedOpt &#x3D; Pattern.compile(&quot;(--[^&#x3D;]+)&#x3D;(.+)&quot;);
+        int idx &#x3D; false;
+        int idx;
+        for(idx &#x3D; 0; idx &lt; args.size(); ++idx) &#123;
+            String arg &#x3D; (String)args.get(idx);
+            String value &#x3D; null;
+            Matcher m &#x3D; eqSeparatedOpt.matcher(arg);
+            ...
+                    value &#x3D; (String)args.get(idx);&#125;
+                if (!this.handle(name, value)) &#123;break;&#125;&#x2F;&#x2F;----------------------&gt;
+            &#125; else &#123;...&#125;
+        &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="doSubmit-parseArguments-SparkSubmitArguments-parse-handle"><a href="#doSubmit-parseArguments-SparkSubmitArguments-parse-handle" class="headerlink" title="doSubmit/parseArguments/SparkSubmitArguments/parse/handle"></a>doSubmit/parseArguments/SparkSubmitArguments/parse/handle</h3><p><em>org/apache/spark/deploy/SparkSubmitArguments.scala</em></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">override protected def handle(opt: String, value: String): Boolean &#x3D; &#123;
+    opt match &#123;
+      case NAME &#x3D;&gt;
+        name &#x3D; value
+      case MASTER &#x3D;&gt;
+        master &#x3D; value
+     ...
+      case DEPLOY_MODE &#x3D;&gt;
+        if (value !&#x3D; &quot;client&quot; &amp;&amp; value !&#x3D; &quot;cluster&quot;) &#123;
+          error(&quot;--deploy-mode must be either \&quot;client\&quot; or \&quot;cluster\&quot;&quot;)
+        &#125;
+        deployMode &#x3D; value
+      case NUM_EXECUTORS &#x3D;&gt;
+        numExecutors &#x3D; value
+      case TOTAL_EXECUTOR_CORES &#x3D;&gt;
+        totalExecutorCores &#x3D; value
+      case EXECUTOR_CORES &#x3D;&gt;
+        executorCores &#x3D; value
+      case EXECUTOR_MEMORY &#x3D;&gt;
+        executorMemory &#x3D; value
+      case DRIVER_MEMORY &#x3D;&gt;
+        driverMemory &#x3D; value
+      case DRIVER_CORES &#x3D;&gt;
+        driverCores &#x3D; value
+      ...
+    &#125;&#x2F;&#x2F;各种配置信息判断
+    action !&#x3D; SparkSubmitAction.PRINT_VERSION
+  &#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="doSubmit-submit"><a href="#doSubmit-submit" class="headerlink" title="doSubmit/submit"></a>doSubmit/submit</h3><p><em>org/apache/spark/deploy/SparkSubmit.scala</em></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">private def submit(args: SparkSubmitArguments, uninitLog: Boolean): Unit &#x3D; &#123;
+    def doRunMain(): Unit &#x3D; &#123;
+      if (args.proxyUser !&#x3D; null) &#123;
+        val proxyUser &#x3D; UserGroupInformation.createProxyUser(args.proxyUser,
+          UserGroupInformation.getCurrentUser())
+        try &#123;
+          proxyUser.doAs(new PrivilegedExceptionAction[Unit]() &#123;
+            override def run(): Unit &#x3D; &#123;
+              runMain(args, uninitLog)&#x2F;&#x2F;-------------------------------&gt;
+            &#125;
+          &#125;)
+        &#125; catch &#123;...&#125;
+      &#125; else &#123;
+        runMain(args, uninitLog)&#x2F;&#x2F;---------------------------------&gt;
+      &#125;
+    &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="doSubmit-submit-doRunMain-runMain"><a href="#doSubmit-submit-doRunMain-runMain" class="headerlink" title="doSubmit/submit/doRunMain/runMain"></a>doSubmit/submit/doRunMain/runMain</h3><p><em>org/apache/spark/deploy/SparkSubmit.scala</em></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">&#x2F;**
+   * Run the main method of the child class using the submit arguments.
+   * 启动main程序的启动子类
+   * This runs in two steps. First, we prepare the launch environment by setting up
+   * the appropriate classpath, system properties, and application arguments for
+   * running the child main class based on the cluster manager and the deploy mode.
+   * Second, we use this launch environment to invoke the main method of the child
+   * main class.
+   * 激活启动子类
+   * Note that this main class will not be the one provided by the user if we&#39;re
+   * running cluster deploy mode or python applications.
+   *&#x2F;
+  private def runMain(args: SparkSubmitArguments, uninitLog: Boolean): Unit &#x3D; &#123;
+    val (childArgs, childClasspath, sparkConf, childMainClass) &#x3D; prepareSubmitEnvironment(args)&#x2F;&#x2F;------------------------------&gt;准备环境
+    ...&#x2F;&#x2F;日志相关
+    val loader &#x3D; getSubmitClassLoader(sparkConf)
+    for (jar &lt;- childClasspath) &#123;
+      addJarToClasspath(jar, loader)
+    &#125;
+    var mainClass: Class[_] &#x3D; null
+    try &#123;
+      mainClass &#x3D; Utils.classForName(childMainClass)&#x2F;&#x2F;使用反射将子启动类变为主启动类
+    &#125; catch &#123;...&#125;
+
+    val app: SparkApplication &#x3D; if (classOf[SparkApplication].isAssignableFrom(mainClass)) &#123;
+      mainClass.getConstructor().newInstance().asInstanceOf[SparkApplication]
+    &#125; else &#123;&#x2F;&#x2F;使用反射创建
+      new JavaMainApplication(mainClass)&#x2F;&#x2F;创建YarnClusterApplication
+    &#125;
+    @tailrec
+    def findCause(t: Throwable): Throwable &#x3D; t match &#123;
+      case e: UndeclaredThrowableException &#x3D;&gt;
+        if (e.getCause() !&#x3D; null) findCause(e.getCause()) else e
+      case e: InvocationTargetException &#x3D;&gt;
+        if (e.getCause() !&#x3D; null) findCause(e.getCause()) else e
+      case e: Throwable &#x3D;&gt;
+        e
+    &#125;
+    try &#123;
+      app.start(childArgs.toArray, sparkConf)&#x2F;&#x2F;启动YarnClusterApplication
+        &#x2F;&#x2F;----------------------------------&gt;
+    &#125; catch &#123;...&#125;
+  &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="doSubmit-submit-doRunMain-runMain-prepareSubmitEnvironment"><a href="#doSubmit-submit-doRunMain-runMain-prepareSubmitEnvironment" class="headerlink" title="doSubmit/submit/doRunMain/runMain/prepareSubmitEnvironment"></a>doSubmit/submit/doRunMain/runMain/prepareSubmitEnvironment</h3><p><em>org/apache/spark/deploy/SparkSubmit.scala</em></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">private[deploy] def prepareSubmitEnvironment(
+      args: SparkSubmitArguments,
+      conf: Option[HadoopConfiguration] &#x3D; None)
+      : (Seq[String], Seq[String], SparkConf, String) &#x3D; &#123;
+    &#x2F;&#x2F; Return values
+    val childArgs &#x3D; new ArrayBuffer[String]()
+    val childClasspath &#x3D; new ArrayBuffer[String]()
+    val sparkConf &#x3D; args.toSparkConf()
+    var childMainClass &#x3D; &quot;&quot;
+
+    &#x2F;&#x2F; Set the cluster manager
+    val clusterManager: Int &#x3D; args.master match &#123;
+      case &quot;yarn&quot; &#x3D;&gt; YARN&#x2F;&#x2F;判断环境为yarn环境------------------------&gt;
+      case m if m.startsWith(&quot;spark&quot;) &#x3D;&gt; STANDALONE
+      case m if m.startsWith(&quot;mesos&quot;) &#x3D;&gt; MESOS
+      case m if m.startsWith(&quot;k8s&quot;) &#x3D;&gt; KUBERNETES
+      case m if m.startsWith(&quot;local&quot;) &#x3D;&gt; LOCAL
+      case _ &#x3D;&gt;
+        error(&quot;Master must either be yarn or start with spark, mesos, k8s, or local&quot;)
+        -1
+    &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="doSubmit-submit-doRunMain-runMain-start"><a href="#doSubmit-submit-doRunMain-runMain-start" class="headerlink" title="doSubmit/submit/doRunMain/runMain/start"></a>doSubmit/submit/doRunMain/runMain/start</h3><p>org/apache/spark/deploy/SparkApplication.scala</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">private[spark] trait SparkApplication &#123;
+  def start(args: Array[String], conf: SparkConf): Unit
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>启动CtrL+H查看继承树</p>
+<p><img src="Spark%E5%86%85%E6%A0%B8_%E6%80%BB%E7%BB%93.assets/1606639008096.png" alt="继承树"></p>
+<p>Yarn源码文件结构</p>
+<p><img src="Spark%E5%86%85%E6%A0%B8_%E6%80%BB%E7%BB%93.assets/1606638669349.png" alt="Yarn"></p>
+<h3 id="Client-start"><a href="#Client-start" class="headerlink" title="Client/start"></a>Client/start</h3><p><em>org/apache/spark/deploy/yarn/Client.scala</em></p>
+<p><em>org.apache.spark.deploy.yarn.YarnClusterApplication</em></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">private[spark] class YarnClusterApplication extends SparkApplication &#123;
+
+  override def start(args: Array[String], conf: SparkConf): Unit &#x3D; &#123;
+    &#x2F;&#x2F; SparkSubmit would use yarn cache to distribute files &amp; jars in yarn mode,
+    &#x2F;&#x2F; so remove them from sparkConf here for yarn mode.
+    conf.remove(JARS)
+    conf.remove(FILES)
+
+    new Client(new ClientArguments(args), conf, null).run()&#x2F;&#x2F;---------------------------&gt;
+  &#125;&#x2F;&#x2F;---------------&gt;Client
+    &#x2F;&#x2F;--------------&gt;ClientArguments
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="Client-ClientArguments"><a href="#Client-ClientArguments" class="headerlink" title="Client/ClientArguments"></a>Client/ClientArguments</h3><p>org/apache/spark/deploy/yarn/ClientArguments.scala</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">private[spark] class ClientArguments(args: Array[String]) &#123;
+  var userJar: String &#x3D; null
+  var userClass: String &#x3D; null
+  var primaryPyFile: String &#x3D; null
+  var primaryRFile: String &#x3D; null
+  var userArgs: ArrayBuffer[String] &#x3D; new ArrayBuffer[String]()
+  parseArgs(args.toList)&#x2F;&#x2F;-----------------------&gt;
+  private def parseArgs(inputArgs: List[String]): Unit &#x3D; &#123;&#x2F;&#x2F;&lt;---------------------
+    var args &#x3D; inputArgs
+    while (!args.isEmpty) &#123;
+      args match &#123;
+        case (&quot;--jar&quot;) :: value :: tail &#x3D;&gt;
+          userJar &#x3D; value
+          args &#x3D; tail
+        case (&quot;--class&quot;) :: value :: tail &#x3D;&gt;
+          userClass &#x3D; value
+          args &#x3D; tail
+        ....
+      &#125;
+    &#125;
+   ...
+  &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="YarnClient-createYarnClient"><a href="#YarnClient-createYarnClient" class="headerlink" title="YarnClient.createYarnClient"></a>YarnClient.createYarnClient</h3><p><em>org/apache/spark/deploy/yarn/Client.scala/YarnClient.createYarnClient</em></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">private[spark] class Client(
+    val args: ClientArguments,
+    val sparkConf: SparkConf,
+    val rpcEnv: RpcEnv)
+  extends Logging &#123;
+  import Client._
+  import YarnSparkHadoopUtil._
+      &#x2F;&#x2F;创建YARN客户端
+  private val yarnClient &#x3D; YarnClient.createYarnClient&#x2F;&#x2F;-----------------&gt;YarnClient
+      ....
+  &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="2-ApplicationMaster任务"><a href="#2-ApplicationMaster任务" class="headerlink" title="2.ApplicationMaster任务"></a>2.ApplicationMaster任务</h2><h3 id="ApplicationMaster-main"><a href="#ApplicationMaster-main" class="headerlink" title="ApplicationMaster/main"></a>ApplicationMaster/main</h3><p><em>org.apache.spark.deploy.yarn.ApplicationMaster</em></p>
+<h1 id="2-Spark提交流程"><a href="#2-Spark提交流程" class="headerlink" title="2.Spark提交流程"></a>2.Spark提交流程</h1>
                 
             </div>
             <hr/>
@@ -507,7 +756,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://fourgold.github.io/2020/12/27/hello-world/">http://fourgold.github.io/2020/12/27/hello-world/</a>
+                    <a href="http://fourgold.github.io/2021/01/04/Spark_SubmitSource/">http://fourgold.github.io/2021/01/04/Spark_SubmitSource/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -716,13 +965,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/12/27/article-title/">
+                <a href="/2021/01/04/%E7%B4%AF%E5%8A%A0%E5%99%A8%E4%B8%8E%E5%88%86%E5%8C%BA%E5%99%A8%E6%80%BB%E7%BB%93/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="article title">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
                         
-                        <span class="card-title">article title</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -733,7 +982,7 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-12-27
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-04
                         </span>
                         <span class="publish-author">
                             
@@ -753,13 +1002,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/11/22/Spark_SparkSQL/">
+                <a href="/2021/01/04/Spark_SparkStreaming_Practice/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Spark_SparkSQL">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
                         
-                        <span class="card-title">Spark_SparkSQL</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -770,27 +1019,15 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-22
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-04
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/spark/" class="post-category">
-                                    spark
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Jinxin Li
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/spark/">
-                        <span class="chip bg-color">spark</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -991,7 +1228,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">31.8k</span>&nbsp;字
+                class="white-color">40k</span>&nbsp;字
             
             
             

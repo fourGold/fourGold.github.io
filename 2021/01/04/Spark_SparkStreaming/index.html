@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="article title, 李金鑫">
+    <meta name="keywords" content="李金鑫">
     <meta name="description" content="李金鑫的个人博客">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>article title | 李金鑫</title>
+    <title>李金鑫</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">article title</h1>
+                    <h1 class="description center-align post-title"></h1>
                 </div>
             </div>
         </div>
@@ -443,7 +443,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-12-27
+                    2021-01-04
                 </div>
                 
 
@@ -452,7 +452,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    3.1k
                 </div>
                 
 
@@ -472,7 +472,341 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <hr>
+<p>title:Spark_SparkStreaming<br>data:2020-12-31<br>tags:spark sparkstreaming<br>categories:spark</p>
+<hr>
+<p>云盘：<a href="mailto:&#x6d;&#x69;&#97;&#x6f;&#99;&#x68;&#x75;&#97;&#110;&#x68;&#97;&#x69;&#x40;&#49;&#54;&#x33;&#46;&#x63;&#111;&#109;">&#x6d;&#x69;&#97;&#x6f;&#99;&#x68;&#x75;&#97;&#110;&#x68;&#97;&#x69;&#x40;&#49;&#54;&#x33;&#46;&#x63;&#111;&#109;</a><br>暗号：大海哥最帅</p>
+<hr>
+<h1 id="一-概述"><a href="#一-概述" class="headerlink" title="一 概述"></a>一 概述</h1><h2 id="1-Spark架构"><a href="#1-Spark架构" class="headerlink" title="1.Spark架构"></a>1.Spark架构</h2><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/Spark%E7%BB%93%E6%9E%84.png" alt="SparkStreaming整体架构图"></p>
+<h2 id="2-DStream是什么"><a href="#2-DStream是什么" class="headerlink" title="2.DStream是什么?"></a>2.DStream是什么?</h2><p>每个时间区间收到的数据作为RDD存在</p>
+<p>实时的封装</p>
+<h2 id="3-背压机制"><a href="#3-背压机制" class="headerlink" title="3.背压机制"></a>3.背压机制</h2><p>可以自动调节receiver的接受速率</p>
+<p>通过属性“spark.streaming.backpressure.enabled”来控制是否启用backpressure机制，默认值false，即不启用。</p>
+<h1 id="二-DSteam入门"><a href="#二-DSteam入门" class="headerlink" title="二 DSteam入门"></a>二 DSteam入门</h1><h2 id="1-wordCount"><a href="#1-wordCount" class="headerlink" title="1.wordCount"></a>1.wordCount</h2><p>需求：使用netcat工具向9999端口不断的发送数据，通过SparkStreaming读取端口数据并统计不同单词出现的次数</p>
+<h3 id="1-1使用netcat作为源头wordcount"><a href="#1-1使用netcat作为源头wordcount" class="headerlink" title="1.1使用netcat作为源头wordcount"></a>1.1使用netcat作为源头wordcount</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object WordCount &#123;
+  def main(args: Array[String]): Unit &#x3D; &#123;
+    val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local[*]&quot;).setAppName(&quot;sparkStreaming&quot;)
+    &#x2F;&#x2F;初始化配置信息
+    val ssc &#x3D; new StreamingContext(sparkConf, Seconds(3))
+    &#x2F;&#x2F;接收数据
+    val line: ReceiverInputDStream[String] &#x3D; ssc.socketTextStream(&quot;hadoop102&quot;, 9999)
+    &#x2F;&#x2F;处理
+    val wordToSumStream: DStream[(String, Int)] &#x3D; line.flatMap(_.split(&quot; &quot;)).map((_, 1)).reduceByKey(_ + _)
+    wordToSumStream.print()
+    ssc.start()
+    ssc.awaitTermination()
+  &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="1-2使用队列源计算wordcount"><a href="#1-2使用队列源计算wordcount" class="headerlink" title="1.2使用队列源计算wordcount"></a>1.2使用队列源计算wordcount</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object queuePractice &#123;
+  def main(args: Array[String]): Unit &#x3D; &#123;
+    val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local[*]&quot;).setAppName(&quot;opt&quot;)
+    val ssc &#x3D; new StreamingContext(sparkConf, Seconds(3))
+    &#x2F;&#x2F;创建RDD队列
+    val rddQueue &#x3D; new mutable.Queue[RDD[Int]]()
+    &#x2F;&#x2F;创建queueInputDsteam
+    val value: InputDStream[Int] &#x3D; ssc.queueStream(rddQueue, oneAtATime &#x3D; false)
+    val result: DStream[Int] &#x3D; value.reduce(_ + _)
+    &#x2F;&#x2F;打印结果
+    result.print()
+    ssc.start()
+    for (i &lt;- 1 to 5)&#123;
+      rddQueue +&#x3D; ssc.sparkContext.makeRDD(1 to 5)
+      Thread.sleep((2000))
+    &#125;
+    ssc.awaitTermination()
+  &#125;
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="2-自定义数据源"><a href="#2-自定义数据源" class="headerlink" title="2.自定义数据源"></a>2.自定义数据源</h2><h3 id="2-1自定义数据源receiver"><a href="#2-1自定义数据源receiver" class="headerlink" title="2.1自定义数据源receiver"></a>2.1自定义数据源receiver</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">class defReceiver(host:String,port:Int) extends Receiver[String](StorageLevel.MEMORY_ONLY)&#123;
+  override def onStart(): Unit &#x3D; &#123;
+    new Thread(&quot;Socket Receiver&quot;)&#123;
+      override def run(): Unit &#x3D; &#123;receive()&#125;
+    &#125;.start()
+  &#125;
+  def receive(): Unit &#x3D; &#123;
+    val socket &#x3D; new Socket(host, port)
+    &#x2F;&#x2F;创建一个bufferReader
+    val reader &#x3D; new BufferedReader(new InputStreamReader(socket.getInputStream, StandardCharsets.UTF_8))
+    &#x2F;&#x2F;读取数据
+    var input: String &#x3D; reader.readLine()
+    &#x2F;&#x2F;当receiver没有关闭并且输入数据不为空,则循环发送数据给spark
+    while(!isStopped()&amp;&amp;input !&#x3D;null)&#123;
+      store(input)
+      input&#x3D; reader.readLine()
+    &#125;
+    &#x2F;&#x2F;如果循环结束,则关闭资源
+    reader.close()
+    socket.close()
+    &#x2F;&#x2F;重启
+    restart(&quot;restart&quot;)
+  &#125;
+  override def onStop(): Unit &#x3D; &#123;&#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-2自定数据源的使用"><a href="#2-2自定数据源的使用" class="headerlink" title="2.2自定数据源的使用"></a>2.2自定数据源的使用</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object defSource &#123;
+  def main(args: Array[String]): Unit &#x3D; &#123;
+    val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local[*]&quot;).setAppName(&quot;opt&quot;)
+    val ssc &#x3D; new StreamingContext(sparkConf, Seconds(3))
+    &#x2F;&#x2F;创建自动receiver的Streaming
+    val lineDStream: ReceiverInputDStream[String] &#x3D; ssc.receiverStream(new defReceiver(&quot;hadoop102&quot;, 9999))
+    &#x2F;&#x2F;将每一行数据做切分,形成一个个单词
+    val result: DStream[(String, Int)] &#x3D; lineDStream.flatMap(_.split(&quot; &quot;)).map((_, 1)).reduceByKey(_ + _)
+    result.print()
+    &#x2F;&#x2F;启动并且阻塞
+    ssc.start()
+    ssc.awaitTermination()
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="3-kafka数据源"><a href="#3-kafka数据源" class="headerlink" title="3.kafka数据源"></a>3.kafka数据源</h2><p>Kafka数据源在SparkStreaming中存在两种API,一种是ReceiverAPI,另一种是DirectAPI</p>
+<p>ReceiverAPI已经弃用</p>
+<p><strong>DirectAPI</strong>:是由计算的Executor来主动消费Kafka的数据,速度由自身控制</p>
+<h3 id="3-1kafka的命令行代码"><a href="#3-1kafka的命令行代码" class="headerlink" title="3.1kafka的命令行代码"></a>3.1kafka的命令行代码</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#查看消费topic
+bin&#x2F;kafka-topics.sh --zookeeper hadoop102:2181&#x2F;kafka -list
+#创建kafka的topic
+bin&#x2F;kafka-topics.sh --zookeeper hadoop102:2181&#x2F;kafka  --create --replication-factor 1 --partitions 2 --topic testTopic
+#查看Topic详情
+bin&#x2F;kafka-topics.sh --zookeeper hadoop102:2181&#x2F;kafka \
+--describe --topic testTopic
+#创建生产者
+bin&#x2F;kafka-console-producer.sh \
+--broker-list hadoop102:9092 --topic testTopic
+#创建消费者
+[atguigu@hadoop102 kafka]$ bin&#x2F;kafka-console-consumer.sh \
+--bootstrap-server hadoop102:9092 --from-beginning --topic testTopic
+#查看_consumer_offsets主题中存储的offset
+bin&#x2F;kafka-consumer-groups.sh --bootstrap-server hadoop102:9092 --describe --group atguiguGroup
+#如何查看消费者组的位置<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-2使用kafka源来流数据wordcount处理"><a href="#3-2使用kafka源来流数据wordcount处理" class="headerlink" title="3.2使用kafka源来流数据wordcount处理"></a>3.2使用kafka源来流数据wordcount处理</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object SparkStreaming_DirectAuto &#123;
+  def main(args: Array[String]): Unit &#x3D; &#123;
+    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;KakfaSource&quot;).setMaster(&quot;local[*]&quot;)
+    val scc &#x3D; new StreamingContext(sparkConf, Seconds(3))
+
+    &#x2F;&#x2F;配置参数,为map
+    &#x2F;&#x2F;3.定义Kafka参数：kafka集群地址、消费者组名称、key序列化、value序列化
+    val kafkaPara: Map[String, Object] &#x3D; Map[String, Object](
+      ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG -&gt; &quot;hadoop102:9092,hadoop103:9092,hadoop104:9092&quot;,
+      ConsumerConfig.GROUP_ID_CONFIG -&gt; &quot;atguiguGroup&quot;,
+      ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG -&gt; &quot;org.apache.kafka.common.serialization.StringDeserializer&quot;,
+      ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG -&gt; classOf[StringDeserializer]
+    )
+    &#x2F;&#x2F;使用DirectAPI创建DStream
+    val kafkaToDStream: InputDStream[ConsumerRecord[String, String]] &#x3D; KafkaUtils.createDirectStream(scc,
+      LocationStrategies.PreferConsistent,
+      ConsumerStrategies.Subscribe[String, String](Set(&quot;testTopic&quot;), kafkaPara))
+    &#x2F;&#x2F;处理数据
+    kafkaToDStream.map(record&#x3D;&gt;record.value())
+      .flatMap(_.split(&quot; &quot;))
+      .map((_,1))
+      .reduceByKey(_+_)
+      .print()
+    &#x2F;&#x2F;关闭并堵塞
+    scc.start()
+    scc.awaitTermination()
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="三-DStream转换"><a href="#三-DStream转换" class="headerlink" title="三 DStream转换"></a>三 DStream转换</h1><p>DStream上的操作与RDD的类似，分为转换和输出两种，此外转换操作中还有一些比较特殊的原语，如：updateStateByKey()、transform()以及各种Window相关的原语。</p>
+<h2 id="3-1无状态转换"><a href="#3-1无状态转换" class="headerlink" title="3.1无状态转换"></a>3.1无状态转换</h2><p>transfrom()是在Driver端开始执行的</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">&#x2F;&#x2F;DStream其实就是内部封装了一个RDD,因此
+object SparkStreaming_Transform &#123;
+  def main(args: Array[String]): Unit &#x3D; &#123;
+    &#x2F;&#x2F;初始化配置
+    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;KakfaSource&quot;).setMaster(&quot;local[*]&quot;)
+    val scc &#x3D; new StreamingContext(sparkConf, Seconds(3))
+    &#x2F;&#x2F;接受参数
+    val rDStream: ReceiverInputDStream[String] &#x3D; scc.socketTextStream(&quot;hadoop102&quot;, 9999)
+    &#x2F;&#x2F;使用transform可以将DStream转换成rdd
+    println(&quot;主程序执行&quot;+Thread.currentThread().getName)&#x2F;&#x2F;JobGenerator Driver
+    rDStream.transform(rdd&#x3D;&gt;&#123;
+      println(&quot;transform执行位置&quot;+Thread.currentThread().getName)
+      rdd.flatMap(line&#x3D;&gt;line.split(&quot; &quot;)).map((_,1)).reduceByKey(_+_)&#125;).print()
+    &#x2F;&#x2F;关闭并堵塞
+    scc.start()
+    scc.awaitTermination()
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="3-2有状态转换"><a href="#3-2有状态转换" class="headerlink" title="3.2有状态转换"></a>3.2有状态转换</h2><p>有状态转化操作：计算当前批次RDD时，需要用到历史RDD的数据。</p>
+<h3 id="1-UpdateStateByKey"><a href="#1-UpdateStateByKey" class="headerlink" title="(1)UpdateStateByKey()"></a>(1)UpdateStateByKey()</h3><p>参数中需要传递一个函数,在函数内部根据需求对==当前数据==与==历史数据==进行整合</p>
+<p>需求:使用UpdateStateByKey计算WordCount</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">&#x2F;**
+ * @author Jinxin Li
+ * @create 2020-11-24 18:24
+ * 通过累积历史状态做的实时的wordcount
+ *&#x2F;
+object sparkStreaming_updateStateByKey &#123;
+  def main(args: Array[String]): Unit &#x3D; &#123;
+
+    &#x2F;&#x2F;这里只会相加key相同的数值,因为是reduce,key相同进来,只要设定value的方法即可
+    &#x2F;&#x2F; 定义更新状态方法，参数seq为当前批次单词次数，state为以往批次单词次数
+    val updateFunc &#x3D; (seq:Seq[Int],state:Option[Int])&#x3D;&gt;&#123;
+      &#x2F;&#x2F;当前批次
+      val currentCount &#x3D; seq.sum
+      &#x2F;&#x2F;历史批次
+      val previousCount &#x3D;  state.getOrElse(0)
+      &#x2F;&#x2F;总的数据累加
+      Some(currentCount+previousCount)
+    &#125;
+    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;KakfaSource&quot;).setMaster(&quot;local[*]&quot;)
+    val scc &#x3D; new StreamingContext(sparkConf, Seconds(3))
+
+    scc.checkpoint(&quot;.&#x2F;SparkStreaming&#x2F;ck&quot;)&#x2F;&#x2F;设定存储点,默认的计算与历史相关的都要设定检查点
+
+    val reDStream: ReceiverInputDStream[String] &#x3D; scc.socketTextStream(&quot;hadoop102&quot;, 9999)
+    val KvDStream: DStream[(String, Int)] &#x3D; reDStream.flatMap(_.split(&quot; &quot;)).map((_, 1))
+    KvDStream.updateStateByKey[Int](
+      updateFunc,
+      new HashPartitioner(2)).print()
+    &#x2F;&#x2F;关闭并堵塞
+    scc.start()
+    scc.awaitTermination()
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>缺点**</strong></p>
+<p>这种UpdateStateByKey在企业中几乎不用,因为存在很多缺点</p>
+<ol>
+<li>使用checkPoint检查点存储记录历史会产生大量的小文件</li>
+</ol>
+<p><img src="../../../MY_POSTS/images/1606214937943.png" alt="1606214937943"></p>
+<ol start="2">
+<li>当前线程关闭后,下次开启重新开始累积</li>
+<li>即使重新开始累积,但是checkpoint会记录最后一次时间戳，再次启动的时候会把间隔时间的周期再执行一次,容易导致启动卡死</li>
+</ol>
+<h3 id="2-WindowOperations"><a href="#2-WindowOperations" class="headerlink" title="(2)WindowOperations"></a>(2)WindowOperations</h3><p>Window Operations可以设置窗口的大小和滑动窗口的间隔来动态的获取当前Streaming的允许状态。所有基于窗口的操作都需要两个参数，分别为窗口时长以及滑动步长。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E7%AA%97%E5%8F%A3%E5%87%BD%E6%95%B0%E6%93%8D%E4%BD%9C.png" alt="窗口函数操作"></p>
+<p><strong>需求</strong></p>
+<p>基本语法：window(windowLength, slideInterval): 基于对源DStream窗化的批次进行计算返回一个新的DStream。</p>
+<p>需求：统计WordCount:3秒一个批次，窗口12秒，滑步6秒。</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object SparkStreaming_window &#123;
+  def main(args: Array[String]): Unit &#x3D; &#123;
+    &#x2F;&#x2F;这里只会相加key相同的数值,因为是reduce,key相同进来,只要设定value的方法即可
+    &#x2F;&#x2F; 定义更新状态方法，参数seq为当前批次单词次数，state为以往批次单词次数
+    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;KakfaSource&quot;).setMaster(&quot;local[*]&quot;)
+    val scc &#x3D; new StreamingContext(sparkConf, Seconds(3))
+    scc.checkpoint(&quot;.&#x2F;SparkStreaming&#x2F;ck&quot;)&#x2F;&#x2F;设定存储点,默认的计算与历史相关的都要设定检查点
+    val reDStream: ReceiverInputDStream[String] &#x3D; scc.socketTextStream(&quot;hadoop102&quot;, 9999)
+    val lineToTuples: DStream[(String, Int)] &#x3D; reDStream.flatMap(_.split(&quot; &quot;)).map((_, 1))
+    &#x2F;&#x2F;设定窗口,3秒一个批次,窗口持续12秒,步长6秒
+    val windowDStream: DStream[(String, Int)] &#x3D; lineToTuples.window(Seconds(12), Seconds(6))
+    windowDStream.reduceByKey(_+_).print()
+    &#x2F;&#x2F;关闭并堵塞
+    scc.start()
+    scc.awaitTermination()
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E7%AA%97%E5%8F%A3%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B.png" alt="窗口计算流程图"></p>
+<h3 id="3-reduceByKeyAndWindow"><a href="#3-reduceByKeyAndWindow" class="headerlink" title="(3)reduceByKeyAndWindow"></a>(3)reduceByKeyAndWindow</h3><p>reduceByKeyAndWindow(func, windowLength, slideInterval,[numTasks])：</p>
+<p>当在一个(K,V)对的DStream上调用此函数，会返回一个新(K,V)对的DStream，此处通过对滑动窗口中批次数据使用reduce函数来整合每个key的value值。</p>
+<p>这个是window程序的简化版</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object SparkStreaming_reduceByKeyAndWindow &#123;
+  def main(args: Array[String]): Unit &#x3D; &#123;
+    &#x2F;&#x2F;初始化配置
+    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;KakfaSource&quot;).setMaster(&quot;local[*]&quot;)
+    val scc &#x3D; new StreamingContext(sparkConf, Seconds(3))
+    &#x2F;&#x2F;接受参数
+    val line: ReceiverInputDStream[String] &#x3D; scc.socketTextStream(&quot;hadoop102&quot;, 9999)
+    val tuplesDStream: DStream[(String, Int)] &#x3D; line.flatMap(_.split(&quot; &quot;)).map((_, 1))
+    tuplesDStream.reduceByKeyAndWindow(
+      (a:Int,b:Int)&#x3D;&gt;a+b,&#x2F;&#x2F;这里要表明类型
+      Seconds(6),
+      Seconds(12)
+    ).print()
+    scc.start()
+    scc.awaitTermination()
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-reduceByKeyAndWindow（反向Reduce）"><a href="#4-reduceByKeyAndWindow（反向Reduce）" class="headerlink" title="(4)reduceByKeyAndWindow（反向Reduce）"></a>(4)reduceByKeyAndWindow（反向Reduce）</h3><p>reduceByKeyAndWindow(func, invFunc, windowLength, slideInterval,[numTasks])</p>
+<p>这个是上一个函数的升级版</p>
+<p>通过一个减法,减少统计窗口之间的重复部分</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object SparkStreaming_reduceByKeyAndWindow_reduce &#123;
+  def main(args: Array[String]): Unit &#x3D; &#123;
+    &#x2F;&#x2F;初始化配置
+    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;KakfaSource&quot;).setMaster(&quot;local[*]&quot;)
+    val scc &#x3D; new StreamingContext(sparkConf, Seconds(3))
+    &#x2F;&#x2F;接受参数
+    scc.checkpoint(&quot;.&#x2F;ck&quot;)
+    val line: ReceiverInputDStream[String] &#x3D; scc.socketTextStream(&quot;hadoop102&quot;, 9999)
+    val tuplesDStream: DStream[(String, Int)] &#x3D; line.flatMap(_.split(&quot; &quot;)).map((_, 1))
+    tuplesDStream.reduceByKeyAndWindow(
+      (a:Int,b:Int)&#x3D;&gt;a+b,&#x2F;&#x2F;这里要表明类型
+      (x:Int,y:Int)&#x3D;&gt;x-y,
+      Seconds(12),&#x2F;&#x2F;这个是窗口间隔
+      Seconds(6),&#x2F;&#x2F;这个是滑动距离
+      new HashPartitioner(2),
+      (x:(String, Int)) &#x3D;&gt; x._2 &gt; 0&#x2F;&#x2F;过滤小于0值
+    ).print()
+    scc.start()
+    scc.awaitTermination()
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="3-3其他操作"><a href="#3-3其他操作" class="headerlink" title="3.3其他操作"></a>3.3其他操作</h2><p>（1）countByWindow(windowLength, slideInterval): 返回一个滑动窗口计数流中的元素个数；</p>
+<p>（2）reduceByWindow(func, windowLength, slideInterval): 通过使用自定义函数整合滑动区间流元素来创建一个新的单元素流；</p>
+<h1 id="五-DSteam输出"><a href="#五-DSteam输出" class="headerlink" title="五 DSteam输出"></a>五 DSteam输出</h1><p>企业中常用以下方法进行DSteam输出</p>
+<p>print()：在运行流程序的驱动结点上打印DStream中每一批次数据的最开始10个元素。这用于开发和调试。</p>
+<p>foreachRDD(func)：这是最通用的输出操作，函数func用于产生DStream的每一个RDD。其中参数传入的函数func应该实现将每一个RDD中数据推送到外部系统，如将RDD存入文件或者写入数据库。</p>
+<p>在企业开发中通常采用foreachRDD()，它用来对DStream中的RDD进行任意计算。这和transform()有些类似，都可以让我们访问任意RDD。在foreachRDD()中，可以重用我们在Spark中实现的所有行动操作。比如，常见的用例之一是把数据写到如MySQL的外部数据库中</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object SparkStreaming_output &#123;
+  def main(args: Array[String]): Unit &#x3D; &#123;
+    &#x2F;&#x2F;初始化配置
+    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;KakfaSource&quot;).setMaster(&quot;local[*]&quot;)
+    val scc &#x3D; new StreamingContext(sparkConf, Seconds(3))
+    &#x2F;&#x2F;接受参数
+    scc.checkpoint(&quot;.&#x2F;ck&quot;)
+    val line: ReceiverInputDStream[String] &#x3D; scc.socketTextStream(&quot;hadoop102&quot;, 9999)
+    val tuplesDStream: DStream[(String, Int)] &#x3D; line.flatMap(_.split(&quot; &quot;)).map((_, 1))
+    &#x2F;&#x2F;tuplesDStream.foreachRDD(rdd&#x3D;&gt;rdd.collect().foreach(println))
+    &#x2F;&#x2F;常规这样输出是一条一条的输出,但是常规不适合这样操作
+    tuplesDStream.foreachRDD(rdd&#x3D;&gt;rdd.foreachPartition &#123;
+      println(Thread.currentThread().getName&#x2F;&#x2F;需要注意的是,转换输出也是在Driver端执行的
+      item &#x3D;&gt; item.foreach(println)
+    &#125;)
+    scc.start()
+    scc.awaitTermination()
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>（1）连接不能写在Driver层面（序列化）</p>
+<p>（2）如果写在foreach则每个RDD中的每一条数据都创建，得不偿失；</p>
+<p>（3）增加foreachPartition，在分区创建（获取）。还是在Driver端进行?</p>
+<h1 id="六-优雅的关闭"><a href="#六-优雅的关闭" class="headerlink" title="六 优雅的关闭"></a>六 优雅的关闭</h1><p>使用外部文件系统来控制内部程序关闭</p>
+<p>使用object</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object close2 &#123;
+  def main(args: Array[String]): Unit &#x3D; &#123;
+    val properties &#x3D; new Properties()
+    val config &#x3D; PropertiesUtil.load(&quot;config.properties&quot;)
+    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;sparkStreaming&quot;).setMaster(&quot;local[*]&quot;)
+      .set(&quot;spark.streaming.stopGracefullyOnShutdown&quot;, config.getProperty(&quot;spark.streaming.stopGracefullyOnShutdown&quot;))
+    val ssc &#x3D; new StreamingContext(sparkConf, Seconds(3))
+    val lineDStream: ReceiverInputDStream[String] &#x3D; ssc.socketTextStream(&quot;hadoop102&quot;, 9999)
+    lineDStream.flatMap(_.split(&quot; &quot;)).map((_,1)).reduceByKey(_+_).print()
+
+    new Thread(new StopMonitor(ssc)).start()
+
+    &#x2F;&#x2F;关闭
+    ssc.start()
+    ssc.awaitTermination()
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>关闭object</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">class StopMonitor(ssc: StreamingContext) extends Runnable&#123;
+  override def run(): Unit &#x3D; &#123;
+    &#x2F;&#x2F;获得文件系统
+    val fileSystem: FileSystem &#x3D; FileSystem.get(new URI(&quot;hdfs:&#x2F;&#x2F;hadoop102:8020&quot;), new Configuration(), &quot;atguigu&quot;)
+    &#x2F;&#x2F;循环监测
+    while (true)&#123;
+      val bool: Boolean &#x3D; fileSystem.exists(new Path(&quot;hdfs:&#x2F;&#x2F;hadoop102:8020&#x2F;stopSpark&quot;))
+      Thread.sleep(5000)
+      &#x2F;&#x2F;判断
+      if (bool)&#123;
+        val state: StreamingContextState &#x3D; ssc.getState()
+        if (state&#x3D;&#x3D;StreamingContextState.ACTIVE)&#123;
+          ssc.stop(stopSparkContext &#x3D; true,stopGracefully &#x3D; true)
+          System.exit(0)
+        &#125;
+      &#125;
+    &#125;
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
                 
             </div>
             <hr/>
@@ -498,7 +832,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://fourgold.github.io/2020/12/27/article-title/">http://fourgold.github.io/2020/12/27/article-title/</a>
+                    <a href="http://fourgold.github.io/2021/01/04/Spark_SparkStreaming/">http://fourgold.github.io/2021/01/04/Spark_SparkStreaming/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -707,13 +1041,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/12/28/Jetbrains%E7%B3%BB%E5%88%97%E4%BA%A7%E5%93%81%E9%87%8D%E7%BD%AE%E8%AF%95%E7%94%A8%E6%96%B9%E6%B3%95/">
+                <a href="/2021/01/04/Spark_SparkStreaming_Practice/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Jetbrains系列产品重置试用方法">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
                         
-                        <span class="card-title">Jetbrains系列产品重置试用方法</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -724,27 +1058,15 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-12-28
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-04
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/tips/" class="post-category">
-                                    tips
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Jinxin Li
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/idea/">
-                        <span class="chip bg-color">idea</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -756,13 +1078,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/12/27/hello-world/">
+                <a href="/2021/01/03/Spark_SparkCore/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -773,7 +1095,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-03
                             </span>
                         <span class="publish-author">
                             
@@ -982,7 +1304,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">31.8k</span>&nbsp;字
+                class="white-color">40k</span>&nbsp;字
             
             
             

@@ -1,0 +1,2056 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Spark_Kernel, 李金鑫">
+    <meta name="description" content="李金鑫的个人博客">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Spark_Kernel | 李金鑫</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.3.0"><link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">李金鑫</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">李金鑫</div>
+        <div class="logo-desc">
+            
+            李金鑫的个人博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="http://github.com/fourgold/" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="http://github.com/fourgold/" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Spark_Kernel</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/spark-netty-shuffle-spark%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-submit/">
+                                <span class="chip bg-color">spark netty shuffle spark内存管理 submit</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/spark/" class="post-category">
+                                spark
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-12-29
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    11.1k
+                </div>
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Spark内核"><a href="#Spark内核" class="headerlink" title="Spark内核"></a>Spark内核</h1><hr>
+<blockquote>
+<p>所谓的内核，就是Spark内部核心原理。</p>
+</blockquote>
+<h2 id="一、内核解析的分解"><a href="#一、内核解析的分解" class="headerlink" title="一、内核解析的分解"></a>一、内核解析的分解</h2><ol>
+<li>Spark应用的提交</li>
+<li>Spark内部的通信</li>
+<li>Spark作业的调度</li>
+<li>任务的执行</li>
+<li>spark内存管理</li>
+</ol>
+<h2 id="二、-SparkSubmit"><a href="#二、-SparkSubmit" class="headerlink" title="二、 SparkSubmit"></a>二、 SparkSubmit</h2><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">--本章节讲述job提交应用以后，环境的准备工作。主要包含以下：
+1. spark向yarn提交job的过程
+2. yarn中application、driver、executor、container是如何相互响应<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>提交应用</li>
+</ul>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">bin&#x2F;spark-submit \
+--class org.apache.spark.examples.SparkPi \
+--master yarn \
+--deploymode cluster \   表示yarn的集群模式
+.&#x2F;examples&#x2F;jars&#x2F;spark-examples_2.12-2.4.5.jar \
+10
+
+-- 说明：
+--master yarn 默认是采用yarn的客户端模式，但是在实际过程中，我们都是使用yarn的集群模式。
+所以增加：--deploymode cluster \<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-1-Spark向yarn提交"><a href="#2-1-Spark向yarn提交" class="headerlink" title="2.1  Spark向yarn提交"></a>2.1  Spark向yarn提交</h3><h4 id="2-1-1-SparkSubmit"><a href="#2-1-1-SparkSubmit" class="headerlink" title="2.1.1 SparkSubmit"></a>2.1.1 SparkSubmit</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">--作用：
+1. 解析参数
+2. 提交参数，初始数环境，并获取&quot;org.apache.spark.deploy.yarn.YarnClusterApplication&quot;的对象，调用对象的start方法<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">1. 执行SparkSubmit的mian方法
+2. 在main方法中：
+   1）、 new SparkSubmit
+   2）、 submit.doSubmit(args) --&gt;执行提交程序,点击doSubmit
+          ①、 val appArgs &#x3D; parseArguments(args)  --&gt;解析参数，解析应用提交的参数，点击parseArguments
+                  a、parse(args.asJava)   --&gt;具体进行参数的解析，点击parse，返回参数的解析，方法的内部调用了handle方法
+                     action &#x3D; Option(action).getOrElse(SUBMIT)，--&gt;默认值为submit
+                  b、handle(opt: String, value: String) --&gt;opt:参数的名称，value：参数的值。
+                      左边是参数  &#x3D;&gt; 右边是赋值的变量
+                     &#x2F;&#x2F; --master yarn &#x3D;&gt; master
+                     &#x2F;&#x2F; --deploy-mode cluster &#x3D;&gt; deployMode
+                     &#x2F;&#x2F; --class SparkPI(WordCount) &#x3D;&gt; 【mainClass】
+                     
+          &quot;如上为解析参数&quot;
+       ②、appArgs.action match &#123;case SparkSubmitAction.SUBMIT &#x3D;&gt; submit(appArgs, uninitLog)--&gt;点击submit
+          a、submit中又调用了doRunMain()，doRunMain()中调用了runMain()方法
+              -- runMain(args, uninitLog)，运行主程序，在runmain()方法中：
+                  1.准备提交环境
+                  -- val (childArgs, childClasspath, sparkConf, childMainClass) &#x3D; prepareSubmitEnvironment(args)
+                  
+                  2.设定当前类的加载器
+                  -- Thread.currentThread.setContextClassLoader(loader)
+                  
+                  3.通过类名加载这个类，&#39;反射的方式&#39;
+                  -- mainClass &#x3D; Utils.classForName(childMainClass)
+                  
+                  4.创建第3步类的实例，并将类型转换为SparkApplication
+                  -- app: SparkApplication &#x3D; mainClass.newInstance().asInstanceOf[SparkApplication]
+                  
+                   childMainClass到底是谁？
+                       cluster模式：childMainClass &#x3D; YARN_CLUSTER_SUBMIT_CLASS
+                                   &#x3D;org.apache.spark.deploy.yarn.YarnClusterApplication
+                       client模式：childMainClass &#x3D; args.mainClass&#x3D;class SparkPI(WordCount)
+                    
+                   5.YarnClusterApplication.start
+                   --  app.start(childArgs.toArray, sparkConf)
+                   
+             &quot;如上为提交环境，并启动org.apache.spark.deploy.yarn.YarnClusterApplication&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-2-2-yarn-YarnClusterApplication"><a href="#2-2-2-yarn-YarnClusterApplication" class="headerlink" title="2.2.2 yarn.YarnClusterApplication"></a>2.2.2 yarn.YarnClusterApplication</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">--作用：
+1. 调用YarnClusterApplication的start方法，创建yarn的resourcemanagerClient，RM的客户端
+2. 执行RM客户端执行run方法
+3. 在run方法中，启动一个应用程序application，也就是一个进程，并提交应用程序，则会执行这个进程的main方法。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">1. 通过反射调用start()方法，在start()方法中：
+   -- 1）new Client(new ClientArguments(args), conf).run()
+          ①new ClientArguments(args)，是配置参数的封装
+          ②new Client，在client类中的属性有：
+              --val yarnClient &#x3D; YarnClient.createYarnClient，点击createYarnClient方法，在这个方法中：
+                  -- YarnClient client &#x3D; new YarnClientImpl()，点击YarnClientImpl类，在类中有一个属性
+                      rmclient：resourcemanagerClient
+                      -- protected ApplicationClientProtocol rmClient
+          &quot;如上就是创建RM客户端对象&quot;，接下来执行run方法
+          ③run()，RM客户端对象执行run方法，点击run，在run方法的内部：
+              1. 提交应用，返回应用的id。
+              -- this.appId &#x3D; submitApplication()，点击submitApplication(),查看具体提交的过程
+                     1. 初始化hadoop的环境
+                  	 --yarnClient.init(hadoopConf)
+                  	 2. 启动yarn客户端,与yarn之间进行连接
+      				-- yarnClient.start()
+      				3. yarn客户端创建一个应用application
+      				--val newApp &#x3D; yarnClient.createApplication()
+                     4. 获取应用的id，在yarn应用程序中，每一个应用都是有唯一的应用id
+      				-- appId &#x3D; newAppResponse.getApplicationId()
+      				5. 提交yarn应用程序，提交的是什么呢？
+      				--yarnClient.submitApplication(appContext)，点击appContext
+      				   --&#x2F;&#x2F; Set up the appropriate contexts to launch our AM
+      				         配置java虚拟机的启动参数，点击createContainerLaunchContext，
+      				         在这个方法的内部进行了command的封装：
+      				         【集群模式】command &#x3D; bin&#x2F;java org.apache.spark.deploy.yarn.ApplicationMaster
+                              【client模式】command &#x3D; bin&#x2F;java org.apache.spark.deploy.yarn.ExecutorLauncher
+                              --val containerContext &#x3D; createContainerLaunchContext(newAppResponse)
+                              基本参数配置的封装
+                              --val appContext &#x3D; createApplicationSubmissionContext(newApp, containerContext)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="2-2-3-yarn-ApplicationMaster"><a href="#2-2-3-yarn-ApplicationMaster" class="headerlink" title="2.2.3 yarn.ApplicationMaster"></a>2.2.3 yarn.ApplicationMaster</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 作用
+1. 封装ApplicationMaster的参数
+2. 根据参数，创建ApplicationMaster对象
+3. 执行ApplicationMaster的run方法，在run方法中，最后调用到runDriver方法，在这个方法中：
+   a、启动用户的应用，并返回这个应用的&quot;线程&quot;，具体实现如下：
+           a、启动用户提交的应用程序；
+           b、在ApplicationMaster中创建一个线程，线程的名称就是&quot;Driver&quot;
+           c、启动这个线程，并执行run方法，在run方法中，就是执行我们提交的应用程序类的main方法
+           d、返回这个&quot;Driver&quot;线程
+    b、 执行一个方法，用于返回&quot;sparkContext&quot;的对象，如果没有返回，就不会执行下面的代码，当返回了这个上下文的对象以后：
+    c、 ApplicationMaster通过ApplicationMaste的客户端，向ResourceManager注册自己，并申请资源
+    d、 分配资源，具体实现如下： 
+            a、在ResourceManager端获取一个ApplicationMaster的客户端，返回一个分配器
+            b、分配器进行资源的分配：
+                 a、ApplicationMaster的客户端申请一个分配器响应
+                 b、分配器响应返回所有被分配的容器container(资源列表)给到ApplicationMaster
+                 c、如果分配的资源列表的数量大于0，则对容器进行处理，处理的方式为：
+                        1.AM内部会创建一个线程，并调用线程的run方法，在run方法中循环遍历RM返回的可用容器，然后进行
+                        对每个容器进行匹配，此时涉及到首选位置，根据请求匹配选择哪些容器.首选位置的选择规则见首选位置说明。
+                        2. 运行匹配后的资源，挨个遍历可用的容器，如果运行执行器的数量小于目标执行器的数量&quot;假如需要4个执行
+                        器，即为目标执行器，此时已经运行了2个执行器，即为运行执行器的数量，此时会启动下面的逻辑&quot;，
+                        那么在这个容器中会创建一个线程池，一个线程池container对应一个ExecutorRunnable，并调用了这个对象的
+                        run方法，在这个线程池中，有一个nmClient(nameManagClient),说明AM能够找到NM，在这个run方法中，创建
+                        NM的客户端，初始化NM，并启动容器container，在启动容器中，封装一个指令，   command：&#x2F;bin&#x2F;java
+                        &#x2F;org.apache.spark.executor.CoarseGrainedExecutorBackend，并且启动了这个指令，显然是一个进程
+                        ，CoarseGrainedExecutorBackend，粗粒度的执行器后台。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">1. main方法，在main方法中，分三步骤：
+    1） 封装参数
+    --val amArgs &#x3D; new ApplicationMasterArguments(args)
+    2）创建ApplicationMaster的对象
+    --master &#x3D; new ApplicationMaster(amArgs)
+    3）执行run方法,点击run方法
+    --System.exit(master.run())
+    
+       ①run方法的实现，点击runImpl
+       	--runImpl()
+            &#x2F;&#x2F; 如果是client模式，执行：
+            -- runExecutorLauncher()
+             &#x2F;&#x2F; 如果是集群模式，执行，点击runDriver
+            -- runDriver
+               1. 启动用户的程序,返回一个线程，点击startUserApplication
+               --userClassThread &#x3D; startUserApplication()
+                    1. 通过类加载器加载一个类，并获取这个类的main方法
+                    -- val mainMethod &#x3D; userClassLoader.loadClass(args.userClass).getMethod(&quot;main&quot;, classOf[Array[String]])
+                    2. 创建一个线程
+                    -- val userThread &#x3D; new Thread
+                    3. 
+                    -- userThread.setContextClassLoader(userClassLoader)
+                    4. 设定线程的名字为driver，说明driver就是一个applicationMaster的一个线程
+                    -- userThread.setName(&quot;Driver&quot;)
+                    5. 启动线程，执行线程的run方法，其实就是执行类userClass的main方法，userClass是哪个类呢？
+                       通过查到，就是我们提交应用的--class，sparkpi，或者是我们自定的类
+                    -- userThread.start()
+                        -- mainMethod.invoke      
+                    6. 返回用户线程
+                    -- userThread
+               2. awaitResult等待结果，线程阻塞，等待对象(SparkContext)的返回
+               --val sc &#x3D; ThreadUtils.awaitResult(sparkContextPromise.future,Duration(totalWaitTime, TimeUnit.MILLISECONDS))
+                 
+               3. 返回sparkContext以后，向rm进行注册AM：ApplicationMaster，点击registerAM()
+                --registerAM(host, port, userConf, sc.ui.map(_.webUrl))
+                    ApplicationMaster的客户端向RM注册自己，并申请资源
+                    --client.register(host, port, yarnConf, _sparkConf, uiAddress, historyAddress)
+               4. 返回RM分配的容器
+               --createAllocator(driverRef, userConf)
+                   &#x2F;&#x2F; 1.AM的客户端，&#39;在RM端&#39;，创建分配器，返回一个分配器
+                   -- allocator &#x3D; client.createAllocator
+                   &#x2F;&#x2F; 2.分配器分配资源，点击allocateResources
+                   -- allocator.allocateResources()
+                          &#x2F;&#x2F; 1.AM的客户端，申请一个分配响应
+                          --val allocateResponse &#x3D; amClient.allocate(progressIndicator)
+                          &#x2F;&#x2F; 2.分配器响应获取所有被分配的容器container(资源列表)
+                         --val allocatedContainers &#x3D; allocateResponse.getAllocatedContainers()
+                         &#x2F;&#x2F; 3.如果可分配的容器数量大于0，则调用处理可用容器的方法，点击handle方法
+                          --if (allocatedContainers.size &gt; 0) &#x3D;&gt;
+                            handleAllocatedContainers(allocatedContainers.asScala)
+                               &#x2F;&#x2F; 1.内部会创建一个线程，并调用线程的run方法，在run方法中循环遍历RM返回的可用容器，然后进行
+                                  对每个容器进行匹配，此时涉及到首选位置，根据请求匹配选择哪些容器.首选位置的选择规则见
+                                  首选位置说明。
+                               &#x2F;&#x2F; 2. 运行匹配后的资源，点击runAllocatedContainers
+                               --runAllocatedContainers(containersToUse)
+                                      &#x2F;&#x2F; 1. 挨个遍历可用的容器资源
+                                       --for (container &lt;- containersToUse)
+                                       &#x2F;&#x2F; 2. 每个容器中，如果运行执行器的数量小于目标执行器的数量，执行如下代码
+                                       --runningExecutors.size() &lt; targetNumExecutors
+                                       &#x2F;&#x2F; 3. 线程池，在线程池的内部有：
+                                       --launcherPool.execute(new Runnable 
+                                            &#x2F;&#x2F; 1.执行的池子是一个线程池
+                                            --launcherPool &#x3D; ThreadUtils.newDaemonCachedThreadPool
+                                       		&#x2F;&#x2F; 2.一个线程container对应一个ExecutorRunnable，并调用了这个对象的run方法
+                                       		--new ExecutorRunnable...run()
+                                       		     &#x2F;&#x2F; a、在ExecutorRunnable中：说明AM能够找到NM
+                                       		     --nmClient，nodeManager
+                                       		     &#x2F;&#x2F; b、run()中：其实就是AM与NM建立连接
+                                                     &#x2F;&#x2F; 创建NM的客户端
+                                                     --nmClient &#x3D; NMClient.createNMClient()
+                                                     &#x2F;&#x2F; 初始化NM
+                                                     --nmClient.init(conf)
+                                                      &#x2F;&#x2F; 启动NM
+                                                     -- nmClient.start()
+                                                      &#x2F;&#x2F; 启动容器，点击
+                                                      --startContainer()
+                                                           &#x2F;&#x2F; NM启动容器，启动executor
+                                                           --nmClient.startContainer(container.get, ctx)
+                                                           &#x2F;&#x2F; 封装指令，点击prepareCommand
+                                                           --val commands &#x3D; prepareCommand()
+                                                                 	commands&#x3D;&#x2F;bin&#x2F;java&#x2F;org.apache.spark.executor.CoarseGrainedExecutorBackend--&gt;粗粒度的执行器后台，是一个进程
+                                                           &#x2F;&#x2F;将封装好的指令传递到参数中
+                                                           --ctx.setCommands(commands.asJava)   <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 首选位置说明
+        --1. 移动数据不如移动计算。 
+        --2. 首选位置：有多个，和本地化级别有关。
+        --3. 本地化级别：将数据和计算所在的位置称之为本地化
+               1. 计算和数据在同一个Executor中，称之进程本地化
+               2. 计算和数据在同一个节点中，称之节点本地化
+               3. 计算和数据在同一个机架中，称之机架本地化
+               4. 任意<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<img src="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic GO/20200618002757.png" alt="image-20200618002757465" style="zoom:50%;" />
+
+<img src="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic GO/20200618002929.png" alt="image-20200618002929263" style="zoom:50%;" />
+
+<p>![image-20200619202433592](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200619202433.png)</p>
+<h4 id="2-2-4-CoarseGrainedExecutorBackend"><a href="#2-2-4-CoarseGrainedExecutorBackend" class="headerlink" title="2.2.4 CoarseGrainedExecutorBackend"></a>2.2.4 CoarseGrainedExecutorBackend</h4><blockquote>
+<p>执行一次bin/java就会执行一个新的进程，则是属于并行执行的感觉，和之前执行的内容是分开的。类似我们在Windows中开了一个微信和qq程序一样，各自执行，互不影响。</p>
+</blockquote>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 作用：
+   执行CoarseGrainedExecutorBackend&quot;执行器后台&quot;的main方法，在main方法中：
+   1. 首先封装一些参数
+   2. 执行run方法，在run方法中：
+        1. 通过driver的URI，使得CoarseGrainedExecutorBackend与Driver进行关联
+        2. 通过通信环境创建了一个终端，名字为executor，创建一个CoarseGrainedExecutorBackend对象并调用onstart方法：
+             1. 获取driver的引用
+             2. ExecutorBackend向driver发送消息，注册executor的消息，也称之为反向注册
+             3. 在driver端会接收到这个消息，通过executor的引用，发送消息给到ExecutorBackend，注册executor成功 
+             4. ExecutorBackend接收driver返回的executor注册成功的消息，
+            
+-- 说明：
+   executor是一个计算对象，在这个对象里面有一个线程池，每一个线程来处理一个从driver端发送过来的任务 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">1. commands&#x3D;&#x2F;bin&#x2F;java&#x2F;org.apache.spark.executor.CoarseGrainedExecutorBackend,
+	执行这个指令，那么是调用这个类的main方法。
+2. main方法中：
+       &#x2F;&#x2F; 1. 首先是对一些参数进行封装
+       &#x2F;&#x2F; 2. 执行run方法 
+       -- run(driverUrl, executorId, hostname, cores, appId, workerUrl, userClassPath)
+           &#x2F;&#x2F; 1.通过driver的uri和Driver进行关联
+            --driver &#x3D; fetcher.setupEndpointRefByURI(driverUrl)
+            &#x2F;&#x2F; 2.通过通信环境创建了一个终端，名字为executor，
+            在底层：Executor启动后会注册通信，并收到信息onStart，收到消息后，会执行通信对象CoarseGrainedExecutorBackend
+            的onStart方法，点击CoarseGrainedExecutorBackend
+            --env.rpcEnv.setupEndpoint(&quot;Executor&quot;, new CoarseGrainedExecutorBackend(
+        env.rpcEnv, driverUrl, executorId, hostname, cores, userClassPath, env))
+                &#x2F;&#x2F; 1.获取driver的引用
+                -- driver &#x3D; Some(ref)
+                &#x2F;&#x2F; 2.ExecutorBackend向driver发送消息，注册executor的消息，也称之为反向注册
+                --ref.ask[Boolean](RegisterExecutor(executorId, self, hostname, cores, extractLogUrls))
+                &#x2F;&#x2F; 3.在driver端会接收到这个消息，因为在driver端，有一个上下文的对象，sparkcontext，在这个类有一个属性：
+                   private var _schedulerBackend: SchedulerBackend &#x3D; _，点击SchedulerBackend，是一个trait，找到
+                   实现类：CoarseGrainedSchedulerBackend，在这个类中，有一个方法：receiveAndReply()：
+                      &#x2F;&#x2F; executor的引用，在driver端，发送消息给到ExecutorBackend，注册executor成功
+                      --executorRef.send(RegisteredExecutor)
+                      
+                      &#x2F;&#x2F; ExecutorBackend类中有一个recive方法，用来接收driver返回的executor注册成功的消息，executor是一
+                         个计算对象，在这个对象里面有一个线程池，每一个线程来处理一个从driver端发送过来的任务
+                     --executor &#x3D; new Executor(executorId, hostname, env, userClassPath, isLocal &#x3D; false)
+                       <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>![image-20200618150421861](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200618150421.png)</p>
+<p>![image-20200618150442390](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200618150442.png)</p>
+<h4 id="2-2-5-总结"><a href="#2-2-5-总结" class="headerlink" title="2.2.5 总结"></a>2.2.5 总结</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 1. application是在一个nodemanager中container中，并且在这个container中创建了一个driver线程
+-- 2. 在一个nodemanager中，可以创建多个container，在每个container中，会创建ExecutorBackend对象，在这个对象中，会创建一个executor对象，在这个对象中一个线程池，一个线程用来处理driver发来的一个task，至于能同时执行多少个task，和executor中的core数量有关。
+-- 3. ApplicationMaster周旋于Driver和ResourceManager之间
+-- 4. spark有两个进程，也就是两个分支
+    创建RM的客户端，创建AM，在AM中，创建Driver的线程
+    &quot;分支1&quot;：此时会执行Driver线程的run方法，在run方法中就是执行了应用程序的main方法
+    &quot;分支2&quot;：构建SparkContext上下文的对象，再向RM注册AM，然后申请资源和返回可用的资源，最后Driver进行资源的选择，按照首选位置的原则。
+    所以如下图片有一个错误：资源满足以后才执行main方法，实际上是创建了driver线程，还没有申请资源就已经开始执行main方法了。
+-- 5. 进程、线程、对象
+   &quot;进程&quot;：SparkSubmit、ApplicationMaster和CoarseGrainedExecutorBackend
+   &quot;线程&quot;：Driver，但是我们一般称SparkContext称之为Driver
+   &quot;对象&quot;：Executor和YarnClusterApplication
+   
+-- 6. client和cluster模式的区别：
+      Driver的位置不同，其余的逻辑是一样的。
+      Cluster：在集群中，在nodemanager中的AM对象中，是一个线程
+      client：在集群之外<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<img src="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic GO/20200618155642.png" alt="image-20200618155642818" style="zoom:150%;" />
+
+<h2 id="三、Spark内部组件及通信"><a href="#三、Spark内部组件及通信" class="headerlink" title="三、Spark内部组件及通信"></a>三、Spark内部组件及通信</h2><h3 id="3-1-通信原理"><a href="#3-1-通信原理" class="headerlink" title="3.1 通信原理"></a>3.1 通信原理</h3><p>Netty:通信框架/AIO</p>
+<p>为什么要采用Netty==&gt;<strong>AIO</strong></p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 通信原理 - IO - RPC
+    1. 基本的网络通信：Socket, ServerSocket
+    2. 通信框架：AKKA(旧),  Netty(新)(AIO)
+    3. 三种IO方式：BIO（阻塞式）, NIO（非阻塞式）, AIO（异步非阻塞）<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="0x1-如何理解三种IO"><a href="#0x1-如何理解三种IO" class="headerlink" title="0x1 如何理解三种IO?"></a>0x1 如何理解三种IO?</h4><p>BIO: 阻塞式IO 饭馆点餐,一直等待上餐,</p>
+<p>NIO:非阻塞式IO 不干等着,让老板先做饭,去干别的,时不时回去询问,饭好没好</p>
+<p>这种方式没有阻塞,但是要时不时的回头看饭有没有做好,性能提高但是有损耗</p>
+<p>AIO:异步非阻塞式IO 一个小时后送到指定位置,性能最好</p>
+<p><strong>注意</strong></p>
+<p>Netty就是基于AIO开发的通信框架</p>
+<p>但是Linux对AIO支持不够好,不支持</p>
+<p>Linux采用Epoll方式模仿AIO进行操作</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">--Linux与windows通信框架的对比
+在Linux系统上，AIO的底层实现仍使用EPOLL，与NIO相同，因此在性能上没有明显的优势；
+Windows的AIO底层实现良好，但是Netty开发人员并没有把Windows作为主要使用平台考虑。
+微软的windows系统提供了一种异步IO技术：IOCP（I&#x2F;O CompletionPort，I&#x2F;O完成端口）；
+Linux下由于没有这种异步IO技术，所以使用的是epoll（一种多路复用IO技术的实现）对异步IO进行模拟。所以在Linux上不建议使用AIO<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-2-组件之间通信"><a href="#3-2-组件之间通信" class="headerlink" title="3.2 组件之间通信"></a>3.2 组件之间通信</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">1. 组件：Driver、executor
+2. 通信环境：NettyRpcEnvFactory() -- TransportServer(通信服务器 EPOLL) 服务器初始化
+3. 通信终端: RpcEndPoint[receive*] --用于接收数据
+	收件箱: inbox --按顺序读取.
+4. 通信终端: RpcEndPointRef[ask*] --用于发送数据
+	发件箱: outboxes[transportClient*] --根据地址(Host + Port),会有多个发件箱.
+
+-- 一个终端的生命周期：
+The life-cycle of an endpoint is:
+创建终端-&gt; 启动终端 -&gt; 接收消息 -&gt; 停止终端
+* &#123;@code constructor -&gt; onStart -&gt; receive* -&gt; onStop&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/Spark%E5%86%85%E9%83%A8%E9%80%9A%E4%BF%A1%E5%8E%9F%E7%90%86.png" alt="Spark内部组件通信原理"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E5%86%85%E9%83%A8%E9%80%9A%E4%BF%A1%E5%9F%BA%E4%BA%8Eactor%E6%A8%A1%E5%9E%8B.png" alt="基于actor模型额内部通信架构"></p>
+<h2 id="四、作业的调度"><a href="#四、作业的调度" class="headerlink" title="四、作业的调度"></a>四、作业的调度</h2><h3 id="4-1-Application"><a href="#4-1-Application" class="headerlink" title="4.1 Application"></a>4.1 Application</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">1. Yarn中会有application，提交任务以后，就会产生一个应用，并有一个唯一的应用id
+2. 在SparkConf中配置了setAppName(xxxx),设置应用的名字<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>![image-20200618203801740](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200618203801.png)</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">3. SparkContext，是spark核心的对象，核心类，在这个核心类中的一些重要的参数有：
+  private var _conf: SparkConf &#x3D; _  -- spark的关键参数
+  private var _env: SparkEnv &#x3D; _    -- spark的环境，内部有NettyRpcEnv
+  private var _schedulerBackend: SchedulerBackend &#x3D; _   -- spark的调度后台，Rpc后台信息交互对象
+  private var _taskScheduler: TaskScheduler &#x3D; _         -- 任务调度器
+  private var _heartbeatReceiver: RpcEndpointRef &#x3D; _    -- 指心跳接收器，通信终端的引用 
+  @volatile private var _dagScheduler: DAGScheduler &#x3D; _ -- 有向无环图调度器，负责job内部调度，负责阶段划分和任务的切分。
+ 
+ -- _conf：下滑线开头，表示内部的变量，不是规范，是早期程序员默认遵守的规范。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">4. DAGScheduler ，spark非常核心的调度器。
+      1.内部有一个对象,DAGSchedulerEventProcessLoop,&quot;指事件调度的规则&quot;，点击这个类：
+    --private[spark] val eventProcessLoop &#x3D; new DAGSchedulerEventProcessLoop(this)
+        1.上面类继承于EventLoop,这个类中有一个属性：事件队列，用来存放事件
+           BlockingQueue[E]：阻塞式队列
+           LinkedBlockingDeque：双端队列
+        -- private val eventQueue: BlockingQueue[E] &#x3D; new LinkedBlockingDeque[E]()       <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>![image-20200618211748700](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200618211748.png)</p>
+<h3 id="4-2-逻辑代码"><a href="#4-2-逻辑代码" class="headerlink" title="4.2 逻辑代码"></a>4.2 逻辑代码</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">1. RDD的创建： 从内存中&#x2F;从文件中
+2. RDD的转换： 转换算子(单value类型、双value类型、kv类型)
+3. RDD的行动： 行动算子<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-3-job"><a href="#4-3-job" class="headerlink" title="4.3 job"></a>4.3 job</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">1. 触发作业的执行，在行动算子的内部会执行过程：
+    1.sparkContext提交作业
+	--&gt; sc.runjob 
+	2. 有向无环图的调度器执行runjob
+	--&gt; dagScheduler.runJob 
+	3. 提交job
+	--&gt; submitjob
+	4. 消息队列进行存放消息
+	--&gt; eventProcessLoop.post
+	5. 消息队列将消息放进队列中，这个消息是：JobSubmitted
+	--&gt; eventQueue.put(event) 
+	6. 在eventQueue有一个线程，线程中有一个run方法
+	--&gt; eventThread 
+	7.  负责取出消息，因为这个队列是一个阻塞式队列，队列中没有消息，那么就处于阻塞式状态
+	--&gt; val event &#x3D; eventQueue.take() 
+	8. 取到消息
+	--&gt; onReceive(event)
+	9. 执行处理消息
+	--&gt; doOnReceive(event)
+	10. 使用模式匹配的的方式处理消息
+	--&gt;  def doOnReceive(event: DAGSchedulerEvent): Unit &#x3D; event match &#123;
+      case JobSubmitted(jobId, rdd, func, partitions, callSite, listener, properties) &#x3D;&gt;
+      dagScheduler.handleJobSubmitted(jobId, rdd, func, partitions, callSite, listener, properties)
+    11. 有向无环图调度器处理任务的提交 
+    --&gt; dagScheduler.handleJobSubmitted(jobId, rdd, func, partitions, callSite, listener, properties)
+    12. 创建一个活动的job
+    --&gt; val job &#x3D; new ActiveJob<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 总结：
+启动一个行动算子 --&gt; runjob  -&gt; 将执行事件放进阻塞式队列中 -&gt; 创建一个线程取出队列中的消息 -&gt; 进行模式匹配，处理任务的提交
+--&gt; 创建一个运行job<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-4-stage"><a href="#4-4-stage" class="headerlink" title="4.4 stage"></a>4.4 stage</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 1. 阶段的划分，取决于转换算子的依赖类型。
+-- 2. 宽依赖：ShuffleDependency
+-- 3. 窄依赖：OneToOneDependency extends NarrowDependency
+-- 4. 分区的数量
+     a、窄依赖：分区数量保持不变
+          1. 获取窄依赖的分区数量，点击 firstParent
+          -- override def getPartitions: Array[Partition] &#x3D; firstParent[T].partitions
+               1. 获取依赖关系的第一个rdd分区数量
+               -- dependencies.head.rdd.asInstanceOf[RDD[U]]
+     b、宽依赖：
+            1. 获取宽依赖的分区数量
+            partitioner：是一个分区器，partitioner，由上一个RDD传递过来的，在传递的时候，会进行判断，如果当前的RDD的分区器
+            和上一级的分区器一样，那么是不会创建shuffleRDD，只有当前RDD的分区器和上一级的分区器不一样时，才会创建
+            ShuffledRDD
+            --Array.tabulate[Partition](part.numPartitions)(i &#x3D;&gt; new ShuffledRDDPartition(i))
+            
+            2. 默认情况下，默认的分区器将上一级的RDD传入
+            --  reduceByKey(defaultPartitioner(self), func)
+                1. 默认的分区数量等于上级RDD的最大值，因为上一级RDD可能有多个
+                -- val defaultNumPartitions &#x3D; rdds.map(_.partitions.length).max
+                2. 构造分区器的时候，将默认的分区数量传入，分区器的作用是指定数据去到哪个分区，分区的数量默认和上一级RDD
+                   保持一致
+                -- new HashPartitioner(defaultNumPartitions)
+ -- 5. 总结： 
+       a、窄依赖默认分区数量保持不变
+       b、宽依赖，默认和上一级	RDD最大的分区数量保持一致，如果上一级RDD只有一个，那就和上一级RDD保持一致
+                 但是Shuffle的算子一般都会有改变分区数量的参数
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 6. 从文件中创建RDD时默认的分区数量
+      1. 取(defaultParallelism, 2)的最小值，点击defaultParallelism
+      --math.min(defaultParallelism, 2)
+      2. 选择yarn模式中的默认平行度。
+      --defaultParallelism &#x3D; conf.getInt(&quot;spark.default.parallelism&quot;, math.max(totalCoreCount.get(), 2))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>![image-20200620130734058](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200620130734.png)</p>
+<h3 id="4-5-task的切分"><a href="#4-5-task的切分" class="headerlink" title="4.5 task的切分"></a>4.5 task的切分</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">--1. 任务和阶段stage的关系
+     定位：DAGScheduler类
+     1. 处理任务的提交handleJobSubmitted，在这个方法的内部：
+        1. 将整个job作为一个finalStage
+    	-- var finalStage: ResultStage &#x3D; null
+    	2. 创建一个结果阶段，并赋值给finalStage
+    	    finalRDD：最后提交job时的RDD，点击createResultStage
+    	-- finalStage &#x3D; createResultStage(finalRDD, func, partitions, jobId, callSite)
+    	    1. 通过当前的RDD获取其上一级的阶段，点击getOrCreateParentStages
+    	    -- val parents &#x3D; getOrCreateParentStages(rdd, jobId)
+    	         1.获取最后一个RDD的shuffle依赖，每一个shuffle依赖创建一个shufflemapStage
+    	         --getShuffleDependencies(rdd).map &#123; shuffleDep &#x3D;&gt;getOrCreateShuffleMapStage(shuffleDep, firstJobId)&#125;.toList
+    	          a. 在getShuffleDependencies方法中，找到resultStage的上一级shuffleRDD
+    	           val parents &#x3D; new HashSet[ShuffleDependency[_, _, _]] -- 存放宽依赖
+                    val visited &#x3D; new HashSet[RDD[_]] --创建一个hashSet集合，用来存放已经被访问过的RDD
+                    val waitingForVisit &#x3D; new ArrayStack[RDD[_]] -- 集合的栈，创建一个集合，用来存放待访问的RDD
+                    waitingForVisit.push(rdd)    -- 将最后的一个RDD传到这个集合中
+                    while (waitingForVisit.nonEmpty) &#123; -- 集合是否为空，刚放进去，肯定不是空
+                      val toVisit &#x3D; waitingForVisit.pop()  -- pop，弹栈，将刚刚放进去的RDD弹出来，并准备去访问
+                      if (!visited(toVisit)) &#123;  -- 当前放进去的RDD是否被访问过，如果没有，则继续向下执行
+                        visited +&#x3D; toVisit      -- 将当前获取的RDD放进已经被访问的RDD集合中
+                        toVisit.dependencies.foreach &#123;  -- 获取RDD与直接上级的RDD的依赖关系，并循环遍历。
+                          case shuffleDep: ShuffleDependency[_, _, _] &#x3D;&gt; -- 如果是宽依赖
+                            parents +&#x3D; shuffleDep  -- 则将依赖加入parents集合中
+                          case dependency &#x3D;&gt;
+                            waitingForVisit.push(dependency.rdd) -- 如果是窄依赖，将上级RDD放进等待访问的RDD中，并
+                                                                 进行循环，判断其与上级RDD的依赖关系，直到当前的RDD为
+                                                                 shuffleRDD
+                             &#125;
+                      &#125;
+                    &#125;
+                    parents   -- 将上一级shuffleRDD放进parents的集合中
+                    
+                    获取当前RDD与直接上级的RDD的依赖关系，返回一个seq序列集合，因为当前的RDD的直接上级的RDD可能有多个
+                    -- toVisit.dependencies
+                 b、通过map方法，对resultStage上级的shuffleRDD进行遍历，调用如下方法：返回获取的ShuffleDependency，执行获取或创建shuffleMapStage，点击这个方法
+                    -- getOrCreateShuffleMapStage
+                        创建shuffleMapStage，每一个shuffleDep创建一个shuffleMapStage
+                        -- createShuffleMapStage(shuffleDep, firstJobId)
+                            new出一个shuffleMapStage
+                            &#x2F;&#x2F; 将依赖的上一级RDD赋值给rdd
+                            --val rdd &#x3D; shuffleDep.rdd
+                            &#x2F;&#x2F; 又调用了创建或获取上一级阶段
+                            -- val parents &#x3D; getOrCreateParentStages(rdd, jobId)
+                            -- val stage &#x3D; new ShuffleMapStage
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">--2. 阶段的类型
+   ResultStage 和 shuffleMapStage
+--3. 阶段的数量
+   &#x3D; ResultStage  + n *  shuffleMapStage
+--4. 任务和分区的关系
+     1. 提交最后一个阶段：
+       --submitStage(finalStage)
+           1. 获取当前阶段的上一级阶段
+           --  val missing &#x3D; getMissingParentStages(stage).sortBy(_.id)
+           2. 如果有上一级阶段不为空，则循环遍历上一阶段，先假如上一级阶段只有一个，则提交上一个阶段，又调用提交阶段
+           --for (parent &lt;- missing) &#123;submitStage(parent)&#125;
+           
+  &quot;总结：在提交阶段时，从最后一个阶段往前找，直到最前面的一个阶段，然后再依次从前往后进行提交阶段&quot;。             
+    2. 当没有上一级阶段以后，提交任务
+       -- submitMissingTasks(stage, jobId.get)
+          &#x2F;&#x2F; 1.对当前阶段进行模式匹配，确认是shuffleMapSrage还是ResultStage，返回结果为taskIdToLocations,任务本地化路径
+          &#x2F;&#x2F; 2. 如果当前阶段是ShuffleMapStage，则创建ShuffleMapTask
+                如果当前阶段是ResultStage ，则创建ResultTask
+           val tasks: Seq[Task[_]] &#x3D; try &#123;
+            case stage: ShuffleMapStage
+            partitionsToCompute.map  --&gt; 计算分区的数量，每一个分区，会执行如下创建任务的代码。
+            &#123;........
+            new ShuffleMapTask(stage.id, stage.latestInfo.attemptNumber
+            .....&#125;
+           case stage: ResultStage &#x3D;&gt;
+            &#123;                   
+            .......
+            new ResultTask(stage.id, stage.latestInfo.attemptNumber,
+            .......
+                   &#125;
+-- 5. task的类型：
+      a、如果当前阶段是ShuffleMapStage，则创建ShuffleMapTask
+      b、如果当前阶段是ResultStage ，则创建ResultTask
+    
+-- 6 .任务的总数量
+      &#x3D; 每个阶段的任务总和<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">--总结：
+1. 通过resultStage最后一个RDD，进行循环依次向上找，获取resultStage阶段，上一级为shuffleDep的ShuffleDependency，
+   存放到一个parents集合中
+2. 采用map算子，parents集合中的每个ShuffleDependency，获取到所有上级依赖为shuffleDep的RDD，然后每一个shuffleDep会创建
+一个ShuffleMapStage阶段。
+3. 当找到job最前面一个RDD以后，开始从第一个阶段提交阶段，提交阶段时，首先获取当前阶段最后一个RDD的分区数量，在一个阶段中，每一个分区就会创建一个task，task的类型和阶段的类型匹配：
+      a、如果当前阶段是ShuffleMapStage，则创建ShuffleMapTask
+      b、如果当前阶段是ResultStage ，则创建ResultTask
+4. 当前阶段提交完成以后，就提交下一个阶段，依次类推，最后就会提交resultStage。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="五、任务的执行"><a href="#五、任务的执行" class="headerlink" title="五、任务的执行"></a>五、任务的执行</h2><h3 id="5-1-任务包含的内容"><a href="#5-1-任务包含的内容" class="headerlink" title="5.1 任务包含的内容"></a>5.1 任务包含的内容</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">1.任务的提交：
+--new ShuffleMapTask(stage.id, stage.latestInfo.attemptNumber,taskBinary, part, locs, properties, serializedTaskMetrics, Option(jobId),Option(sc.applicationId), sc.applicationAttemptId, stage.rdd.isBarrier())
+
+2. 提交的重要几个参数有：
+   a、&quot;stage.id&quot;：任务从属的阶段id
+   b、&quot;taskBinary&quot;：是一个广播变量，内容为：阶段的&quot;RDD&quot;和&quot;依赖关系&quot;序列化以后的二进制字节码，因为RDD是不保存数据，一旦任务执行失败，需要知道RDD的元数据信息以及依赖关系，才能进行重新计算。
+       1. 是一个广播变量
+       --var taskBinary: Broadcast[Array[Byte]] &#x3D; null
+       2. 将任务的二进制的字节码赋值给了这个广播变量
+       --taskBinary &#x3D; sc.broadcast(taskBinaryBytes)
+       3. 任务的二进制的字节码是通过对阶段匹配，如果是shuffle阶段，就会采用闭合的序列化器将阶段的RDD和阶段的依赖进行序列化
+       --taskBinaryBytes &#x3D; stage match &#123;
+         case stage: ShuffleMapStage &#x3D;&gt;
+              JavaUtils.bufferToArray(
+                closureSerializer.serialize((stage.rdd, stage.shuffleDep): AnyRef))
+           case stage: ResultStage &#x3D;&gt;
+          	JavaUtils.bufferToArray(closureSerializer.serialize((stage.rdd, stage.func): AnyRef))
+          &#125;
+    c、 &quot;part&quot; ：分区，指当前的task和哪个partition有关
+        -- val part &#x3D; partitions(id)
+    d、 &quot;locs&quot; ： 任务的首选位置
+        -- val locs &#x3D; taskIdToLocations(id)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="5-2-序列化"><a href="#5-2-序列化" class="headerlink" title="5.2 序列化"></a>5.2 序列化</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">1. 默认的序列化：&quot;JavaSerializer&quot;
+    1. 在SparkContext中创建了SparkEnv，点击创建的方法，一层一层往里点：
+    -- _env &#x3D; createSparkEnv(_conf, isLocal, listenerBus)
+        1. 最终看到了默认的序列化器为：JavaSerializer
+        --val serializer &#x3D; instantiateClassFromConf[Serializer](
+      		&quot;spark.serializer&quot;, &quot;org.apache.spark.serializer.JavaSerializer&quot;)
+   				 logDebug(s&quot;Using serializer: $&#123;serializer.getClass&#125;&quot;)
+2. kryo序列化:
+      --1.特点：
+          a、性能优
+          b、序列化结果文件的字节数少
+          c、可以绕过java的序列化，将不能序列的对象也能进行序列化
+          d、但是，我们在实际的情况下，并不是所有的对象都会采用kryo序列化。
+     --2. 那么哪些对象采用kryo序列化会比较有优势呢？
+          &quot;总结：在shuffle阶段，当为kv类型时，k、v的数据类型如果都支持kryo序列，则会采用kryo进行序列化。
+                支持ktyo序列化的数据类型有：String和值类型(anyVal)&quot;
+          
+         底层：当有shuffle阶段时，会选择最好的序列化器
+         -- Pick the best serializer for shuffling an RDD of key-value pairs.
+         2. 判断选择的规则：
+            如果kv的k和v都能使用kryo序列化器时，则选择kryo序列化器，否则选择默认的序列化器：javaSerializer
+            当为如下类型（值类型）或者是string类型的时候，则可以使用kyro序列化器
+            --if (canUseKryo(keyClassTag) &amp;&amp; canUseKryo(valueClassTag)) &#123;
+              kryoSerializer
+            &#125; else &#123;
+              defaultSerializer
+            &#125;
+            
+              --  ClassTag.Boolean,
+                  ClassTag.Byte,
+                  ClassTag.Char,
+                  ClassTag.Double,
+                  ClassTag.Float,
+                  ClassTag.Int,
+                  ClassTag.Long,
+                  ClassTag.Null,
+                  ClassTag.Short<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h3 id="5-3-任务的调度"><a href="#5-3-任务的调度" class="headerlink" title="5.3  任务的调度"></a>5.3  任务的调度</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 1. driver生成的任务以后存放在哪里了？
+   a、当driver生成任务以后，并不是立即将任务task就发送给executor，因为可能发送过程有异常，也可能发送过去的时候，executor对象还没有创建，都会导致任务task发送失败
+  
+      1. 一个阶段stage生成tasks以后，如果这个阶段的tasks的数量大于0，那么这个任务调度器就会提交任务，在提交任务中，会将这个
+          stage的任务封装成一个TaskSet,任务集进行提交，点击submitTasks
+      -- if (tasks.size &gt; 0)，taskScheduler.submitTasks(new TaskSet( tasks.toArray, stage.id, stage.latestInfo.attemptNumber, jobId, properties))
+              1.首先取出任务
+              --val tasks &#x3D; taskSet.tasks
+              2. 创建一个任务集taskset的管理者manager
+              -- val manager &#x3D; createTaskSetManager(taskSet, maxTaskFailures)
+              3. 构建调度器，将刚刚创建的任务集管理者放到调度器中，点击addTaskSetManager
+              --schedulableBuilder.addTaskSetManager(manager, manager.taskSet.properties)
+                  1.是一个抽象方法，类是一个trait，有两个实现类，分别是：
+                        FIFOSchedulableBuilder --&gt; 先进先出调度器
+                        FairSchedulableBuilder --&gt; 公平调度器
+                        那么我们新增加进去的manager是采用什么调度器呢？
+                            a、通过源码可知，默认的调度模式为FIFO模式
+                            -- private val schedulingModeConf &#x3D; conf.get(SCHEDULER_MODE_PROPERTY, SchedulingMode.FIFO.toString)
+                            b、创建一个任务调度池，当driver生成任务以后，会将任务放进任务池中，由manager来进行调度
+                            val rootPool: Pool &#x3D; new Pool(&quot;&quot;, schedulingMode, 0, 0)
+                   2. 将manager直接放进调度池中，
+                    rootPool.addSchedulable(manager)
+                4. 点击.reviveOffers：恢复当前的操作
+               --backend.reviveOffers()
+                   1.driver的终端，自己给自己发消息
+                    -- driverEndpoint.send(ReviveOffers)
+                    2.在DriverEndpoint中，就有一个receive方法，在这个方法中，匹配获取的消息，如果是ReviveOffers,
+                    则执行makeOffers()方法，点击makeOffers()方法
+                     -- case ReviveOffers &#x3D;&gt;makeOffers()
+                         a、DriverEndpoint调度器从任务池中取出任务，取任务的具体方式：点击resourceOffers
+                          -- val taskDescs &#x3D; scheduler.resourceOffers(workOffers)
+                               a、获取一个排好序的任务集合，实现方式，点击getSortedTaskSetQueue
+                                --val sortedTaskSets &#x3D; rootPool.getSortedTaskSetQueue
+                                     a、如下为任务集的调度的算法，依据算法对任务集进行比较排序，返回排好序的任务集，然后将
+                                     返回任务集存放到一个arraybuffer集合中，并返回给到sortedTaskSets，不同的调度的算法
+                                     是不一样的。
+                                     &quot;FIFO调度算法&quot;：先比较优先级，优先级高的先调度，如果优先级相等，则比较阶段id，阶段
+                                                    id小的先执行。
+                                     &quot;Fair调度算法&quot;：根据运行任务的数量、权重【默认值为1】、最小分配数量【默认值为0】，
+                                                    进行综合分配
+                                      -- val sortedSchedulableQueue &#x3D;
+      schedulableQueue.asScala.toSeq.sortWith(taskSetSchedulingAlgorithm.comparator)
+        
+                         b、如果任务不为空，则driver发射任务
+                          -- if (!taskDescs.isEmpty) &#123;launchTasks(taskDescs)&#125;             <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 1.总结
+   1. 一个stage生成tasks以后，由taskSchedule负责任务的调度
+   2. 一个stage就会有一个任务集，taskSet
+   3. 每一个taskSet都会被封装成TaskSetManager，负责监控管理同一个Stage中的Tasks，TaskScheduler调度模式有两种：
+        a、FIFOSchedulableBuilder --&gt; 先进先出调度器【默认调度模式】
+        b、FairSchedulableBuilder --&gt; 公平调度器
+
+   4. TaskScheduler初始化过程中会实例化rootPool任务池，driver准备的任务和管理者会发送到这个任务池中，
+      由TaskScheduler负责将任务调度结果发送给executor
+   5. driver的终端自己给自己发送一个消息&quot;ReviveOffers&quot;，driverEndpoint收到ReviveOffer消息后调用makeOffers方法，TaskScheduler就开始进行任务集的调度
+   6. 根据&quot;调度算法&quot;对任务集进行排序，获取一个排好序的队列&quot;排序在前的就先执行，排序在后的就后执行&quot;，将排好序的队列放到一个arraybuffer集合中，并返回给到sortedTaskSets
+       
+       &quot;FIFO调度算法&quot;：先比较优先级，优先级高的先调度，如果优先级相等，则比较阶段id，阶段 id小的先执行。
+        &quot;Fair调度算法&quot;：根据运行任务的数量、weight【默认值为1】、minShare【默认值为0】，进行综合分配
+        minShare、weight的值均在公平调度配置文件&quot;fairscheduler.xml&quot;中被指定，调度池在构建阶段会读取此文件的相关配置
+   7. &quot;driverEndpoint&quot;调度器就从这个排好序的任务队列的数组中取任务tasks。
+   8. 如果获取的任务不为空，则dirver开始发射任务
+   
+-- 2.说明：
+   1. 从任务池中取出的任务，包含了本地化级别信息以及等待的时长(&quot;默认每个级别等待时间为3s，也可以单独设置每个级别的等待时间&quot;)，当在driver在发送任务的时候，会根据本地化级别进行发送任务.
+   
+-- 3.区分本地化级别和调度算法
+    调度算法：是指driverEndpoint在调度任务集时，确定哪个任务集先执行，哪个任务集后执行
+    本地化级别：是指driver在发送向executor发送任务的首选位置，确定任务发送到哪个executor中，如果发送不成功，并进行降级处理                                           <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="5-4-任务的计算"><a href="#5-4-任务的计算" class="headerlink" title="5.4  任务的计算"></a>5.4  任务的计算</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"> 1. driver发送任务前，会将任务进行编码：
+ 	--val serializedTask &#x3D; TaskDescription.encode(task)  
+ 
+ 2. 然后向executor发送已经编码和序列化的任务task
+		-- executorData.executorEndpoint.send(LaunchTask(new SerializableBuffer(serializedTask))
+
+3. 在executorbackend就会收到任务(receive)并启动任务,首先是对任务进行解码，然后executor启动任务，点击launchTask
+ 	--val taskDesc &#x3D; TaskDescription.decode(data.value)
+     logInfo(&quot;Got assigned task &quot; + taskDesc.taskId)
+     executor.launchTask(this, taskDesc)
+
+4.  来一个task就使用一个线程来接收
+     --val tr &#x3D; new TaskRunner(context, taskDescription)
+     runningTasks.put(taskDescription.taskId, tr)
+     threadPool.execute(tr)
+ 5. 线程中有一个run方法，方法中有一个逻辑为：task.run，通过底层发现，其实调用的是具体task对象的runTask()方法<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="5-5-shuffle"><a href="#5-5-shuffle" class="headerlink" title="5.5 shuffle"></a>5.5 shuffle</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">【在&quot;shuffleMapTask类&quot;中的runTask()方法中】
+1. shuffle&quot;写操作&quot;
+--var writer: ShuffleWriter[Any, Any] &#x3D; null
+2. 在写操作之前，也会调用迭代器的方式，所以也可以实现&quot;读的操作&quot;
+--writer.write(rdd.iterator(partition, context)......
+
+【在&quot;resultTask类&quot;中的runTask()方法中，那么就得有读数据的操作】
+1. RDD中不保存数据，所以操作的时候数据是一条一条的执行，则会调用迭代器的方法，点击iterator方法
+-- func(context, rdd.iterator(partition, context))
+    1. 一层一层的调，在shuffleRDD中的computer中有：&quot;读的操作&quot;
+     -- SparkEnv.get.shuffleManager.getReader(dep.shuffleHandle, split.index, split.index + 1, context).read()   <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">&quot;分支1&quot;： Shuffle map(Write)
+      1. 点击getWrite
+      -- writer &#x3D; manager.getWriter[Any, Any](dep.shuffleHandle, partitionId, context)
+            1. getWriter是一个抽象方法，所在的类为：ShuffleManager，&#39;shuffle管理器&#39;，获取其实现类：&quot;SortShuffleManager&quot;
+               是一个可排序的shuffleManager管理器。查询这个管理类的getWriter方法，在这个方法中，对handle的类型进行模式匹
+               配，所以现在handle就很很重要了，从模式匹配项，可以知道有3种不同类型的handle，而且handle来自&quot;getWriter方法&quot;
+               -- handle match &#123;
+                  case unsafeShuffleHandle: SerializedShuffleHandle
+                  case bypassMergeSortHandle: BypassMergeSortShuffleHandle
+                  case other: BaseShuffleHandle
+      2.在 &quot;manager.getWriter&quot;方法中的handle到底是什么？看源码
+             1. 是shuffle管理器注册shuffle获取的，点击registerShuffle
+             --val shuffleHandle: ShuffleHandle &#x3D; _rdd.context.env.shuffleManager.registerShuffle(
+        shuffleId, _rdd.partitions.length, this)
+             2. 是一个抽象方法，获取抽象类&quot;ShuffleManager&quot;的实现类&quot;SortShuffleManager&quot;,查询&quot;registerShuffle&quot;方法
+                    从这里发现，确实有三种handle：
+                    a、如果忽略索引文件的排序 --&gt; 创建BypassMergeSortShuffleHandle
+                    b、如果可以实现序列化    --&gt; 创建SerializedShuffleHandle
+                    c、如果不是以上两种      --&gt; 创建BaseShuffleHandle
+                   --if (SortShuffleWriter.shouldBypassMergeSort(conf, dependency)) &#123;  
+                          new BypassMergeSortShuffleHandle[K, V](
+                            shuffleId, numMaps, dependency.asInstanceOf[ShuffleDependency[K, V, V]])
+                        &#125; else if (SortShuffleManager.canUseSerializedShuffle(dependency)) &#123;  
+                          new SerializedShuffleHandle[K, V](
+                            shuffleId, numMaps, dependency.asInstanceOf[ShuffleDependency[K, V, V]])
+                        &#125; else &#123;     
+                          new BaseShuffleHandle(shuffleId, numMaps, dependency)
+                        &#125;
+                      &#125;
+                      1. 点击&quot;shouldBypassMergeSort&quot;,查看什么情况下忽略排序，如果当前rdd的map端有预聚合功能，就
+                         不能忽略排序，如reduceByKey算子
+                        -- if (dep.mapSideCombine) &#123;false&#125;
+                        如果map端没有预聚合功能，首先获取忽略合并的阈值，如果没有显示设置，就会默认给200，如果当前RDD的
+                        分区器的分区数量小于这个阈值，那么就返回true，则此时创建&quot;BypassMergeSortShuffleHandle&quot;
+                        --else &#123;
+                        val bypassMergeThreshold: Int &#x3D; conf.getInt(&quot;spark.shuffle.sortbypassMergeThreshold&quot;, 200)
+                        dep.partitioner.numPartitions &lt;&#x3D; bypassMergeThreshold
+                        -- 所以总结就是当rdd的map端没有预聚合功能，且分区器的分区数量小于阈值，那么就会创建
+                            &quot;BypassMergeSortShuffleHandle&quot;
+                     2. 点击&quot;canUseSerializedShuffle&quot;,Spark的内存优化后的解决方案,对象序列化后不需要反序列化。
+                          &#x2F;&#x2F; 通过以下代码可知，创建&quot;SerializedShuffleHandle&quot;的条件为,满足以下三个条件即可：
+                             a、序列化对象需要&quot;支持&quot;重定义
+                             b、依赖的map端&quot;没有&quot;预聚合功能
+                             c、分区数量&quot;小于&quot;(1 &lt;&lt; 24) - 1 &#x3D; 16777215
+                          if (!dependency.serializer.supportsRelocationOfSerializedObjects) &#123; false&#125; 
+                          else if (dependency.mapSideCombine) &#123;false &#125; 
+                          else if (numPartitions &gt; MAX_SHUFFLE_OUTPUT_PARTITIONS_FOR_SERIALIZED_MODE) &#123; false&#125; 
+                          else &#123;true &#125;
+                     3. 如果以上两个handle都不满足，则选择最后一个handle：&quot;BaseShuffleHandle&quot; --&gt;默认的handle
+                                             
+&quot;分支2&quot;：Shuffle reduce(Read)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 总结： shuffle的handle有三种：
+     1. BypassMergeSortShuffleHandle  --&gt; BypassMergeSortShuffleWriter
+        &quot;条件&quot;：
+        a、当前rdd的map端没有预聚合功能，如groupBy
+        b、分区器的分区数量小于阈值,默认为200        
+     2. SerializedShuffleHandle      --&gt; UnsafeShuffleWriter
+        &quot;条件&quot;：
+        a、序列化对象需要&quot;支持&quot;重定义
+        b、依赖的map端&quot;没有&quot;预聚合功能
+        c、分区数量&quot;小于&quot;(1 &lt;&lt; 24) - 1 &#x3D; 16777215
+     3. BaseShuffleHandle           --&gt; SortShuffleWriter
+        &quot;默认的handle&quot;
+如果前两种都不满足，那么就使用默认的write
+拿着这三种handle，再来看这个&quot;getWrite&quot;方法<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"> -- handle match &#123;
+    -- case unsafeShuffleHandle: SerializedShuffleHandle &#x3D;&gt;
+       new UnsafeShuffleWriter....  
+    -- case bypassMergeSortHandle: BypassMergeSortShuffleHandle &#x3D;&gt;
+       new BypassMergeSortShuffleWriter....
+    -- case other: BaseShuffleHandle &#x3D;&gt;
+       new SortShuffleWriter....
+
+&quot;不同的handle对应不同的writer&quot;
+    1. BypassMergeSortShuffleHandle  --&gt; BypassMergeSortShuffleWriter
+       &#x2F;&#x2F; 点击&quot;BypassMergeSortShuffleWriter&quot;中的write方法，如下代码，根据分区的数量进行循环，&#39;每一个分区就向磁盘写一个文
+       件&#39;。 即map端的每一个task会为reduce端的每一个task都创建一个临时磁盘文件,根据key的hashcode%分区数量，决定数据去到
+       哪个分区文件中。
+       -- for (int i &#x3D; 0; i &lt; numPartitions; i++) &#123;
+     partitionWriters[i] &#x3D; blockManager.getDiskWriter(blockId, file, serInstance, fileBufferSize, writeMetrics);&#125;
+      
+    2. SerializedShuffleHandle       --&gt; UnsafeShuffleWriter 
+  
+    3. BaseShuffleHandle,&quot;重要&quot;       --&gt; SortShuffleWriter
+        &#x2F;&#x2F; 点击&quot;SortShuffleWriter&quot;中的write方法，如下代码：
+       &#x2F;&#x2F; 1. &quot;写文件过程&quot;：写磁盘文件时，首先将数据写到内存中，并在内存中的进行排序，如果内存（5M）不够，会溢写磁盘，
+       生成临时文件(一个数据文件，一个索引文件)，最终将所有的临时文件合并(原来的数据文件和索引文件会被删除)成数据
+       文件和索引文件。
+          2. &quot;预聚和的原理&quot;：在排序时，构造了一种类似于hashtable的结构，所以相同的key就聚合在一起。
+          3. &quot;排序规则&quot;：首先会按照分区进行排序，然后按照key.
+          4. &quot;数据进入不同分区的原则&quot;：按照分区器的原则，默认是hashpartition，根据key的hash%分区数量。
+        val partitionLengths &#x3D; sorter.writePartitionedFile(blockId, tmp)
+        shuffleBlockResolver.writeIndexFileAndCommit...<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>![image-20200621180817513](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200621180817.png)</p>
+<p>![image-20200620004312766](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200620004312.png)</p>
+<pre class="line-numbers language-sqlite" data-language="sqlite"><code class="language-sqlite">-- 面试中常见shuffle的两个问题：
+1. 我们现在spark使用了哪种shuffle，哪一种类型的？
+   a、sortshuffle。
+2. 忽略排序过程的shuffle什么时候会触发？
+   a、map 端没有预聚合功能
+   b、reduce端的分区数量小于一个阈值，默认是200<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h2 id="六-、-Spark内存管理"><a href="#六-、-Spark内存管理" class="headerlink" title="六 、 Spark内存管理"></a>六 、 Spark内存管理</h2><h3 id="6-1-堆内内存和堆外内存"><a href="#6-1-堆内内存和堆外内存" class="headerlink" title="6.1 堆内内存和堆外内存"></a>6.1 堆内内存和堆外内存</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">--1. &quot;堆内内存&quot;：
+    是指jvm所能使用的内存，并不是完全可以控制，如GC垃圾回收器的执行时间是不可控的，当你需要内存进行数据处理时，GC并不能立
+    马释放内存给你使用。jvm虚拟机默认使用的内存大小是可用内存的1&#x2F;64，最大值是1&#x2F;4
+--2. &quot;堆外内存&quot;：
+     在jvm虚拟机之外的内存，可以存储我们的数据，这个内存是咱们向操作系统申请过来的，完全可控。&quot;默认是不启用堆外内存&quot;
+--3. 设置堆外内存的参数：
+    a、启动堆外内存参数：spark.memory.offHeap.enabled
+    b、设定堆外内存的大小： spark.memory.offHeap.size 
+--4. 在spark中，堆内和堆外内存可以进行统一的管理。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="6-2-内存空间分配"><a href="#6-2-内存空间分配" class="headerlink" title="6.2 内存空间分配"></a>6.2 内存空间分配</h3><h4 id="6-2-1-早期内存管理"><a href="#6-2-1-早期内存管理" class="headerlink" title="6.2.1 早期内存管理"></a>6.2.1 早期内存管理</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">&quot;早期各个区域的内存分配好了以后，就需要严格遵守这个规则，内存大小不可变。&quot;
+--1. 内存空间的分配：
+1. Storage：缓存RDD数据和广播变量的数据， &quot;内存大小占比60%&quot;
+2. Execution：用于缓存在shuffle过程中的中间数据， &quot;内存大小占比20%&quot;
+3. Other：用户自定义的一些数据结构或者是Spark内部的元数据 ： &quot;内存大小占比20%&quot;
+
+
+-- 2. Storage内存和Execution内存都有预留空间，目的是防止OOM，因为Spark堆内内存大小的记录是不准确的，需要留出保险区域。
+-- 3. 当前不同区域内存大小分配存在的问题：
+      Execution的内存过小，而Storage内存大小过多。
+      
+ 从而就产生了新的内存分配原则<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>堆内内存</li>
+</ul>
+<p>![image-20200620012427321](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200620012427.png)</p>
+<ul>
+<li>堆外内存</li>
+</ul>
+<p>![image-20200620015214858](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200620015214.png)</p>
+<h4 id="6-2-2-统一内存管理"><a href="#6-2-2-统一内存管理" class="headerlink" title="6.2.2 统一内存管理"></a>6.2.2 统一内存管理</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 1. 什么是统一内存管理？
+   Spark1.6 之后引入的统一内存管理机制，各个区域内存的大小是可变的.
+ --2.与静态内存管理的区别:
+   统一内存管理&quot;存储内存&quot;和&quot;执行内存共享&quot;同一块空间，可以动态占用对方的空闲区域
+-- 3. 当前spark默认的内存分配是按照统一内存管理的模式。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>堆内内存</li>
+</ul>
+<p>![image-20200620015026859](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200620015026.png)</p>
+<ul>
+<li>堆外内存</li>
+</ul>
+<p>![image-20200620015251558](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200620015251.png)</p>
+<h4 id="6-2-3-同一管理内存的优点"><a href="#6-2-3-同一管理内存的优点" class="headerlink" title="6.2.3 同一管理内存的优点"></a>6.2.3 同一管理内存的优点</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 1. 优点
+1)设定基本的存储内存和执行内存区域（spark.storage.storageFraction参数），该设定确定了双方各自拥有的空间的范围；
+2)双方的空间都不足时，则存储到硬盘；若己方空间不足而对方空余时，可借用对方的空间;（存储空间不足是指不足以放下一个完整的Block）
+3)执行内存的空间被对方占用后，可让对方将占用的部分转存到硬盘，然后”归还”借用的空间；
+4)存储内存的空间被对方占用后，无法让对方”归还”，因为需要考虑 Shuffle过程中的很多因素，实现起来较为复杂。
+
+-- 2. 统一内存管理的动态占用机制图如下：<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>![image-20200620015447725](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200620015447.png)</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 注意事项
+1. 如果是storage借了Execution的内存，那么当Execution需使用时，storage占用Execution的内存就要想办法还给Execution，一般可以进行落盘，但是在内存中的数据有一个存储级别，如果仅仅是Memory_Only的话，那么此时占用内存的数据就会丢失。
+2.  如果是Execution借了storage的内存，那么当storage需使用时，Execution并不会把内存还给storage，那么此时storage的数据就会溢写磁盘，如果不能溢写的话，那么就会丢失或淘汰。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 面试题：
+1. 动态占用机制图是什么情况？
+2. 为什么cache为丢失数据？
+3. 阶段的划分
+4. task的发送<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Jinxin Li</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://fourgold.github.io/2020/12/29/Spark_Kernel/">http://fourgold.github.io/2020/12/29/Spark_Kernel/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Jinxin Li</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/spark-netty-shuffle-spark%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-submit/">
+                                    <span class="chip bg-color">spark netty shuffle spark内存管理 submit</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/12/29/Spark_operator/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Spark_SparkOperator">
+                        
+                        <span class="card-title">Spark_SparkOperator</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-12-29
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spark/" class="post-category">
+                                    spark
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/operator-kv-value-action-transform/">
+                        <span class="chip bg-color">operator kv value action transform</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/12/28/Jetbrains%E7%B3%BB%E5%88%97%E4%BA%A7%E5%93%81%E9%87%8D%E7%BD%AE%E8%AF%95%E7%94%A8%E6%96%B9%E6%B3%95/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Jetbrains系列产品重置试用方法">
+                        
+                        <span class="card-title">Jetbrains系列产品重置试用方法</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-28
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/tips/" class="post-category">
+                                    tips
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/idea/">
+                        <span class="chip bg-color">idea</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">Jinxin Li</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">40k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/fourgold" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:799392914@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=799392914" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 799392914" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

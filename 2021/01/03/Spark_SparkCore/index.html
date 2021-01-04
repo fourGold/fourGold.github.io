@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Spark_SparkCore, 李金鑫">
+    <meta name="keywords" content="李金鑫">
     <meta name="description" content="李金鑫的个人博客">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Spark_SparkCore | 李金鑫</title>
+    <title>李金鑫</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Spark_SparkCore</h1>
+                    <h1 class="description center-align post-title"></h1>
                 </div>
             </div>
         </div>
@@ -429,25 +429,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/spark/">
-                                <span class="chip bg-color">spark</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/spark/" class="post-category">
-                                spark
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -456,7 +443,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-10-21
+                    2021-01-03
                 </div>
                 
 
@@ -465,7 +452,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    9k
+                    9.4k
                 </div>
                 
 
@@ -485,7 +472,10 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="spark概述"><a href="#spark概述" class="headerlink" title="spark概述"></a>spark概述</h1><h2 id="1-历史"><a href="#1-历史" class="headerlink" title="1.历史"></a>1.历史</h2><p>在之前的学习中，Hadoop的MapReduce是大家广为熟知的计算框架，那为什么咱们还要学习新的计算框架Spark呢，这里就不得不提到Spark和Hadoop的关系。</p>
+                <hr>
+<p>title:Spark-SparkCore<br>data:2020-12-31<br>tags:spark<br>categories:spark</p>
+<hr>
+<h1 id="0x1-spark概述"><a href="#0x1-spark概述" class="headerlink" title="0x1 spark概述"></a>0x1 spark概述</h1><h2 id="1-历史"><a href="#1-历史" class="headerlink" title="1.历史"></a>1.历史</h2><p>在之前的学习中，Hadoop的MapReduce是大家广为熟知的计算框架，那为什么咱们还要学习新的计算框架Spark呢，这里就不得不提到Spark和Hadoop的关系。</p>
 <p>首先从时间节点上来看:</p>
 <p>Hadoop</p>
 <ol>
@@ -656,7 +646,7 @@ D--禁止-->A</pre>
 --deploy-mode cluster \
 .&#x2F;examples&#x2F;jars&#x2F;spark-examples_2.12-3.0.0.jar \
 10<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="Spark框架"><a href="#Spark框架" class="headerlink" title="Spark框架"></a>Spark框架</h1><p>Spark和Hadoop的根本差异是多个作业之间的数据通信问题</p>
+<h1 id="0x2-Spark框架"><a href="#0x2-Spark框架" class="headerlink" title="0x2 Spark框架"></a>0x2 Spark框架</h1><p>Spark和Hadoop的根本差异是多个作业之间的数据通信问题</p>
 <p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_20_12/Spark%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="Spark运行模式示意图"></p>
 <table>
 <thead>
@@ -690,9 +680,9 @@ D--禁止-->A</pre>
 <td></td>
 </tr>
 </tbody></table>
-<h2 id="Yarn模式"><a href="#Yarn模式" class="headerlink" title="Yarn模式"></a>Yarn模式</h2><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_20_12/Yarn-Cluster%E6%8F%90%E4%BA%A4%E6%B5%81%E7%A8%8B.png" alt="Yarn-Cluster提交流程"></p>
+<h2 id="1-Yarn模式"><a href="#1-Yarn模式" class="headerlink" title="1.Yarn模式"></a>1.Yarn模式</h2><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_20_12/Yarn-Cluster%E6%8F%90%E4%BA%A4%E6%B5%81%E7%A8%8B.png" alt="Yarn-Cluster提交流程"></p>
 <p>Client与Cluster的主要区别是Driver是否在本地运行</p>
-<h2 id="分布式计算模拟"><a href="#分布式计算模拟" class="headerlink" title="分布式计算模拟"></a>分布式计算模拟</h2><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_20_12/%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%A1%E7%AE%97%E6%A0%B8%E5%BF%83.png" alt="分布式计算核心-拆分Task"></p>
+<h2 id="2-分布式计算模拟"><a href="#2-分布式计算模拟" class="headerlink" title="2.分布式计算模拟"></a>2.分布式计算模拟</h2><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_20_12/%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%A1%E7%AE%97%E6%A0%B8%E5%BF%83.png" alt="分布式计算核心-拆分Task"></p>
 <p>通过简单的分布式计算模拟,理解任务的拆分,运行的模块,并行的原理,RDD的封装,底层数据结构</p>
 <p><strong>DRIVER</strong></p>
 <pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">&#x2F;&#x2F;DRIVER
@@ -828,7 +818,7 @@ object Driver &#123;
     data.map(logic)
   &#125;
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="RDD与IO"><a href="#RDD与IO" class="headerlink" title="RDD与IO"></a>RDD与IO</h2><p><strong>字节流&amp;字符流</strong></p>
+<h2 id="3-RDD与IO"><a href="#3-RDD与IO" class="headerlink" title="3.RDD与IO"></a>3.RDD与IO</h2><p><strong>字节流&amp;字符流</strong></p>
 <pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">InputStream in &#x3D; new FileInputStream(&quot;path&quot;)
 int i &#x3D; -1
 while(i &#x3D; in.read()!&#x3D;-1)&#123;
@@ -875,11 +865,11 @@ rdd.collect()<span aria-hidden="true" class="line-numbers-rows"><span></span><sp
 <p>RDD的数据处理方式类似于IO流,也有装饰者设计模式</p>
 <p>RDD的数据只有在调用collect方法时,才会真正的执行</p>
 <p>RDD是不保存数据的,但是IO可以临时保存一部分数据</p>
-<h2 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h2><p>RDD是一个最基本的数据处理模型</p>
+<h2 id="4-分区"><a href="#4-分区" class="headerlink" title="4. 分区"></a>4. 分区</h2><p>RDD是一个最基本的数据处理模型</p>
 <p>类似于Kafka中的分区,我们将数据进行分区,分区之后分成不成的Task,可以分发至Executor进行计算</p>
 <p>RDD是最小的数据处理单元,里面包含了分区信息,提高并行计算的能力</p>
 <p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_20_12/RDD%E6%95%B0%E6%8D%AE%E7%9A%84%E5%88%87%E5%88%86.png" alt="数据的分区"></p>
-<h1 id="spark核心"><a href="#spark核心" class="headerlink" title="spark核心"></a>spark核心</h1><h2 id="1-spark核心三大数据结构"><a href="#1-spark核心三大数据结构" class="headerlink" title="1.spark核心三大数据结构"></a>1.spark核心三大数据结构</h2><p>RDD : 弹性分布式数据集</p>
+<h1 id="0x3-spark核心"><a href="#0x3-spark核心" class="headerlink" title="0x3 spark核心"></a>0x3 spark核心</h1><h2 id="1-spark核心三大数据结构"><a href="#1-spark核心三大数据结构" class="headerlink" title="1. spark核心三大数据结构"></a>1. spark核心三大数据结构</h2><p>RDD : 弹性分布式数据集</p>
 <p>累加器：分布式共享只写变量</p>
 <p>广播变量：分布式共享只读变量</p>
 <h2 id="2-RDD基本概念"><a href="#2-RDD基本概念" class="headerlink" title="2.RDD基本概念"></a>2.RDD基本概念</h2><p>RDD（Resilient Distributed Dataset）叫做弹性分布式数据集，是Spark中最基本的数据处理模型。代码中是一个抽象类，它代表一个弹性的、不可变、可分区、里面的元素可并行计算的集合。</p>
@@ -1204,6 +1194,56 @@ override def findMissingPartitions(): Seq[Int] &#x3D; &#123;
 <p>每个RDD的分区ID范围：0 ~ (numPartitions - 1)，决定这个值是属于那个分区的。</p>
 <p><strong>Hash</strong>分区：对于给定的key，计算其hashCode,并除以分区个数取余</p>
 <p><strong>Range分区</strong>：将一定范围内的数据映射到一个分区中，尽量保证每个分区数据均匀，而且分区间有序</p>
+<h3 id="1-自定义分区器"><a href="#1-自定义分区器" class="headerlink" title="1.自定义分区器"></a>1.自定义分区器</h3><h4 id="a-gt-HashPartitioner"><a href="#a-gt-HashPartitioner" class="headerlink" title="a&gt;HashPartitioner"></a>a&gt;HashPartitioner</h4><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object PartitionBy &#123;
+  def main(args: Array[String]): Unit &#x3D; &#123;
+    val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local[2]&quot;).setAppName(&quot;Main&quot;)
+    val sc: SparkContext &#x3D; new SparkContext(sparkConf)
+    val rdd1: RDD[(String, Int)] &#x3D; sc.textFile(&quot;Day06&#x2F;input&#x2F;number&quot;).map((_, 1))
+    &#x2F;&#x2F;只有k-v值才有分区器
+    rdd1.saveAsTextFile(&quot;.&#x2F;output&quot;)
+    &#x2F;&#x2F;使用hash分区器
+    val rdd2: RDD[(String, Int)] &#x3D; rdd1.partitionBy(new HashPartitioner(3))
+    rdd2.saveAsTextFile(&quot;.&#x2F;output2&quot;)
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="b-gt-RangePartitioner"><a href="#b-gt-RangePartitioner" class="headerlink" title="b&gt;RangePartitioner"></a>b&gt;RangePartitioner</h4><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object PartitionBy &#123;
+  def main(args: Array[String]): Unit &#x3D; &#123;
+    val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local[2]&quot;).setAppName(&quot;Main&quot;)
+    val sc: SparkContext &#x3D; new SparkContext(sparkConf)
+    val rdd1&#x3D; sc.textFile(&quot;Day06&#x2F;input&#x2F;number&quot;).map((_, 1))
+    &#x2F;&#x2F;只有k-v值才有分区器
+    rdd1.saveAsTextFile(&quot;.&#x2F;output&quot;)
+    &#x2F;&#x2F;使用rangePartitioner
+    val value &#x3D; new RangePartitioner[String, Int](2, rdd1.sample(false, 0.5))
+    &#x2F;&#x2F;range分区器的使用,要定义泛型,传递分区,传递sample
+    &#x2F;&#x2F;首先要传递一个分区,传递一个
+    rdd1.partitionBy(value)
+    rdd1.saveAsTextFile(&quot;.&#x2F;output2&quot;)
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="c-gt-自定义分区"><a href="#c-gt-自定义分区" class="headerlink" title="c&gt;自定义分区"></a>c&gt;自定义分区</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">&#x2F;&#x2F;自定义分区器
+case class MyPartitioner(numPartition:Int) extends Partitioner &#123;
+    override def numPartitions: Int &#x3D; numPartition
+    override def getPartition(key: Any): Int &#x3D; (math.random() * numPartition).toInt
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">&#x2F;&#x2F;自定义分区器的使用
+object PartitionBy &#123;
+  def main(args: Array[String]): Unit &#x3D; &#123;
+    val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local[2]&quot;).setAppName(&quot;Main&quot;)
+    val sc: SparkContext &#x3D; new SparkContext(sparkConf)
+    val rdd1&#x3D; sc.textFile(&quot;Day06&#x2F;input&#x2F;number&quot;).map((_, 1))
+    &#x2F;&#x2F;只有k-v值才有分区器
+    rdd1.saveAsTextFile(&quot;.&#x2F;output&quot;)
+    &#x2F;&#x2F;使用rangePartitioner
+    val value &#x3D; new RangePartitioner[String, Int](2, rdd1.sample(false, 0.5))
+    &#x2F;&#x2F;range分区器的使用,要定义泛型,传递分区,传递sample
+    &#x2F;&#x2F;首先要传递一个分区,传递一个
+    val value1: RDD[(String, Int)] &#x3D; rdd1.partitionBy(MyPartitioner(2))
+    value1.saveAsTextFile(&quot;.&#x2F;output2&quot;)
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
 <h2 id="10-RDD累加器"><a href="#10-RDD累加器" class="headerlink" title="10.RDD累加器"></a>10.RDD累加器</h2><p><strong>系统累加器</strong></p>
 <pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object MyAccumulator &#123;
   def main(args: Array[String]): Unit &#x3D; &#123;
@@ -1220,10 +1260,7 @@ override def findMissingPartitions(): Seq[Int] &#x3D; &#123;
     println(sum.value)
   &#125;
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><strong>自定义累加器</strong></p>
-<ol>
-<li>自定wordcount累加器</li>
-</ol>
+<h3 id="自定义累加器"><a href="#自定义累加器" class="headerlink" title="自定义累加器"></a><strong>自定义累加器</strong></h3><p><strong>1.自定wordcount累加器</strong></p>
 <pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">&#x2F;&#x2F;自定义累加器实现wordcount
 class DefineAccumulator extends AccumulatorV2[String,mutable.Map[String,Int]]&#123;
   val map: mutable.Map[String, Int] &#x3D; mutable.Map()
@@ -1249,9 +1286,7 @@ class DefineAccumulator extends AccumulatorV2[String,mutable.Map[String,Int]]&#1
   &#125;
   override def value: mutable.Map[String, Int] &#x3D; map
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ol start="2">
-<li>注册并使用定义累加器</li>
-</ol>
+<p><strong>2.注册并使用定义累加器</strong></p>
 <pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object MyAccumulator2 &#123;
   def main(args: Array[String]): Unit &#x3D; &#123;
     val sc &#x3D; new SparkContext(new SparkConf().setMaster(&quot;local[2]&quot;).setAppName(&quot;accumulator&quot;))
@@ -1568,7 +1603,9 @@ object SparkCore01_RDD_Partitioner &#123;
 hdfs:&#x2F;&#x2F;hadoop102:8020&#x2F;input&#x2F;1.txt<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h2 id="15-RDD的累加器"><a href="#15-RDD的累加器" class="headerlink" title="15.RDD的累加器"></a>15.RDD的累加器</h2><p>如果没有累加器,我们计算时只能使用reduce,要想把executor的变量拉回到Driver困难</p>
 <p><img src="https://i.loli.net/2020/12/26/b24Xm8BYltu1PF3.png" alt="引入问题"></p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object SparkCore02_RDD_accumulator &#123;
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">&#x2F;&#x2F;学前测试
+
+object SparkCore02_RDD_accumulator &#123;
   def main(args: Array[String]): Unit &#x3D; &#123;
     val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local&quot;).setAppName(&quot;Partitioner&quot;)
     val sc &#x3D; new SparkContext(sparkConf)
@@ -1586,11 +1623,11 @@ hdfs:&#x2F;&#x2F;hadoop102:8020&#x2F;input&#x2F;1.txt<span aria-hidden="true" cl
     sc.stop()
 
   &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="https://i.loli.net/2020/12/26/9PtGzVBQ8dD3sya.png" alt="累加器的主要目的"></p>
 <p>累加器：分布式共享只写变量。（Executor和Executor之间不能读数据）</p>
 <p>累加器用来把Executor端变量信息聚合到Driver端。在Driver程序中定义的变量，在Executor端的每个task都会得到这个变量的一份新的副本，每个task更新这些副本的值后，传回Driver端进行merge。</p>
-<p>long累加器Demo</p>
+<p><strong>Long累加器Demo</strong></p>
 <pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object SparkCore03_RDD_accumulator &#123;
   def main(args: Array[String]): Unit &#x3D; &#123;
     val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local&quot;).setAppName(&quot;Partitioner&quot;)
@@ -1635,7 +1672,7 @@ hdfs:&#x2F;&#x2F;hadoop102:8020&#x2F;input&#x2F;1.txt<span aria-hidden="true" cl
     sc.stop()
   &#125;
 &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="16-RDD的自定义累加器"><a href="#16-RDD的自定义累加器" class="headerlink" title="16.RDD的自定义累加器"></a>16.RDD的自定义累加器</h2><p>分布式共享只写变量</p>
+<h2 id="16-RDD的自定义广播变量"><a href="#16-RDD的自定义广播变量" class="headerlink" title="16.RDD的自定义广播变量"></a>16.RDD的自定义广播变量</h2><p>分布式共享只写变量</p>
 <p>表示累加器的值互相之间是没法访问的,自己能读自己,只有Driver进行读到,然后在Driver端进行合并</p>
 <p>我们可以将一些Shuffle的东西使用累加器来实现(==优化==)</p>
 <p>比方:需要shuffle的方法就不要shuffle了</p>
@@ -1697,7 +1734,7 @@ map-->Executor/task3</pre>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://fourgold.github.io/2020/10/21/Spark_SparkCore/">http://fourgold.github.io/2020/10/21/Spark_SparkCore/</a>
+                    <a href="http://fourgold.github.io/2021/01/03/Spark_SparkCore/">http://fourgold.github.io/2021/01/03/Spark_SparkCore/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1734,11 +1771,7 @@ map-->Executor/task3</pre>
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/spark/">
-                                    <span class="chip bg-color">spark</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -1910,13 +1943,13 @@ map-->Executor/task3</pre>
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/10/27/Git/">
+                <a href="/2021/01/04/Spark_SparkStreaming/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Git的使用">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
                         
-                        <span class="card-title">Git的使用</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1927,7 +1960,7 @@ map-->Executor/task3</pre>
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-10-27
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-04
                         </span>
                         <span class="publish-author">
                             
@@ -1936,14 +1969,6 @@ map-->Executor/task3</pre>
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/git-idea/">
-                        <span class="chip bg-color">git idea</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -1955,7 +1980,7 @@ map-->Executor/task3</pre>
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/09/01/Hadoop%E7%AC%94%E8%AE%B0%E6%80%BB%E7%BB%93-01/">
+                <a href="/2021/01/03/Spark_SparkSQL/">
                     <div class="card-image">
                         
                         
@@ -1972,7 +1997,7 @@ map-->Executor/task3</pre>
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-09-01
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-03
                             </span>
                         <span class="publish-author">
                             
@@ -2181,7 +2206,7 @@ map-->Executor/task3</pre>
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">31.8k</span>&nbsp;字
+                class="white-color">40k</span>&nbsp;字
             
             
             
