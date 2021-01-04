@@ -360,11 +360,20 @@
                 </a>
                 
                 
-                <a href="/categories/spark/" title="spark: 2">
+                <a href="/categories/spark/" title="spark: 9">
                     <span class="chip center-align waves-effect waves-light
                              chip-active "
                             style="background-color: #F5EEF8;">spark
-                        <span class="tag-length">2</span>
+                        <span class="tag-length">9</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/categories/git/" title="git: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            style="background-color: #D5F5E3;">git
+                        <span class="tag-length">1</span>
                     </span>
                 </a>
                 
@@ -382,35 +391,26 @@
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2020/12/29/Spark_Kernel/">
+                    <a href="/2021/01/04/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Hadoop%E4%B8%8B%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E6%A0%BC%E5%BC%8F/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Spark_Kernel">
+                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Hadoop下的存储格式LZO">
                             
-                            <span class="card-title">Spark_Kernel</span>
+                            <span class="card-title">Hadoop下的存储格式LZO</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                Spark内核
-
-所谓的内核，就是Spark内部核心原理。
-
-一、内核解析的分解
-Spark应用的提交
-Spark内部的通信
-Spark作业的调度
-任务的执行
-spark内存管理
-
-二、 SparkSubmit--本章节讲述job提交应用以
+                                Hadoop下的数据存储格式LZO0x1 为什么要使用压缩技术?压缩技术能够有效减少底层存储系统(HDFS)读写字节数. 压缩提高了网络带宽和磁盘空间的效率
+MR中的场景 (I/O,网络数据传输,Shuffle,Merge)
+用CPU换I/
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-29
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-04
                             </span>
                             <span class="publish-author">
                                 
@@ -428,8 +428,8 @@ spark内存管理
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/spark-netty-shuffle-spark%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86-submit/">
-                            <span class="chip bg-color">spark netty shuffle spark内存管理 submit</span>
+                        <a href="/tags/lzo/">
+                            <span class="chip bg-color">lzo</span>
                         </a>
                         
                     </div>
@@ -439,25 +439,26 @@ spark内存管理
             
             <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
                 <div class="card">
-                    <a href="/2020/12/29/Spark_operator/">
+                    <a href="/2021/01/04/%E7%B4%AF%E5%8A%A0%E5%99%A8%E4%B8%8E%E5%88%86%E5%8C%BA%E5%99%A8%E6%80%BB%E7%BB%93/">
                         <div class="card-image tag-image">
                             
                             
-                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Spark_SparkOperator">
+                            <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Spark_累加器与分区器">
                             
-                            <span class="card-title">Spark_SparkOperator</span>
+                            <span class="card-title">Spark_累加器与分区器</span>
                         </div>
                     </a>
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                算子reduceBykeyval dataRDD1 &#x3D; sparkContext.makeRDD(List((&quot;a&quot;,1),(&quot;b&quot;,2),(&quot;c&quot;,3)))
-val d
+                                0x1 Long累加器的使用object selfAccumulator &#123;
+  def main(args: Array[String]): Unit &#x3D; &#123;
+    val sc &#x3D; new Sp
                             
                         </div>
                         <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-29
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-04
                             </span>
                             <span class="publish-author">
                                 
@@ -475,8 +476,207 @@ val d
                     
                     <div class="card-action article-tags">
                         
-                        <a href="/tags/operator-kv-value-action-transform/">
-                            <span class="chip bg-color">operator kv value action transform</span>
+                        <a href="/tags/spark/">
+                            <span class="chip bg-color">spark</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2021/01/04/Spark_SubmitSource/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Spark_SubmitSource">
+                            
+                            <span class="card-title">Spark_SubmitSource</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                1.Yarn Client提交源码爱护生命,少肝源码!
+1.任务的提交==程序起点==
+spark-submit.cmd
+==脚本启动==
+bin&#x2F;spark-submit
+--class WordCount
+--master y
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-04
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/spark/" class="post-category">
+                                    spark
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/spark/">
+                            <span class="chip bg-color">spark</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2021/01/04/Spark_SparkStreaming_Practice/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="Spark_SparkStreaming_Case">
+                            
+                            <span class="card-title">Spark_SparkStreaming_Case</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                SparkStreaming_Case_总结工具类是必须要学习记忆的
+同时要按照工业化流程写程序
+
+1.配置文件#JDBC配置
+jdbc.datasource.size&#x3D;10
+jdbc.url&#x3D;jdbc:mysql:&#
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-04
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/spark/" class="post-category">
+                                    spark
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/sparkStreaming/">
+                            <span class="chip bg-color">sparkStreaming</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2021/01/04/Spark_SparkStreaming/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Spark_SparkStreaming">
+                            
+                            <span class="card-title">Spark_SparkStreaming</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                云盘：&#109;&#x69;&#97;&#111;&#x63;&#x68;&#117;&#x61;&#x6e;&#104;&#97;&#x69;&#x40;&#49;&#54;&#x33;&#x2e;&#x63;&#111;&#109;暗
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-04
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/spark/" class="post-category">
+                                    spark
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/sparkstreaming/">
+                            <span class="chip bg-color">sparkstreaming</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <div class="article tag-post col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2021/01/03/Spark_SparkCore/">
+                        <div class="card-image tag-image">
+                            
+                            
+                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Spark_SparkCore">
+                            
+                            <span class="card-title">Spark_SparkCore</span>
+                        </div>
+                    </a>
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                0x1 spark概述1.历史在之前的学习中，Hadoop的MapReduce是大家广为熟知的计算框架，那为什么咱们还要学习新的计算框架Spark呢，这里就不得不提到Spark和Hadoop的关系。
+首先从时间节点上来看:
+Hadoop
+
+
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-03
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/spark/" class="post-category">
+                                    spark
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/spark/">
+                            <span class="chip bg-color">spark</span>
                         </a>
                         
                     </div>
@@ -487,6 +687,30 @@ val d
         </div>
     </article>
 </main>
+
+
+<div class="container paging">
+    <div class="row">
+        <div class="col s6 m4 l4">
+            
+            <a class="left btn-floating btn-large disabled">
+                <i class="fas fa-angle-left"></i>
+            </a>
+            
+        </div>
+        <div class="page-info col m4 l4 hide-on-small-only">
+            <div class="center-align b-text-gray">1 / 2</div>
+        </div>
+        <div class="col s6 m4 l4">
+            
+            <a href="/categories/spark/page/2/"
+               class="right btn-floating btn-large waves-effect waves-light bg-color">
+                <i class="fas fa-angle-right"></i>
+            </a>
+            
+        </div>
+    </div>
+</div>
 
 
 
@@ -560,7 +784,7 @@ val d
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">40k</span>&nbsp;字
+                class="white-color">39.9k</span>&nbsp;字
             
             
             

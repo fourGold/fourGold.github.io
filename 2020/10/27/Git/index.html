@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Git的使用, 李金鑫">
+    <meta name="keywords" content="Git的配置与在idea中的应用, 李金鑫">
     <meta name="description" content="李金鑫的个人博客">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Git的使用 | 李金鑫</title>
+    <title>Git的配置与在idea中的应用 | 李金鑫</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Git的使用</h1>
+                    <h1 class="description center-align post-title">Git的配置与在idea中的应用</h1>
                 </div>
             </div>
         </div>
@@ -431,14 +431,23 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/git-idea/">
-                                <span class="chip bg-color">git idea</span>
+                            <a href="/tags/git/">
+                                <span class="chip bg-color">git</span>
                             </a>
                         
                     </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/git/" class="post-category">
+                                git
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -476,12 +485,12 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h1 id="0x0-GitHub用户信息"><a href="#0x0-GitHub用户信息" class="headerlink" title="0x0. GitHub用户信息"></a>0x0. GitHub用户信息</h1><pre class="language-shell" data-language="shell"><code class="language-shell">Username: fourgold
+                <h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h1 id="0x0-GitHub用户信息"><a href="#0x0-GitHub用户信息" class="headerlink" title="0x0. GitHub用户信息"></a>0x0. GitHub用户信息</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">Username: fourgold
 Email address: lijinxinok@163.com
 密码：IELTS-rise-to-6.5-!
 验证邮箱：lijinxinok@163.com
-邮箱密码：qinni123！</code></pre>
-<h1 id="0x1-Github常用命令"><a href="#0x1-Github常用命令" class="headerlink" title="0x1. Github常用命令"></a>0x1. Github常用命令</h1><h3 id="2-1初始化操作"><a href="#2-1初始化操作" class="headerlink" title="2.1初始化操作"></a>2.1初始化操作</h3><pre class="language-shell" data-language="shell"><code class="language-shell">#初始化本地仓库
+邮箱密码：qinni123！<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="0x1-Github常用命令"><a href="#0x1-Github常用命令" class="headerlink" title="0x1. Github常用命令"></a>0x1. Github常用命令</h1><h3 id="2-1初始化操作"><a href="#2-1初始化操作" class="headerlink" title="2.1初始化操作"></a>2.1初始化操作</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#初始化本地仓库
 git init
 #查看隐藏文件.&#x2F;git
 ls -lA
@@ -493,15 +502,15 @@ ll .git&#x2F;
 git config --global user.name JInxinLi
 #初始化本地邮箱
 $ git config --global user.email Jinxin@atguigu.com
-#签名的作用是区分不同操作者身份。用户的签名信息在每一个版本的提交信息中能够看到，以此确认本次提交是谁做的。</code></pre>
+#签名的作用是区分不同操作者身份。用户的签名信息在每一个版本的提交信息中能够看到，以此确认本次提交是谁做的。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>就近原则:项目级别的优先于系统用户级别,采用项目级别的签名</p>
 <p><strong>签名信息保存在哪里?</strong></p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">.&#x2F;git&#x2F;config</code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">.&#x2F;git&#x2F;config<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><strong>系统用户保存在哪里?</strong></p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">~&#x2F;.gitconfig</code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">~&#x2F;.gitconfig<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <h3 id="2-2实际操作"><a href="#2-2实际操作" class="headerlink" title="2.2实际操作"></a>2.2实际操作</h3><p>git add添加到暂存区还可以撤销</p>
 <p>HEAD是一个指针</p>
-<pre class="language-bash" data-language="bash"><code class="language-bash">#查看主文档 暂存区与工作区的状态 默认matser分支
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">#查看主文档 暂存区与工作区的状态 默认matser分支
 git status
 #添加暂存区
 git add
@@ -558,17 +567,17 @@ git checkout origin&#x2F;master
 #合并远程的master分支[远程地址][远程分支]
 git merge origin&#x2F;master
 
-git pull origin&#x2F;master</code></pre>
+git pull origin&#x2F;master<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>冲突解决</strong></p>
 <p>当主分支已经提升了版本,而我们的clone的是旧版本,这个时候就已经无法推送</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#解决,先拿到远程的修改 如果不是最新版所做的修改,不能修改,必须先拉取
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#解决,先拿到远程的修改 如果不是最新版所做的修改,不能修改,必须先拉取
 git pull origin&#x2F;master
 #文件里东西修改
 git add [filename]
 git commit -m &quot;version2.0&quot;
-git push origin&#x2F;master</code></pre>
+git push origin&#x2F;master<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>跨团队协作</strong></p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#以第三者的身份先进行fork fork到自己的远程库
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#以第三者的身份先进行fork fork到自己的远程库
 #克隆到本地
 git clone url[自己的地址]
 #然后进行增加内容
@@ -589,9 +598,9 @@ git push origin master
 
 #merge pull request
 #点这里进行合并
-#合并的时候也要添加相关信息</code></pre>
+#合并的时候也要添加相关信息<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>展示的时候显示了来源</p>
-<h3 id="2-3查看历史记录log的方式"><a href="#2-3查看历史记录log的方式" class="headerlink" title="2.3查看历史记录log的方式"></a>2.3查看历史记录log的方式</h3><pre class="language-shell" data-language="shell"><code class="language-shell">#最完整的形式
+<h3 id="2-3查看历史记录log的方式"><a href="#2-3查看历史记录log的方式" class="headerlink" title="2.3查看历史记录log的方式"></a>2.3查看历史记录log的方式</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#最完整的形式
 git log
 #日志以一个漂亮的格式进行显示
 git log --pretty&#x3D;oneline
@@ -602,27 +611,27 @@ git log --oneline
 #b向上翻页
 #q退出
 #在oneline的基础上显示了移动到某一个版本要移动几步
-git reflog</code></pre>
+git reflog<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="https://i.loli.net/2020/12/24/mvKrNGdHQwWt9Ty.png" alt="注意HEAD"></p>
 <h3 id="2-4版本回退穿梭"><a href="#2-4版本回退穿梭" class="headerlink" title="2.4版本回退穿梭"></a>2.4版本回退穿梭</h3><p>管理历史记录的时候存在一个<strong>指针</strong>(HEAD)</p>
 <p>我们可以把HEAD指针进行移动</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#切换版本号 
-git reset --hard 087a1a7</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#切换版本号 
+git reset --hard 087a1a7<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h3 id="2-5三种操作的参数"><a href="#2-5三种操作的参数" class="headerlink" title="2.5三种操作的参数"></a>2.5<strong>三种操作</strong>的参数</h3><ol>
 <li>基于索引值操作[推荐]</li>
 <li>使用^符号:只能往后退</li>
 </ol>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#回退一步
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#回退一步
 git reset --hard HEAD^
 #回退三步
-git reset --hard HEAD^^^</code></pre>
+git reset --hard HEAD^^^<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <ol>
 <li>使用~符号</li>
 </ol>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#回退3步
-git reset --hard HEAD~3</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#回退3步
+git reset --hard HEAD~3<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h3 id="2-6参数说明"><a href="#2-6参数说明" class="headerlink" title="2.6参数说明"></a>2.6参数说明</h3><p>reset命令的三个参数对比</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#查看本地帮助文档
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#查看本地帮助文档
 git help reset
 #命令
 --soft
@@ -637,14 +646,14 @@ git help reset
 移动指针
 重置缓存区
 重置工作区
-#全部后退</code></pre>
+#全部后退<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="2-7永久删除文件的保存"><a href="#2-7永久删除文件的保存" class="headerlink" title="2.7永久删除文件的保存"></a>2.7永久删除文件的保存</h3><p>删除仅仅是一条记录,可以回退版本进行恢复</p>
 <p>前提:删除前,文件存在时的状态提交到了本地库</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">git reset -hard[指针位置]</code></pre>
-<h3 id="2-8添加到暂存区的删除文件找回"><a href="#2-8添加到暂存区的删除文件找回" class="headerlink" title="2.8添加到暂存区的删除文件找回"></a>2.8添加到暂存区的删除文件找回</h3><pre class="language-shell" data-language="shell"><code class="language-shell">#暂存区与工作都是
-git reset --hard HEAD</code></pre>
-<h3 id="2-9比较文件差异"><a href="#2-9比较文件差异" class="headerlink" title="2.9比较文件差异"></a>2.9比较文件差异</h3><pre class="language-shell" data-language="shell"><code class="language-shell">git diff test.txt
-git diff [本地区中的历史版本][文件名]</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">git reset -hard[指针位置]<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="2-8添加到暂存区的删除文件找回"><a href="#2-8添加到暂存区的删除文件找回" class="headerlink" title="2.8添加到暂存区的删除文件找回"></a>2.8添加到暂存区的删除文件找回</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#暂存区与工作都是
+git reset --hard HEAD<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="2-9比较文件差异"><a href="#2-9比较文件差异" class="headerlink" title="2.9比较文件差异"></a>2.9比较文件差异</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">git diff test.txt
+git diff [本地区中的历史版本][文件名]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><img src="https://i.loli.net/2020/12/24/GsheZUHS9PQ3zWN.png" alt="image-20201224171304996"></p>
 <p>将工作区的文件个暂存区的文件进行比较</p>
 <h3 id="2-10分支管理"><a href="#2-10分支管理" class="headerlink" title="2.10分支管理"></a>2.10分支管理</h3><p>在版本控制过程中,使用多条线控制任务的分支</p>
@@ -653,7 +662,7 @@ git diff [本地区中的历史版本][文件名]</code></pre>
 <p>分支能够同时并行推进多个功能的开发,提高开发效率</p>
 <p>如果分支在开发过程中,如果某一个分支开发失败,不会对其他分支有任何影响,失败的分支删除重新开始</p>
 <h3 id="2-11分支的具体操作"><a href="#2-11分支的具体操作" class="headerlink" title="2.11分支的具体操作"></a>2.11分支的具体操作</h3><p>master是默认分支</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#查看分支
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#查看分支
 git branch -v
 #创建分支
 git branch hot_fix
@@ -669,7 +678,7 @@ git merge hot_fix
 #第一步编辑文件,删除特殊符号
 #第二步把文件修改到满意
 #第三步 git add[文件名]
-#第四部 git commit</code></pre>
+#第四部 git commit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="0x3-Git基本原理"><a href="#0x3-Git基本原理" class="headerlink" title="0x3. Git基本原理"></a>0x3. Git基本原理</h1><h2 id="3-1哈希算法"><a href="#3-1哈希算法" class="headerlink" title="3.1哈希算法"></a>3.1哈希算法</h2><pre class="mermaid">graph LR
 明文-->加密算法-->密文</pre>
 
@@ -690,7 +699,7 @@ git merge hot_fix
 <p>为了便于让~/.gitconfig文件引用，</p>
 <p>建议也放在用户家目录下</p>
 <p>xxxx.ignore文件内容如下：</p>
-<h4 id="idea-ignore"><a href="#idea-ignore" class="headerlink" title="idea.ignore"></a>idea.ignore</h4><pre class="language-shell" data-language="shell"><code class="language-shell"># Compiled class file
+<h4 id="idea-ignore"><a href="#idea-ignore" class="headerlink" title="idea.ignore"></a>idea.ignore</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"># Compiled class file
 *.class
 
 # Log file
@@ -719,52 +728,52 @@ hs_err_pid*
 .settings
 target
 .idea
-*.iml</code></pre>
+*.iml<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>2）在.gitconfig文件中引用忽略配置文件（此文件在Windows的家目录中）</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">
 [user]
 	name &#x3D; ZhangJY
 	email &#x3D; ZhangJY@atguigu.com
 [core]
 	excludesfile &#x3D; C:&#x2F;Users&#x2F;ZhangJY&#x2F;SH0720.ignore
 注意：这里要使用“正斜线（&#x2F;）”，不要使用“反斜线（\）”
-</code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="4-2使用免密登录连接远程仓库"><a href="#4-2使用免密登录连接远程仓库" class="headerlink" title="4.2使用免密登录连接远程仓库"></a>4.2使用免密登录连接远程仓库</h2><p>配置免密登录时非常有必要的</p>
 <p>首先要明白配置免密登录使用的SSH登录方式,使用RSA</p>
 <p>免密登陆地址</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#1.进入家目录
-cd</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#1.进入家目录
+cd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <blockquote>
 <p>89388@DESKTOP-CEH28KV MINGW64 ~</p>
 </blockquote>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#2.删除.ssh目录
-rm -rvf .ssh</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#2.删除.ssh目录
+rm -rvf .ssh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <blockquote>
 <p>removed ‘.ssh/known_hosts’</p>
 <p>removed directory ‘.ssh’</p>
 </blockquote>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#3.生成免密密钥 -C +github账号
-ssh-keygen -t rsa -C lijinxinok@163.com</code></pre>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#4.查看公钥并复制公钥
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#3.生成免密密钥 -C +github账号
+ssh-keygen -t rsa -C lijinxinok@163.com<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#4.查看公钥并复制公钥
 cat id_rsa.pub
 #复制公钥,注意有坑,在命令行复制容易出问题
-#可以去源文件的地方使用nodpad++打开</code></pre>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#5.添加公钥到github
-#如图</code></pre>
+#可以去源文件的地方使用nodpad++打开<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#5.添加公钥到github
+#如图<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><img src="https://i.loli.net/2020/12/25/am5XnUMoeWY7G2x.png" alt=" 1606477780968"></p>
 <p>然后将公钥复制进去就可以了</p>
 <p>注意push的时候要使用SSH地址哦</p>
 <p><img src="https://i.loli.net/2020/12/25/4PqjRpcbdrewtGv.png" alt="免密登陆地址"></p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#6.查看当前所有远程地址别名
-git remote -v </code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#6.查看当前所有远程地址别名
+git remote -v <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>然后将远程登录的SSH复制,添加别名</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#7.别名 远程地址
-git remote add SparkStreaming http:ssh登录地址</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#7.别名 远程地址
+git remote add SparkStreaming http:ssh登录地址<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>注意有坑,这里时ssh登录地址</p>
 <p>接下来就可以测试了</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#8.测试一下
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#8.测试一下
 git add hello.txt
-git push SparkStreaming master</code></pre>
+git push SparkStreaming master<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h2 id="4-3-Git结构"><a href="#4-3-Git结构" class="headerlink" title="4.3.Git结构"></a>4.3.Git结构</h2><pre class="mermaid">graph TD
 历史版本---本地库
 临时存储---暂存区
@@ -777,12 +786,12 @@ git push SparkStreaming master</code></pre>
 <p>码云</p>
 <h2 id="4-5-本地与内部协作"><a href="#4-5-本地与内部协作" class="headerlink" title="4.5 本地与内部协作"></a>4.5 本地与内部协作</h2><h4 id="团队内部协作"><a href="#团队内部协作" class="headerlink" title="团队内部协作"></a>团队内部协作</h4><p>加入团队可以增加权限</p>
 <h4 id="跨团队协作"><a href="#跨团队协作" class="headerlink" title="跨团队协作"></a>跨团队协作</h4><h2 id="4-6从零到一使用IDEA"><a href="#4-6从零到一使用IDEA" class="headerlink" title="4.6从零到一使用IDEA"></a>4.6从零到一使用IDEA</h2><h3 id="创建本地库"><a href="#创建本地库" class="headerlink" title="创建本地库"></a>创建本地库</h3><p>将一个文件添加到ignore忽视</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">#将数据添加到ignore
-git add to .gitignore</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#将数据添加到ignore
+git add to .gitignore<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>将文件添加exclude</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">git add to exclude</code></pre>
-<h3 id="创建版本"><a href="#创建版本" class="headerlink" title="创建版本"></a>创建版本</h3><pre class="language-shell" data-language="shell"><code class="language-shell">commit
-version-0.1 Copy Revison Number</code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">git add to exclude<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="创建版本"><a href="#创建版本" class="headerlink" title="创建版本"></a>创建版本</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">commit
+version-0.1 Copy Revison Number<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h3 id="回退版本"><a href="#回退版本" class="headerlink" title="回退版本"></a>回退版本</h3><p><img src="https://i.loli.net/2020/12/25/oyQbqeJjfGzdlF5.png" alt="回退版本图"></p>
 <p>然后将版本哈希值粘贴到HEAD地方</p>
 <h3 id="创建分支以及合并分支"><a href="#创建分支以及合并分支" class="headerlink" title="创建分支以及合并分支"></a>创建分支以及合并分支</h3><p>创建分支</p>
@@ -792,10 +801,10 @@ version-0.1 Copy Revison Number</code></pre>
 <h3 id="如何在idea里解决分支冲突"><a href="#如何在idea里解决分支冲突" class="headerlink" title="如何在idea里解决分支冲突"></a>如何在idea里解决分支冲突</h3><p>merge</p>
 <h3 id="添加合作伙伴"><a href="#添加合作伙伴" class="headerlink" title="添加合作伙伴"></a>添加合作伙伴</h3><p>setting</p>
 <p>manage access</p>
-<h1 id="0x5-HEXO个人博客"><a href="#0x5-HEXO个人博客" class="headerlink" title="0x5. HEXO个人博客"></a>0x5. HEXO个人博客</h1><pre class="language-bash" data-language="bash"><code class="language-bash">git config --global user.name &quot;godweiyang&quot;
+<h1 id="0x5-HEXO个人博客"><a href="#0x5-HEXO个人博客" class="headerlink" title="0x5. HEXO个人博客"></a>0x5. HEXO个人博客</h1><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">git config --global user.name &quot;godweiyang&quot;
 git config --global user.email &quot;792321264@qq.com&quot;
 
-ssh-keygen -t rsa -C &quot;lijinxinok@163.com&quot;</code></pre>
+ssh-keygen -t rsa -C &quot;lijinxinok@163.com&quot;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 <h1 id="0x6-配置图床"><a href="#0x6-配置图床" class="headerlink" title="0x6. 配置图床"></a>0x6. 配置图床</h1><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_20_12/%E6%B5%8B%E8%AF%95.png" alt="测试图"></p>
@@ -864,8 +873,8 @@ ssh-keygen -t rsa -C &quot;lijinxinok@163.com&quot;</code></pre>
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/git-idea/">
-                                    <span class="chip bg-color">git idea</span>
+                                <a href="/tags/git/">
+                                    <span class="chip bg-color">git</span>
                                 </a>
                             
                         </div>
@@ -1085,16 +1094,16 @@ ssh-keygen -t rsa -C &quot;lijinxinok@163.com&quot;</code></pre>
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/10/27/Git/">
+                <a href="/2020/08/29/Spark_operator/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="Git的使用">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Spark_SparkOperator">
                         
-                        <span class="card-title">Git的使用</span>
+                        <span class="card-title">Spark_SparkOperator</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1105,22 +1114,25 @@ ssh-keygen -t rsa -C &quot;lijinxinok@163.com&quot;</code></pre>
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-10-27
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-29
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            Jinxin Li
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spark/" class="post-category">
+                                    spark
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/git-idea/">
-                        <span class="chip bg-color">git idea</span>
+                    <a href="/tags/operator/">
+                        <span class="chip bg-color">operator</span>
                     </a>
                     
                 </div>
@@ -1323,7 +1335,7 @@ ssh-keygen -t rsa -C &quot;lijinxinok@163.com&quot;</code></pre>
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">40k</span>&nbsp;字
+                class="white-color">39.9k</span>&nbsp;字
             
             
             
