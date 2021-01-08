@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Spark_SparkStreaming_Case, 李金鑫">
+    <meta name="keywords" content="Flink01_Introduction_and_Architecture, 李金鑫">
     <meta name="description" content="李金鑫的个人博客">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Spark_SparkStreaming_Case | 李金鑫</title>
+    <title>Flink01_Introduction_and_Architecture | 李金鑫</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Spark_SparkStreaming_Case</h1>
+                    <h1 class="description center-align post-title">Flink01_Introduction_and_Architecture</h1>
                 </div>
             </div>
         </div>
@@ -431,8 +431,16 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/sparkStreaming/">
-                                <span class="chip bg-color">sparkStreaming</span>
+                            <a href="/tags/flink/">
+                                <span class="chip bg-color">flink</span>
+                            </a>
+                        
+                            <a href="/tags/structure/">
+                                <span class="chip bg-color">structure</span>
+                            </a>
+                        
+                            <a href="/tags/procedure/">
+                                <span class="chip bg-color">procedure</span>
                             </a>
                         
                     </div>
@@ -443,8 +451,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/spark/" class="post-category">
-                                spark
+                            <a href="/categories/flink/" class="post-category">
+                                flink
                             </a>
                         
                     </div>
@@ -456,7 +464,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-01-04
+                    2020-05-21
                 </div>
                 
 
@@ -465,7 +473,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3k
+                    6k
                 </div>
                 
 
@@ -485,605 +493,178 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="SparkStreaming-Case-总结"><a href="#SparkStreaming-Case-总结" class="headerlink" title="SparkStreaming_Case_总结"></a>SparkStreaming_Case_总结</h1><p>工具类是必须要学习记忆的</p>
-<p>同时要按照工业化流程写程序</p>
-<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E4%BC%81%E4%B8%9A%E7%BA%A7%E6%96%87%E4%BB%B6%E5%BB%BA%E6%A1%A3.png" alt="企业化程序思路"></p>
-<h2 id="1-配置文件"><a href="#1-配置文件" class="headerlink" title="1.配置文件"></a>1.配置文件</h2><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties">#JDBC配置
-jdbc.datasource.size&#x3D;10
-jdbc.url&#x3D;jdbc:mysql:&#x2F;&#x2F;hadoop102:3306&#x2F;spark_2020?useUnicode&#x3D;true&amp;characterEncoding&#x3D;utf8&amp;rewriteBatchedStatements&#x3D;true
-jdbc.user&#x3D;root
-jdbc.password&#x3D;123456
-
-# Kafka配置
-kafka.broker.list&#x3D;hadoop102:9092,hadoop103:9092,hadoop104:9092
-kafka.topic&#x3D;testTopic<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="2-工具类"><a href="#2-工具类" class="headerlink" title="2.工具类"></a>2.工具类</h2><h3 id="2-1JDBC工具类"><a href="#2-1JDBC工具类" class="headerlink" title="2.1JDBC工具类"></a>2.1JDBC工具类</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.utils
-
-import java.sql.&#123;Connection, PreparedStatement, ResultSet&#125;
-import java.util.Properties
-
-import com.alibaba.druid.pool.DruidDataSourceFactory
-import javax.sql.DataSource
-
-&#x2F;**
- * @author Jinxin Li
- * @create 2020-11-25 19:49
- *&#x2F;
-object JDBCUtil &#123;
-  &#x2F;&#x2F;初始化连接池
-  val dataSource: DataSource &#x3D; init()
-
-  &#x2F;&#x2F;初始化连接池方法
-  def init() &#x3D; &#123;
-    val properties &#x3D; new Properties()
-    val config: Properties &#x3D; PropertiesUtil.load(&quot;config.properties&quot;)
-    properties.setProperty(&quot;driverClassName&quot;, &quot;com.mysql.jdbc.Driver&quot;)
-    properties.setProperty(&quot;url&quot;, config.getProperty(&quot;jdbc.url&quot;))
-    properties.setProperty(&quot;username&quot;, config.getProperty(&quot;jdbc.user&quot;))
-    properties.setProperty(&quot;password&quot;, config.getProperty(&quot;jdbc.password&quot;))
-    properties.setProperty(&quot;maxActive&quot;, config.getProperty(&quot;jdbc.datasource.size&quot;))
-    &#x2F;&#x2F;使用Druid创建数据库连接池
-    val source: DataSource &#x3D; DruidDataSourceFactory.createDataSource(properties)
-    source
-  &#125;
-
-  &#x2F;&#x2F;获取MySQL连接
-  def getConnection: Connection &#x3D; &#123;
-    dataSource.getConnection
-  &#125;
-
-  &#x2F;&#x2F;执行SQL语句,单条数据插入
-  def executeUpdate(connection: Connection, sql: String, params: Array[Any]): Int &#x3D; &#123;
-
-    var rtn &#x3D; 0
-    var pstmt: PreparedStatement &#x3D; null
-
-    try &#123;
-      connection.setAutoCommit(false)
-      pstmt &#x3D; connection.prepareStatement(sql)
-
-      if (params !&#x3D; null &amp;&amp; params.length &gt; 0) &#123;
-        for (i &lt;- params.indices) &#123;
-          pstmt.setObject(i + 1, params(i))
-        &#125;
-      &#125;
-
-      rtn &#x3D; pstmt.executeUpdate()
-
-      connection.commit()
-      pstmt.close()
-    &#125; catch &#123;
-      case e: Exception &#x3D;&gt; e.printStackTrace()
-    &#125;
-
-    rtn
-  &#125;
-
-  &#x2F;&#x2F;判断一条数据是否存在
-  def isExist(connection: Connection, sql: String, params: Array[Any]): Boolean &#x3D; &#123;
-
-    var flag: Boolean &#x3D; false
-    var pstmt: PreparedStatement &#x3D; null
-
-    try &#123;
-      pstmt &#x3D; connection.prepareStatement(sql)
-
-      for (i &lt;- params.indices) &#123;
-        pstmt.setObject(i + 1, params(i))
-      &#125;
-
-      flag &#x3D; pstmt.executeQuery().next()
-      pstmt.close()
-    &#125; catch &#123;
-      case e: Exception &#x3D;&gt; e.printStackTrace()
-    &#125;
-
-    flag
-  &#125;
-
-  &#x2F;&#x2F;获取MySQL的一条数据
-  def getDataFromMysql(connection: Connection, sql: String, params: Array[Any]): Long &#x3D; &#123;
-
-    var result: Long &#x3D; 0L
-    var pstmt: PreparedStatement &#x3D; null
-
-    try &#123;
-      pstmt &#x3D; connection.prepareStatement(sql)
-
-      for (i &lt;- params.indices) &#123;
-        pstmt.setObject(i + 1, params(i))
-      &#125;
-
-      val resultSet: ResultSet &#x3D; pstmt.executeQuery()
-
-      while (resultSet.next()) &#123;
-        result &#x3D; resultSet.getLong(1)
-      &#125;
-
-      resultSet.close()
-      pstmt.close()
-    &#125; catch &#123;
-      case e: Exception &#x3D;&gt; e.printStackTrace()
-    &#125;
-
-    result
-  &#125;
-
-  &#x2F;&#x2F;主方法,用于测试上述方法
-  def main(args: Array[String]): Unit &#x3D; &#123;
-
-    &#x2F;&#x2F;1 获取连接
-    val connection: Connection &#x3D; getConnection
-
-    &#x2F;&#x2F;2 预编译SQL
-    val statement: PreparedStatement &#x3D; connection.prepareStatement(&quot;select * from user_ad_count where userid &#x3D; ?&quot;)
-
-    &#x2F;&#x2F;3 传输参数
-    statement.setObject(1, &quot;a&quot;)
-
-    &#x2F;&#x2F;4 执行sql
-    val resultSet: ResultSet &#x3D; statement.executeQuery()
-
-    &#x2F;&#x2F;5 获取数据
-    while (resultSet.next()) &#123;
-      println(&quot;111:&quot; + resultSet.getString(1))
-    &#125;
-
-    &#x2F;&#x2F;6 关闭资源
-    resultSet.close()
-    statement.close()
-    connection.close()
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="2-2Kafka工具类"><a href="#2-2Kafka工具类" class="headerlink" title="2.2Kafka工具类"></a>2.2Kafka工具类</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.utils
-
-import org.apache.kafka.clients.consumer.ConsumerRecord
-import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.spark.streaming.StreamingContext
-import org.apache.spark.streaming.dstream.InputDStream
-import org.apache.spark.streaming.kafka010.&#123;ConsumerStrategies, KafkaUtils, LocationStrategies&#125;
-
-&#x2F;**
- * @author Jinxin Li
- * @create 2020-11-25 19:28
- *&#x2F;
-object MyKafkaUtil &#123;
-
-  &#x2F;&#x2F;创建配置对象]
-  private val properties &#x3D; PropertiesUtil.load(&quot;config.properties&quot;)
-  &#x2F;&#x2F;用于初始化链接到集群的地址
-  private val brokers: String &#x3D; properties.getProperty(&quot;kafka.broker.list&quot;) &#x2F;&#x2F;用于后面设置brokers使用
-
-
-  &#x2F;&#x2F;创建DStream,返回接受的数
-  def getKafkaStream(topic: String, ssc: StreamingContext) &#x3D; &#123;
-    val kafkaPara &#x3D; Map(
-&#x2F;&#x2F;      &quot;bootstrap.servers&quot; -&gt; brokers,
-&#x2F;&#x2F;      &quot;key.deserializer&quot; -&gt; classOf[StringDeserializer],
-&#x2F;&#x2F;      &quot;value.deserializer&quot; -&gt; classOf[StringDeserializer],
-&#x2F;&#x2F;      &quot;group.id&quot; -&gt; &quot;commerce-consumer-group&quot; &#x2F;&#x2F;定义消费者组
-      &quot;bootstrap.servers&quot; -&gt; brokers,
-      &quot;key.deserializer&quot; -&gt; classOf[StringDeserializer],
-      &quot;value.deserializer&quot; -&gt; classOf[StringDeserializer],
-      &quot;group.id&quot; -&gt; &quot;commerce-consumer-group&quot; &#x2F;&#x2F;消费者组
-    )
-    val kafkaDStream: InputDStream[ConsumerRecord[String, String]] &#x3D; KafkaUtils.createDirectStream[String, String](
-      ssc,
-      LocationStrategies.PreferConsistent,
-      ConsumerStrategies.Subscribe[String,String](Array(topic), kafkaPara))
-    kafkaDStream
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="2-3配置文件工具类"><a href="#2-3配置文件工具类" class="headerlink" title="2.3配置文件工具类"></a>2.3配置文件工具类</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.utils
-
-import java.io.InputStreamReader
-import java.util.Properties
-
-&#x2F;**
- * @author Jinxin Li
- * @create 2020-11-25 19:15
- *&#x2F;
-object PropertiesUtil &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-
-  &#125;
-  def load(name:String)&#x3D;&#123;
-    val properties &#x3D; new Properties()
-    properties.load(new InputStreamReader(Thread.currentThread().getContextClassLoader.getResourceAsStream(name)))
-    properties
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="3-日志生成与按比重随机数"><a href="#3-日志生成与按比重随机数" class="headerlink" title="3.日志生成与按比重随机数"></a>3.日志生成与按比重随机数</h2><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.dataproduction
-
-import java.util.Properties
-
-import com.atguigu.utils.PropertiesUtil
-import org.apache.kafka.clients.producer.&#123;KafkaProducer, ProducerConfig, ProducerRecord&#125;
-
-import scala.collection.mutable.ArrayBuffer
-import scala.util.Random
-
-&#x2F;**
- * @author Jinxin Li
- * @create 2020-11-25 19:24
- *&#x2F;
-&#x2F;&#x2F;作用两秒往kafka里创建一个数据
-
-&#x2F;&#x2F;城市信息表： city_id :城市id  city_name：城市名称   area：城市所在大区
-case class CityInfo(city_id: Long, city_name: String, area: String)
-
-object MockerRealTime &#123;
-  &#x2F;**
-   * 模拟的数据
-   * 格式 ：timestamp area city userid adid
-   * 某个时间点 某个地区 某个城市 某个用户 某个广告
-   * 1604229363531 华北 北京 3 3
-   *&#x2F;
-  def generateMockData(): Array[String] &#x3D; &#123;
-
-    val array: ArrayBuffer[String] &#x3D; ArrayBuffer[String]()
-
-    val CityRandomOpt &#x3D; RandomOptions(
-      RanOpt(CityInfo(1, &quot;北京&quot;, &quot;华北&quot;), 30),
-      RanOpt(CityInfo(2, &quot;上海&quot;, &quot;华东&quot;), 30),
-      RanOpt(CityInfo(3, &quot;广州&quot;, &quot;华南&quot;), 10),
-      RanOpt(CityInfo(4, &quot;深圳&quot;, &quot;华南&quot;), 20),
-      RanOpt(CityInfo(5, &quot;天津&quot;, &quot;华北&quot;), 10)
-    )
-
-    val random &#x3D; new Random()
-
-    &#x2F;&#x2F; 模拟实时数据：
-    &#x2F;&#x2F; timestamp province city userid adid
-    for (i &lt;- 0 to 50) &#123;
-
-      val timestamp: Long &#x3D; System.currentTimeMillis()
-      val cityInfo: CityInfo &#x3D; CityRandomOpt.getRandomOpt
-      val city: String &#x3D; cityInfo.city_name
-      val area: String &#x3D; cityInfo.area
-      val adid: Int &#x3D; 1 + random.nextInt(6)
-      val userid: Int &#x3D; 1 + random.nextInt(6)
-
-      &#x2F;&#x2F; 拼接实时数据: 某个时间点 某个地区 某个城市 某个用户 某个广告
-      array +&#x3D; timestamp + &quot; &quot; + area + &quot; &quot; + city + &quot; &quot; + userid + &quot; &quot; + adid
-    &#125;
-
-    array.toArray
-  &#125;
-
-  def main(args: Array[String]): Unit &#x3D; &#123;
-
-    &#x2F;&#x2F; 获取配置文件config.properties中的Kafka配置参数
-    val config: Properties &#x3D; PropertiesUtil.load(&quot;config.properties&quot;)
-    val brokers: String &#x3D; config.getProperty(&quot;kafka.broker.list&quot;)
-    val topic: String &#x3D; config.getProperty(&quot;kafka.topic&quot;)
-
-    &#x2F;&#x2F; 创建配置对象
-    val prop &#x3D; new Properties()
-
-    &#x2F;&#x2F; 添加配置
-    prop.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers)
-    prop.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, &quot;org.apache.kafka.common.serialization.StringSerializer&quot;)
-    prop.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, &quot;org.apache.kafka.common.serialization.StringSerializer&quot;)
-
-    &#x2F;&#x2F; 根据配置创建Kafka生产者
-    val kafkaProducer: KafkaProducer[String, String] &#x3D; new KafkaProducer[String, String](prop)
-
-    while (true) &#123;
-
-      &#x2F;&#x2F; 随机产生实时数据并通过Kafka生产者发送到Kafka集群中
-      for (line &lt;- generateMockData()) &#123;
-        kafkaProducer.send(new ProducerRecord[String, String](topic, line))
-        println(line)
-      &#125;
-
-      Thread.sleep(2000)
-    &#125;
-  &#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.dataproduction
-
-import scala.collection.mutable.ListBuffer
-import scala.util.Random
-
-&#x2F;**
- * @author Jinxin Li
- * @create 2020-11-25 19:23
- *&#x2F;
-&#x2F;&#x2F; value值出现的比例，例如：(男，8) (女:2)
-case class RanOpt[T](value: T, weight: Int)
-
-object RandomOptions &#123;
-
-  def apply[T](opts: RanOpt[T]*): RandomOptions[T] &#x3D; &#123;
-
-    val randomOptions &#x3D; new RandomOptions[T]()
-
-    for (opt &lt;- opts) &#123;
-      &#x2F;&#x2F; 累积总的权重： 8 + 2
-      randomOptions.totalWeight +&#x3D; opt.weight
-
-      &#x2F;&#x2F; 根据每个元素的自己的权重，向buffer中存储数据。权重越多存储的越多
-      for (i &lt;- 1 to opt.weight) &#123;
-        &#x2F;&#x2F; 男 男 男 男 男 男 男 男 女 女
-        randomOptions.optsBuffer +&#x3D; opt.value
-      &#125;
-    &#125;
-
-    randomOptions
-  &#125;
-
-  def main(args: Array[String]): Unit &#x3D; &#123;
-
-    for (i &lt;- 1 to 10) &#123;
-      println(RandomOptions(RanOpt(&quot;男&quot;, 8), RanOpt(&quot;女&quot;, 2)).getRandomOpt)
-    &#125;
-  &#125;
-&#125;
-
-class RandomOptions[T](opts: RanOpt[T]*) &#123;
-
-  var totalWeight &#x3D; 0
-  var optsBuffer &#x3D; new ListBuffer[T]
-
-  def getRandomOpt: T &#x3D; &#123;
-    &#x2F;&#x2F; 随机选择：0-9
-    val randomNum: Int &#x3D; new Random().nextInt(totalWeight)
-    &#x2F;&#x2F; 根据随机数，作为角标取数
-    optsBuffer(randomNum)
-  &#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="4-黑名单业务"><a href="#4-黑名单业务" class="headerlink" title="4.黑名单业务"></a>4.黑名单业务</h2><p>实现实时的动态黑名单机制：将每天对某个广告点击超过30次的用户拉黑。</p>
-<p>注：黑名单保存到MySQL中。</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.app
-
-import java.util.Properties
-
-import com.atguigu.handler.BlackListHandler
-import com.atguigu.utils.&#123;MyKafkaUtil, PropertiesUtil&#125;
-import org.apache.kafka.clients.consumer.ConsumerRecord
-import org.apache.spark.SparkConf
-import org.apache.spark.streaming.dstream.&#123;DStream, InputDStream&#125;
-import org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;
-
-
-&#x2F;**
- * @author Jinxin Li
- * @create 2020-11-25 20:42
- *&#x2F;
-object RealTimeApp &#123;
-
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;RealTimeApp &quot;).setMaster(&quot;local[*]&quot;)
-
-    &#x2F;&#x2F;2.创建StreamingContext
-    val ssc &#x3D; new StreamingContext(sparkConf, Seconds(3))
-
-&#x2F;&#x2F;    val topic &#x3D; PropertiesUtil.load(&quot;config.perproties&quot;).getProperty(&quot;kafka.topic&quot;)
-    val properties: Properties &#x3D; PropertiesUtil.load(&quot;config.properties&quot;)
-    val topic: String &#x3D; properties.getProperty(&quot;kafka.topic&quot;)
-
-
-    &#x2F;&#x2F;从kafka中读取数据
-    val kafkaDStream: InputDStream[ConsumerRecord[String, String]] &#x3D; MyKafkaUtil.getKafkaStream(topic, ssc)
-
-    &#x2F;&#x2F;将从kafka独处的数据转换为样例类对象
-    val adsLogDStream: DStream[Ads_log] &#x3D; kafkaDStream.map(
-      record &#x3D;&gt; &#123;
-        &#x2F;&#x2F;kafka得到的是kv值,注意先取出v值
-        val line: String &#x3D; record.value()
-        &#x2F;&#x2F;拿出字段信息
-        val info: Array[String] &#x3D; line.split(&quot; &quot;)
-        &#x2F;&#x2F;使用伴生对象的apply方法直接包装对象并返回
-        Ads_log(info(0).toLong, info(1), info(2), info(3), info(4))
-      &#125;
-    )
-    &#x2F;&#x2F;-----------------------------------------------------------
-    &#x2F;&#x2F;现在已经万事具备,开始处理需求
-    &#x2F;&#x2F;需求1 BlackListHandler广告黑名单业务,
-    &#x2F;&#x2F; 将实现实时的动态黑名单机制：将每天对某个广告点击超过30次的用户拉黑。
-    val filterAdsLogDStream: DStream[Ads_log] &#x3D; BlackListHandler.filterByBlackList(adsLogDStream)
-    BlackListHandler.addBlackList(filterAdsLogDStream)
-
-    filterAdsLogDStream.cache()
-    filterAdsLogDStream.count().print()
-
-    &#x2F;&#x2F;启动任务
-    ssc.start()
-    ssc.awaitTermination()
-  &#125;
-&#125;
-&#x2F;&#x2F; 创建数据的样例类对象
-&#x2F;&#x2F; 时间 地区 城市 用户id 广告id
-case class Ads_log(timestamp: Long, area: String, city: String, userid: String, adid: String)
-
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.handler
-
-import java.sql.Connection
-import java.text.SimpleDateFormat
-import java.util.Date
-
-import com.atguigu.app.Ads_log
-import com.atguigu.utils.JDBCUtil
-import org.apache.spark.streaming.dstream.DStream
-
-&#x2F;**
- * @author Jinxin Li
- * @create 2020-11-25 20:39
- *&#x2F;
-object BlackListHandler &#123;
-  &#x2F;&#x2F;实现实时的动态黑名单机制：将每天对某个广告点击超过30次的用户拉黑。
-  &#x2F;&#x2F;注：黑名单保存到MySQL中。
-  private val sdf &#x3D; new SimpleDateFormat(&quot;yyyy-MM-dd&quot;)
-
-  def addBlackList(filterAdsLogDStream: DStream[Ads_log]) &#x3D; &#123;
-    val dtAreaCityUserAdDStream: DStream[((String, String, String), Long)] &#x3D; filterAdsLogDStream.map &#123;
-      case adsLog &#x3D;&gt; &#123;
-        val dt: String &#x3D; sdf.format(new Date(adsLog.timestamp))
-        ((dt, adsLog.userid, adsLog.adid), 1L)
-      &#125;
-    &#125;.reduceByKey(_ + _)
-
-    &#x2F;&#x2F;写出
-    dtAreaCityUserAdDStream.foreachRDD(
-      &#x2F;&#x2F;先把流中的foreachRDD写出,然后分流写出
-      rdd&#x3D;&gt;rdd.foreachPartition(
-        iter&#x3D;&gt;&#123;
-          val connection: Connection &#x3D; JDBCUtil.getConnection
-          iter.foreach&#123;
-            case ((dt,userid,adid),count)&#x3D;&gt;
-              JDBCUtil.executeUpdate(
-                connection,
-                &quot;&quot;&quot;
-                  |insert into user_ad_count (dt,userid,adid,count)
-                  |values (?,?,?,?)
-                  |on duplicate key
-                  |update count &#x3D; count + ?
-                  |&quot;&quot;&quot;.stripMargin,Array(dt,userid,adid,count,count)
-              )
-              val ct: Long &#x3D; JDBCUtil.getDataFromMysql(
-                connection,
-                &quot;&quot;&quot;
-                  |select count from user_ad_count where dt&#x3D;? and userid&#x3D;? and adid&#x3D;?
-                  |&quot;&quot;&quot;.stripMargin,Array(dt,userid,adid)
-              )
-              &#x2F;&#x2F;如果大于30就加入黑名单
-              if (ct&gt;&#x3D;30)&#123;
-                JDBCUtil.executeUpdate(
-                  connection,
-                  &quot;&quot;&quot;
-                    |insert into black_list (userid)
-                    |values (?)
-                    |on duplicate key
-                    |update userid&#x3D;?
-                    |&quot;&quot;&quot;.stripMargin,Array(userid,userid)
-                )
-              &#125;
-          &#125;
-          connection.close()
-        &#125;
-      )
-    )
-  &#125;
-  def filterByBlackList(adsLogDStream: DStream[Ads_log]): DStream[Ads_log] &#x3D; &#123;
-    adsLogDStream.filter(
-      adsLog&#x3D;&gt;&#123;
-        &#x2F;&#x2F;获取连接
-        val connection: Connection &#x3D; JDBCUtil.getConnection
-        val bool: Boolean &#x3D; JDBCUtil.isExist(
-          connection,
-          &quot;&quot;&quot;
-            |select * from black_list where userid&#x3D;?
-            |&quot;&quot;&quot;.stripMargin, Array(adsLog.userid)
-        )
-        connection.close()
-        !bool
-      &#125;
-    )
-  &#125;
-&#125;
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="5-统计点击总流量"><a href="#5-统计点击总流量" class="headerlink" title="5.统计点击总流量"></a>5.统计点击总流量</h2><p>描述：实时统计每天各地区各城市各广告的点击总流量，并将其存入MySQL。</p>
-<p>注意connection与connection.close要同时写</p>
-<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E6%8A%A5%E9%94%99%E4%BF%A1%E6%81%AF1.png" alt="connection报错"></p>
-<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E6%8A%A5%E9%94%99%E4%BF%A1%E6%81%AF2.png" alt="报错信息"></p>
-<p><img src="SparkStreaming_Case_%E6%80%BB%E7%BB%93.assets/1606325292658.png" alt="1606325292658"></p>
-<p><img src="SparkStreaming_Case_%E6%80%BB%E7%BB%93.assets/1606325343070.png" alt="1606325343070"></p>
-<p>功能:DateAreaCityAdCountHandler</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.handler
-
-import java.sql.Connection
-import java.text.SimpleDateFormat
-import java.util.Date
-
-import com.atguigu.app.Ads_log
-import com.atguigu.utils.JDBCUtil
-import org.apache.spark.streaming.dstream.DStream
-
-&#x2F;**
- * @author Jinxin Li
- * @create 2020-11-25 23:58
- * 统计每天各大区各个城市广告点击总数并保存至MySQL中
- *&#x2F;
-object DateAreaCityAdCountHandler &#123;
-  private val sdf &#x3D; new SimpleDateFormat(&quot;yyyy-MM-dd&quot;)
-  def saveDateAreaCityAdCountToMysql(filterAdsLogDStream: DStream[Ads_log]) &#x3D; &#123;
-    val dateAreaCityAdToCount&#x3D; filterAdsLogDStream.map(ads_log &#x3D;&gt; &#123;
-      &#x2F;&#x2F;a.格式化为日期字符串
-      val dt: String &#x3D; sdf.format(new Date(ads_log.timestamp))
-      &#x2F;&#x2F;b.组合,返回
-      ((dt, ads_log.area, ads_log.city, ads_log.adid), 1L)
-    &#125;).reduceByKey(_ + _)
-    dateAreaCityAdToCount.foreachRDD(
-      &#x2F;&#x2F;分配处理,是指遥控在executor进行执行
-      rdd&#x3D;&gt;&#123;
-        rdd.foreachPartition(
-          iter&#x3D;&gt;&#123;
-            val connection: Connection &#x3D; JDBCUtil.getConnection
-            iter.foreach &#123;
-              case ((dt, area, city, adid), ct) &#x3D;&gt;
-                JDBCUtil.executeUpdate(
-                  connection,
-                  &quot;&quot;&quot;
-                    |INSERT INTO area_city_ad_count (dt)
-                    |VALUES(?)
-                    &quot;&quot;&quot;.stripMargin,
-                  Array(dt)
-                )
+                <h1 id="0x0-架构"><a href="#0x0-架构" class="headerlink" title="0x0.架构"></a>0x0.架构</h1><p>Apache Flink 是一个框架和分布式处理引擎，用于在<em>无边界和有边界</em>数据流上进行有状态的计算。Flink 能在所有常见集群环境中运行，并能以内存速度和任意规模进行计算。</p>
+<h2 id="处理无界和有界数据"><a href="#处理无界和有界数据" class="headerlink" title="处理无界和有界数据"></a>处理无界和有界数据</h2><p>任何类型的数据都可以形成一种事件流。信用卡交易、传感器测量、机器日志、网站或移动应用程序上的用户交互记录，所有这些数据都形成一种流。</p>
+<p>数据可以被作为 <strong>无界</strong> 或者 <strong>有界</strong>流来处理。</p>
+<ol>
+<li><strong>无界流</strong> 有定义流的开始，但没有定义流的结束。它们会无休止地产生数据。无界流的数据必须持续处理，即数据被摄取后需要立刻处理。我们不能等到所有数据都到达再处理，因为输入是无限的，在任何时候输入都不会完成。处理无界数据通常要求以特定顺序摄取事件，例如事件发生的顺序，以便能够推断结果的完整性。</li>
+<li><strong>有界流</strong> 有定义流的开始，也有定义流的结束。有界流可以在摄取所有数据后再进行计算。有界流所有数据可以被排序，所以并不需要有序摄取。有界流处理通常被称为批处理</li>
+</ol>
+<p><img src="https://flink.apache.org/img/bounded-unbounded.png" alt="有界流与无界流"></p>
+<p><strong>Apache Flink 擅长处理无界和有界数据集</strong> 精确的时间控制和状态化使得 Flink 的运行时(runtime)能够运行任何处理无界流的应用。有界流则由一些专为固定大小数据集特殊设计的算法和数据结构进行内部处理，产生了出色的性能。</p>
+<h2 id="Flink可以"><a href="#Flink可以" class="headerlink" title="Flink可以"></a>Flink可以</h2><ul>
+<li>处理<strong>每天处理数万亿的事件</strong>,</li>
+<li>应用维护<strong>几TB大小的状态</strong>, 和</li>
+<li>应用<strong>在数千个内核上运行</strong>。</li>
+</ul>
+<h2 id="利用内存性能"><a href="#利用内存性能" class="headerlink" title="利用内存性能"></a>利用内存性能</h2><p>有状态的 Flink 程序针对本地状态访问进行了优化。任务的状态始终保留在内存中，如果状态大小超过可用内存，则会保存在能高效访问的磁盘数据结构中。任务通过访问本地（通常在内存中）状态来进行所有的计算，从而产生非常低的处理延迟。Flink 通过定期和异步地对本地状态进行持久化存储来保证故障场景下精确一次的状态一致性。</p>
+<p><img src="https://flink.apache.org/img/local-state.png" alt="img"></p>
+<h1 id="0x1-运用"><a href="#0x1-运用" class="headerlink" title="0x1.运用"></a>0x1.运用</h1><h2 id="流处理应用的基本组件"><a href="#流处理应用的基本组件" class="headerlink" title="流处理应用的基本组件"></a>流处理应用的基本组件</h2><p>可以由流处理框架构建和执行的应用程序类型是由框架对 <em>流</em>、<em>状态</em>、<em>时间</em> 的支持程度来决定的。在下文中，我们将对上述这些流处理应用的基本组件逐一进行描述，并对 Flink 处理它们的方法进行细致剖析。</p>
+<h3 id="流"><a href="#流" class="headerlink" title="流"></a>流</h3><p>显而易见，（数据）流是流处理的基本要素。然而，流也拥有着多种特征。这些特征决定了流如何以及何时被处理。Flink 是一个能够处理任何类型数据流的强大处理框架。</p>
+<ul>
+<li><strong>有界</strong> 和 <strong>无界</strong> 的数据流：流可以是无界的；也可以是有界的，例如固定大小的数据集。Flink 在无界的数据流处理上拥有诸多功能强大的特性，同时也针对有界的数据流开发了专用的高效算子。</li>
+<li><strong>实时</strong> 和 <strong>历史记录</strong> 的数据流：所有的数据都是以流的方式产生，但用户通常会使用两种截然不同的方法处理数据。或是在数据生成时进行实时的处理；亦或是先将数据流持久化到存储系统中——例如文件系统或对象存储，然后再进行批处理。Flink 的应用能够同时支持处理实时以及历史记录数据流。</li>
+</ul>
+<h3 id="状态"><a href="#状态" class="headerlink" title="状态"></a>状态</h3><p>只有在每一个单独的事件上进行转换操作的应用才不需要状态，换言之，每一个具有一定复杂度的流处理应用都是有状态的。任何运行基本业务逻辑的流处理应用都需要在一定时间内存储所接收的事件或中间结果，以供后续的某个时间点（例如收到下一个事件或者经过一段特定时间）进行访问并进行后续处理。</p>
+<p><img src="https://flink.apache.org/img/function-state.png" alt="算子与状态协同处理流"></p>
+<p>应用状态是 Flink 中的特点，Flink 提供了许多状态管理相关的特性支持，其中包括：</p>
+<ul>
+<li><strong>多种状态基础类型</strong>：Flink 为多种不同的数据结构提供了相对应的状态基础类型，例如原子值（value），列表（list）以及映射（map）。开发者可以基于处理函数对状态的访问方式，选择最高效、最适合的状态基础类型。</li>
+<li><strong>插件化的State Backend</strong>：State Backend 负责管理应用程序状态，并在需要的时候进行 checkpoint。Flink 支持多种 state backend，可以将状态存在内存或者 <a target="_blank" rel="noopener" href="https://rocksdb.org/">RocksDB</a>。RocksDB 是一种高效的嵌入式、持久化键值存储引擎。Flink 也支持插件式的自定义 state backend 进行状态存储。</li>
+<li><strong>精确一次语义</strong>：Flink 的 checkpoint 和故障恢复算法保证了故障发生后应用状态的一致性。因此，Flink 能够在应用程序发生故障时，对应用程序透明，不造成正确性的影响。</li>
+<li><strong>超大数据量状态</strong>：Flink 能够利用其异步以及增量式的 checkpoint 算法，存储数 TB 级别的应用状态。</li>
+<li><strong>可弹性伸缩的应用</strong>：Flink 能够通过在更多或更少的工作节点上对状态进行重新分布，支持有状态应用的分布式的横向伸缩</li>
+</ul>
+<h3 id="时间"><a href="#时间" class="headerlink" title="时间"></a>时间</h3><p>时间是流处理应用另一个重要的组成部分。因为事件总是在特定时间点发生，所以大多数的事件流都拥有事件本身所固有的时间语义。进一步而言，许多常见的流计算都基于时间语义，例如窗口聚合、会话计算、模式检测和基于时间的 join。流处理的一个重要方面是应用程序如何衡量时间，即区分事件时间（event-time）和处理时间（processing-time）。</p>
+<p>Flink 提供了丰富的时间语义支持。</p>
+<ul>
+<li><strong>事件时间模式</strong>：使用事件时间语义的流处理应用根据事件本身自带的时间戳进行结果的计算。因此，无论处理的是历史记录的事件还是实时的事件，事件时间模式的处理总能保证结果的准确性和一致性。</li>
+<li><strong>Watermark 支持</strong>：Flink 引入了 watermark 的概念，用以衡量事件时间进展。Watermark 也是一种平衡处理延时和完整性的灵活机制。</li>
+<li><strong>迟到数据处理</strong>：当以带有 watermark 的事件时间模式处理数据流时，在计算完成之后仍会有相关数据到达。这样的事件被称为迟到事件。Flink 提供了多种处理迟到数据的选项，例如将这些数据重定向到旁路输出（side output）或者更新之前完成计算的结果。</li>
+<li><strong>处理时间模式</strong>：除了事件时间模式，Flink 还支持处理时间语义。处理时间模式根据处理引擎的机器时钟触发计算，一般适用于有着严格的低延迟需求，并且能够容忍近似结果的流处理应用。</li>
+</ul>
+<h2 id="分层-API"><a href="#分层-API" class="headerlink" title="分层 API"></a>分层 API</h2><p>Flink 根据抽象程度分层，提供了三种不同的 API。每一种 API 在简洁性和表达力上有着不同的侧重，并且针对不同的应用场景。</p>
+<p><img src="https://flink.apache.org/img/api-stack.png" alt="flink分层API"></p>
+<h3 id="ProcessFunction"><a href="#ProcessFunction" class="headerlink" title="ProcessFunction"></a>ProcessFunction</h3><p><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-stable/dev/stream/operators/process_function.html">ProcessFunction</a> 是 Flink 所提供的最具表达力的接口。ProcessFunction 可以处理一或两条输入数据流中的单个事件或者归入一个特定窗口内的多个事件。它提供了对于时间和状态的细粒度控制。开发者可以在其中任意地修改状态，也能够注册定时器用以在未来的某一时刻触发回调函数。因此，你可以利用 ProcessFunction 实现许多<a target="_blank" rel="noopener" href="https://flink.apache.org/zh/usecases.html#eventDrivenApps">有状态的事件驱动应用</a>所需要的基于单个事件的复杂业务逻辑。</p>
+<h3 id="DataStream-API"><a href="#DataStream-API" class="headerlink" title="DataStream API"></a>DataStream API</h3><p><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-stable/dev/datastream_api.html">DataStream API</a> 为许多通用的流处理操作提供了处理原语。这些操作包括窗口、逐条记录的转换操作，在处理事件时进行外部数据库查询等。DataStream API 支持 Java 和 Scala 语言，预先定义了例如<code>map()</code>、<code>reduce()</code>、<code>aggregate()</code> 等函数。你可以通过扩展实现预定义接口或使用 Java、Scala 的 lambda 表达式实现自定义的函数。</p>
+<p>下面的代码示例展示了如何捕获会话时间范围内所有的点击流事件，并对每一次会话的点击量进行计数。</p>
+<h3 id="SQL-amp-Table-API"><a href="#SQL-amp-Table-API" class="headerlink" title="SQL &amp; Table API"></a>SQL &amp; Table API</h3><p>Flink 支持两种关系型的 API，<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-stable/dev/table/index.html">Table API 和 SQL</a>。这两个 API 都是批处理和流处理统一的 API，这意味着在无边界的实时数据流和有边界的历史记录数据流上，关系型 API 会以相同的语义执行查询，并产生相同的结果。Table API 和 SQL 借助了 <a target="_blank" rel="noopener" href="https://calcite.apache.org/">Apache Calcite</a> 来进行查询的解析，校验以及优化。它们可以与 DataStream 和 DataSet API 无缝集成，并支持用户自定义的标量函数，聚合函数以及表值函数。</p>
+<p>Flink 的关系型 API 旨在简化<a target="_blank" rel="noopener" href="https://flink.apache.org/zh/usecases.html#analytics">数据分析</a>、<a target="_blank" rel="noopener" href="https://flink.apache.org/zh/usecases.html#pipelines">数据流水线和 ETL 应用</a>的定义。</p>
+<p>下面的代码示例展示了如何使用 SQL 语句查询捕获会话时间范围内所有的点击流事件，并对每一次会话的点击量进行计数。此示例与上述 DataStream API 中的示例有着相同的逻辑。</p>
+<h1 id="0x2-运维"><a href="#0x2-运维" class="headerlink" title="0x2.运维"></a>0x2.运维</h1><p>Apache Flink 是一个针对无界和有界数据流进行有状态计算的框架。由于许多流应用程序旨在以最短的停机时间连续运行，因此流处理器必须提供出色的故障恢复能力，以及在应用程序运行期间进行监控和维护的工具。</p>
+<p>Apache Flink 非常注重流数据处理的可运维性。因此在这一小节中，我们将详细介绍 Flink 的故障恢复机制，并介绍其管理和监控应用的功能。</p>
+<h2 id="7-24小时稳定运行"><a href="#7-24小时稳定运行" class="headerlink" title="7 * 24小时稳定运行"></a>7 * 24小时稳定运行</h2><p>在分布式系统中，服务故障是常有的事，为了保证服务能够7*24小时稳定运行，像Flink这样的流处理器故障恢复机制是必须要有的。显然这就意味着，它(这类流处理器)不仅要能在服务出现故障时候能够重启服务，而且还要当故障发生时，保证能够持久化服务内部各个组件的当前状态，只有这样才能保证在故障恢复时候，服务能够继续正常运行，好像故障就没有发生过一样。</p>
+<p>Flink通过几下多种机制维护应用可持续运行及其一致性:</p>
+<ul>
+<li><strong>检查点的一致性</strong>: Flink的故障恢复机制是通过建立分布式应用服务状态一致性检查点实现的，当有故障产生时，应用服务会重启后，再重新加载上一次成功备份的状态检查点信息。结合可重放的数据源，该特性可保证<em>精确一次（exactly-once）</em>的状态一致性。</li>
+<li><strong>高效的检查点</strong>: 如果一个应用要维护一个TB级的状态信息，对此应用的状态建立检查点服务的资源开销是很高的，为了减小因检查点服务对应用的延迟性（SLAs服务等级协议）的影响，Flink采用异步及增量的方式构建检查点服务。</li>
+<li><strong>端到端的精确一次</strong>: Flink 为某些特定的存储支持了事务型输出的功能，及时在发生故障的情况下，也能够保证精确一次的输出。</li>
+<li><strong>集成多种集群管理服务</strong>: Flink已与多种集群管理服务紧密集成，如 <a target="_blank" rel="noopener" href="https://hadoop.apache.org/">Hadoop YARN</a>, <a target="_blank" rel="noopener" href="https://mesos.apache.org/">Mesos</a>, 以及 <a target="_blank" rel="noopener" href="https://kubernetes.io/">Kubernetes</a>。当集群中某个流程任务失败后，一个新的流程服务会自动启动并替代它继续执行。</li>
+<li><strong>内置高可用服务</strong>: Flink内置了为解决单点故障问题的高可用性服务模块，此模块是基于<a target="_blank" rel="noopener" href="https://zookeeper.apache.org/">Apache ZooKeeper</a> 技术实现的，<a target="_blank" rel="noopener" href="https://zookeeper.apache.org/">Apache ZooKeeper</a>是一种可靠的、交互式的、分布式协调服务组件。</li>
+</ul>
+<h2 id="Flink能够更方便地升级、迁移、暂停、恢复应用服务"><a href="#Flink能够更方便地升级、迁移、暂停、恢复应用服务" class="headerlink" title="Flink能够更方便地升级、迁移、暂停、恢复应用服务"></a>Flink能够更方便地升级、迁移、暂停、恢复应用服务</h2><p>驱动关键业务服务的流应用是经常需要维护的。比如需要修复系统漏洞，改进功能，或开发新功能。然而升级一个有状态的流应用并不是简单的事情，因为在我们为了升级一个改进后版本而简单停止当前流应用并重启时，我们还不能丢失掉当前流应用的所处于的状态信息。</p>
+<p>而Flink的 <em>Savepoint</em> 服务就是为解决升级服务过程中记录流应用状态信息及其相关难题而产生的一种唯一的、强大的组件。一个 Savepoint，就是一个应用服务状态的一致性快照，因此其与checkpoint组件的很相似，但是与checkpoint相比，Savepoint 需要手动触发启动，而且当流应用服务停止时，它并不会自动删除。Savepoint 常被应用于启动一个已含有状态的流服务，并初始化其（备份时）状态。Savepoint 有以下特点：</p>
+<ul>
+<li><strong>便于升级应用服务版本</strong>: Savepoint 常在应用版本升级时使用，当前应用的新版本更新升级时，可以根据上一个版本程序记录的 Savepoint 内的服务状态信息来重启服务。它也可能会使用更早的 Savepoint 还原点来重启服务，以便于修复由于有缺陷的程序版本导致的不正确的程序运行结果。</li>
+<li><strong>方便集群服务移植</strong>: 通过使用 Savepoint，流服务应用可以自由的在不同集群中迁移部署。</li>
+<li><strong>方便Flink版本升级</strong>: 通过使用 Savepoint，可以使应用服务在升级Flink时，更加安全便捷。</li>
+<li><strong>增加应用并行服务的扩展性</strong>: Savepoint 也常在增加或减少应用服务集群的并行度时使用。</li>
+<li><strong>便于A/B测试及假设分析场景对比结果</strong>: 通过把同一应用在使用不同版本的应用程序，基于同一个 Savepoint 还原点启动服务时，可以测试对比2个或多个版本程序的性能及服务质量。</li>
+<li><strong>暂停和恢复服务</strong>: 一个应用服务可以在新建一个 Savepoint 后再停止服务，以便于后面任何时间点再根据这个实时刷新的 Savepoint 还原点进行恢复服务。</li>
+<li><strong>归档服务</strong>: Savepoint 还提供还原点的归档服务，以便于用户能够指定时间点的 Savepoint 的服务数据进行重置应用服务的状态，进行恢复服务。</li>
+</ul>
+<h2 id="监控和控制应用服务"><a href="#监控和控制应用服务" class="headerlink" title="监控和控制应用服务"></a>监控和控制应用服务</h2><p>如其它应用服务一样，持续运行的流应用服务也需要监控及集成到一些基础设施资源管理服务中，例如一个组件的监控服务及日志服务等。监控服务有助于预测问题并提前做出反应，日志服务提供日志记录能够帮助追踪、调查、分析故障发生的根本原因。最后，便捷易用的访问控制应用服务运行的接口也是Flink的一个重要的亮点特征。</p>
+<p>Flink与许多常见的日志记录和监视服务集成得很好，并提供了一个REST API来控制应用服务和查询应用信息。具体表现如下：</p>
+<ul>
+<li><strong>Web UI方式</strong>: Flink提供了一个web UI来观察、监视和调试正在运行的应用服务。并且还可以执行或取消组件或任务的执行。</li>
+<li><strong>日志集成服务</strong>:Flink实现了流行的slf4j日志接口，并与日志框架<a target="_blank" rel="noopener" href="https://logging.apache.org/log4j/2.x/">log4j</a>或<a target="_blank" rel="noopener" href="https://logback.qos.ch/">logback</a>集成。</li>
+<li><strong>指标服务</strong>: Flink提供了一个复杂的度量系统来收集和报告系统和用户定义的度量指标信息。度量信息可以导出到多个报表组件服务，包括 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Java_Management_Extensions">JMX</a>, Ganglia, <a target="_blank" rel="noopener" href="https://graphiteapp.org/">Graphite</a>, <a target="_blank" rel="noopener" href="https://prometheus.io/">Prometheus</a>, <a target="_blank" rel="noopener" href="https://github.com/etsy/statsd">StatsD</a>, <a target="_blank" rel="noopener" href="https://www.datadoghq.com/">Datadog</a>, 和 <a target="_blank" rel="noopener" href="https://www.slf4j.org/">Slf4j</a>.</li>
+<li><strong>标准的WEB REST API接口服务</strong>: Flink提供多种REST API接口，有提交新应用程序、获取正在运行的应用程序的Savepoint服务信息、取消应用服务等接口。REST API还提供元数据信息和已采集的运行中或完成后的应用服务的指标信息。</li>
+</ul>
+<h1 id="0x3-组件"><a href="#0x3-组件" class="headerlink" title="0x3.组件"></a>0x3.组件</h1><p>Flink运行时架构主要包括四个不同的组件，它们会在运行流处理应用程序时协同工作：作业管理器（JobManager）、资源管理器（ResourceManager）、任务管理器（TaskManager），以及分发器（Dispatcher）。因为Flink是用Java和Scala实现的，所以所有组件都会运行在Java虚拟机上。每个组件的职责如下：</p>
+<h2 id="作业管理器（JobManager）"><a href="#作业管理器（JobManager）" class="headerlink" title="作业管理器（JobManager）"></a>作业管理器（JobManager）</h2><p>控制一个应用程序执行的主进程，也就是说，每个应用程序都会被一个不同的JobManager所控制执行。JobManager会先接收到要执行的应用程序，这个应用程序会包括：作业图（JobGraph）、逻辑数据流图（logical dataflow graph）和打包了所有的类、库和其它资源的JAR包。</p>
+<p>JobManager会把JobGraph转换成一个物理层面的数据流图，这个图被叫做“执行图”（ExecutionGraph），包含了所有可以并发执行的任务。</p>
+<p>JobManager会向资源管理器（ResourceManager）请求执行任务必要的资源，也就是任务管理器（TaskManager）上的插槽（slot）。</p>
+<p>一旦它获取到了足够的资源，就会将执行图分发到真正运行它们的TaskManager上。而在运行过程中，JobManager会负责所有需要中央协调的操作，比如说检查点（checkpoints）的协调。</p>
+<h2 id="资源管理器（ResourceManager）"><a href="#资源管理器（ResourceManager）" class="headerlink" title="资源管理器（ResourceManager）"></a>资源管理器（ResourceManager）</h2><p>主要负责管理任务管理器（TaskManager）的插槽（slot），TaskManger插槽是Flink中定义的处理资源单元。</p>
+<p>Flink为不同的环境和资源管理工具提供了不同资源管理器，比如YARN、Mesos、K8s，以及standalone部署。当JobManager申请插槽资源时，ResourceManager会将有空闲插槽的TaskManager分配给JobManager。</p>
+<p>如果ResourceManager没有足够的插槽来满足JobManager的请求，它还可以向资源提供平台发起会话，以提供启动TaskManager进程的容器。另外，ResourceManager还负责终止空闲的TaskManager，释放计算资源。</p>
+<p>(通信:Spark-netty框架,Flink-rpc框架)</p>
+<h2 id="任务管理器（TaskManager）"><a href="#任务管理器（TaskManager）" class="headerlink" title="任务管理器（TaskManager）"></a>任务管理器（TaskManager）</h2><p>Flink中的工作进程。通常在Flink中会有多个TaskManager运行，每一个TaskManager都包含了一定数量的插槽（slots）。</p>
+<p>插槽的数量限制了TaskManager能够执行的任务数量。</p>
+<p>启动之后，TaskManager会向资源管理器注册它的插槽；收到资源管理器的指令后，TaskManager就会将一个或者多个插槽提供给JobManager调用。</p>
+<p>JobManager就可以向插槽分配任务（tasks）来执行了。在执行过程中，一个TaskManager可以跟其它运行同一应用程序的TaskManager交换数据。</p>
+<h2 id="分发器（Dispatcher）"><a href="#分发器（Dispatcher）" class="headerlink" title="分发器（Dispatcher）"></a>分发器（Dispatcher）</h2><p>可以跨作业运行，它为应用提交提供了REST接口。</p>
+<p>当一个应用被提交执行时，分发器就会启动并将应用移交给一个JobManager。由于是REST接口，所以Dispatcher可以作为集群的一个HTTP接入点，这样就能够不受防火墙阻挡。</p>
+<p>Dispatcher也会启动一个Web UI，用来方便地展示和监控作业执行的信息。Dispatcher在架构中可能并不是必需的，这取决于应用提交运行的方式。</p>
+<h1 id="0x4-提交"><a href="#0x4-提交" class="headerlink" title="0x4.提交"></a>0x4.提交</h1><p>具体地，如果我们将Flink集群部署到YARN上，那么就会有如下的提交流程：</p>
+<h2 id="提交流程"><a href="#提交流程" class="headerlink" title="提交流程"></a>提交流程</h2><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/flink-yarn-job-mode%E6%8F%90%E4%BA%A4%E6%B5%81%E7%A8%8B.png" alt="Yarn-提交流程"></p>
+<p>Per-Job模式没有现成的slot</p>
+<p>(1) 当任务执行<code>1.SubmitJob</code>的时候,请求Yarn的ResourceManager去开一个新的YARN Application Master进程,这个进程包含一个JobManager线程和一个属于Flink Master的ResourceManager.<code>2.Start application 3.master with Flink master</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92%E5%9B%BE.png" alt="FlowGraph"></p>
+<p>(2) JobManager负责对任务进行切分,划分任务,然后根据任务去ResourceManager <code>4.Request Slots</code></p>
+<p>(3) RM向YarnRM请求资源,RM返回一个使用Container包装好的TaskManager <code>5.Start TaskManager containers</code></p>
+<p>(4) TaskManager向RM注册Slots <code>6.Register slots</code></p>
+<p>(5) 然后RM得到注册好的TaskManager之后,请求使用TaskManager<code>7.Resuest slot</code>,然后TaskManager <code>8.Offer slot</code> 给JobManager</p>
+<p>(6) JobManager执行任务<code>9.Execute task</code></p>
+<h2 id="TaskManager与Slots"><a href="#TaskManager与Slots" class="headerlink" title="TaskManager与Slots"></a>TaskManager与Slots</h2><p>Flink中每一个worker(TaskManager)都是一个<strong>JVM</strong>进程，它可能会在独立的线程上执行一个或多个subtask。</p>
+<p><strong>为什么要使用Slots</strong></p>
+<p>为了控制一个TaskManager能够运行多个task,使用slot隔离内存,一个worker至少有一个task slot。</p>
+<p>每个task slot表示TaskManager拥有资源的<strong>一个固定大小的子集</strong>。</p>
+<p><strong>Task Slot</strong></p>
+<p>Task Slot是静态的概念，是指TaskManager具有的并发执行能力，可以通过参数<code>taskmanager.numberOfTaskSlots</code>进行配置；</p>
+<p>而并行度parallelism是动态概念，即TaskManager运行程序时实际使用的并发能力，可以通过参数<code>parallelism.default</code>进行配置。</p>
+<h2 id="Slots与Slots共享组"><a href="#Slots与Slots共享组" class="headerlink" title="Slots与Slots共享组"></a>Slots与Slots共享组</h2><p>TaskManager 是一个 JVM 进程，并会以独立的线程来执行一个task。</p>
+<p>为了控制一个 TaskManager 能接受多少个 task，Flink 提出了 <em>Task Slot</em> 的概念，通过 <em>Task Slot</em> 来定义Flink 中的计算资源。</p>
+<p>solt 对TaskManager内存进行平均分配，每个solt内存都相同，加起来和等于TaskManager可用内存，但是仅仅对内存做了隔离，并没有对cpu进行隔离。</p>
+<p><strong>同一个JVM不同slots内部通信</strong></p>
+<p>而在同一个JVM进程中的task，可以共享TCP连接（基于多路复用）和心跳消息，可以减少数据的网络传输。也能共享一些数据结构，一定程度上减少了每个task的消耗。</p>
+<h2 id="共享组示例"><a href="#共享组示例" class="headerlink" title="共享组示例"></a>共享组示例</h2><p>共享组是将一个Slot的任务链截断,另起一个Slot,增加并行度与运行效率</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">public class Flink02_Wc_Groups &#123;
+    public static void main(String[] args) throws Exception &#123;
+
+        StreamExecutionEnvironment env &#x3D; StreamExecutionEnvironment.getExecutionEnvironment().setParallelism(1);
+
+        &#x2F;&#x2F;0x0 使用工具类从命令行获取参数
+        ParameterTool parameterTool &#x3D; ParameterTool.fromArgs(args);
+        String host &#x3D; parameterTool.get(&quot;host&quot;);
+        int port &#x3D; parameterTool.getInt(&quot;port&quot;);
+
+        &#x2F;&#x2F;0x1 获取端口数据
+        DataStreamSource&lt;String&gt; portDS &#x3D; env.socketTextStream(host, port);
+
+        &#x2F;&#x2F;0x2 处理数据计算wordCount
+        SingleOutputStreamOperator&lt;Tuple2&lt;String, Integer&gt;&gt; word2One &#x3D; portDS.flatMap(new FlatMapFunction&lt;String, Tuple2&lt;String, Integer&gt;&gt;() &#123;
+            @Override
+            public void flatMap(String s, Collector&lt;Tuple2&lt;String, Integer&gt;&gt; collector) throws Exception &#123;
+                String[] words &#x3D; s.split(&quot; &quot;);
+                for (String word : words) &#123;
+                    Tuple2&lt;String, Integer&gt; tuple2 &#x3D; new Tuple2&lt;&gt;(word, 1);
+                    collector.collect(tuple2);
+                &#125;
             &#125;
-            connection.close()
-          &#125;)
-      &#125;)
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="6-统计两分钟内广告点击量"><a href="#6-统计两分钟内广告点击量" class="headerlink" title="6.统计两分钟内广告点击量"></a>6.统计两分钟内广告点击量</h2><p>LastHourAdCountHandler</p>
-<p>说明：实际测试时，为了节省时间，统计的是2分钟内广告点击量</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">
-package com.atguigu.handler
+        &#125;).slotSharingGroup(&quot;group1&quot;);
 
-import java.text.SimpleDateFormat
-import java.util.Date
+        &#x2F;&#x2F;0x3 打印数据
+        KeyedStream&lt;Tuple2&lt;String, Integer&gt;, Tuple&gt; keyedOne &#x3D; word2One.keyBy(0);
+        SingleOutputStreamOperator&lt;Tuple2&lt;String, Integer&gt;&gt; one2Sum &#x3D; keyedOne.sum(1).slotSharingGroup(&quot;group2&quot;);
+        one2Sum.print().slotSharingGroup(&quot;group3&quot;);
 
-import com.atguigu.app.Ads_log
-import org.apache.spark.streaming.Minutes
-import org.apache.spark.streaming.dstream.DStream
+        &#x2F;&#x2F;0x4
+        env.execute();
 
-object LastHourAdCountHandler &#123;
-
-  &#x2F;&#x2F;时间格式化对象
-  private val sdf: SimpleDateFormat &#x3D; new SimpleDateFormat(&quot;HH:mm&quot;)
-
-  &#x2F;&#x2F; 过滤后的数据集，统计最近一小时(2分钟)广告分时点击总数
-  def getAdHourMintToCount(filterAdsLogDStream: DStream[Ads_log]): DStream[(String, List[(String, Long)])] &#x3D; &#123;
-
-    &#x2F;&#x2F;1.开窗 &#x3D;&gt; 时间间隔为1个小时 window()
-    val windowAdsLogDStream: DStream[Ads_log] &#x3D; filterAdsLogDStream.window(Minutes(2))
-
-    &#x2F;&#x2F;2.转换数据结构 ads_log &#x3D;&gt;((adid,hm),1L) map()
-    val adHmToOneDStream: DStream[((String, String), Long)] &#x3D; windowAdsLogDStream.map(adsLog &#x3D;&gt; &#123;
-
-      val hm: String &#x3D; sdf.format(new Date(adsLog.timestamp))
-
-      ((adsLog.adid, hm), 1L)
-    &#125;)
-
-    &#x2F;&#x2F;3.统计总数 ((adid,hm),1L)&#x3D;&gt;((adid,hm),sum) reduceBykey(_+_)
-    val adHmToCountDStream: DStream[((String, String), Long)] &#x3D; adHmToOneDStream.reduceByKey(_ + _)
-
-    &#x2F;&#x2F;4.转换数据结构 ((adid,hm),sum)&#x3D;&gt;(adid,(hm,sum)) map()
-    val adToHmCountDStream: DStream[(String, (String, Long))] &#x3D; adHmToCountDStream.map &#123; case ((adid, hm), count) &#x3D;&gt;
-      (adid, (hm, count))
     &#125;
-
-    &#x2F;&#x2F;5.按照adid分组 (adid,(hm,sum))&#x3D;&gt;(adid,Iter[(hm,sum),...]) groupByKey
-    adToHmCountDStream
-      .groupByKey()
-      .mapValues(iter &#x3D;&gt; iter.toList.sortWith(_._1 &lt; _._1))
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>我们简单使用Standalone-mode提交</strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">bin&#x2F;flink run \
+-c com.ecust.groups.Flink01_Wc_Groups \
+-p 2 \
+flink-core-1.0-SNAPSHOT.jar \
+--host hadoop102 
+--port 9999 \<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/slot%E5%85%B1%E4%BA%AB%E7%BB%84%E6%89%A7%E8%A1%8C%E8%AE%A1%E5%88%92.png" alt="Slot共享组执行计划"></p>
+<p>任务运行后的slot使用情况观察</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/slot%E5%85%B1%E4%BA%AB%E7%BB%84%E7%9A%84slot%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5.png" alt="slot共享组slot使用情况"></p>
+<h2 id="任务链"><a href="#任务链" class="headerlink" title="任务链"></a>任务链</h2><p>观察上述的执行图,一个小框就是一个任务链(可以有多个人subTask)</p>
+<p>Shuffle任务不能合并任务链</p>
+<p>能够合并的任务链</p>
+<ol>
+<li>one2One</li>
+<li>并行度相同</li>
+<li>同一个共享组</li>
+</ol>
+<p>将算子链接成task是非常有效的优化：它能减少线程之间的切换和基于缓存区的数据交换，在减少时延的同时提升吞吐量。链接的行为可以在编程API中进行指定。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E4%BB%BB%E5%8A%A1%E9%93%BE%E7%9A%84%E5%90%88%E5%B9%B6.jpg" alt="任务链的合并"></p>
 
                 
             </div>
@@ -1110,7 +691,7 @@ object LastHourAdCountHandler &#123;
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://fourgold.github.io/2021/01/04/Spark_SparkStreaming_Practice/">http://fourgold.github.io/2021/01/04/Spark_SparkStreaming_Practice/</a>
+                    <a href="http://fourgold.github.io/2020/05/21/Flink01_Introduction_and_Architecture/">http://fourgold.github.io/2020/05/21/Flink01_Introduction_and_Architecture/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -1148,8 +729,16 @@ object LastHourAdCountHandler &#123;
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/sparkStreaming/">
-                                    <span class="chip bg-color">sparkStreaming</span>
+                                <a href="/tags/flink/">
+                                    <span class="chip bg-color">flink</span>
+                                </a>
+                            
+                                <a href="/tags/structure/">
+                                    <span class="chip bg-color">structure</span>
+                                </a>
+                            
+                                <a href="/tags/procedure/">
+                                    <span class="chip bg-color">procedure</span>
                                 </a>
                             
                         </div>
@@ -1323,13 +912,13 @@ object LastHourAdCountHandler &#123;
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/01/04/Spark_SubmitSource/">
+                <a href="/2020/08/29/Spark_operator/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Spark_SubmitSource">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Spark_SparkOperator">
                         
-                        <span class="card-title">Spark_SubmitSource</span>
+                        <span class="card-title">Spark_SparkOperator</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1340,8 +929,57 @@ object LastHourAdCountHandler &#123;
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-04
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-08-29
                         </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spark/" class="post-category">
+                                    spark
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/operator/">
+                        <span class="chip bg-color">operator</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/04/29/Spark_Kernel/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Spark_Kernel">
+                        
+                        <span class="card-title">Spark_Kernel</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-29
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -1359,55 +997,6 @@ object LastHourAdCountHandler &#123;
                     
                     <a href="/tags/spark/">
                         <span class="chip bg-color">spark</span>
-                    </a>
-                    
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2021/01/04/Spark_SparkStreaming/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Spark_SparkStreaming">
-                        
-                        <span class="card-title">Spark_SparkStreaming</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-04
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/spark/" class="post-category">
-                                    spark
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/sparkstreaming/">
-                        <span class="chip bg-color">sparkstreaming</span>
                     </a>
                     
                 </div>

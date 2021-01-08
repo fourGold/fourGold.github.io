@@ -1190,8 +1190,8 @@ ssh-keygen -t rsa -C &quot;lijinxinok@163.com&quot;<span aria-hidden="true" clas
             tocSelector: '#toc-content',
             contentSelector: '#articleContent',
             headingsOffset: -($(window).height() * 0.4 - 45),
-            collapseDepth: Number('0'),
-            headingSelector: 'h2, h3, h4'
+            collapseDepth: Number('1'),
+            headingSelector: 'h1,h2, h3, h4'
         });
 
         // modify the toc link href to support Chinese.
@@ -1203,7 +1203,7 @@ ssh-keygen -t rsa -C &quot;lijinxinok@163.com&quot;<span aria-hidden="true" clas
 
         // modify the heading title id to support Chinese.
         i = 0;
-        $('#articleContent').children('h2, h3, h4').each(function () {
+        $('#articleContent').children('h1,h2, h3, h4').each(function () {
             $(this).attr('id', tocHeading + (++i));
         });
 
@@ -1335,7 +1335,7 @@ ssh-keygen -t rsa -C &quot;lijinxinok@163.com&quot;<span aria-hidden="true" clas
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">39.9k</span>&nbsp;字
+                class="white-color">45.9k</span>&nbsp;字
             
             
             

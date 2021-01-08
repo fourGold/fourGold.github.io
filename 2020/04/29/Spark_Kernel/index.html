@@ -1544,13 +1544,13 @@ The life-cycle of an endpoint is:
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/08/29/Spark_operator/">
+                <a href="/2020/05/21/Flink01_Introduction_and_Architecture/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Spark_SparkOperator">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="Flink01_Introduction_and_Architecture">
                         
-                        <span class="card-title">Spark_SparkOperator</span>
+                        <span class="card-title">Flink01_Introduction_and_Architecture</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1561,14 +1561,14 @@ The life-cycle of an endpoint is:
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-08-29
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-05-21
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/spark/" class="post-category">
-                                    spark
+                            <a href="/categories/flink/" class="post-category">
+                                    flink
                                 </a>
                             
                             
@@ -1578,8 +1578,16 @@ The life-cycle of an endpoint is:
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/operator/">
-                        <span class="chip bg-color">operator</span>
+                    <a href="/tags/flink/">
+                        <span class="chip bg-color">flink</span>
+                    </a>
+                    
+                    <a href="/tags/structure/">
+                        <span class="chip bg-color">structure</span>
+                    </a>
+                    
+                    <a href="/tags/procedure/">
+                        <span class="chip bg-color">procedure</span>
                     </a>
                     
                 </div>
@@ -1687,8 +1695,8 @@ The life-cycle of an endpoint is:
             tocSelector: '#toc-content',
             contentSelector: '#articleContent',
             headingsOffset: -($(window).height() * 0.4 - 45),
-            collapseDepth: Number('0'),
-            headingSelector: 'h2, h3, h4'
+            collapseDepth: Number('1'),
+            headingSelector: 'h1,h2, h3, h4'
         });
 
         // modify the toc link href to support Chinese.
@@ -1700,7 +1708,7 @@ The life-cycle of an endpoint is:
 
         // modify the heading title id to support Chinese.
         i = 0;
-        $('#articleContent').children('h2, h3, h4').each(function () {
+        $('#articleContent').children('h1,h2, h3, h4').each(function () {
             $(this).attr('id', tocHeading + (++i));
         });
 
@@ -1832,7 +1840,7 @@ The life-cycle of an endpoint is:
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">39.9k</span>&nbsp;字
+                class="white-color">45.9k</span>&nbsp;字
             
             
             
