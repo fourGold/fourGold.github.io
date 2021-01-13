@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Hadoop下的存储格式LZO, 觉浅">
+    <meta name="keywords" content="面试stage介绍, 觉浅">
     <meta name="description" content="Jinxin Li的个人博客">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Hadoop下的存储格式LZO | 觉浅</title>
+    <title>面试stage介绍 | 觉浅</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Hadoop下的存储格式LZO</h1>
+                    <h1 class="description center-align post-title">面试stage介绍</h1>
                 </div>
             </div>
         </div>
@@ -431,23 +431,14 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/lzo/">
-                                <span class="chip bg-color">lzo</span>
+                            <a href="/tags/interview/">
+                                <span class="chip bg-color">interview</span>
                             </a>
                         
                     </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/spark/" class="post-category">
-                                spark
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -456,7 +447,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-01-04
+                    2021-01-03
                 </div>
                 
 
@@ -465,7 +456,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    2.5k
                 </div>
                 
 
@@ -485,134 +476,428 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="Hadoop下的数据存储格式LZO"><a href="#Hadoop下的数据存储格式LZO" class="headerlink" title="Hadoop下的数据存储格式LZO"></a>Hadoop下的数据存储格式LZO</h1><h2 id="0x1-为什么要使用压缩技术"><a href="#0x1-为什么要使用压缩技术" class="headerlink" title="0x1 为什么要使用压缩技术?"></a>0x1 为什么要使用压缩技术?</h2><p>压缩技术能够有效减少底层存储系统(HDFS)读写字节数. 压缩提高了网络带宽和磁盘空间的效率</p>
-<p>MR中的场景 (I/O,网络数据传输,Shuffle,Merge)</p>
-<p>用CPU换I/O</p>
-<h2 id="0x2-流行压缩技术1-Snappy"><a href="#0x2-流行压缩技术1-Snappy" class="headerlink" title="0x2 流行压缩技术1-Snappy"></a>0x2 流行压缩技术1-Snappy</h2><p>高速压缩速度,合理的压缩率</p>
-<p>性能最高,但是不支持切片(split)</p>
-<h2 id="0x3-流行压缩技术2-Lzo-在这里重点说明"><a href="#0x3-流行压缩技术2-Lzo-在这里重点说明" class="headerlink" title="0x3 流行压缩技术2-Lzo[在这里重点说明]"></a>0x3 流行压缩技术2-Lzo[在这里重点说明]</h2><h3 id="3-1-概要"><a href="#3-1-概要" class="headerlink" title="3.1 概要"></a>3.1 概要</h3><p>Hadoop体系下支持Lzo,需要安装</p>
-<p>特点: 压缩/解压速度比较快,支持split</p>
-<h3 id="3-2-详解"><a href="#3-2-详解" class="headerlink" title="3.2 详解"></a>3.2 详解</h3><p>优点:压缩/解压缩速度也比较快,合理的压缩率,支持split,是Hadoop中比较流行的压缩格式,可以再Linux中安装lzop命令,使用方便</p>
-<p>缺点:压缩率比Gzip要低一些,Hadoop本身不支持,需要安装;在应用中对Lzo格式的文件需要做一些特殊处理(为了支持Split需要建立索引,还需要指定InputFormat为Lzo格式.</p>
-<p>应用场景:一个很大的文本文件,压缩之后还大于200M以上的可以考虑,而且单个文件越大,lzo优点越明显.</p>
-<p>看到这里肯定冒出几个问题</p>
-<h4 id="3-2-1-LZO的压缩速度快-快多少呢-如何跟其他的压缩格式相比"><a href="#3-2-1-LZO的压缩速度快-快多少呢-如何跟其他的压缩格式相比" class="headerlink" title="3.2.1 LZO的压缩速度快,快多少呢,如何跟其他的压缩格式相比?"></a>3.2.1 LZO的压缩速度快,快多少呢,如何跟其他的压缩格式相比?</h4><p>直接上数据</p>
-<table>
-<thead>
-<tr>
-<th>压缩格式</th>
-<th>算法</th>
-<th>文件扩展名</th>
-<th>是否可切分</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>DEFLATE</td>
-<td>DEFLATE</td>
-<td>.deflate</td>
-<td>否</td>
-</tr>
-<tr>
-<td>Gzip</td>
-<td>DEFLATE</td>
-<td>.gz</td>
-<td>否</td>
-</tr>
-<tr>
-<td>bzip2</td>
-<td>bzip2</td>
-<td>.bz2</td>
-<td>是</td>
-</tr>
-<tr>
-<td>==LZO==</td>
-<td>LZO</td>
-<td>.lzo</td>
-<td>是</td>
-</tr>
-<tr>
-<td>Snappy</td>
-<td>Snappy</td>
-<td>.snappy</td>
-<td>否</td>
-</tr>
-</tbody></table>
-<p>为了支持多种压缩/解压缩算法，Hadoop引入了编码/解码器，如下表所示：</p>
-<table>
-<thead>
-<tr>
-<th>压缩格式</th>
-<th>对应的编码/解码器</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>DEFLATE</td>
-<td>org.apache.hadoop.io.compress.DefaultCodec</td>
-</tr>
-<tr>
-<td>gzip</td>
-<td>org.apache.hadoop.io.compress.GzipCodec</td>
-</tr>
-<tr>
-<td>bzip2</td>
-<td>org.apache.hadoop.io.compress.BZip2Codec</td>
-</tr>
-<tr>
-<td>LZO</td>
-<td>com.hadoop.compression.lzo.LzopCodec</td>
-</tr>
-<tr>
-<td>Snappy</td>
-<td>org.apache.hadoop.io.compress.SnappyCodec</td>
-</tr>
-</tbody></table>
-<p>压缩性能的比较：</p>
-<table>
-<thead>
-<tr>
-<th>压缩算法</th>
-<th>原始文件大小</th>
-<th>压缩文件大小</th>
-<th>压缩速度</th>
-<th>解压速度</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>gzip</td>
-<td>8.3GB</td>
-<td>1.8GB</td>
-<td>17.5MB/s</td>
-<td>58MB/s</td>
-</tr>
-<tr>
-<td>bzip2</td>
-<td>8.3GB</td>
-<td>1.1GB</td>
-<td>2.4MB/s</td>
-<td>9.5MB/s</td>
-</tr>
-<tr>
-<td>LZO</td>
-<td>8.3GB</td>
-<td>2.9GB</td>
-<td>49.3MB/s</td>
-<td>74.6MB/s</td>
-</tr>
-</tbody></table>
-<h4 id="3-2-2-LZO的比较好用-在大数据体系中哪些地方可以使用-如何使用"><a href="#3-2-2-LZO的比较好用-在大数据体系中哪些地方可以使用-如何使用" class="headerlink" title="3.2.2 LZO的比较好用,在大数据体系中哪些地方可以使用,如何使用?"></a>3.2.2 LZO的比较好用,在大数据体系中哪些地方可以使用,如何使用?</h4><p>1.Hive建表中可以直接导入HDFS中lzo格式的数据(要想走计算引擎需要增加索引)</p>
-<p>2.Flume采集可以直接转换采集格式放入HDFS(hdfs sink)</p>
-<p>参数在这里不多赘余,上链接</p>
-<blockquote>
-<p><a target="_blank" rel="noopener" href="https://cwiki.apache.org/confluence/display/Hive/LanguageManual+LZO#space-menu-link-content">https://cwiki.apache.org/confluence/display/Hive/LanguageManual+LZO#space-menu-link-content</a></p>
-</blockquote>
-<h4 id="3-2-3-LZO为什么靠什么进行切片-为什么切片后能够被Driver进行Split-精"><a href="#3-2-3-LZO为什么靠什么进行切片-为什么切片后能够被Driver进行Split-精" class="headerlink" title="3.2.3 LZO为什么靠什么进行切片,为什么切片后能够被Driver进行Split[精]"></a>3.2.3 LZO为什么靠什么进行切片,为什么切片后能够被Driver进行Split[精]</h4><h2 id="0x4-文件存储格式-列存储的两种"><a href="#0x4-文件存储格式-列存储的两种" class="headerlink" title="0x4 文件存储格式(列存储的两种)"></a>0x4 文件存储格式(列存储的两种)</h2><p>(TEXTFILE 、SEQUENCEFILE、ORC、PARQUET)</p>
-<p>行存储跟列存储 Row layout/Column layout</p>
-<h3 id="4-1-ORC"><a href="#4-1-ORC" class="headerlink" title="4.1 ORC"></a>4.1 ORC</h3><p>Orc (Optimized Row Columnar)是Hive 0.11版里引入的新的存储格式。如下图所示可以看到每个Orc文件由1个或多个stripe组成，每个stripe一般为HDFS的块大小，每一个stripe包含多条记录，这些记录按照列进行独立存储，对应到Parquet中的row group的概念。每个Stripe里有三部分组成，分别是Index Data，Row Data，Stripe Footer</p>
-<h3 id="4-2-Parquent"><a href="#4-2-Parquent" class="headerlink" title="4.2 Parquent"></a>4.2 Parquent</h3><p>Parquet文件是以二进制方式存储的，所以是不可以直接读取的，文件中包括该文件的数据和元数据，因此Parquet格式文件是自解析的。</p>
-<p>（1）行组(Row Group)：每一个行组包含一定的行数，在一个HDFS文件中至少存储一个行组，类似于orc的stripe的概念。</p>
-<p>（2）列块(Column Chunk)：在一个行组中每一列保存在一个列块中，行组中的所有列连续的存储在这个行组文件中。一个列块中的值都是相同类型的，不同的列块可能使用不同的算法进行压缩。</p>
-<p>（3）页(Page)：每一个列块划分为多个页，一个页是最小的编码的单位，在同一个列块的不同页可能使用不同的编码方式。</p>
-<p>通常情况下，在存储Parquet数据的时候会按照Block大小设置行组的大小，由于一般情况下每一个Mapper任务处理数据的最小单位是一个Block，这样可以把每一个行组由一个Mapper任务处理，增大任务执行并行度。Parquet文件的格式。</p>
+                <h1 id="面试题目"><a href="#面试题目" class="headerlink" title="面试题目"></a>面试题目</h1><h2 id="1-SQL的谓词下推"><a href="#1-SQL的谓词下推" class="headerlink" title="1.SQL的谓词下推"></a>1.SQL的谓词下推</h2><p><strong>原理</strong></p>
+<p>不影响逻辑的情况下，尽量将过滤条件提前执行</p>
+<p><strong>谓词</strong></p>
+<p>sql中的where, spark API 中的 filter</p>
+<p><strong>目的</strong></p>
+<p>提前过滤部分数据，降低Join等一系列操作的数据量级，尽可能避免因数据倾斜导致程序性能问题</p>
+<p><strong>参数:PPD参数</strong></p>
+<p> hive.optimize.ppd=false</p>
+<ul>
+<li>Default Value: true</li>
+</ul>
+<p><strong>测试</strong></p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">select ename,dept_name 
+	from 
+E left outer join D on ( E.dept_id &#x3D; D.dept_id and E.eid&#x3D;&#39;HZ001&#39; and D.dept_id &#x3D; &#39;D001&#39;);</code></pre>
+<p><strong>结论</strong></p>
+<p>1、对于Join(Inner Join)、Full outer Join，条件写在on后面，还是where后面，性能上面没有区别；<br>2、对于Left outer Join ，右侧的表写在on后面、左侧的表写在where后面，性能上有提高；<br>3、对于Right outer Join，左侧的表写在on后面、右侧的表写在where后面，性能上有提高；</p>
+<h2 id="2-一个sql-join几张表能有几个stage"><a href="#2-一个sql-join几张表能有几个stage" class="headerlink" title="2.一个sql  join几张表能有几个stage"></a>2.一个sql  join几张表能有几个stage</h2><p><strong>实战分析</strong></p>
+<h3 id="2-1-启动hive-on-spark"><a href="#2-1-启动hive-on-spark" class="headerlink" title="2.1 启动hive on spark"></a>2.1 启动hive on spark</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">#1.启动hadoop集群
+myhadoop.sh start
+
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop102 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+48578 NameNode
+49300 JobHistoryServer
+48727 DataNode
+49114 NodeManager
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop103 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+25600 DataNode
+25819 ResourceManager
+25964 NodeManager
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop104 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+23125 DataNode
+23382 NodeManager
+23224 SecondaryNameNode
+
+#2.启动元数据库
+hive --service metastore
+
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop102 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+48578 NameNode
+49300 JobHistoryServer
+51399 RunJar #多了一个RunJar
+48727 DataNode
+49114 NodeManager
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop103 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+25600 DataNode
+25819 ResourceManager
+25964 NodeManager
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop104 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+23125 DataNode
+23382 NodeManager
+23224 SecondaryNameNode
+
+#3.启动hiveServer2
+hive --service hiveserver2
+
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop102 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+48578 NameNode
+53570 RunJar #hiveserver2
+49300 JobHistoryServer
+51399 RunJar #metadata
+48727 DataNode
+49114 NodeManager
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop103 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+25600 DataNode
+25819 ResourceManager
+25964 NodeManager
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop104 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+23125 DataNode
+23382 NodeManager
+23224 SecondaryNameNode
+
+#4.使用beeline客户端
+bin&#x2F;beeline -u jdbc:hive2:&#x2F;&#x2F;hadoop102:10000 -n atguigu
+
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop102 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+48578 NameNode
+53570 RunJar
+49300 JobHistoryServer
+51399 RunJar
+48727 DataNode
+56506 RunJar
+49114 NodeManager
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop103 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+25600 DataNode
+25819 ResourceManager
+25964 NodeManager
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop104 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+23125 DataNode
+23382 NodeManager
+23224 SecondaryNameNode #没有变化
+
+#5.退出beeline 使用DG连接</code></pre>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h4><p>启动两个<code>runJar</code>服务</p>
+<p>beeline客户端属于JDBC连接,但是没有进程</p>
+<h3 id="2-2加入测试用两个表并简单查询"><a href="#2-2加入测试用两个表并简单查询" class="headerlink" title="2.2加入测试用两个表并简单查询"></a>2.2加入测试用两个表并简单查询</h3><p>dept</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- dept
++--------------+-------------+-----------+
+| dept.depart  |   dept.id   | dept.loc  |
++--------------+-------------+-----------+
+| 10           | ACCOUNTING  | 1700      |
+| 20           | RESEARCH    | 1800      |
+| 30           | SALES       | 1900      |
+| 40           | OPERATIONS  | 1700      |
++--------------+-------------+-----------+</code></pre>
+<p>emp</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%93%E6%B5%8B%E8%AF%95emp%E8%A1%A8.png" alt="数据仓库测试emp表"></p>
+<p>需求1:查询表</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">select 
+       empno,
+       ename,
+       job,mgr,
+       hiredate,
+       sal,
+       comm,
+       deptno 
+from emp;</code></pre>
+<p>此时已经连接</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">jpsall
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop102 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+48578 NameNode
+53570 RunJar
+49300 JobHistoryServer
+51399 RunJar
+48727 DataNode
+49114 NodeManager
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop103 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+25600 DataNode
+25819 ResourceManager
+25964 NodeManager
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop104 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+23125 DataNode
+23382 NodeManager
+23224 SecondaryNameNode</code></pre>
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><p>简单查询类似于</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">select name from user;</code></pre>
+<p>不走spark任务,是hive与元数据跟 HDFS 交互</p>
+<h3 id="2-3-双表join测试"><a href="#2-3-双表join测试" class="headerlink" title="2.3 双表join测试"></a>2.3 双表join测试</h3><h4 id="需求"><a href="#需求" class="headerlink" title="需求"></a><strong>需求</strong></h4><p>根据员工表和部门表中的部门编号相等，查询员工编号、员工名称和部门名称；</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 文字分析 需求快速上手
+select 员工编号,员工名称,部门名称 
+from 员工表 
+	join 部门表 
+on 员工表.部门编号&#x3D;部门表.部门编号
+
+-- 具体sql
+select
+       e.empno,
+       e.ename,
+       d.depart,
+       d.id
+from
+     emp e
+         join
+    dept d
+        on e.deptno &#x3D; d.depart;</code></pre>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a><strong>分析</strong></h4><p>程序总计跑了41秒</p>
+<p>显然第一次跑任务时间长是由于spark在创建一个任务,但是具体详情,我去分析一下</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"># jpsall
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop102 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+48578 NameNode
+53570 RunJar
+49300 JobHistoryServer
+51399 RunJar
+48727 DataNode
+80441 YarnCoarseGrainedExecutorBackend #第一次任务多出 Executor进程
+49114 NodeManager
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop103 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+25600 DataNode
+25819 ResourceManager
+25964 NodeManager
+&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D; hadoop104 &#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;
+23125 DataNode
+23382 NodeManager
+23224 SecondaryNameNode
+27324 ApplicationMaster #第一次任务多出 Driver进程
+27711 YarnCoarseGrainedExecutorBackend #第一次任务多出 Executor进程</code></pre>
+<p>可以看出第一跑任务之后,spark在yarn资源上生成了三个进程</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">27324 ApplicationMaster #Driver
+80441 YarnCoarseGrainedExecutorBackend #Executor计算对象
+27711 YarnCoarseGrainedExecutorBackend #Executor</code></pre>
+<p>备注:关于Executor到底是对象还是进程,官网说进程,源码说对象,jps说进程不是这个,这个比较晕</p>
+<h4 id="yarn"><a href="#yarn" class="headerlink" title="yarn"></a><strong>yarn</strong></h4><p><strong>(1)任务号</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/Yarn%E7%9A%84%E8%BF%90%E8%A1%8C%E7%9A%84%E4%BB%BB%E5%8A%A1.png" alt="Yarn中运行的任务"></p>
+<p>Running Containers 3 (2个Executor,1个Driver),2个Executor,内存等都是spark的默认配置</p>
+<p><strong>(2)时间线</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E4%BB%BB%E5%8A%A1%E6%97%B6%E9%97%B4%E7%BA%BF.png" alt="AppMaster任务时间线"></p>
+<p>可以看见Driver与Executor创建时间</p>
+<p>同时发现,一个简单的两个表的join竟然运行了两个job,也就是代表了使用了两个行动算子</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">&#x2F;&#x2F;知识点归纳1 划分
+Application:初始化一个SparkContext即生成一个Application
+
+Job:一个Action算子就会生成一个Job
+
+Stage:Stage等于宽依赖(ShuffleDependency)+1
+
+Task:一个Stage阶段中,最后一个RDD分区个数就是Task的个数;
+
+&#x2F;&#x2F;知识点归纳2 行动算子
+	reduce()
+	collect()
+	count()
+	first()
+	take()
+	takeOrdered()
+	aggregate()
+	fold()
+	countByKey()
+	save()
+	foreach()</code></pre>
+<p><strong>DAG</strong></p>
+<p>第一个任务执行的DAG</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/Job1DAG.png" alt="DAG-JOB1"></p>
+<p>第二个任务执行的DAG</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/DAG-JOB2.png" alt="DAG-JOB2"></p>
+<h4 id="总结-2"><a href="#总结-2" class="headerlink" title="总结"></a>总结</h4><p>一个简单的join </p>
+<p>两个job </p>
+<p>每个job一个stage </p>
+<p>跑的都是map</p>
+<h3 id="2-4-三表join测试"><a href="#2-4-三表join测试" class="headerlink" title="2.4 三表join测试"></a>2.4 三表join测试</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">select
+       e.empno,
+       e.ename,
+       d.depart,
+       d.id,
+       l.loc
+from
+     emp e
+         join
+    dept d
+        on e.deptno &#x3D; d.depart
+join location l 
+    on d.loc &#x3D; l.loc;</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E4%B8%89%E8%A1%A8join%E7%9A%84%E6%B5%81%E6%B0%B4%E5%9B%BE.png" alt="三个join的任务流水图"></p>
+<h3 id="2-5-总结"><a href="#2-5-总结" class="headerlink" title="2.5 总结"></a>2.5 总结</h3><p>没有什么难度</p>
+<p>关键是架构问题,李晓磊老师根本不带我们分析内部优化与DAG执行计划,导致我们就懂几个业务SQL</p>
+<p>总而言之就是</p>
+<p>join=shuffle</p>
+<p>一个join就有两个阶段</p>
+<p>三表join有两个join有三个阶段,这很好理解</p>
+<p>但是在这里与spark本身不同的是,这个一个stage直接划分为一个job(推测可能与mr的划分机制有关)</p>
+<h3 id="2-6附加1"><a href="#2-6附加1" class="headerlink" title="2.6附加1"></a>2.6附加1</h3><p>DAG图之看到map阶段(mapPartitions算子)</p>
+<p>那reduce阶段怎么来的</p>
+<p>执行sql+where</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">select
+       e.empno,
+       e.ename,
+       d.depart,
+       d.id,
+       l.loc
+from
+     emp e
+         join
+    dept d
+        on e.deptno &#x3D; d.depart
+join location l
+    on d.loc &#x3D; l.loc
+where d.loc&#x3D;1800;</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E6%94%BE%E4%B8%8Awhere.png" alt="三表join放上where"></p>
+<p><strong>结论</strong></p>
+<p>放上where变成了两个job,两个stage..其中有个DAG不一样</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/Job5%E7%9A%84DAG.png" alt="JOB5的DAG"></p>
+<h3 id="2-7附加2"><a href="#2-7附加2" class="headerlink" title="2.7附加2"></a>2.7附加2</h3><p>运行一下真正的数仓sql看看吧</p>
+<p>需求:7连3</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">select
+    &#39;2020-06-16&#39;,
+    concat(date_add(&#39;2020-06-16&#39;,-6),&#39;_&#39;,&#39;2020-06-16&#39;),
+    count(*)
+from
+(
+    select mid_id
+    from
+    (
+        select mid_id
+        from
+        (
+            select 
+                mid_id,
+                date_sub(dt,rank) date_dif
+            from
+            (
+                select
+                    mid_id,
+                    dt,
+                    rank() over(partition by mid_id order by dt) rank
+                from dws_uv_detail_daycount
+                where dt&gt;&#x3D;date_add(&#39;2020-06-25&#39;,-6) and dt&lt;&#x3D;&#39;2020-06-25&#39;
+            )t1
+        )t2 
+        group by mid_id,date_dif
+        having count(*)&gt;&#x3D;3
+    )t3 
+    group by mid_id   --去重,防止一个设备有两段连续超过3天的日子
+)t4;
+</code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E4%B8%83%E8%BF%9E%E4%B8%89%E7%9A%84DAG%E4%B8%8Ejob.png" alt="七连三DAG与job"></p>
+<p>震惊了</p>
+<p>七连三只跑了一个job</p>
+<p>四个stage</p>
+<p>好久不看数仓,这个复杂程度日后在分析吧,或者你们谁有时间可以琢磨一下</p>
+<p>晓磊老师没讲这些东西确实可气</p>
+<p>网上的东西都不靠谱</p>
+<h1 id="源文件"><a href="#源文件" class="headerlink" title="源文件"></a>源文件</h1><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">show databases;
+create database test;
+
+create table if not exists dept(
+    depart int,
+    id string,
+    loc int)
+row format delimited fields terminated by &#39;\t&#39;;
+
+create table if not exists emp(
+    empno int,
+    ename string,
+    job string,
+    mgr int,
+    hiredate string,
+    sal double,
+    comm double,
+    deptno int)
+row format delimited fields terminated by &#39;\t&#39;;
+
+load data local inpath &#39;&#x2F;opt&#x2F;module&#x2F;data&#x2F;dept&#39; into table dept;
+
+load data local inpath &#39;&#x2F;opt&#x2F;module&#x2F;data&#x2F;emp&#39; into table emp;
+
+select * from emp;
+select * from dept;
+
+select
+       empno,
+       ename,
+       job,
+       mgr,
+       hiredate,
+       sal,
+       comm,
+       deptno
+from emp;
+
+select
+       e.empno,
+       e.ename,
+       d.depart,
+       d.id,
+       l.loc
+from
+     emp e
+         join
+    dept d
+        on e.deptno &#x3D; d.depart
+join location l
+    on d.loc &#x3D; l.loc
+where d.loc&#x3D;1800;
+
+create table if not exists location(
+    loc int,
+    loc_name string
+)
+row format delimited fields terminated by &#39;\t&#39;;
+
+load data local inpath &#39;&#x2F;opt&#x2F;module&#x2F;data&#x2F;location&#39; into table location;
+
+select * from location;
+
+location:
+1700	Beijing
+1800	London
+1900	Tokyo
+
+dept:
+10	ACCOUNTING	1700
+20	RESEARCH	1800
+30	SALES	1900
+40	OPERATIONS	1700
+
+emp：
+7369	SMITH	CLERK	7902	1980-12-17	800.00		20
+7499	ALLEN	SALESMAN	7698	1981-2-20	1600.00	300.00	30
+7521	WARD	SALESMAN	7698	1981-2-22	1250.00	500.00	30
+7566	JONES	MANAGER	7839	1981-4-2	2975.00		20
+7654	MARTIN	SALESMAN	7698	1981-9-28	1250.00	1400.00	30
+7698	BLAKE	MANAGER	7839	1981-5-1	2850.00		30
+7782	CLARK	MANAGER	7839	1981-6-9	2450.00		10
+7788	SCOTT	ANALYST	7566	1987-4-19	3000.00		20
+7839	KING	PRESIDENT		1981-11-17	5000.00		10
+7844	TURNER	SALESMAN	7698	1981-9-8	1500.00	0.00	30
+7876	ADAMS	CLERK	7788	1987-5-23	1100.00		20
+7900	JAMES	CLERK	7698	1981-12-3	950.00		30
+7902	FORD	ANALYST	7566	1981-12-3	3000.00		20
+7934	MILLER	CLERK	7782	1982-1-23	1300.00		10
+
+select
+    &#39;2020-06-16&#39;,
+    concat(date_add(&#39;2020-06-16&#39;,-6),&#39;_&#39;,&#39;2020-06-16&#39;),
+    count(*)
+from
+(
+    select mid_id
+    from
+    (
+        select mid_id
+        from
+        (
+            select
+                mid_id,
+                date_sub(dt,rank) date_dif
+            from
+            (
+                select
+                    mid_id,
+                    dt,
+                    rank() over(partition by mid_id order by dt) rank
+                from dws_uv_detail_daycount
+                where dt&gt;&#x3D;date_add(&#39;2020-06-25&#39;,-6) and dt&lt;&#x3D;&#39;2020-06-25&#39;
+            )t1
+        )t2
+        group by mid_id,date_dif
+        having count(*)&gt;&#x3D;3
+    )t3
+    group by mid_id   --去重,防止一个设备有两段连续超过3天的日子
+)t4;
+
+</code></pre>
 
                 
             </div>
@@ -629,7 +914,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="/about" rel="external nofollow noreferrer">Jinxin Li</a>
+                    <a href="/about" rel="external nofollow noreferrer">李金鑫</a>
                 </span>
             </div>
             <div class="reprint__type">
@@ -639,7 +924,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://fourgold.github.io/2021/01/04/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Hadoop%E4%B8%8B%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E6%A0%BC%E5%BC%8F/">http://fourgold.github.io/2021/01/04/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Hadoop%E4%B8%8B%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E6%A0%BC%E5%BC%8F/</a>
+                    <a href="http://fourgold.github.io/2021/01/03/Spark_HiveOnSpark/">http://fourgold.github.io/2021/01/03/Spark_HiveOnSpark/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -652,7 +937,7 @@
                     本博客所有文章除特別声明外，均采用
                     <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
                     许可协议。转载请注明来源
-                    <a href="/about" target="_blank">Jinxin Li</a>
+                    <a href="/about" target="_blank">李金鑫</a>
                     !
                 </span>
             </div>
@@ -677,8 +962,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/lzo/">
-                                    <span class="chip bg-color">lzo</span>
+                                <a href="/tags/interview/">
+                                    <span class="chip bg-color">interview</span>
                                 </a>
                             
                         </div>
@@ -848,18 +1133,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2021/01/04/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3Hadoop%E4%B8%8B%E7%9A%84%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%E6%A0%BC%E5%BC%8F/">
+                <a href="/2021/01/03/Spark_SparkSQL/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="Hadoop下的存储格式LZO">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Spark_SparkSQL">
                         
-                        <span class="card-title">Hadoop下的存储格式LZO</span>
+                        <span class="card-title">Spark_SparkSQL</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -869,9 +1153,9 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-04
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-03
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -884,12 +1168,11 @@
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/lzo/">
-                        <span class="chip bg-color">lzo</span>
+                    <a href="/tags/sparkSQL/">
+                        <span class="chip bg-color">sparkSQL</span>
                     </a>
                     
                 </div>
@@ -903,13 +1186,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/01/04/%E7%B4%AF%E5%8A%A0%E5%99%A8%E4%B8%8E%E5%88%86%E5%8C%BA%E5%99%A8%E6%80%BB%E7%BB%93/">
+                <a href="/2020/12/28/Jetbrains%E7%B3%BB%E5%88%97%E4%BA%A7%E5%93%81%E9%87%8D%E7%BD%AE%E8%AF%95%E7%94%A8%E6%96%B9%E6%B3%95/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Spark_累加器与分区器">
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Jetbrains系列产品重置试用方法">
                         
-                        <span class="card-title">Spark_累加器与分区器</span>
+                        <span class="card-title">Jetbrains系列产品重置试用方法</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -920,14 +1203,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-04
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-28
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/spark/" class="post-category">
-                                    spark
+                            <a href="/categories/tips/" class="post-category">
+                                    tips
                                 </a>
                             
                             
@@ -937,8 +1220,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/spark/">
-                        <span class="chip bg-color">spark</span>
+                    <a href="/tags/idea/">
+                        <span class="chip bg-color">idea</span>
                     </a>
                     
                 </div>
