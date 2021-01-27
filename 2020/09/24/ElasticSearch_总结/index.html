@@ -1,0 +1,1732 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="ElasticSearch的学习总结(包含API), 觉浅">
+    <meta name="description" content="Jinxin Li的个人博客">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>ElasticSearch的学习总结(包含API) | 觉浅</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">觉浅</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">觉浅</div>
+        <div class="logo-desc">
+            
+            Jinxin Li的个人博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="http://github.com/fourgold/" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="http://github.com/fourgold/" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">ElasticSearch的学习总结(包含API)</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-09-24
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    2.6k
+                </div>
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h2 id="ElasticSearch-总结"><a href="#ElasticSearch-总结" class="headerlink" title="ElasticSearch_总结"></a>ElasticSearch_总结</h2><h2 id="1-lucene"><a href="#1-lucene" class="headerlink" title="1.lucene"></a>1.lucene</h2><p>lucene，就是一个jar包，里面包含了封装好的各种建立倒排索引，以及进行搜索的代码，包括各种算法。我们就用java开发的时候，引入lucene jar，然后基于lucene的api进行去进行开发就可以了。</p>
+<h2 id="2-倒排索引"><a href="#2-倒排索引" class="headerlink" title="2.倒排索引"></a>2.倒排索引</h2><p>可以看到 Lucene 为倒排索引(Term Dictionary)部分又增加一层Term Index结构，用于快速定位，而这Term Index是缓存在内存中的，但MySQL的B+tree不在内存中，所以整体来看ES速度更快，但同时也更消耗资源（内存、磁盘）。</p>
+<h2 id="3-B-tree"><a href="#3-B-tree" class="headerlink" title="3.B+tree"></a>3.B+tree</h2><p>是B-Tree的改进版本，同时也是数据库索引索引所采用的存储结构。数据都在叶子节点上，并且增加了顺序访问指针，每个叶子节点都指向相邻的叶子节点的地址。相比B-Tree来说，进行范围查找时只需要查找两个节点，进行遍历即可。而B-Tree需要获取所有节点，相比之下B+Tree效率更高。（排序查找算法系统的学习，可以在Java知音公众号回复“排序算法聚合”）</p>
+<p>MySQL使用的B+tree   是B-Tree的改进版本，同时也是数据库索引索引所采用的存储结构。数据都在叶子节点上，并且增加了顺序访问指针，每个叶子节点都指向相邻的叶子节点的地址。相比B-Tree来说，进行范围查找时只需要查找两个节点，进行遍历即可。而B-Tree需要获取所有节点，相比之下B+Tree效率更高。（排序查找算法系统的学习，可以在Java知音公众号回复“排序算法聚合”）</p>
+<h2 id="3-Elasticsearch核心概念"><a href="#3-Elasticsearch核心概念" class="headerlink" title="3.Elasticsearch核心概念"></a>3.Elasticsearch核心概念</h2><h3 id="3-1近实时"><a href="#3-1近实时" class="headerlink" title="3.1近实时"></a>3.1近实时</h3><p>近实时，两个意思，从写入数据到数据可以被搜索到有一个小延迟（大概1秒）；基于es执行搜索和分析可以达到秒级。</p>
+<h3 id="3-2Cluster（集群）"><a href="#3-2Cluster（集群）" class="headerlink" title="3.2Cluster（集群）"></a>3.2Cluster（集群）</h3><p>集群包含多个节点，每个节点属于哪个集群是通过一个配置（集群名称，默认是elasticsearch）来决定的，对于中小型应用来说，刚开始一个集群就一个节点很正常</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#cluster.name
+#-----------------------------------------------
+#1 如果要配置集群需要两个节点上的elasticsearch配置的cluster.name相同，都启动可以自动组成集群，这里如果不改cluster.name则默认是cluster.name&#x3D;my-application
+#2 nodename随意取但是集群内的各节点不能相同
+#3 修改后的每行前面不能有空格，修改后的“：”后面必须有一个空格<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-3Node（节点）"><a href="#3-3Node（节点）" class="headerlink" title="3.3Node（节点）"></a>3.3Node（节点）</h3><p>集群中的一个节点，节点也有一个名称（默认是随机分配的），节点名称很重要（在执行运维管理操作的时候），默认节点会去加入一个名称为“elasticsearch”的集群，如果直接启动一堆节点，那么它们会自动组成一个elasticsearch集群，当然一个节点也可以组成一个elasticsearch集群。</p>
+<h3 id="3-4Index（索引-数据库）"><a href="#3-4Index（索引-数据库）" class="headerlink" title="3.4Index（索引-数据库）"></a>3.4Index（索引-数据库）</h3><p>索引包含一堆有相似结构的文档数据，比如可以有一个客户索引，商品分类索引，订单索引，索引有一个名称。一个index包含很多document，一个index就代表了一类类似的或者相同的document。比如说建立一个product index，商品索引，里面可能就存放了所有的商品数据，所有的商品document。</p>
+<h3 id="3-5Type（类型-表）"><a href="#3-5Type（类型-表）" class="headerlink" title="3.5Type（类型-表）"></a>3.5Type（类型-表）</h3><p>6.0版本之前每个索引里都可以有多个type；</p>
+<p>6.0版本之后每个索引里面只能有一个Type，一般使用_doc代替了。</p>
+<p>商品index，里面存放了所有的商品数据，商品document</p>
+<p>商品type：product_id，product_name，product_desc，category_id，category_name，service_period</p>
+<p>每一个type里面，都会包含一堆document</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
+  <span class="token property">"product_id"</span><span class="token operator">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span>
+  <span class="token property">"product_name"</span><span class="token operator">:</span> <span class="token string">"长虹电视机"</span><span class="token punctuation">,</span>
+  <span class="token property">"product_desc"</span><span class="token operator">:</span> <span class="token string">"4k高清"</span><span class="token punctuation">,</span>
+  <span class="token property">"category_id"</span><span class="token operator">:</span> <span class="token string">"3"</span><span class="token punctuation">,</span>
+  <span class="token property">"category_name"</span><span class="token operator">:</span> <span class="token string">"电器"</span><span class="token punctuation">,</span>
+  <span class="token property">"service_period"</span><span class="token operator">:</span> <span class="token string">"1年"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-6Document（文档-行）"><a href="#3-6Document（文档-行）" class="headerlink" title="3.6Document（文档-行）"></a>3.6Document（文档-行）</h3><p>文档是ES中的最小数据单元，一个document可以是一条客户数据，一条商品分类数据，一条订单数据，通常用JSON数据结构表示，每个index下的type中，都可以去存储多个document。</p>
+<h3 id="3-7Field（字段-列）"><a href="#3-7Field（字段-列）" class="headerlink" title="3.7Field（字段-列）"></a>3.7Field（字段-列）</h3><p>一个document里面有多个field，每个field就是一个数据字段。</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json">#product document
+<span class="token punctuation">&#123;</span>
+  <span class="token property">"product_id"</span><span class="token operator">:</span> <span class="token string">"1"</span><span class="token punctuation">,</span>
+  <span class="token property">"product_name"</span><span class="token operator">:</span> <span class="token string">"高露洁牙膏"</span><span class="token punctuation">,</span>
+  <span class="token property">"product_desc"</span><span class="token operator">:</span> <span class="token string">"高效美白"</span><span class="token punctuation">,</span>
+  <span class="token property">"category_id"</span><span class="token operator">:</span> <span class="token string">"2"</span><span class="token punctuation">,</span>
+  <span class="token property">"category_name"</span><span class="token operator">:</span> <span class="token string">"日化用品"</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-8Mapping（映射-约束）"><a href="#3-8Mapping（映射-约束）" class="headerlink" title="3.8Mapping（映射-约束）"></a>3.8Mapping（映射-约束）</h3><p>数据如何存放到索引对象上，需要有一个映射配置，包括：数据类型、是否存储、是否分词等。</p>
+<p>Mapping用来定义Document中每个字段的类型，即所使用的分词器、是否索引等属性，非常关键等。</p>
+<h3 id="3-9ElasticSearch与数据库的类比"><a href="#3-9ElasticSearch与数据库的类比" class="headerlink" title="3.9ElasticSearch与数据库的类比"></a>3.9ElasticSearch与数据库的类比</h3><table>
+<thead>
+<tr>
+<th>关系型数据库（比如Mysql）</th>
+<th>非关系型数据库（Elasticsearch）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数据库Database</td>
+<td>索引Index</td>
+</tr>
+<tr>
+<td>表Table</td>
+<td>类型Type(6.0版本之后在一个索引下面只能有一个，7.0版本之后取消了Type)</td>
+</tr>
+<tr>
+<td>数据行Row</td>
+<td>文档Document(JSON格式)</td>
+</tr>
+<tr>
+<td>数据列Column</td>
+<td>字段Field</td>
+</tr>
+<tr>
+<td>约束 Schema</td>
+<td>映射Mapping</td>
+</tr>
+</tbody></table>
+<h3 id="3-10ElasticSearch存入数据和搜索数据机制"><a href="#3-10ElasticSearch存入数据和搜索数据机制" class="headerlink" title="3.10ElasticSearch存入数据和搜索数据机制"></a>3.10ElasticSearch存入数据和搜索数据机制</h3><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/es%E7%B4%A2%E5%BC%95.png" alt="ElasticSearch索引结构"></p>
+<p>1）索引对象（blog=index）：存储数据的表结构，任何搜索数据，存放在索引对象上 。</p>
+<p>2）映射（mapping）：数据如何存放到索引对象上，需要有一个映射配置， 包括：数据类型、是否存储、是否分词等。</p>
+<p>3）文档（document）：一条数据记录，存在索引对象上。</p>
+<p>4）文档类型：一个索引对象，存放多种类型数据，数据用文档类型进行标识。</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4.总结"></a>4.总结</h2><p>总而言之 搜索是把所有数据进行json格式化,格式化的方法使用Mapping映射约束成json文件,然后赋予Docid,然后通过倒排索引的方法将字段提取出来,提供 索引(Docid结构)</p>
+<h2 id="5-代码"><a href="#5-代码" class="headerlink" title="5.代码"></a>5.代码</h2><pre class="line-numbers language-jsx" data-language="jsx"><code class="language-jsx">#查看元数据信息
+<span class="token constant">GET</span> _cat<span class="token operator">/</span>nodes
+<span class="token constant">GET</span> _cat<span class="token operator">/</span>health
+<span class="token constant">GET</span> _cat<span class="token operator">/</span>indices
+<span class="token constant">GET</span> _cat<span class="token operator">/</span>master
+
+#手动创建Mapping
+<span class="token constant">PUT</span> student
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"mappings"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"_doc"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+      <span class="token string">"properties"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+        <span class="token string">"stu_id"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+          <span class="token string">"type"</span><span class="token operator">:</span><span class="token string">"keyword"</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token string">"name"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+          <span class="token string">"type"</span><span class="token operator">:</span><span class="token string">"text"</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token string">"gender"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+          <span class="token string">"type"</span><span class="token operator">:</span><span class="token string">"boolean"</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token string">"birth"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+          <span class="token string">"type"</span><span class="token operator">:</span><span class="token string">"date"</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+#查看Mapping信息
+<span class="token constant">GET</span> student<span class="token operator">/</span>_mapping
+
+#使用<span class="token constant">PUT</span>方式向student索引中插入数据<span class="token operator">:</span>幂等操作
+<span class="token constant">PUT</span> student<span class="token operator">/</span>_doc<span class="token operator">/</span><span class="token number">1001</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"stu_id"</span><span class="token operator">:</span><span class="token string">"1111"</span><span class="token punctuation">,</span>
+  <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"张三"</span><span class="token punctuation">,</span>
+  <span class="token string">"gender"</span><span class="token operator">:</span><span class="token boolean">false</span><span class="token punctuation">,</span>
+  <span class="token string">"birth"</span><span class="token operator">:</span><span class="token string">"2020-12-05"</span>
+<span class="token punctuation">&#125;</span>
+
+#插入错误类型的数据
+<span class="token constant">PUT</span> student<span class="token operator">/</span>_doc<span class="token operator">/</span><span class="token number">1002</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"stu_id"</span><span class="token operator">:</span><span class="token string">"2222"</span><span class="token punctuation">,</span>
+  <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"李四"</span><span class="token punctuation">,</span>
+  <span class="token string">"gender"</span><span class="token operator">:</span><span class="token string">"aaaa"</span><span class="token punctuation">,</span>
+  <span class="token string">"birth"</span><span class="token operator">:</span><span class="token string">"2020-12-05"</span>
+<span class="token punctuation">&#125;</span>
+
+#使用<span class="token constant">POST</span>方式向student索引中插入数据
+<span class="token constant">POST</span> student<span class="token operator">/</span>_doc
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"stu_id"</span><span class="token operator">:</span><span class="token string">"2222"</span><span class="token punctuation">,</span>
+  <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"李四"</span><span class="token punctuation">,</span>
+  <span class="token string">"gender"</span><span class="token operator">:</span><span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token string">"birth"</span><span class="token operator">:</span><span class="token string">"2020-12-05"</span>
+<span class="token punctuation">&#125;</span>
+
+#查询索引数据
+<span class="token constant">GET</span> student<span class="token operator">/</span>_search
+
+<span class="token function">#自动创建Mapping</span><span class="token punctuation">(</span>直接向一个不存在的Index中插入数据即可<span class="token punctuation">)</span>
+<span class="token constant">PUT</span> student1<span class="token operator">/</span>_doc<span class="token operator">/</span><span class="token number">1001</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"stu_id"</span><span class="token operator">:</span><span class="token number">1111</span><span class="token punctuation">,</span>
+  <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"张三"</span><span class="token punctuation">,</span>
+  <span class="token string">"gender"</span><span class="token operator">:</span><span class="token boolean">false</span><span class="token punctuation">,</span>
+  <span class="token string">"birth"</span><span class="token operator">:</span><span class="token string">"2020-12-05"</span>
+<span class="token punctuation">&#125;</span>
+
+#查询自动创建Mapping的映射信息
+<span class="token constant">GET</span> student1<span class="token operator">/</span>_mapping
+
+<span class="token function">#查看keyWord类型分词结果</span><span class="token punctuation">(</span>报错<span class="token punctuation">,</span>不分词<span class="token punctuation">)</span>
+<span class="token constant">GET</span> _analyze
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"keyword"</span><span class="token operator">:</span><span class="token string">"我是程序员"</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token function">#查看Text类型分词结果</span><span class="token punctuation">(</span>将汉字独立拆开<span class="token punctuation">)</span>
+<span class="token constant">GET</span> _analyze
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"text"</span><span class="token operator">:</span><span class="token string">"我是程序员"</span>
+<span class="token punctuation">&#125;</span>
+
+#查看使用<span class="token constant">IK</span>分词器之后的分词效果
+<span class="token constant">GET</span> _analyze
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"analyzer"</span><span class="token operator">:</span> <span class="token string">"ik_smart"</span><span class="token punctuation">,</span>
+  <span class="token string">"text"</span><span class="token operator">:</span><span class="token string">"我是程序员"</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token constant">GET</span> _analyze
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"analyzer"</span><span class="token operator">:</span> <span class="token string">"ik_max_word"</span><span class="token punctuation">,</span>
+  <span class="token string">"text"</span><span class="token operator">:</span><span class="token string">"我是程序员"</span>
+<span class="token punctuation">&#125;</span>
+
+#创建Index
+<span class="token constant">PUT</span> stu1
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"mappings"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"_doc"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+      <span class="token string">"properties"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+        <span class="token string">"stu_id"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+          <span class="token string">"type"</span><span class="token operator">:</span><span class="token string">"keyword"</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token string">"name"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+          <span class="token string">"type"</span><span class="token operator">:</span><span class="token string">"keyword"</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token string">"class_id"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+          <span class="token string">"type"</span><span class="token operator">:</span><span class="token string">"integer"</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token string">"gender"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+          <span class="token string">"type"</span><span class="token operator">:</span><span class="token string">"text"</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token string">"age"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+          <span class="token string">"type"</span><span class="token operator">:</span><span class="token string">"integer"</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token string">"favo1"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+          <span class="token string">"type"</span><span class="token operator">:</span><span class="token string">"keyword"</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token string">"favo2"</span><span class="token operator">:</span><span class="token punctuation">&#123;</span>
+          <span class="token string">"type"</span><span class="token operator">:</span><span class="token string">"text"</span><span class="token punctuation">,</span>
+          <span class="token string">"analyzer"</span><span class="token operator">:</span> <span class="token string">"ik_max_word"</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+#插入测试数据
+<span class="token constant">PUT</span> stu1<span class="token operator">/</span>_doc<span class="token operator">/</span><span class="token number">1001</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"stu_id"</span><span class="token operator">:</span><span class="token string">"1111"</span><span class="token punctuation">,</span>
+  <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"国亮"</span><span class="token punctuation">,</span>
+  <span class="token string">"class_id"</span><span class="token operator">:</span><span class="token string">"0720"</span><span class="token punctuation">,</span>
+  <span class="token string">"gender"</span><span class="token operator">:</span><span class="token string">"male"</span><span class="token punctuation">,</span>
+  <span class="token string">"age"</span><span class="token operator">:</span><span class="token number">18</span><span class="token punctuation">,</span>
+  <span class="token string">"favo1"</span><span class="token operator">:</span><span class="token string">"唱歌跳舞,乒乓球"</span><span class="token punctuation">,</span>
+  <span class="token string">"favo2"</span><span class="token operator">:</span><span class="token string">"唱歌跳舞,乒乓球"</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token constant">PUT</span> stu1<span class="token operator">/</span>_doc<span class="token operator">/</span><span class="token number">1002</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"stu_id"</span><span class="token operator">:</span><span class="token string">"2222"</span><span class="token punctuation">,</span>
+  <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"王斌"</span><span class="token punctuation">,</span>
+  <span class="token string">"class_id"</span><span class="token operator">:</span><span class="token string">"0720"</span><span class="token punctuation">,</span>
+  <span class="token string">"gender"</span><span class="token operator">:</span><span class="token string">"male"</span><span class="token punctuation">,</span>
+  <span class="token string">"age"</span><span class="token operator">:</span><span class="token number">3</span><span class="token punctuation">,</span>
+  <span class="token string">"favo1"</span><span class="token operator">:</span><span class="token string">"睡觉,做梦,梦游"</span><span class="token punctuation">,</span>
+  <span class="token string">"favo2"</span><span class="token operator">:</span><span class="token string">"睡觉,做梦,梦游"</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token constant">PUT</span> stu1<span class="token operator">/</span>_doc<span class="token operator">/</span><span class="token number">1003</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"stu_id"</span><span class="token operator">:</span><span class="token string">"3333"</span><span class="token punctuation">,</span>
+  <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"班长"</span><span class="token punctuation">,</span>
+  <span class="token string">"class_id"</span><span class="token operator">:</span><span class="token string">"0720"</span><span class="token punctuation">,</span>
+  <span class="token string">"gender"</span><span class="token operator">:</span><span class="token string">"female"</span><span class="token punctuation">,</span>
+  <span class="token string">"age"</span><span class="token operator">:</span><span class="token number">17</span><span class="token punctuation">,</span>
+  <span class="token string">"favo1"</span><span class="token operator">:</span><span class="token string">"抽烟,喝酒,烫头,羽毛球"</span><span class="token punctuation">,</span>
+  <span class="token string">"favo2"</span><span class="token operator">:</span><span class="token string">"抽烟,喝酒,烫头,羽毛球"</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token constant">PUT</span> stu1<span class="token operator">/</span>_doc<span class="token operator">/</span><span class="token number">1004</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"stu_id"</span><span class="token operator">:</span><span class="token string">"4444"</span><span class="token punctuation">,</span>
+  <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"文康"</span><span class="token punctuation">,</span>
+  <span class="token string">"class_id"</span><span class="token operator">:</span><span class="token string">"0720"</span><span class="token punctuation">,</span>
+  <span class="token string">"gender"</span><span class="token operator">:</span><span class="token string">"male"</span><span class="token punctuation">,</span>
+  <span class="token string">"age"</span><span class="token operator">:</span><span class="token number">60</span><span class="token punctuation">,</span>
+  <span class="token string">"favo1"</span><span class="token operator">:</span><span class="token string">"太极,广场舞,闪电舞"</span><span class="token punctuation">,</span>
+  <span class="token string">"favo2"</span><span class="token operator">:</span><span class="token string">"太极,广场舞,闪电舞"</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token constant">PUT</span> stu1<span class="token operator">/</span>_doc<span class="token operator">/</span><span class="token number">1005</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"stu_id"</span><span class="token operator">:</span><span class="token string">"5555"</span><span class="token punctuation">,</span>
+  <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"加明"</span><span class="token punctuation">,</span>
+  <span class="token string">"class_id"</span><span class="token operator">:</span><span class="token string">"0720"</span><span class="token punctuation">,</span>
+  <span class="token string">"gender"</span><span class="token operator">:</span><span class="token string">"male"</span><span class="token punctuation">,</span>
+  <span class="token string">"age"</span><span class="token operator">:</span><span class="token number">22</span><span class="token punctuation">,</span>
+  <span class="token string">"favo1"</span><span class="token operator">:</span><span class="token string">"蹦迪,大保健,洗脚"</span><span class="token punctuation">,</span>
+  <span class="token string">"favo2"</span><span class="token operator">:</span><span class="token string">"蹦迪,大保健,洗脚"</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token constant">PUT</span> stu1<span class="token operator">/</span>_doc<span class="token operator">/</span><span class="token number">1006</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"stu_id"</span><span class="token operator">:</span><span class="token string">"6666"</span><span class="token punctuation">,</span>
+  <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"张小芳"</span><span class="token punctuation">,</span>
+  <span class="token string">"class_id"</span><span class="token operator">:</span><span class="token string">"0720"</span><span class="token punctuation">,</span>
+  <span class="token string">"gender"</span><span class="token operator">:</span><span class="token string">"female"</span><span class="token punctuation">,</span>
+  <span class="token string">"age"</span><span class="token operator">:</span><span class="token number">24</span><span class="token punctuation">,</span>
+  <span class="token string">"favo1"</span><span class="token operator">:</span><span class="token string">"来,手机交一下,胸卡口罩戴起来"</span><span class="token punctuation">,</span>
+  <span class="token string">"favo2"</span><span class="token operator">:</span><span class="token string">"来,手机交一下,胸卡口罩戴起来"</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token constant">PUT</span> stu1<span class="token operator">/</span>_doc<span class="token operator">/</span><span class="token number">1007</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"stu_id"</span><span class="token operator">:</span><span class="token string">"7777"</span><span class="token punctuation">,</span>
+  <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"马丁"</span><span class="token punctuation">,</span>
+  <span class="token string">"class_id"</span><span class="token operator">:</span><span class="token string">"0523"</span><span class="token punctuation">,</span>
+  <span class="token string">"gender"</span><span class="token operator">:</span><span class="token string">"male"</span><span class="token punctuation">,</span>
+  <span class="token string">"age"</span><span class="token operator">:</span><span class="token number">70</span><span class="token punctuation">,</span>
+  <span class="token string">"favo1"</span><span class="token operator">:</span><span class="token string">"_省略,scala,编程,橄榄球"</span><span class="token punctuation">,</span>
+  <span class="token string">"favo2"</span><span class="token operator">:</span><span class="token string">"_省略,scala,编程,橄榄球"</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token constant">PUT</span> stu1<span class="token operator">/</span>_doc<span class="token operator">/</span><span class="token number">1008</span>
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"stu_id"</span><span class="token operator">:</span><span class="token string">"8888"</span><span class="token punctuation">,</span>
+  <span class="token string">"name"</span><span class="token operator">:</span><span class="token string">"安小妮"</span><span class="token punctuation">,</span>
+  <span class="token string">"class_id"</span><span class="token operator">:</span><span class="token string">"0523"</span><span class="token punctuation">,</span>
+  <span class="token string">"gender"</span><span class="token operator">:</span><span class="token string">"female"</span><span class="token punctuation">,</span>
+  <span class="token string">"age"</span><span class="token operator">:</span><span class="token number">30</span><span class="token punctuation">,</span>
+  <span class="token string">"favo1"</span><span class="token operator">:</span><span class="token string">"来,手机交一下,胸卡口罩戴起来"</span><span class="token punctuation">,</span>
+  <span class="token string">"favo2"</span><span class="token operator">:</span><span class="token string">"来,手机交一下,胸卡口罩戴起来"</span>
+<span class="token punctuation">&#125;</span>
+
+#查询数据
+<span class="token constant">GET</span> stu1<span class="token operator">/</span>_search
+
+<span class="token function">#全值匹配查询filter</span><span class="token punctuation">(</span>where<span class="token punctuation">)</span><span class="token operator">:</span>指的是将查询条件当做一个整体
+<span class="token constant">GET</span> stu1<span class="token operator">/</span>_search
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"bool"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"filter"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"term"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+          <span class="token string">"favo1"</span><span class="token operator">:</span> <span class="token string">"来,手机交一下,胸卡口罩戴起来"</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token constant">GET</span> stu1<span class="token operator">/</span>_search
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"bool"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"filter"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"term"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+          <span class="token string">"favo2"</span><span class="token operator">:</span> <span class="token string">"来,手机交一下,胸卡口罩戴起来"</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+#分词匹配match<span class="token operator">:</span>将查询条件做分词<span class="token punctuation">,</span>但是使用的分词规则与原字段相同
+<span class="token constant">GET</span> stu1<span class="token operator">/</span>_search
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"match"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"favo1"</span><span class="token operator">:</span> <span class="token string">"来,手机交一下,胸卡口罩戴起来"</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token constant">GET</span> stu1<span class="token operator">/</span>_search
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"match"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"favo2"</span><span class="token operator">:</span> <span class="token string">"来,手机交一下,胸卡口罩戴起来"</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token constant">GET</span> stu1<span class="token operator">/</span>_search
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"match"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"favo1"</span><span class="token operator">:</span> <span class="token string">"球"</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token constant">GET</span> stu1<span class="token operator">/</span>_search
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"match"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"favo2"</span><span class="token operator">:</span> <span class="token string">"球"</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+#结合全值匹配以及分词匹配查询
+#需求<span class="token punctuation">,</span>查询出<span class="token number">0720</span>班级爱好包含<span class="token string">"球"</span>
+<span class="token constant">GET</span> stu1<span class="token operator">/</span>_search
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"bool"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"filter"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"term"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+          <span class="token string">"class_id"</span><span class="token operator">:</span> <span class="token string">"0720"</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token string">"must"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">&#123;</span>
+          <span class="token string">"match"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">"favo2"</span><span class="token operator">:</span> <span class="token string">"球"</span>
+          <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">]</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+#模糊查询
+<span class="token constant">GET</span> stu1<span class="token operator">/</span>_search
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"fuzzy"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"gender"</span><span class="token operator">:</span> <span class="token string">"female"</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+#聚合查询<span class="token operator">:</span>单个聚合条件
+<span class="token constant">GET</span> stu1<span class="token operator">/</span>_search
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"aggs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"countByClass"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"terms"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"field"</span><span class="token operator">:</span> <span class="token string">"class_id"</span><span class="token punctuation">,</span>
+        <span class="token string">"size"</span><span class="token operator">:</span> <span class="token number">10</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token constant">GET</span> stu1<span class="token operator">/</span>_search
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"aggs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"maxAge"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"max"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"field"</span><span class="token operator">:</span> <span class="token string">"age"</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+
+#聚合查询<span class="token operator">:</span>多个聚合条件<span class="token operator">:</span>没有关联
+<span class="token constant">GET</span> stu1<span class="token operator">/</span>_search
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"aggs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"countByClass"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"terms"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"field"</span><span class="token operator">:</span> <span class="token string">"class_id"</span><span class="token punctuation">,</span>
+        <span class="token string">"size"</span><span class="token operator">:</span> <span class="token number">10</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token string">"maxAge"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"max"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"field"</span><span class="token operator">:</span> <span class="token string">"age"</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+#聚合查询<span class="token operator">:</span>多个聚合条件<span class="token operator">:</span>嵌套关联
+<span class="token constant">GET</span> stu1<span class="token operator">/</span>_search
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"aggs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"countByClass"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"terms"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"field"</span><span class="token operator">:</span> <span class="token string">"class_id"</span><span class="token punctuation">,</span>
+        <span class="token string">"size"</span><span class="token operator">:</span> <span class="token number">10</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token string">"aggs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"maxAge"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+          <span class="token string">"max"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">"field"</span><span class="token operator">:</span> <span class="token string">"age"</span>
+          <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+#分页查询  <span class="token keyword">from</span><span class="token operator">=</span><span class="token punctuation">(</span>页码<span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">*</span>size
+<span class="token constant">GET</span> stu1<span class="token operator">/</span>_search
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"from"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+  <span class="token string">"size"</span><span class="token operator">:</span> <span class="token number">2</span>
+<span class="token punctuation">&#125;</span>
+
+#综合需求<span class="token operator">:</span>查询<span class="token number">0720</span>班级爱好包含<span class="token string">"球"</span>的人<span class="token punctuation">,</span>并计算其中最大年纪是多少<span class="token punctuation">,</span>同时使用分页查询
+<span class="token constant">GET</span> stu1<span class="token operator">/</span>_search
+<span class="token punctuation">&#123;</span>
+  <span class="token string">"query"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"bool"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"filter"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"term"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+          <span class="token string">"class_id"</span><span class="token operator">:</span> <span class="token string">"0720"</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+      <span class="token string">"must"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+        <span class="token punctuation">&#123;</span>
+          <span class="token string">"match"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">"favo2"</span><span class="token operator">:</span> <span class="token string">"球"</span>
+          <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">]</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token string">"aggs"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token string">"maxAge"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token string">"max"</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"field"</span><span class="token operator">:</span> <span class="token string">"age"</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token string">"from"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+  <span class="token string">"size"</span><span class="token operator">:</span> <span class="token number">1</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Jinxin Li</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://fourgold.github.io/2020/09/24/ElasticSearch_%E6%80%BB%E7%BB%93/">http://fourgold.github.io/2020/09/24/ElasticSearch_%E6%80%BB%E7%BB%93/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Jinxin Li</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/10/27/Git/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="Git的配置与在idea中的应用">
+                        
+                        <span class="card-title">Git的配置与在idea中的应用</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-10-27
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/git/" class="post-category">
+                                    git
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/git/">
+                        <span class="chip bg-color">git</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/08/29/Spark_operator/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="Spark_SparkOperator">
+                        
+                        <span class="card-title">Spark_SparkOperator</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-08-29
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spark/" class="post-category">
+                                    spark
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/operator/">
+                        <span class="chip bg-color">operator</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('1'),
+            headingSelector: 'h1,h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1,h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">Jinxin Li</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">205.6k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/fourgold" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:799392914@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=799392914" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 799392914" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
