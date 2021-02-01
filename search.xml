@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>0201问题回答</title>
+      <link href="2021/02/01/%E9%9B%86%E5%90%88%E7%9A%84%E6%BA%90%E7%A0%81%E9%97%AE%E9%A2%98/"/>
+      <url>2021/02/01/%E9%9B%86%E5%90%88%E7%9A%84%E6%BA%90%E7%A0%81%E9%97%AE%E9%A2%98/</url>
+      
+        <content type="html"><![CDATA[<h2 id="0x0-如何从源码角度分析问题"><a href="#0x0-如何从源码角度分析问题" class="headerlink" title="0x0.如何从源码角度分析问题"></a>0x0.如何从源码角度分析问题</h2><p>根据图中点点</p><ol><li>点击<code>ArrayList(ctrl+xxx)进入</code>源码</li><li><code>ctrl+alt+u</code>查看继承树,梳理下应该从哪里找<code>toString</code>的重写</li><li>[注意] 图中蓝色线是<code>extends</code>类 绿色虚线是<code>implements</code>  绿色实线是接口<code>implements</code>接口</li><li>[注意] extends 都是s 第三人称单数</li></ol><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90.png" alt="集合源码之关系树"></p><h2 id="0x1-toString方法的寻找"><a href="#0x1-toString方法的寻找" class="headerlink" title="0x1.toString方法的寻找"></a>0x1.toString方法的寻找</h2><p><code>toString</code> 方法我已经给找了</p><p>在<code>AbstractCollection</code>类中</p><p>==操作==</p><ol><li>需要把继承图关掉</li><li>然后再<code>arraylist</code>类中按下<code>ctrl+H</code> 右面查看继承关系类表</li><li>双击进入AbstractCollection类中</li></ol><p>图示操作</p><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81%E7%82%B9%E5%85%A5.png" alt="集合源码的点击"></p><p>进入源码不要慌</p><p>画虎画皮难画骨</p><p>觉得难是因为骨没有摸到,看着一堆英语与方法心里忐忑</p><p><code>Alt+7</code>查看方法关系结构,左边会跳出来</p><p>也可以点击左边的structure</p><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/Collection%E6%96%B9%E6%B3%95%E7%BB%93%E6%9E%84%E5%9B%BE.png" alt="如何点击跳出方法表"></p><p>[注意]我们发现左边Structure边上有个7,意思是让你alt+7就能点</p><p>好啦,我们在左边找找toString方法有没有把</p><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/toString%E6%96%B9%E6%B3%95.png" alt="toString方法"></p><p>嗨,找到了哎,棒,倒数第二个</p><p>[注意] 也可以在类中<code>ctrl+f</code>直接搜<code>toString</code></p><p>双击toString,看看源码</p><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90.png" alt="toString源码解析"></p><h2 id="0x2-总结-应该懂得"><a href="#0x2-总结-应该懂得" class="headerlink" title="0x2 总结(应该懂得)"></a>0x2 总结(应该懂得)</h2><ol><li><p>[本质] 集合的一个个数据放在一个迭代器里面</p></li><li><p>[目的] 为什么不直接在arraylist里重写 ? 因为写在上有同toString有更广的作用域,减少冗杂</p></li><li><p>父类引用调用方法时,如果此时方法被子类重写,调用被重写的方法</p></li><li><p>记住一些快捷键</p></li><li><p>ArrayList继承关系</p><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties">Object(万物皆对象)->Collection->AbstractCollection->AbstractList->ArrayList<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="0x3-知识补充"><a href="#0x3-知识补充" class="headerlink" title="0x3 知识补充"></a>0x3 知识补充</h2></li></ol><p>理论上讲万物都有object类中的方法</p><p>除了基本类型23333</p><p>为什么时面相对象编程?</p><p>​    因为我们或近或远都是继承了object类</p><p>​    object对象,我们继承了对象,本质就是一个对象(多态)</p><p>​    所以一直在object范围里去写程序,面向object类编程</p><p><img src="C:%5CUsers%5C89388%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210201110348207.png" alt="object类中的方法"></p><p><strong>你可以继续拓展</strong></p><p>​    1. 集合数据放在迭代器里,迭代器是个啥?本质?</p><pre><code>2. 在以后的学习过程中除了领悟面向对象编程外还要慢慢领悟什么时面向接口编程,因为我们以后都是面向接口编程</code></pre>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Flink06_容错与检查点算法</title>
       <link href="2021/01/12/Flink06_%E5%AE%B9%E9%94%99%E4%B8%8E%E6%A3%80%E6%9F%A5%E7%82%B9%E7%AE%97%E6%B3%95/"/>
       <url>2021/01/12/Flink06_%E5%AE%B9%E9%94%99%E4%B8%8E%E6%A3%80%E6%9F%A5%E7%82%B9%E7%AE%97%E6%B3%95/</url>

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Flink03_流处理API, 觉浅">
+    <meta name="keywords" content="0201问题回答, 觉浅">
     <meta name="description" content="Jinxin Li的个人博客">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Flink03_流处理API | 觉浅</title>
+    <title>0201问题回答 | 觉浅</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -315,7 +315,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Flink03_流处理API</h1>
+                    <h1 class="description center-align post-title">0201问题回答</h1>
                 </div>
             </div>
         </div>
@@ -429,33 +429,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/flink/">
-                                <span class="chip bg-color">flink</span>
-                            </a>
-                        
-                            <a href="/tags/source/">
-                                <span class="chip bg-color">source</span>
-                            </a>
-                        
-                            <a href="/tags/sink/">
-                                <span class="chip bg-color">sink</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/flink/" class="post-category">
-                                flink
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -464,7 +443,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-02-26
+                    2021-02-01
                 </div>
                 
 
@@ -473,7 +452,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1k
+                    552
                 </div>
                 
 
@@ -493,120 +472,65 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="0x0-执行环境Environment"><a href="#0x0-执行环境Environment" class="headerlink" title="0x0.执行环境Environment"></a>0x0.执行环境Environment</h1><h1 id="0x1-Source"><a href="#0x1-Source" class="headerlink" title="0x1.Source"></a>0x1.Source</h1><h2 id="3-KafkaSource"><a href="#3-KafkaSource" class="headerlink" title="3.KafkaSource"></a>3.KafkaSource</h2><p>直接上代码,从kafka读取数据然后进行处理</p>
-<p><strong>example</strong></p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Flink04_Source_Kafka</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
-
-        <span class="token comment">//0x0 创建执行环境</span>
-        <span class="token class-name">StreamExecutionEnvironment</span> env <span class="token operator">=</span> <span class="token class-name">StreamExecutionEnvironment</span><span class="token punctuation">.</span><span class="token function">getExecutionEnvironment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        env<span class="token punctuation">.</span><span class="token function">setParallelism</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token comment">//0x1 获取Kafka数据源</span>
-            <span class="token comment">// kafka配置项</span>
-        <span class="token class-name">Properties</span> properties <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Properties</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        properties<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token class-name">ConsumerConfig</span><span class="token punctuation">.</span>BOOTSTRAP_SERVERS_CONFIG<span class="token punctuation">,</span> <span class="token string">"hadoop102:9092"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        properties<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token class-name">ConsumerConfig</span><span class="token punctuation">.</span>GROUP_ID_CONFIG<span class="token punctuation">,</span> <span class="token string">"consumer-group"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        properties<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">"key.deserializer"</span><span class="token punctuation">,</span> <span class="token string">"org.apache.kafka.common.serialization.StringDeserializer"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        properties<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">"value.deserializer"</span><span class="token punctuation">,</span> <span class="token string">"org.apache.kafka.common.serialization.StringDeserializer"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        properties<span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">"auto.offset.reset"</span><span class="token punctuation">,</span> <span class="token string">"latest"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-            <span class="token comment">// 从kafka读取数据 要使用通用的方式,需要额外的jar包flink-connector-kafka-0.11_2.12</span>
-            <span class="token comment">// kafka - RichParallelSourceFunction 可以并行</span>
-        <span class="token class-name">DataStreamSource</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> kafkaDS <span class="token operator">=</span> env<span class="token punctuation">.</span><span class="token function">addSource</span><span class="token punctuation">(</span>
-                <span class="token keyword">new</span> <span class="token class-name">FlinkKafkaConsumer011</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>
-                        <span class="token string">"test"</span><span class="token punctuation">,</span>
-                        <span class="token keyword">new</span> <span class="token class-name">SimpleStringSchema</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-                        properties<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setParallelism</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token comment">//设置并行度为2测试并行能力</span>
-        <span class="token class-name">SingleOutputStreamOperator</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">SensorReading</span><span class="token punctuation">></span></span> result <span class="token operator">=</span> kafkaDS<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">MapFunction</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">SensorReading</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token annotation punctuation">@Override</span>
-            <span class="token keyword">public</span> <span class="token class-name">SensorReading</span> <span class="token function">map</span><span class="token punctuation">(</span><span class="token class-name">String</span> s<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
-                <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> fields <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">","</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">SensorReading</span><span class="token punctuation">(</span>fields<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token class-name">Long</span><span class="token punctuation">.</span><span class="token function">parseLong</span><span class="token punctuation">(</span>fields<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">Double</span><span class="token punctuation">.</span><span class="token function">parseDouble</span><span class="token punctuation">(</span>fields<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token comment">//0x2 打印数据</span>
-        result<span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token comment">//0x3 执行环境</span>
-        env<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token comment">//0x4 开启kafka生产者</span>
-        <span class="token comment">//bin/kafka-console-producer.sh --broker-list hadoop102:9092 --topic test</span>
-
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><strong>kafka开启与查看命令</strong></p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#查看指定topic的详细信息</span>
-bin/kafka-topics.sh --zookeeper  hadoop102:2181/kafka --describe --topic <span class="token builtin class-name">test</span>
-
-<span class="token comment">#所有查看topic</span>
-bin/kafka-topics.sh --zookeeper hadoop102:2181/kafka --list
-
-<span class="token comment">#创建topic</span>
-bin/kafka-topics.sh --zookeeper hadoop102:2181/kafka --create --replication-factor <span class="token number">2</span> --partitions <span class="token number">10</span> --topic testTopic
-
-bin/kafka-topics.sh --bootstrap-server hadoop102:9092 --create --replication-factor <span class="token number">2</span> --partitions <span class="token number">10</span> --topic testTopic
-
-<span class="token comment">#往topic里生产数据</span>
-bin/kafka-console-producer.sh --broker-list hadoop102:9092 --topic <span class="token builtin class-name">test</span>
-
-<span class="token comment">#消费topic</span>
-bin/kafka-console-consumer --bootstrap-server hadoop102:9092 --from-beginning  --topic register_topic<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><strong>kafka分区策略</strong></p>
+                <h2 id="0x0-如何从源码角度分析问题"><a href="#0x0-如何从源码角度分析问题" class="headerlink" title="0x0.如何从源码角度分析问题"></a>0x0.如何从源码角度分析问题</h2><p>根据图中点点</p>
 <ol>
-<li>指明 partition 的情况下，直接将指明的值直接作为 partiton 值；</li>
-<li>没有指明 partition 值但有 key 的情况下，将 key 的 hash 值与 topic 的 partition 数进行取余得到 partition 值</li>
-<li>既没有 partition 值又没有 key 值的情况下， kafka采用Sticky Partition(黏性分区器)，会随机选择一个分区，并尽可能一直使用该分区，待该分区的batch已满或者已完成，kafka再随机一个分区进行使用.</li>
+<li>点击<code>ArrayList(ctrl+xxx)进入</code>源码</li>
+<li><code>ctrl+alt+u</code>查看继承树,梳理下应该从哪里找<code>toString</code>的重写</li>
+<li>[注意] 图中蓝色线是<code>extends</code>类 绿色虚线是<code>implements</code>  绿色实线是接口<code>implements</code>接口</li>
+<li>[注意] extends 都是s 第三人称单数</li>
 </ol>
-<p><strong>kafka分区分配策略</strong></p>
-<p>一个consumer group中有多个consumer，一个 topic有多个partition，所以必然会涉及到partition的分配问题，即确定那个partition由哪个consumer来消费。</p>
-<p>Kafka有三种分配策略，RoundRobin，Range , Sticky。</p>
-<p>一个消费者组中的消费者可以消费一个Topic的不同分区</p>
-<p><strong>kafka集群查看策略</strong></p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#连接zk</span>
-bin/zkCli.sh -timeout <span class="token number">5000</span> -r -server hadoop102:2181
-<span class="token comment">#查看zookeeper集群下kafka集群下所有的brokers id列表</span>
-<span class="token function">ls</span> /kafka/brokers/ids
-<span class="token comment">#查看2的broker的信息</span>
-get /kafka/brokers/ids/2
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90.png" alt="集合源码之关系树"></p>
+<h2 id="0x1-toString方法的寻找"><a href="#0x1-toString方法的寻找" class="headerlink" title="0x1.toString方法的寻找"></a>0x1.toString方法的寻找</h2><p><code>toString</code> 方法我已经给找了</p>
+<p>在<code>AbstractCollection</code>类中</p>
+<p>==操作==</p>
+<ol>
+<li>需要把继承图关掉</li>
+<li>然后再<code>arraylist</code>类中按下<code>ctrl+H</code> 右面查看继承关系类表</li>
+<li>双击进入AbstractCollection类中</li>
+</ol>
+<p>图示操作</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/%E9%9B%86%E5%90%88%E6%BA%90%E7%A0%81%E7%82%B9%E5%85%A5.png" alt="集合源码的点击"></p>
+<p>进入源码不要慌</p>
+<p>画虎画皮难画骨</p>
+<p>觉得难是因为骨没有摸到,看着一堆英语与方法心里忐忑</p>
+<p><code>Alt+7</code>查看方法关系结构,左边会跳出来</p>
+<p>也可以点击左边的structure</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/Collection%E6%96%B9%E6%B3%95%E7%BB%93%E6%9E%84%E5%9B%BE.png" alt="如何点击跳出方法表"></p>
+<p>[注意]我们发现左边Structure边上有个7,意思是让你alt+7就能点</p>
+<p>好啦,我们在左边找找toString方法有没有把</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/toString%E6%96%B9%E6%B3%95.png" alt="toString方法"></p>
+<p>嗨,找到了哎,棒,倒数第二个</p>
+<p>[注意] 也可以在类中<code>ctrl+f</code>直接搜<code>toString</code></p>
+<p>双击toString,看看源码</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90.png" alt="toString源码解析"></p>
+<h2 id="0x2-总结-应该懂得"><a href="#0x2-总结-应该懂得" class="headerlink" title="0x2 总结(应该懂得)"></a>0x2 总结(应该懂得)</h2><ol>
+<li><p>[本质] 集合的一个个数据放在一个迭代器里面</p>
+</li>
+<li><p>[目的] 为什么不直接在arraylist里重写 ? 因为写在上有同toString有更广的作用域,减少冗杂</p>
+</li>
+<li><p>父类引用调用方法时,如果此时方法被子类重写,调用被重写的方法</p>
+</li>
+<li><p>记住一些快捷键</p>
+</li>
+<li><p>ArrayList继承关系</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties">Object(万物皆对象)
+	->Collection
+		->AbstractCollection
+			->AbstractList
+				->ArrayList<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="0x3-知识补充"><a href="#0x3-知识补充" class="headerlink" title="0x3 知识补充"></a>0x3 知识补充</h2></li>
+</ol>
+<p>理论上讲万物都有object类中的方法</p>
+<p>除了基本类型23333</p>
+<p>为什么时面相对象编程?</p>
+<p>​    因为我们或近或远都是继承了object类</p>
+<p>​    object对象,我们继承了对象,本质就是一个对象(多态)</p>
+<p>​    所以一直在object范围里去写程序,面向object类编程</p>
+<p><img src="C:%5CUsers%5C89388%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20210201110348207.png" alt="object类中的方法"></p>
+<p><strong>你可以继续拓展</strong></p>
+<p>​    1. 集合数据放在迭代器里,迭代器是个啥?本质?</p>
+<pre><code>2. 在以后的学习过程中除了领悟面向对象编程外还要慢慢领悟什么时面向接口编程,因为我们以后都是面向接口编程</code></pre>
 
-<span class="token comment"># 列出帮助文档，英文好的同学基本看帮助文档就可以指定大概怎么使用该命令了</span>
-kafka-topics --help
-<span class="token comment"># 列出kafka集群下的所有topics，这里需要指定kafka机器元数据存储所在的zk机器地址，记得如果有namespace，要也加上，否则将连不上kafka集群</span>
- kafka-topics --zookeeper hadoop102:2181/kafka --list
- 
-<span class="token comment"># 创建一个topic为test的topic，并指定分区数为5，副本数为1。这里的副本数不能超过broker的数量，否则会报错</span>
-kafka-topics --topic <span class="token builtin class-name">test</span> --zookeeper hadoop102:2181/kafka --create --replication-factor <span class="token number">1</span> --partitions <span class="token number">5</span>
-<span class="token comment"># 创建时指定副本在哪个broker上,多个partition之间用逗号分隔，副本之间用":"分割，第一个副本默认是leader</span>
-kafka-topics.sh --zookeeper hadoop102:2181/kafka --topic <span class="token builtin class-name">test</span> --create --replica-assignment <span class="token number">0</span>:1,1:2,0:2
-
-<span class="token comment"># 删除指定主题</span>
-kafka-topics --zookeeper localhost:2181/kafka --delete --topic yangjb_test
-
-<span class="token comment"># 将partition数量修改成7个</span>
-kafka-topics --zookeeper localhost:2181/kafka --topic <span class="token builtin class-name">test</span> --alter --partitions <span class="token number">7</span>
-<span class="token comment"># 通过 --replica-assignment 参数指定新增partition的副本分布情况</span>
-
-<span class="token comment"># 如果原先的partition数量是3，那么新增的一个分区的副本分布应该在1002和1003</span>
-kafka-topics --zookeeper localhost:2181/kafka --topic <span class="token builtin class-name">test</span> -alter --partitions <span class="token number">4</span> --replica-assignment <span class="token number">0</span>:1,1:2,0:2,2:3
-
-<span class="token comment"># 修改topic test的配置 flush.ms =30000 。</span>
-kafka-topics --zookeeper localhost:2181/kafka  --topic <span class="token builtin class-name">test</span> --alter --config flush.ms<span class="token operator">=</span><span class="token number">30000</span>
-
-<span class="token comment"># 删除topic test的 flush.ms 配置</span>
-kafka-topics --zookeeper localhost:2181/kafka  --topic <span class="token builtin class-name">test</span> --alter --delete-config flush.ms<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-<p><strong>==问题整理==</strong></p>
-<p>问题1:当我的一个模块依赖于另一个模块时,单模块如何打包</p>
-<p>问题2:kafka增加并行度,相当于增加了同一个组的消费者么?</p>
-<h1 id="0x2-Operator"><a href="#0x2-Operator" class="headerlink" title="0x2 Operator"></a>0x2 Operator</h1><h2 id="1-map"><a href="#1-map" class="headerlink" title="1.map"></a>1.map</h2><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/flink-map%E7%AE%97%E5%AD%90.jpg" alt="map算子"></p>
-<h2 id="2-Filter"><a href="#2-Filter" class="headerlink" title="2.Filter"></a>2.Filter</h2><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/flink-filter%E7%AE%97%E5%AD%90.jpg" alt="flink-filter算子"></p>
-<h2 id="3-KeyBy"><a href="#3-KeyBy" class="headerlink" title="3.KeyBy"></a>3.KeyBy</h2><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/flink-keyed.jpg" alt="Flink-KeyBy"></p>
-<h2 id="4-滚动聚合算子（Rolling-Aggregation）"><a href="#4-滚动聚合算子（Rolling-Aggregation）" class="headerlink" title="4.滚动聚合算子（Rolling Aggregation）"></a>4.滚动聚合算子（Rolling Aggregation）</h2>
                 
             </div>
             <hr/>
@@ -632,7 +556,7 @@ kafka-topics --zookeeper localhost:2181/kafka  --topic <span class="token builti
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://fourgold.github.io/2020/02/26/Flink03_DataStreamAPI/">http://fourgold.github.io/2020/02/26/Flink03_DataStreamAPI/</a>
+                    <a href="http://fourgold.github.io/2021/02/01/%E9%9B%86%E5%90%88%E7%9A%84%E6%BA%90%E7%A0%81%E9%97%AE%E9%A2%98/">http://fourgold.github.io/2021/02/01/%E9%9B%86%E5%90%88%E7%9A%84%E6%BA%90%E7%A0%81%E9%97%AE%E9%A2%98/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -669,19 +593,7 @@ kafka-topics --zookeeper localhost:2181/kafka  --topic <span class="token builti
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/flink/">
-                                    <span class="chip bg-color">flink</span>
-                                </a>
-                            
-                                <a href="/tags/source/">
-                                    <span class="chip bg-color">source</span>
-                                </a>
-                            
-                                <a href="/tags/sink/">
-                                    <span class="chip bg-color">sink</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -871,29 +783,30 @@ kafka-topics --zookeeper localhost:2181/kafka  --topic <span class="token builti
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/03/23/Redis/">
+                <a href="/2021/02/01/%E9%9B%86%E5%90%88%E7%9A%84%E6%BA%90%E7%A0%81%E9%97%AE%E9%A2%98/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="redis的架构与API">
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="0201问题回答">
                         
-                        <span class="card-title">redis的架构与API</span>
+                        <span class="card-title">0201问题回答</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            关于沙老师上课问题的讲解,希望你抽时间看看,更多的是注重总结与解决问题的思路,别浪费了我的一番心意.
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-03-23
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-02-01
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -902,6 +815,7 @@ kafka-topics --zookeeper localhost:2181/kafka  --topic <span class="token builti
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -912,13 +826,13 @@ kafka-topics --zookeeper localhost:2181/kafka  --topic <span class="token builti
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/02/18/Scala_%E9%97%AD%E5%8C%85/">
+                <a href="/2021/01/12/Flink06_%E5%AE%B9%E9%94%99%E4%B8%8E%E6%A3%80%E6%9F%A5%E7%82%B9%E7%AE%97%E6%B3%95/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="Scala闭包">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Flink06_容错与检查点算法">
                         
-                        <span class="card-title">Scala闭包</span>
+                        <span class="card-title">Flink06_容错与检查点算法</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -929,7 +843,7 @@ kafka-topics --zookeeper localhost:2181/kafka  --topic <span class="token builti
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-12
                             </span>
                         <span class="publish-author">
                             
