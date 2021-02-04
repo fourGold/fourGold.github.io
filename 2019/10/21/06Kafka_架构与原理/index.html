@@ -1,0 +1,1421 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Kafka_架构与流程, 觉浅">
+    <meta name="description" content="Jinxin Li的个人博客">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Kafka_架构与流程 | 觉浅</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">觉浅</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">觉浅</div>
+        <div class="logo-desc">
+            
+            Jinxin Li的个人博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="http://github.com/fourgold/" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="http://github.com/fourgold/" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Kafka_架构与流程</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-10-21
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    4.9k
+                </div>
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+        <!-- 代码块折行 -->
+        <style type="text/css">
+            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
+        </style>
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="1-Kafka概述"><a href="#1-Kafka概述" class="headerlink" title="1.Kafka概述"></a>1.Kafka概述</h1><p>Kafka是一个分布式的基于发布/订阅模式的消息队列（Message Queue），主要应用于大数据实时处理领域。</p>
+<h2 id="1-1-消息队列与其应用场景"><a href="#1-1-消息队列与其应用场景" class="headerlink" title="1.1 消息队列与其应用场景"></a>1.1 消息队列与其应用场景</h2><p>发布/订阅模式</p>
+<p>一对多，消费者消费数据之后不会清除消息</p>
+<p>消息生产者（发布）将消息发布到topic中，同时有多个消息消费者（订阅）消费该消息。</p>
+<h2 id="1-2-Kafka基础架构"><a href="#1-2-Kafka基础架构" class="headerlink" title="1.2 Kafka基础架构"></a>1.2 Kafka基础架构</h2><p>1）Producer ：消息生产者，就是向kafka broker发消息的客户端；<br>2）Consumer ：消息消费者，向kafka broker取消息的客户端；<br>3）Consumer Group （CG）：消费者组，由多个consumer组成。消费者组内每个消费者负责消费不同分区的数据，一个分区只能由一个组内消费者消费；消费者组之间互不影响。所有的消费者都属于某个消费者组，即==消费者组是逻辑上的一个订阅者==。<br>4）Broker ：一台kafka服务器就是一个broker。一个集群由多个broker组成。一个broker可以容纳多个topic。<br>5）Topic ：可以理解为一个队列，生产者和消费者面向的都是一个topic；<br>6）Partition：为了实现扩展性，一个非常大的topic可以分布到多个broker（即服务器）上，一个topic可以分为多个partition，每个partition是一个有序的队列；<br>7）Replica：副本，为保证集群中的某个节点发生故障时，该节点上的partition数据不丢失，且kafka仍然能够继续工作，kafka提供了副本机制，一个topic的每个分区都有若干个副本，一个leader和若干个follower。<br>8）leader：每个分区多个副本的“主”，生产者发送数据的对象，以及消费者消费数据的对象都是leader。<br>9）follower：每个分区多个副本中的“从”，实时从leader中同步数据，保持和leader数据的同步。leader发生故障时，某个follower会成为新的leader。</p>
+<h2 id="1-3-关于Kafka服务器的一些理解"><a href="#1-3-关于Kafka服务器的一些理解" class="headerlink" title="1.3 关于Kafka服务器的一些理解"></a>1.3 关于Kafka服务器的一些理解</h2><p>Kafka存在两个服务器连接操作Kafka内部数据</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">kafka-topics.sh --bootstrap-server hadoop105:9092
+kafka-topics.sh --list --bootstrap-server hadoop102:9092 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>Kafka通过高性能的TCP网络协议进行传输通信,在客户端与服务器之间</p>
+<h2 id="1-4-Kafka安装配置文件"><a href="#1-4-Kafka安装配置文件" class="headerlink" title="1.4 Kafka安装配置文件"></a>1.4 Kafka安装配置文件</h2><p><strong>位置</strong></p>
+<p>kafka/config/server.properties</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token comment">#broker的全局唯一编号，不能重复</span>
+<span class="token attr-name">broker.id</span><span class="token punctuation">=</span><span class="token attr-value">0</span>
+<span class="token comment">#删除topic功能使能,当前版本此配置默认为true，已从配置文件移除</span>
+<span class="token attr-name">delete.topic.enable</span><span class="token punctuation">=</span><span class="token attr-value">true</span>
+<span class="token comment">#处理网络请求的线程数量</span>
+<span class="token attr-name">num.network.threads</span><span class="token punctuation">=</span><span class="token attr-value">3</span>
+<span class="token comment">#用来处理磁盘IO的线程数量</span>
+<span class="token attr-name">num.io.threads</span><span class="token punctuation">=</span><span class="token attr-value">8</span>
+<span class="token comment">#发送套接字的缓冲区大小</span>
+<span class="token attr-name">socket.send.buffer.bytes</span><span class="token punctuation">=</span><span class="token attr-value">102400</span>
+<span class="token comment">#接收套接字的缓冲区大小</span>
+<span class="token attr-name">socket.receive.buffer.bytes</span><span class="token punctuation">=</span><span class="token attr-value">102400</span>
+<span class="token comment">#请求套接字的缓冲区大小</span>
+<span class="token attr-name">socket.request.max.bytes</span><span class="token punctuation">=</span><span class="token attr-value">104857600</span>
+<span class="token comment">#kafka运行日志存放的路径</span>
+<span class="token attr-name">log.dirs</span><span class="token punctuation">=</span><span class="token attr-value">/opt/module/kafka/logs</span>
+<span class="token comment">#topic在当前broker上的分区个数</span>
+<span class="token attr-name">num.partitions</span><span class="token punctuation">=</span><span class="token attr-value">1</span>
+<span class="token comment">#用来恢复和清理data下数据的线程数量</span>
+<span class="token attr-name">num.recovery.threads.per.data.dir</span><span class="token punctuation">=</span><span class="token attr-value">1</span>
+<span class="token comment">#segment文件保留的最长时间，超时将被删除</span>
+<span class="token attr-name">log.retention.hours</span><span class="token punctuation">=</span><span class="token attr-value">168</span>
+<span class="token comment">#配置连接Zookeeper集群地址</span>
+<span class="token attr-name">zookeeper.connect</span><span class="token punctuation">=</span><span class="token attr-value">hadoop102:2181,hadoop103:2181,hadoop104:2181</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>分别在hadoop103和hadoop104上修改配置文件</p>
+<p>/opt/module/kafka/config/server.properties中的</p>
+<p>broker.id=1、broker.id=2</p>
+<p>注：broker.id不得重复</p>
+<h1 id="2-Kafka生产者"><a href="#2-Kafka生产者" class="headerlink" title="2.Kafka生产者"></a>2.Kafka生产者</h1><h2 id="2-1分区策略"><a href="#2-1分区策略" class="headerlink" title="2.1分区策略"></a>2.1分区策略</h2><h3 id="2-1-1分区原因"><a href="#2-1-1分区原因" class="headerlink" title="2.1.1分区原因"></a>2.1.1分区原因</h3><p><strong>方便在集群中扩展</strong>,每个partition可以通过调整以适应它所在的机器,而一个topic又可以有多少个Partition组成,因此整个集群就可以适应任意大小的数据了；</p>
+<p><strong>可以提高并发</strong>，因为可以以Partition为单位读写了。</p>
+<h3 id="2-1-2分区原则"><a href="#2-1-2分区原则" class="headerlink" title="2.1.2分区原则"></a>2.1.2分区原则</h3><p>（1）  指明 partition 的情况下，直接将指明的值直接作为 partiton 值；</p>
+<p>（2） 没有指明 partition 值但有 key 的情况下，将 key 的 hash 值与 topic 的 partition 数进行取余得到 partition 值；</p>
+<p>（3）  既没有 partition 值又没有 key 值的情况下， kafka采用Sticky Partition(黏性分区器)，会随机选择一个分区，并尽可能一直使用该分区，待该分区的batch已满或者已完成，kafka再随机一个分区进行使用.</p>
+<h2 id="2-2数据可靠性保证"><a href="#2-2数据可靠性保证" class="headerlink" title="2.2数据可靠性保证"></a>2.2数据可靠性保证</h2><h3 id="2-2-1生产者发送数据到topic-partition的可靠性保证"><a href="#2-2-1生产者发送数据到topic-partition的可靠性保证" class="headerlink" title="2.2.1生产者发送数据到topic partition的可靠性保证"></a>2.2.1生产者发送数据到topic partition的可靠性保证</h3><p>能可靠的发送到指定的topic，topic的每个partition收到producer发送的数据后，都需要向producer发送==ack==（acknowledgement确认收到），如果producer收到ack，就会进行下一轮的发送，否则重新发送数据。</p>
+<h3 id="2-2-2何时发送ack"><a href="#2-2-2何时发送ack" class="headerlink" title="2.2.2何时发送ack"></a>2.2.2何时发送ack</h3><p>确保有follower与leader同步完成</p>
+<p>leader再发送ack,这样才能保证leader挂掉之后,能在follower中选出新的leader</p>
+<h3 id="2-2-3acks"><a href="#2-2-3acks" class="headerlink" title="2.2.3acks"></a>2.2.3acks</h3><p>0：这一操作提供了一个最低的延迟，partition的leader接收到消息还没有写入磁盘就已经返回ack，当leader故障时有可能丢失数据；</p>
+<p>1：<br>partition的leader落盘成功后返回ack，如果在follower同步成功之前leader故障，那么将会<strong>丢失数据</strong>；</p>
+<p>-1（all）： partition的leader和follower全部落盘成功后才返回ack。但是如果在follower同步完成后，broker发送ack之前，leader发生故障，那么会造成<strong>数据重复</strong>。</p>
+<h3 id="2-2-4多少个follower同步完成之后发送ack"><a href="#2-2-4多少个follower同步完成之后发送ack" class="headerlink" title="2.2.4多少个follower同步完成之后发送ack"></a>2.2.4多少个follower同步完成之后发送ack</h3><p>同步方案</p>
+<p>半数</p>
+<p>全部</p>
+<p>ack这里要使用zookeeper进行选举</p>
+<p>Kafka选择全部同步完成,才会发送ack</p>
+<h3 id="2-2-5ISR"><a href="#2-2-5ISR" class="headerlink" title="2.2.5ISR"></a>2.2.5ISR</h3><p>Leader维护了一个动态的in-sync replica set<br>(ISR)，意为和leader保持同步的follower集合。当ISR中的follower完成数据的同步之后，leader就会给producer发送ack。如果follower长时间未向leader同步数据，则该follower将被踢出ISR，该时间阈值由<strong>replica.lag.time.max.ms</strong>参数设定。Leader发生故障之后，就会从ISR中选举新的leader。</p>
+<h2 id="2-3故障处理细节"><a href="#2-3故障处理细节" class="headerlink" title="2.3故障处理细节"></a>2.3故障处理细节</h2><p>leader和 follower故障处理细节</p>
+<p>LEO：指的是每个副本最大的offset； Log End Offset</p>
+<p>HW：指的是消费者能见到的最大的offset，ISR队列中最小的LEO。 High Watermark</p>
+<p>HW是同步速度最慢的分区决定的follower</p>
+<h3 id="2-3-1follower故障"><a href="#2-3-1follower故障" class="headerlink" title="2.3.1follower故障"></a>2.3.1follower故障</h3><p>follower发生故障后会被临时踢出ISR，待该follower恢复后，follower会读取本地磁盘记录的上次的HW，并将log文件高于HW的部分截取掉，从HW开始向leader进行同步。等该follower的LEO大于等于该Partition的HW，即follower追上leader之后，就可以重新加入ISR了。</p>
+<h3 id="2-3-2leader故障"><a href="#2-3-2leader故障" class="headerlink" title="2.3.2leader故障"></a>2.3.2leader故障</h3><p>==数据丢失==</p>
+<p>leader发生故障之后，会从ISR中选出一个新的leader，之后，为保证多个副本之间的数据一致性，其余的follower会先将各自的log文件高于HW的部分截掉，然后从新的leader同步数据。</p>
+<p>注意：这只能保证副本之间的数据一致性，并不能保证数据不丢失或者不重复。</p>
+<p>如果ack等级为0或者是1,此时leader分区已经接受到信息并且提交==ack==(注意broker提交是ack),但是此时发生故障,被踢出ISR,然后follower此时没有落盘成功. 此时重新选举follower自动将使用自己HW让其他分区同步,此时会发生丢失一部分数据</p>
+<h2 id="2-4-Exactly-Once语义"><a href="#2-4-Exactly-Once语义" class="headerlink" title="2.4 Exactly Once语义"></a>2.4 Exactly Once语义</h2><p>将服务器的ACK级别设置为-1，可以保证Producer到Server之间不会丢失数据，即==At Least Once==语义。</p>
+<p>相对的，将服务器ACK级别设置为0，可以保证生产者每条消息只会被发送一次，即==At Most Once==语义。</p>
+<p>At Least Once可以保证数据不丢失，但是不能保证数据不重复；相对的，At Least Once可以保证数据不重复，但是不能保证数据不丢失。</p>
+<p>但是，对于一些非常重要的信息，比如说交易数据，下游数据消费者要求数据既不重复也不丢失，即Exactly Once语义。在0.11版本以前的Kafka，对此是无能为力的，只能保证数据不丢失，再在下游消费者对数据做全局去重。对于多个下游应用的情况，每个都需要单独做全局去重，这就对性能造成了很大影响。</p>
+<h3 id="2-4-1数据是如何发生重复的呢"><a href="#2-4-1数据是如何发生重复的呢" class="headerlink" title="2.4.1数据是如何发生重复的呢?"></a>2.4.1数据是如何发生重复的呢?</h3><pre class="mermaid">graph LR
+A[Producer]--数据重复-->B[Server]
+B-->C[Consumer]</pre>
+
+<p>一般情况在,在ack应答等级为-1时,当leader与follower都已经落盘成功之后,这个时候会发送ack,但是这个时候leader崩掉,无法返回ack,这个时候会发生数据重复</p>
+<p>0.11版本的Kafka，引入了一项重大特性：幂等性。</p>
+<p>所谓的幂等性就是指Producer不论向Server发送多少次重复数据，Server端都只会持久化一条。</p>
+<p>幂等性结合At Least Once语义，就构成了Kafka的Exactly Once语义。即：<strong>At Least Once +</strong> <strong>幂等性 = Exactly Once</strong></p>
+<p>要启用幂等性，只需要将Producer的参数中<strong>enable.idempotence</strong>设置为true即可。</p>
+<p>Kafka的幂等性实现其实就是将原来下游需要做的去重放在了数据上游。开启幂等性的Producer在初始化的时候会被分配一个PID，发往同一Partition的消息会附带Sequence Number。</p>
+<p>而Broker端会对&lt;PID, Partition, SeqNumber&gt;做缓存，当具有相同主键的消息提交时，Broker只会持久化一条。</p>
+<p>但是PID重启就会变化，同时不同的Partition也具有不同主键，所以幂等性无法保证跨分区跨会话的Exactly Once。</p>
+<p>Exactly Once(At least Once + idempotence)</p>
+<p>(PID,Partition,SeqNumber)</p>
+<p>如果Broker检查这个信息,如果相同就不会在持有</p>
+<h3 id="2-4-2Exactly-Once依然存在的问题"><a href="#2-4-2Exactly-Once依然存在的问题" class="headerlink" title="2.4.2Exactly Once依然存在的问题?"></a>2.4.2Exactly Once依然存在的问题?</h3><p>PID是生产者在启动时分配的一个PID,如果这个生产者宕机,重新启动,PID会发生改变,相同信息依然会被broker持有</p>
+<h1 id="3-Kakfa-Broker"><a href="#3-Kakfa-Broker" class="headerlink" title="3.Kakfa Broker"></a>3.Kakfa Broker</h1><p>Kafka是一个分布式集群</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/Kafka%E5%88%86%E5%B8%83%E5%BC%8F%E9%9B%86%E7%BE%A4%E5%86%85%E9%83%A8%E6%9E%B6%E6%9E%84.png" alt="kafkaBroker内部架构"></p>
+<p>kafka内部是由分布式集群组成</p>
+<h2 id="3-1Broker内部文件"><a href="#3-1Broker内部文件" class="headerlink" title="3.1Broker内部文件"></a>3.1Broker内部文件</h2><p>首先Kafka中的消息时以<strong>topic</strong>进行分类的，生产者生产消息，消费者消费消息，都是面向topic的。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment">#查看kafka内部的数据</span>
+<span class="token builtin class-name">cd</span> /opt/module/kafka/data<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment">#ATLAS使用Kafka的分区</span>
+drwxrwxr-x  <span class="token number">2</span> atguigu atguigu <span class="token number">4096</span> <span class="token number">11</span>月 <span class="token number">25</span> <span class="token number">23</span>:05 ATLAS_ENTITIES-0
+drwxrwxr-x  <span class="token number">2</span> atguigu atguigu <span class="token number">4096</span> <span class="token number">11</span>月 <span class="token number">25</span> <span class="token number">23</span>:05 ATLAS_ENTITIES-1
+drwxrwxr-x  <span class="token number">2</span> atguigu atguigu <span class="token number">4096</span> <span class="token number">11</span>月 <span class="token number">25</span> <span class="token number">23</span>:05 ATLAS_ENTITIES-2
+<span class="token punctuation">..</span>.
+<span class="token comment">#系统维护偏移量offsets的系统分区</span>
+drwxrwxr-x. <span class="token number">2</span> atguigu atguigu <span class="token number">4096</span> <span class="token number">11</span>月 <span class="token number">26</span> <span class="token number">15</span>:40 __consumer_offsets-11
+<span class="token punctuation">..</span>.
+<span class="token comment">#用户自动的topic</span>
+drwxrwxr-x  <span class="token number">2</span> atguigu atguigu <span class="token number">4096</span> <span class="token number">11</span>月 <span class="token number">26</span> <span class="token number">15</span>:42 testTopic-1
+drwxrwxr-x. <span class="token number">2</span> atguigu atguigu <span class="token number">4096</span> <span class="token number">11</span>月 <span class="token number">26</span> <span class="token number">15</span>:40 topic_log-0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意topic是一个逻辑概念,并非由topic组成,而是</p>
+<p> 不同分区内的一组文件组成(leader follower)</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment">#进入其中一个分区</span>
+<span class="token builtin class-name">cd</span> topic_log-0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">-rw-rw-r-- <span class="token number">1</span> atguigu atguigu  <span class="token number">0</span> <span class="token number">11</span>月 <span class="token number">26</span> <span class="token number">15</span>:42 00000000000000007372.index
+-rw-rw-r-- <span class="token number">1</span> atguigu atguigu  <span class="token number">0</span> <span class="token number">11</span>月 <span class="token number">24</span> <span class="token number">16</span>:38 00000000000000007372.log
+-rw-rw-r-- <span class="token number">1</span> atguigu atguigu  <span class="token number">0</span> <span class="token number">11</span>月 <span class="token number">26</span> <span class="token number">15</span>:42 00000000000000007372.timeindex
+-rw-rw-r-- <span class="token number">1</span> atguigu atguigu <span class="token number">12</span> <span class="token number">11</span>月 <span class="token number">26</span> <span class="token number">15</span>:40 leader-epoch-checkpoint<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>进入topic的一个分区文件,我们可以发现如上四个文件</p>
+<p><strong>分片与索引机制</strong></p>
+<p>由于生产者生产的消息会不断追加到log文件末尾，为防止log文件过大导致数据定位效率低下，Kafka采取了<strong>分片</strong>和<strong>索引</strong>机制，将每个partition分为多个segment。</p>
+<p>每个segment对应两个文件——“.index”文件和“.log”文件。</p>
+<p>这些文件位于一个文件夹下，该文件夹的命名规则为：topic名称+分区序号。</p>
+<p>例如，first这个topic有三个分区，则其对应的文件夹为first-0,first-1,first-2。</p>
+<p>index和log文件以当前segment的第一条消息的offset命名。下图为index文件和log文件的结构示意图。</p>
+<p>index（数据在log中的索引）</p>
+<p>log（真实的数据）timeindex (数据发送的时间索引) ，</p>
+<p>时间索引和index索引均是用来提高查询数据效率；</p>
+<p>三者密不可分</p>
+<p><strong>分片与索引详情图</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/Kafka%E5%86%85%E9%83%A8%E6%96%87%E4%BB%B6%E5%88%86%E5%8C%BA%E5%88%86%E7%89%87.png" alt="索引文件"></p>
+<h2 id="3-2关于leader-epoch-checkpoint"><a href="#3-2关于leader-epoch-checkpoint" class="headerlink" title="3.2关于leader-epoch-checkpoint"></a>3.2关于leader-epoch-checkpoint</h2><p>源码链接</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">https:<span class="token comment">//github.com/apache/kafka/blob/ba237c5d21abb8b63c5edf53517654a214157582/core/src/main/scala/kafka/server/checkpoints/LeaderEpochCheckpointFile.scala#L43</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">In</span> <span class="token class-name">Kafka</span><span class="token punctuation">,</span> a leader epoch refers <span class="token keyword">to</span> <span class="token namespace">the</span> number of leaders previously assigned by the controller<span class="token punctuation">.</span> <span class="token class-name">Every</span> time a leader fails<span class="token punctuation">,</span> the controller selects the <span class="token keyword">new</span> leader<span class="token punctuation">,</span> increments the current <span class="token string">"leader epoch"</span> by <span class="token number">1</span><span class="token punctuation">,</span> and shares the leader epoch <span class="token keyword">with</span> <span class="token namespace">all</span> replicas<span class="token punctuation">.</span> <span class="token class-name">The</span> replicas use the leader epoch as a means of verifying the current leader<span class="token punctuation">.</span> <span class="token class-name">If</span> a leader fails and returns<span class="token punctuation">,</span> when it tries <span class="token keyword">to</span> <span class="token namespace">contact</span> other replicas<span class="token punctuation">,</span> it will send what it believes is the current leader epoch<span class="token punctuation">.</span> <span class="token class-name">The</span> replicas will ignore the messages sent <span class="token keyword">with</span> <span class="token namespace">outdated</span> leader epochs<span class="token punctuation">.</span>
+
+<span class="token class-name">The</span> leader<span class="token operator">-</span>epoch<span class="token operator">-</span>checkpoint file contains two columns<span class="token operator">:</span> epochs and offsets<span class="token punctuation">,</span> as shown here<span class="token punctuation">.</span> <span class="token class-name">Each</span> row is a checkpoint <span class="token keyword">for</span> the latest recorded leader epoch and the leader's latest offset upon becoming leader<span class="token punctuation">.</span> <span class="token class-name">Both</span> replicas and leaders contain <span class="token keyword">this</span> file<span class="token punctuation">.</span> <span class="token class-name">Its</span> role is <span class="token keyword">for</span> checking what range of offsets pertain <span class="token keyword">to</span> <span class="token namespace">which</span> epoch<span class="token punctuation">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>说白了就是每一个topic维护了一个leader的版本,当心leader选举出来,leader的版本会加1</p>
+<p>一共三台机器一共三行两列,第一列是leader版本,第二行是leader的offset</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token number">0</span>
+<span class="token number">1</span>
+<span class="token number">23</span> <span class="token number">7372</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="3-3关于分区与副本的理解"><a href="#3-3关于分区与副本的理解" class="headerlink" title="3.3关于分区与副本的理解"></a>3.3关于分区与副本的理解</h2><p>在kafka中,每个主题可以有多个分区,每个分区又可以有多个副本</p>
+<p>在这个多个副本中.只有一个是leader.其他的都是follower副本,仅有leader副本对外提供服务</p>
+<h1 id="4-Kafka消费者"><a href="#4-Kafka消费者" class="headerlink" title="4.Kafka消费者"></a>4.Kafka消费者</h1><h2 id="4-1拉取模式"><a href="#4-1拉取模式" class="headerlink" title="4.1拉取模式"></a>4.1拉取模式</h2><p>pull</p>
+<p>pull模式不足之处是，如果kafka没有数据，消费者可能会陷入循环中，一直返回空数据。针对这一点，Kafka的消费者在消费数据时会传入一个时长参数timeout，如果当前没有数据可供消费，consumer会等待一段时间之后再返回，这段时长即为timeout。</p>
+<h2 id="4-2分区分配策略"><a href="#4-2分区分配策略" class="headerlink" title="4.2分区分配策略"></a>4.2分区分配策略</h2><p>首先要明白,分区分配策略其实就是指引Kafka的消费者去读取Kafka内的topic分区中的文件</p>
+<p>RoundRobin，Range , Sticky</p>
+<h3 id="4-2-1为什么同一个消费者组内的只有一个消费者消费分区"><a href="#4-2-1为什么同一个消费者组内的只有一个消费者消费分区" class="headerlink" title="4.2.1为什么同一个消费者组内的只有一个消费者消费分区?"></a>4.2.1为什么同一个消费者组内的只有一个消费者消费分区?</h3><p>pull拉取之后提交offset</p>
+<h1 id="5-zookeeper"><a href="#5-zookeeper" class="headerlink" title="5.zookeeper"></a>5.zookeeper</h1><p>Kafka集群中有一个broker会被选举为Controller，负责管理集群broker的上下线，所有topic的分区副本分配和leader选举等工作。</p>
+<p>Controller的管理工作都是依赖于Zookeeper的。</p>
+<p> 以下为partition的leader选举过程：</p>
+<pre class="line-numbers language-规范" data-language="规范"><code class="language-规范">在操作上，我们有一下符合规范的ZooKeeper安装方式：
+在物理&#x2F;硬件&#x2F;网络上的冗余：尽量不要把他们放在同一个机架上，合适的硬件配置（但不要过分），尽量保持电源，网络等。一个典型的ZooKeeper集群有5或7台服务器，分别允许宕机2台和3台服务器。如果你想部署一个小型集群，3台服务器也可以部署，但是要记住，在这种情况下你只能宕机1台服务器。
+I&#x2F;O隔离：如果你有大量的写入操作流入，你几乎肯定会把事务日志放在一组特定的磁盘上。写入事物日志是同步的（但为了性能会分批写入），因此并发写入会明显影响性能。数据快照是异步落盘，因此通常可以与操作系统和消息日志文件共享磁盘性能。你可以配置dataLogDir参数单独为服务器配置磁盘组。
+应用隔离：除非你真的了解其他应用的运行模式，否则不要和ZooKeeper安装在一起，最好是单独部署运行ZooKeeper（尽管ZooKeeper可以均衡的利用硬件资源）。
+谨慎使用虚拟化：他的运行状况取决于你的集群架构，读写模式和SLA，即便是由虚拟化层引入的微小开销也可能造成ZooKeeper的中断，毕竟ZooKeeper对此十分敏感。
+ZooKeeper配置: 他是java运行的，首先确保你给他分配足够的堆空间（我们通常配置3-5G，但这是根据我们现有数据实际情况来定的）。不幸的是，我们没有一个好的固定公式来确定他的值，但是要记住分配个ZooKeeper的堆空间越大，快照也就越大，从而会影响快照的恢复时间。实际上，如果快照变得太大（几个G），那你能需要增加initlimit参数的值，以便为服务器提供足够的时间来恢复并加入集群。
+监控:JMX和4个字母的命令（ZooKeeper提供的一系列命令，如：conf,cons,dump等）非常有用，他们在某些功能上重复了（这种情况下我们更喜欢4lw命令，他们似乎更容易预测情况，至少，他们和基础设施监控兼容性更好）
+不要过度构建集群：大型集群，尤其是大量写入的情况下，意味着大量的集群内部通信（集群成员节点的写入和后续的仲裁更新），但是过小的将集群将承担不必要的风险。添加更多的服务器可以增加集群的读取能力。
+总体来看，我们应尽量保持zookeeper尽可能小的处理负载（标准增长容量规划） 并尽可能的简单。与官方版本相比，我们尽量对配置和应用布局不做什么更改，尽可能保持官方原版。基于这些原因，我们倾向于跳过操作系统打包的版本。因为为了有更好的表现，它倾向于把关注点放在可能“混乱”的标准系统层上。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="6-Kafka事务"><a href="#6-Kafka事务" class="headerlink" title="6.Kafka事务"></a>6.Kafka事务</h1><h2 id="3-6-1-Producer事务"><a href="#3-6-1-Producer事务" class="headerlink" title="3.6.1 Producer事务"></a>3.6.1 Producer事务</h2><p>为了实现跨分区跨会话的事务，需要引入一个全局唯一的Transaction ID，并将Producer获得的PID和Transaction ID绑定。</p>
+<p>这样当Producer重启后就可以通过正在进行的Transaction ID获得原来的PID。</p>
+<p>为了管理Transaction，Kafka引入了一个新的组件Transaction Coordinator。</p>
+<p>Producer就是通过和Transaction Coordinator交互获得Transaction ID对应的任务状态。</p>
+<p>Transaction Coordinator还负责将事务所有写入Kafka的一个内部Topic，这样即使整个服务重启，由于事务状态得到保存，进行中的事务状态可以得到恢复，从而继续进行。</p>
+<pre class="mermaid">graph LR
+A[producer]--Transaction ID&PID-->B[Server]
+A--交互-->C[Transaction Coordinator]
+C--写入事务存储事务状态-->D[事务topic]
+D--读取事务状态-->A
+D-->B</pre>
+
+<h2 id="3-6-2事务状态是如何得到保存的呢"><a href="#3-6-2事务状态是如何得到保存的呢" class="headerlink" title="3.6.2事务状态是如何得到保存的呢?"></a>3.6.2事务状态是如何得到保存的呢?</h2><p>看下面Kafka生产流程哦</p>
+<h2 id="3-6-3-Consumer事务（精准一次性消费）"><a href="#3-6-3-Consumer事务（精准一次性消费）" class="headerlink" title="3.6.3 Consumer事务（精准一次性消费）"></a>3.6.3 Consumer事务（精准一次性消费）</h2><p>上述事务机制主要是从Producer方面考虑，对于Consumer而言，事务的保证就会相对较弱，尤其时无法保证Commit的信息被精确消费。</p>
+<p>这是由于Consumer可以通过offset访问任意信息，而且不同的Segment File生命周期不同，同一事务的消息可能会出现重启后被删除的情况。</p>
+<p>如果想完成Consumer端的精准一次性消费，那么需要kafka消费端将消费过程和提交offset过程做原子绑定。此时我们需要将kafka的offset保存到支持事务的自定义介质（比如mysql)。这部分知识会在后续项目部分涉及。</p>
+<h1 id="7-Kafka-API与消息发送流程"><a href="#7-Kafka-API与消息发送流程" class="headerlink" title="7.Kafka API与消息发送流程"></a>7.Kafka API与消息发送流程</h1><h2 id="7-1消息发送流程"><a href="#7-1消息发送流程" class="headerlink" title="7.1消息发送流程"></a>7.1消息发送流程</h2><p>Kafka的Producer发送消息采用的是<strong>异步发送</strong>的方式。</p>
+<p>在消息发送的过程中，涉及到了<strong>两个线程——main线程和Sender线程</strong>，以及<strong>一个线程共享变量——RecordAccumulator</strong>。</p>
+<p>main线程将消息发送给RecordAccumulator，</p>
+<p>Sender线程不断从RecordAccumulator中拉取消息发送到Kafka broker。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/Kafka%E6%B6%88%E6%81%AF%E5%8F%91%E9%80%81%E6%B5%81%E7%A8%8B.png" alt="Kafka发送消息流程"></p>
+<h2 id="7-2-API"><a href="#7-2-API" class="headerlink" title="7.2 API"></a>7.2 API</h2><p>需要练习</p>
+<h1 id="8-kafka监控"><a href="#8-kafka监控" class="headerlink" title="8.kafka监控"></a>8.kafka监控</h1><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"> <span class="token punctuation">[</span>atguigu@hadoop102 eagle<span class="token punctuation">]</span>$ bin/ke.sh start
+<span class="token punctuation">..</span>. <span class="token punctuation">..</span>.
+<span class="token punctuation">..</span>. <span class="token punctuation">..</span>.
+*******************************************************************
+* Kafka Eagle Service has started success.
+* Welcome, Now you can visit <span class="token string">'http://192.168.202.102:8048/ke'</span>
+* Account:admin ,Password:123456
+*******************************************************************
+* <span class="token operator">&lt;</span>Usage<span class="token operator">></span> ke.sh <span class="token punctuation">[</span>start<span class="token operator">|</span>status<span class="token operator">|</span>stop<span class="token operator">|</span>restart<span class="token operator">|</span>stats<span class="token punctuation">]</span> <span class="token operator">&lt;</span>/Usage<span class="token operator">></span>
+* <span class="token operator">&lt;</span>Usage<span class="token operator">></span> https://www.kafka-eagle.org/ <span class="token operator">&lt;</span>/Usage<span class="token operator">></span>
+*******************************************************************
+<span class="token punctuation">[</span>atguigu@hadoop102 eagle<span class="token punctuation">]</span>$
+<span class="token comment">#注意端口号8048</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Jinxin Li</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://fourgold.github.io/2019/10/21/06Kafka_%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%8E%9F%E7%90%86/">http://fourgold.github.io/2019/10/21/06Kafka_%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%8E%9F%E7%90%86/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Jinxin Li</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/12/12/02hive%E6%9E%B6%E6%9E%84/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="hive架构">
+                        
+                        <span class="card-title">hive架构</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-12-12
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Jinxin Li
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/09/07/13Flink10_%E5%B7%A5%E4%BD%9C%E4%B8%AD%E9%9C%80%E6%B1%82%E6%95%B4%E7%90%86(DataStreamAPI)/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Flink10_工作需求整理">
+                        
+                        <span class="card-title">Flink10_工作需求整理</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-09-07
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/flink/" class="post-category">
+                                    flink
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/flink/">
+                        <span class="chip bg-color">flink</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('1'),
+            headingSelector: 'h1,h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1,h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">Jinxin Li</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">232.3k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/fourgold" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:799392914@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=799392914" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 799392914" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

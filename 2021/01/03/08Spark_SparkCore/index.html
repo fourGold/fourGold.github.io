@@ -1,0 +1,1030 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Spark_SparkCore, 觉浅">
+    <meta name="description" content="Jinxin Li的个人博客">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Spark_SparkCore | 觉浅</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">觉浅</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">觉浅</div>
+        <div class="logo-desc">
+            
+            Jinxin Li的个人博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="http://github.com/fourgold/" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="http://github.com/fourgold/" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Spark_SparkCore</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/spark/">
+                                <span class="chip bg-color">spark</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/spark/" class="post-category">
+                                spark
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2021-01-03
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    8.5k
+                </div>
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+        <!-- 代码块折行 -->
+        <style type="text/css">
+            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
+        </style>
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="0x1-spark概述"><a href="#0x1-spark概述" class="headerlink" title="0x1 spark概述"></a>0x1 spark概述</h1><h2 id="1-历史"><a href="#1-历史" class="headerlink" title="1.历史"></a>1.历史</h2><p>在之前的学习中，Hadoop的MapReduce是大家广为熟知的计算框架，那为什么咱们还要学习新的计算框架Spark呢，这里就不得不提到Spark和Hadoop的关系。</p>
+<p>首先从时间节点上来看:</p>
+<p>Hadoop</p>
+<ol>
+<li>2006年1月，Doug Cutting加入Yahoo，领导Hadoop的开发</li>
+<li>2008年1月，Hadoop成为Apache顶级项目</li>
+<li>2011年1.0正式发布</li>
+<li>2012年3月稳定版发布</li>
+<li>2013年10月发布2.X (Yarn)版本</li>
+</ol>
+<p>Spark</p>
+<ol>
+<li>2009年，Spark诞生于伯克利大学的AMPLab实验室</li>
+<li>2010年，伯克利大学正式开源了Spark项目</li>
+<li>2013年6月，Spark成为了Apache基金会下的项目</li>
+<li>2014年2月，Spark以飞快的速度成为了Apache的顶级项目</li>
+<li>2015年至今，Spark变得愈发火爆，大量的国内公司开始重点部署或者使用Spark</li>
+</ol>
+<h2 id="2-Spark核心模块"><a href="#2-Spark核心模块" class="headerlink" title="2.Spark核心模块"></a>2.Spark核心模块</h2><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/Spark%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97.png" alt="spark核心模块"></p>
+<p><strong>Spark Core</strong></p>
+<p>Spark Core中提供了Spark最基础与最核心的功能，Spark其他的功能如：Spark SQL，Spark Streaming，GraphX, MLlib都是在Spark Core的基础上进行扩展的</p>
+<p><strong>Spark SQL</strong></p>
+<p>Spark SQL是Spark用来操作结构化数据的组件。通过Spark SQL，用户可以使用SQL或者Apache Hive版本的SQL方言（HQL）来查询数据。</p>
+<p><strong>Spark Streaming</strong></p>
+<p>Spark Streaming是Spark平台上针对实时数据进行流式计算的组件，提供了丰富的处理数据流的API。</p>
+<p><strong>Spark MLlib</strong></p>
+<p>MLlib是Spark提供的一个机器学习算法库。MLlib不仅提供了模型评估、数据导入等额外的功能，还提供了一些更底层的机器学习原语。</p>
+<p><strong>Spark GraphX</strong></p>
+<p>GraphX是Spark面向图计算提供的框架与算法库。</p>
+<h2 id="3-入门wordCount"><a href="#3-入门wordCount" class="headerlink" title="3.入门wordCount"></a>3.入门wordCount</h2><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">object wordCountTest &#123;
+  def main<span class="token punctuation">(</span>args: Array<span class="token punctuation">[</span>String<span class="token punctuation">]</span><span class="token punctuation">)</span>: Unit <span class="token operator">=</span> &#123;
+    <span class="token comment">//spark标准获取流程</span>
+    val sparkConf: SparkConf <span class="token operator">=</span> new SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"wordCount"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[1]"</span><span class="token punctuation">)</span>
+    val sc <span class="token operator">=</span> new SparkContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">)</span>
+    <span class="token comment">//创建RDD,使用textFile的方式创建RDD</span>
+    val line: RDD<span class="token punctuation">[</span>String<span class="token punctuation">]</span> <span class="token operator">=</span> sc<span class="token punctuation">.</span>textFile<span class="token punctuation">(</span><span class="token string">"./word.txt"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    val result: RDD<span class="token punctuation">[</span><span class="token punctuation">(</span>String<span class="token punctuation">,</span> <span class="token keyword">Int</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> line<span class="token punctuation">.</span>flatMap<span class="token punctuation">(</span>_<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>reduceByKey<span class="token punctuation">(</span>_ <span class="token operator">+</span> _<span class="token punctuation">)</span>
+    <span class="token comment">//打印</span>
+    result<span class="token punctuation">.</span>collect<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>foreach<span class="token punctuation">(</span>println<span class="token punctuation">)</span>
+    sc<span class="token punctuation">.</span><span class="token keyword">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="4-spark运行模式"><a href="#4-spark运行模式" class="headerlink" title="4.spark运行模式"></a>4.spark运行模式</h2><table>
+<thead>
+<tr>
+<th>Spark运行环境</th>
+<th>用法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Local模式</td>
+<td>测试</td>
+</tr>
+<tr>
+<td>Standalone模式</td>
+<td>独立部署Matser-Worker<br/>自身提供计算资源,降低了耦合性</td>
+</tr>
+<tr>
+<td>Yarn模式</td>
+<td>提供集群模式</td>
+</tr>
+<tr>
+<td>K8S模式</td>
+<td></td>
+</tr>
+<tr>
+<td>Mesos模式</td>
+<td>Twitter</td>
+</tr>
+<tr>
+<td>Windows模式</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="5-spark端口号"><a href="#5-spark端口号" class="headerlink" title="5.spark端口号"></a>5.spark端口号</h2><table>
+<thead>
+<tr>
+<th>Spark端口号</th>
+<th>详解</th>
+<th>Hadoop</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>内部通信:==7077==</td>
+<td>Spark Master内部通信服务端口号</td>
+<td>8020/9000</td>
+</tr>
+<tr>
+<td>Master资源监控:8080/改==8989==</td>
+<td>Standalone模式下，Spark Master Web端口号</td>
+<td>9870</td>
+</tr>
+<tr>
+<td>Spark-Shell监控:==4040==</td>
+<td>Spark查看当前Spark-shell运行任务情况端口号</td>
+<td></td>
+</tr>
+<tr>
+<td>Spark使用HDFS端口:==8020==</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>历史服务器UI端口:==18080==</td>
+<td>Spark历史服务器端口号</td>
+<td>19888</td>
+</tr>
+<tr>
+<td>Yarn:==8088==</td>
+<td>Hadoop YARN任务运行情况查看端口号</td>
+<td>8088</td>
+</tr>
+</tbody></table>
+<h2 id="6-Spark运行组件"><a href="#6-Spark运行组件" class="headerlink" title="6.Spark运行组件"></a>6.Spark运行组件</h2><p>Spark框架的核心是一个计算引擎，整体来说，它采用了标准 master-slave 的结构。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/Spark%E8%BF%90%E8%A1%8C%E7%BB%84%E4%BB%B6.png" alt="Spark运行组件"></p>
+<h3 id="6-1Spark-Executor"><a href="#6-1Spark-Executor" class="headerlink" title="6.1Spark Executor"></a>6.1Spark Executor</h3><p>集群中运行在==工作节点（Worker）中的一个JVM进程==，是整个集群中的专门用于计算的节点。在提交应用中，可以提供参数指定计算节点的个数，以及对应的资源。这里的资源一般指的是工作节点Executor的内存大小和使用的虚拟CPU核（Core）数量。</p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>–num-executors</td>
+<td>配置Executor的数量</td>
+</tr>
+<tr>
+<td>–executor-memory</td>
+<td>配置每个Executor的内存大小</td>
+</tr>
+<tr>
+<td>–executor-cores</td>
+<td>配置每个Executor的虚拟CPU   core数量</td>
+</tr>
+<tr>
+<td></td>
+<td>Executor如果是3核,设备是单核,模拟的多线程操作,其实是并发操作</td>
+</tr>
+</tbody></table>
+<h3 id="6-2并行与并发"><a href="#6-2并行与并发" class="headerlink" title="6.2并行与并发"></a>6.2并行与并发</h3><p>我们会给Executor分配虚拟的核心数量,如果核心不够会触发多线程操作,并发</p>
+<p>如果核心够用,则进行并行操作,可以进行配置</p>
+<h3 id="6-3有向无环图"><a href="#6-3有向无环图" class="headerlink" title="6.3有向无环图"></a>6.3有向无环图</h3><p>表示一种依赖关系,依赖关系形成的拓扑图形称为DAG,有向无环图</p>
+<pre class="mermaid">graph LR
+A-->B
+B-->C
+B-->D
+D--禁止-->A</pre>
+
+<p>如图,D向A会形成无环图,有环会形成死循环(与maven类似)</p>
+<h2 id="7-Yarn-Cluster任务提交流程"><a href="#7-Yarn-Cluster任务提交流程" class="headerlink" title="7.Yarn Cluster任务提交流程"></a>7.Yarn Cluster任务提交流程</h2><p><strong>核心</strong>:分两大块 1.资源的申请 2.计算的准备 任务发给资源</p>
+<p>Client与Cluster区别在于Driver程序运行的节点位置</p>
+<p><img src="https://i.loli.net/2020/12/23/JjlbBD6sYXgC3Hx.png" alt="Spark-Yarn提交流程"></p>
+<ol>
+<li>任务提交</li>
+<li>向ResourceManager通讯申请启动ApplicationMaster</li>
+<li>ApplicationMaster选择合适的节点借用NodeManager启动一个container</li>
+<li>在container中运行AppMatser=Driver</li>
+<li>Driver启动后,向RM申请container运行Executor进程</li>
+<li>Executor进程启动后反向向Driver进行注册</li>
+<li>全部注册完成后开始执行main函数</li>
+<li>执行到action算子,触发一个job,根据是否发生shuffle开始划分stage</li>
+<li>每个stage生成对应的TaskSet[task1,task2,task3…]</li>
+<li>然后将task分发到各个Executor上执行</li>
+</ol>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>shenneng@hadoop102 spark-yarn<span class="token punctuation">]</span>$ bin/spark-submit <span class="token punctuation">\</span>
+--class org.apache.spark.examples.SparkPi <span class="token punctuation">\</span>
+--master <span class="token function">yarn</span> <span class="token punctuation">\</span>
+--deploy-mode cluster <span class="token punctuation">\</span>
+./examples/jars/spark-examples_2.12-3.0.0.jar <span class="token punctuation">\</span>
+<span class="token number">10</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="0x2-Spark框架"><a href="#0x2-Spark框架" class="headerlink" title="0x2 Spark框架"></a>0x2 Spark框架</h1><p>Spark和Hadoop的根本差异是多个作业之间的数据通信问题</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_20_12/Spark%E8%BF%90%E8%A1%8C%E6%A8%A1%E5%BC%8F%E7%A4%BA%E6%84%8F%E5%9B%BE.png" alt="Spark运行模式示意图"></p>
+<table>
+<thead>
+<tr>
+<th>Spark运行环境</th>
+<th>用法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Local模式</td>
+<td>测试</td>
+</tr>
+<tr>
+<td>Standalone模式</td>
+<td>独立部署Matser-Worker<br/>自身提供计算资源,降低了耦合性</td>
+</tr>
+<tr>
+<td>Yarn模式</td>
+<td>提供集群模式</td>
+</tr>
+<tr>
+<td>K8S模式</td>
+<td></td>
+</tr>
+<tr>
+<td>Mesos模式</td>
+<td>Twitter</td>
+</tr>
+<tr>
+<td>Windows模式</td>
+<td></td>
+</tr>
+</tbody></table>
+<h2 id="1-Yarn模式"><a href="#1-Yarn模式" class="headerlink" title="1.Yarn模式"></a>1.Yarn模式</h2><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_20_12/Yarn-Cluster%E6%8F%90%E4%BA%A4%E6%B5%81%E7%A8%8B.png" alt="Yarn-Cluster提交流程"></p>
+<p>Client与Cluster的主要区别是Driver是否在本地运行</p>
+<h2 id="2-分布式计算模拟"><a href="#2-分布式计算模拟" class="headerlink" title="2.分布式计算模拟"></a>2.分布式计算模拟</h2><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_20_12/%E5%88%86%E5%B8%83%E5%BC%8F%E8%AE%A1%E7%AE%97%E6%A0%B8%E5%BF%83.png" alt="分布式计算核心-拆分Task"></p>
+<p>通过简单的分布式计算模拟,理解任务的拆分,运行的模块,并行的原理,RDD的封装,底层数据结构</p>
+<p><strong>DRIVER</strong></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token comment">//DRIVER</span>
+
+<span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>ecust<span class="token punctuation">.</span>saprkcore</span>
+
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>ObjectOutputStream<span class="token punctuation">,</span> OutputStream<span class="token punctuation">&#125;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>net<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>ServerSocket<span class="token punctuation">,</span> Socket<span class="token punctuation">&#125;</span>
+
+<span class="token comment">/**
+ * @author Jinxin Li
+ * @create 2020-12-31 13:43
+ */</span>
+<span class="token keyword">object</span> Driver <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token comment">//进行逻辑的封装,计算的准备,数据的提交</span>
+
+    <span class="token keyword">val</span> client1 <span class="token operator">=</span> <span class="token keyword">new</span> Socket<span class="token punctuation">(</span><span class="token string">"localhost"</span><span class="token punctuation">,</span> <span class="token number">9999</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> client2 <span class="token operator">=</span> <span class="token keyword">new</span> Socket<span class="token punctuation">(</span><span class="token string">"localhost"</span><span class="token punctuation">,</span> <span class="token number">8888</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">val</span> out1<span class="token operator">:</span> OutputStream <span class="token operator">=</span> client1<span class="token punctuation">.</span>getOutputStream
+    <span class="token keyword">val</span> out2<span class="token operator">:</span> OutputStream <span class="token operator">=</span> client2<span class="token punctuation">.</span>getOutputStream
+
+    <span class="token keyword">val</span> objOut1 <span class="token operator">=</span> <span class="token keyword">new</span> ObjectOutputStream<span class="token punctuation">(</span>out1<span class="token punctuation">)</span>
+    <span class="token keyword">val</span> objOut2 <span class="token operator">=</span> <span class="token keyword">new</span> ObjectOutputStream<span class="token punctuation">(</span>out2<span class="token punctuation">)</span>
+
+    <span class="token keyword">val</span>  task <span class="token operator">=</span> <span class="token keyword">new</span> Task<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">val</span> subTask1 <span class="token operator">=</span> <span class="token keyword">new</span> SubTask<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    subTask1<span class="token punctuation">.</span>logic<span class="token operator">=</span>task<span class="token punctuation">.</span>logic
+    subTask1<span class="token punctuation">.</span>data<span class="token operator">=</span>task<span class="token punctuation">.</span>data<span class="token punctuation">.</span>take<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">val</span> subTask2 <span class="token operator">=</span> <span class="token keyword">new</span> SubTask<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    subTask2<span class="token punctuation">.</span>logic<span class="token operator">=</span>task<span class="token punctuation">.</span>logic
+    subTask2<span class="token punctuation">.</span>data<span class="token operator">=</span>task<span class="token punctuation">.</span>data<span class="token punctuation">.</span>takeRight<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+
+    objOut1<span class="token punctuation">.</span>writeObject<span class="token punctuation">(</span>subTask1<span class="token punctuation">)</span>
+    objOut1<span class="token punctuation">.</span>flush<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    objOut1<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    objOut2<span class="token punctuation">.</span>writeObject<span class="token punctuation">(</span>subTask2<span class="token punctuation">)</span>
+    objOut2<span class="token punctuation">.</span>flush<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    objOut2<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment">//发送,注意在网络中传递的数据要进行序列化,不可能传递对象,必须序列化</span>
+    println<span class="token punctuation">(</span><span class="token string">"任务发送完毕"</span><span class="token punctuation">)</span>
+
+    <span class="token comment">//关闭客户端</span>
+    client1<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    client2<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>EXECUTOR1</strong></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> Executor1 <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token comment">//启动服务器,接受数据</span>
+    <span class="token keyword">val</span> server <span class="token operator">=</span> <span class="token keyword">new</span> ServerSocket<span class="token punctuation">(</span><span class="token number">9999</span><span class="token punctuation">)</span>
+
+    println<span class="token punctuation">(</span><span class="token string">"服务器9999启动,等待接受数据..."</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">val</span> client<span class="token operator">:</span> Socket <span class="token operator">=</span> server<span class="token punctuation">.</span>accept<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">val</span> in<span class="token operator">:</span> InputStream <span class="token operator">=</span> client<span class="token punctuation">.</span>getInputStream
+
+    <span class="token keyword">val</span> objIn <span class="token operator">=</span> <span class="token keyword">new</span> ObjectInputStream<span class="token punctuation">(</span>in<span class="token punctuation">)</span>
+
+    <span class="token keyword">val</span> task <span class="token operator">=</span> objIn<span class="token punctuation">.</span>readObject<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>asInstanceOf<span class="token punctuation">[</span>SubTask<span class="token punctuation">]</span>
+
+    <span class="token keyword">val</span> ints<span class="token operator">:</span> List<span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span> <span class="token operator">=</span> task<span class="token punctuation">.</span>compute<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    println<span class="token punctuation">(</span><span class="token string">"接收到客户端9999接受的数据:"</span><span class="token operator">+</span>ints<span class="token punctuation">)</span>
+
+    objIn<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    client<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    server<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>EXECUTOR2</strong></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> Executor2 <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token comment">//启动服务器,接受数据</span>
+    <span class="token keyword">val</span> server <span class="token operator">=</span> <span class="token keyword">new</span> ServerSocket<span class="token punctuation">(</span><span class="token number">8888</span><span class="token punctuation">)</span>
+
+    println<span class="token punctuation">(</span><span class="token string">"服务器9999启动,等待接受数据..."</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">val</span> client<span class="token operator">:</span> Socket <span class="token operator">=</span> server<span class="token punctuation">.</span>accept<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">val</span> in<span class="token operator">:</span> InputStream <span class="token operator">=</span> client<span class="token punctuation">.</span>getInputStream
+
+    <span class="token keyword">val</span> objIn <span class="token operator">=</span> <span class="token keyword">new</span> ObjectInputStream<span class="token punctuation">(</span>in<span class="token punctuation">)</span>
+
+    <span class="token keyword">val</span> task<span class="token operator">=</span> objIn<span class="token punctuation">.</span>readObject<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>asInstanceOf<span class="token punctuation">[</span>SubTask<span class="token punctuation">]</span>
+
+    <span class="token keyword">val</span> ints<span class="token operator">:</span> List<span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span> <span class="token operator">=</span> task<span class="token punctuation">.</span>compute<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    println<span class="token punctuation">(</span><span class="token string">"接收到客户端8888接受的数据:"</span><span class="token operator">+</span>ints<span class="token punctuation">)</span>
+
+    objIn<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    client<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    server<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>SUBTASK</strong></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">class</span> SubTask <span class="token keyword">extends</span> Serializable <span class="token punctuation">&#123;</span>
+  <span class="token comment">//这是一种特殊的数据结构,其中包含了数据的格式,数据的计算逻辑与算子转换</span>
+  <span class="token comment">//接收到数据之后,可以进行计算</span>
+  <span class="token comment">//RDD 广播变量 累加器 就是类似的数据结构</span>
+  <span class="token keyword">var</span> data <span class="token operator">:</span>List<span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span> <span class="token operator">=</span> _
+  <span class="token keyword">var</span> logic<span class="token operator">:</span><span class="token builtin">Int</span><span class="token keyword">=></span><span class="token builtin">Int</span> <span class="token operator">=</span> _
+
+  <span class="token comment">//计算任务</span>
+  <span class="token keyword">def</span>  compute<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token punctuation">&#123;</span>
+    data<span class="token punctuation">.</span>map<span class="token punctuation">(</span>logic<span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>TASK</strong></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">class</span> Task <span class="token keyword">extends</span> Serializable <span class="token punctuation">&#123;</span><span class="token comment">//实现序列化 特质</span>
+  <span class="token comment">//包含原数据的数据结构</span>
+  <span class="token keyword">val</span> data <span class="token operator">=</span> List<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+
+  <span class="token keyword">val</span> function<span class="token operator">:</span> <span class="token builtin">Int</span> <span class="token keyword">=></span> <span class="token builtin">Int</span> <span class="token operator">=</span> <span class="token punctuation">(</span>num<span class="token operator">:</span> <span class="token builtin">Int</span><span class="token punctuation">)</span> <span class="token keyword">=></span> <span class="token punctuation">&#123;</span>
+    num <span class="token operator">*</span> <span class="token number">2</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token comment">//注意函数的类型是Int=>Int</span>
+  <span class="token keyword">val</span> logic<span class="token operator">:</span><span class="token builtin">Int</span><span class="token keyword">=></span><span class="token builtin">Int</span> <span class="token operator">=</span> _<span class="token operator">*</span><span class="token number">2</span>
+
+  <span class="token comment">//计算任务</span>
+  <span class="token keyword">def</span>  compute<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token punctuation">&#123;</span>
+    data<span class="token punctuation">.</span>map<span class="token punctuation">(</span>logic<span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="3-RDD与IO"><a href="#3-RDD与IO" class="headerlink" title="3.RDD与IO"></a>3.RDD与IO</h2><p><strong>字节流&amp;字符流</strong></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">InputStream in <span class="token operator">=</span> <span class="token keyword">new</span> FileInputStream<span class="token punctuation">(</span><span class="token string">"path"</span><span class="token punctuation">)</span>
+int i <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token keyword">while</span><span class="token punctuation">(</span>i <span class="token operator">=</span> in<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">!=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    println<span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="mermaid">graph LR
+File-->FileInputStream--read-->console</pre>
+
+<p><strong>缓冲流</strong></p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">InputStream in <span class="token operator">=</span> <span class="token keyword">new</span> BufferedInputStream<span class="token punctuation">(</span><span class="token keyword">new</span> FileInputStream<span class="token punctuation">(</span><span class="token string">"path"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+int i <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span>
+<span class="token keyword">while</span><span class="token punctuation">(</span>i <span class="token operator">=</span> in<span class="token punctuation">.</span>read<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">!=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    println<span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="mermaid">graph LR
+File-->FileInputStream-->BufferedInputStream--read-->console</pre>
+
+<p><img src="C:%5CUsers%5C89388%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201231224057782.png" alt="缓冲区的缓冲流"></p>
+<p><strong>转换流</strong>InputStreamReader</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">Reader in <span class="token operator">=</span> <span class="token keyword">new</span> BufferedReader<span class="token punctuation">(</span>
+    <span class="token keyword">new</span> InputStreamReader<span class="token punctuation">(</span>
+        <span class="token keyword">new</span> FileInputStream<span class="token punctuation">(</span><span class="token string">"path"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token string">"UTF-8"</span>
+        <span class="token punctuation">)</span>
+    <span class="token punctuation">)</span>
+<span class="token builtin">String</span> s <span class="token operator">=</span> <span class="token keyword">null</span>
+<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token punctuation">(</span>s<span class="token operator">=</span>in<span class="token punctuation">.</span>readLine<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">!=</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    println<span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_20_12/%E6%B5%81%E7%9A%84%E8%A3%85%E9%A5%B0%E8%80%85%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F.png" alt="装饰者设计模式的IO"></p>
+<p>可以看出核心是FileInputFormat,转换流与缓冲流都是包装,这种设计模式成为装饰者设计模式</p>
+<p>哪些inputformat,都是对读取逻辑的封装,没有真正的读取数据</p>
+<p>readLine才会真正的执行,new的过程仅仅是建立连接,但是没有真正的读取,有种延迟加载的感觉</p>
+<p>RDD的组装方式,与IO的封装也是非常的类似</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">new</span> HadoopRDD<span class="token comment">//textFile</span>
+<span class="token keyword">new</span> MapPartitionsRDD<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment">//flatMap</span>
+<span class="token keyword">new</span> MapPartitionsRDD<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment">//map</span>
+<span class="token keyword">new</span> ShuffleRDD<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment">//reduceByKey</span>
+
+<span class="token comment">//执行</span>
+rdd<span class="token punctuation">.</span>collect<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一层一层的包装</p>
+<p><img src="C:%5CUsers%5C89388%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20201231232951858.png" alt="RDD的装饰者模式理解"></p>
+<p>RDD的数据处理方式类似于IO流,也有装饰者设计模式</p>
+<p>RDD的数据只有在调用collect方法时,才会真正的执行</p>
+<p>RDD是不保存数据的,但是IO可以临时保存一部分数据</p>
+<h2 id="4-分区"><a href="#4-分区" class="headerlink" title="4. 分区"></a>4. 分区</h2><p>RDD是一个最基本的数据处理模型</p>
+<p>类似于Kafka中的分区,我们将数据进行分区,分区之后分成不成的Task,可以分发至Executor进行计算</p>
+<p>RDD是最小的数据处理单元,里面包含了分区信息,提高并行计算的能力</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_20_12/RDD%E6%95%B0%E6%8D%AE%E7%9A%84%E5%88%87%E5%88%86.png" alt="数据的分区"></p>
+<h1 id="0x3-spark核心"><a href="#0x3-spark核心" class="headerlink" title="0x3 spark核心"></a>0x3 spark核心</h1><h2 id="1-spark核心三大数据结构"><a href="#1-spark核心三大数据结构" class="headerlink" title="1. spark核心三大数据结构"></a>1. spark核心三大数据结构</h2><p>RDD : 弹性分布式数据集</p>
+<p>累加器：分布式共享只写变量</p>
+<p>广播变量：分布式共享只读变量</p>
+<h2 id="2-RDD基本概念"><a href="#2-RDD基本概念" class="headerlink" title="2.RDD基本概念"></a>2.RDD基本概念</h2><p>RDD（Resilient Distributed Dataset）叫做弹性分布式数据集，是Spark中最基本的数据处理模型。代码中是一个抽象类，它代表一个弹性的、不可变、可分区、里面的元素可并行计算的集合。</p>
+<p><strong>1.弹性</strong></p>
+<p>存储的弹性：内存与磁盘的自动切换；</p>
+<p>容错的弹性：数据丢失可以自动恢复；</p>
+<p>计算的弹性：计算出错重试机制；</p>
+<p>分片的弹性：可根据需要重新分片。</p>
+<p><strong>2.分布式</strong>：数据存储在大数据集群不同节点上</p>
+<p><strong>3.数据集</strong>：RDD封装了计算逻辑，并不保存数据</p>
+<p><strong>4.数据抽象</strong>：RDD是一个抽象类，需要子类具体实现</p>
+<p><strong>5.不可变</strong>：RDD封装了计算逻辑，是不可以改变的，想要改变，只能产生新的RDD，在新的RDD里面封装计算逻辑</p>
+<p><strong>6.可分区、并行计算</strong></p>
+<h2 id="3-RDD核心属性"><a href="#3-RDD核心属性" class="headerlink" title="3.RDD核心属性"></a>3.RDD核心属性</h2><p><a target="_blank" rel="noopener" href="https://data-flair.training/blogs/spark-rdd-tutorial/">RDD详细描述</a></p>
+<p><img src="https://i.loli.net/2020/12/23/PTqaCxnHeBdl91G.png" alt="SparkRDD的核心属性"></p>
+<p>图:Spark RDD核心属性</p>
+<ol>
+<li><p>粗粒度操作(无法对单个元素进行操作)</p>
+</li>
+<li><p>内存中计算</p>
+</li>
+<li><p>懒执行</p>
+</li>
+<li><p>不变性</p>
+</li>
+<li><p>容错性</p>
+</li>
+<li><p>持久性(cache可以选择等级与checkpoint)</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--数据缓存</span>
+wordToOneRdd<span class="token punctuation">.</span>cache<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">--可以更改存储级别</span>
+mapRdd<span class="token punctuation">.</span>persist<span class="token punctuation">(</span>StorageLevel<span class="token punctuation">.</span>MEMORY_AND_DISK_2<span class="token punctuation">)</span>
+
+<span class="token comment">--设置检查点路径</span>
+sc<span class="token punctuation">.</span>setCheckpointDir<span class="token punctuation">(</span><span class="token string">"./checkpoint1"</span><span class="token punctuation">)</span>
+<span class="token comment">--数据检查点：针对wordToOneRdd做检查点计算</span>
+wordToOneRdd<span class="token punctuation">.</span><span class="token keyword">checkpoint</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">--一般两者联合使用</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>可分区(分区列表)</p>
+</li>
+<li><p>粘度分区(自定分区)</p>
+</li>
+</ol>
+<h2 id="4-RDD缺点"><a href="#4-RDD缺点" class="headerlink" title="4.RDD缺点"></a>4.RDD缺点</h2><ol>
+<li>没有内置的优化引擎,RDD无法利用Spark的高级优化器（包括catalyst optimizer与Tungsten执行引擎）的优势。开发人员需要根据其属性优化每个RDD</li>
+<li>只能处理结构化数据与DataFrame和数据集不同，RDD不会推断所摄取数据的模式，而是需要用户指定它。</li>
+<li>性能限制,作为内存中的JVM对象，RDD涉及垃圾收集和Java序列化的开销，这在数据增长时非常昂贵。</li>
+<li>没有足够的内存来存储RDD时，它们会拖慢运行速度。也可以将RDD的该分区存储在不适合RAM的磁盘上。结果，它将提供与当前数据并行系统类似的性能。</li>
+</ol>
+<h2 id="5-RDD的来源"><a href="#5-RDD的来源" class="headerlink" title="5.RDD的来源"></a>5.RDD的来源</h2><ol>
+<li>使用集合创建parallelize MakeRDD</li>
+<li>外部存储文件创建RDD textfile</li>
+<li>从其他RDD创建(血缘关系,cache,checkpoint)</li>
+<li>直接创建RDD 内部使用</li>
+</ol>
+<h2 id="6-RDD的-分区分片问题"><a href="#6-RDD的-分区分片问题" class="headerlink" title="6.RDD的==分区分片问题=="></a>6.RDD的==分区分片问题==</h2><p>RDD分区意味着一个分区一个job么,</p>
+<p>RDD分区3意味着要在三个executor里执行么</p>
+<p>重新分区,加入三个executor在不同的container里是如何发生shuffle里的,还是三个分区是一个job,这一个job在一个container里执行</p>
+<h2 id="7-RDD的序列化"><a href="#7-RDD的序列化" class="headerlink" title="7.RDD的序列化"></a>7.RDD的序列化</h2><p>从计算的角度, 算子以外的代码都是在Driver端执行, 算子里面的代码都是在Executor端执行。</p>
+<p>那么在scala的函数式编程中，就会导致算子内经常会用到算子外的数据，这样就形成了闭包的效果，如果使用的算子外的数据无法序列化，就意味着无法传值给Executor端执行，就会发生错误</p>
+<p>所以需要在执行任务计算前，检测闭包内的对象是否可以进行序列化，这个操作我们称之为闭包检测。Scala2.12版本后闭包编译方式发生了改变  </p>
+<p><strong>Kryo序列化框架</strong></p>
+<p>Spark2.0开始支持另外一种Kryo序列化机制。Kryo速度是Serializable的10倍。当RDD在Shuffle数据的时候，简单数据类型、数组和字符串类型已经在Spark内部使用Kryo来序列化。</p>
+<p>即使使用Kryo序列化，也要继承Serializable接口</p>
+<h2 id="8-RDD依赖与血缘"><a href="#8-RDD依赖与血缘" class="headerlink" title="8.RDD依赖与血缘"></a>8.RDD依赖与血缘</h2><h3 id="8-1概述"><a href="#8-1概述" class="headerlink" title="8.1概述"></a>8.1概述</h3><p>RDD的Lineage会记录RDD的元数据信息和转换行为，当该RDD的部分分区数据丢失时，它可以根据这些信息来重新运算和恢复丢失的数据分区。</p>
+<p>相邻的两个RDD之间的关系称为<strong>依赖关系</strong></p>
+<p>多个连续的RDD的依赖关系,称之为<strong>血缘关系</strong></p>
+<p>我们的每一个RDD都会保存我们的血缘关系,会保存之前的血缘关系</p>
+<p>RDD为了提供容错性,需要将RDD间的关系保存下来,一旦出现错误,可以根据血缘关系将数据源重新计算</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">val</span> rdd1 <span class="token operator">=</span> rdd<span class="token punctuation">.</span>map<span class="token punctuation">(</span>_<span class="token punctuation">.</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token comment">//新的RDD依赖于旧的RDD</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="mermaid">graph LR
+RDD1--依赖-->RDD2--依赖-->RDD3--依赖-->RDD4
+RDD4--flatmap-->RDD3
+RDD3--map-->RDD2
+RDD2--reduceByKey-->RDD1</pre>
+
+<h3 id="8-2血缘关系的查看"><a href="#8-2血缘关系的查看" class="headerlink" title="8.2血缘关系的查看"></a>8.2血缘关系的查看</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token comment">//血缘关系的演示</span>
+<span class="token comment">//每个RDD记录了以前所有的血缘关系</span>
+<span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>test</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>api<span class="token punctuation">.</span>java<span class="token punctuation">.</span></span>JavaSparkContext<span class="token punctuation">.</span>fromSparkContext
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>rdd<span class="token punctuation">.</span></span>RDD
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>SparkConf<span class="token punctuation">,</span> SparkContext<span class="token punctuation">&#125;</span>
+
+<span class="token comment">/**
+ * @author Jinxin Li
+ * @create 2020-10-26 10:04
+ */</span>
+<span class="token keyword">object</span> wordCount <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> config<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"MyWordCount"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> sc <span class="token operator">=</span> <span class="token keyword">new</span> SparkContext<span class="token punctuation">(</span>config<span class="token punctuation">)</span>
+    <span class="token keyword">val</span> lines<span class="token operator">:</span> RDD<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> sc<span class="token punctuation">.</span>textFile<span class="token punctuation">(</span><span class="token string">"./word.txt"</span><span class="token punctuation">)</span>
+    println<span class="token punctuation">(</span><span class="token string">"++++++++++++++++++++++++++++++++++="</span><span class="token punctuation">)</span>
+    println<span class="token punctuation">(</span>lines<span class="token punctuation">.</span>toDebugString<span class="token punctuation">)</span><span class="token comment">//打印血缘关系</span>
+    <span class="token keyword">val</span> words<span class="token operator">:</span> RDD<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> lines<span class="token punctuation">.</span>flatMap<span class="token punctuation">(</span>_<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    println<span class="token punctuation">(</span><span class="token string">"++++++++++++++++++++++++++++++++++="</span><span class="token punctuation">)</span>
+    println<span class="token punctuation">(</span>words<span class="token punctuation">.</span>toDebugString<span class="token punctuation">)</span>
+    <span class="token keyword">val</span> pairs<span class="token operator">:</span> RDD<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> words<span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    println<span class="token punctuation">(</span><span class="token string">"++++++++++++++++++++++++++++++++++="</span><span class="token punctuation">)</span>
+    println<span class="token punctuation">(</span>pairs<span class="token punctuation">.</span>toDebugString<span class="token punctuation">)</span>
+    <span class="token keyword">val</span> word<span class="token operator">:</span> RDD<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> pairs<span class="token punctuation">.</span>reduceByKey<span class="token punctuation">(</span>_ <span class="token operator">+</span> _<span class="token punctuation">)</span>
+    println<span class="token punctuation">(</span><span class="token string">"++++++++++++++++++++++++++++++++++="</span><span class="token punctuation">)</span>
+    println<span class="token punctuation">(</span>word<span class="token punctuation">.</span>toDebugString<span class="token punctuation">)</span>
+    println<span class="token punctuation">(</span><span class="token string">"++++++++++++++++++++++++++++++++++="</span><span class="token punctuation">)</span>
+    word<span class="token punctuation">.</span>collect<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>foreach<span class="token punctuation">(</span>println<span class="token punctuation">(</span>_<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    sc<span class="token punctuation">.</span>close<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">=</span>
+<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">.</span>/word<span class="token punctuation">.</span>txt <span class="token class-name">MapPartitionsRDD</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> at textFile at wordCount<span class="token punctuation">.</span>scala<span class="token operator">:</span><span class="token number">15</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+ <span class="token operator">|</span>  <span class="token punctuation">.</span>/word<span class="token punctuation">.</span>txt <span class="token class-name">HadoopRDD</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> at textFile at wordCount<span class="token punctuation">.</span>scala<span class="token operator">:</span><span class="token number">15</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">=</span>
+<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token class-name">MapPartitionsRDD</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> at flatMap at wordCount<span class="token punctuation">.</span>scala<span class="token operator">:</span><span class="token number">18</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+ <span class="token operator">|</span>  <span class="token punctuation">.</span>/word<span class="token punctuation">.</span>txt <span class="token class-name">MapPartitionsRDD</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> at textFile at wordCount<span class="token punctuation">.</span>scala<span class="token operator">:</span><span class="token number">15</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+ <span class="token operator">|</span>  <span class="token punctuation">.</span>/word<span class="token punctuation">.</span>txt <span class="token class-name">HadoopRDD</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> at textFile at wordCount<span class="token punctuation">.</span>scala<span class="token operator">:</span><span class="token number">15</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">=</span>
+<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token class-name">MapPartitionsRDD</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> at map at wordCount<span class="token punctuation">.</span>scala<span class="token operator">:</span><span class="token number">21</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+ <span class="token operator">|</span>  <span class="token class-name">MapPartitionsRDD</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> at flatMap at wordCount<span class="token punctuation">.</span>scala<span class="token operator">:</span><span class="token number">18</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+ <span class="token operator">|</span>  <span class="token punctuation">.</span>/word<span class="token punctuation">.</span>txt <span class="token class-name">MapPartitionsRDD</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> at textFile at wordCount<span class="token punctuation">.</span>scala<span class="token operator">:</span><span class="token number">15</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+ <span class="token operator">|</span>  <span class="token punctuation">.</span>/word<span class="token punctuation">.</span>txt <span class="token class-name">HadoopRDD</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> at textFile at wordCount<span class="token punctuation">.</span>scala<span class="token operator">:</span><span class="token number">15</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">=</span>
+<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token class-name">ShuffledRDD</span><span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span> at reduceByKey at wordCount<span class="token punctuation">.</span>scala<span class="token operator">:</span><span class="token number">24</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token comment">//这个地方断开,表示shuffle +-</span>
+ <span class="token operator">+</span><span class="token operator">-</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token class-name">MapPartitionsRDD</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> at map at wordCount<span class="token punctuation">.</span>scala<span class="token operator">:</span><span class="token number">21</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token operator">|</span>  <span class="token class-name">MapPartitionsRDD</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> at flatMap at wordCount<span class="token punctuation">.</span>scala<span class="token operator">:</span><span class="token number">18</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token operator">|</span>  <span class="token punctuation">.</span>/word<span class="token punctuation">.</span>txt <span class="token class-name">MapPartitionsRDD</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> at textFile at wordCount<span class="token punctuation">.</span>scala<span class="token operator">:</span><span class="token number">15</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token operator">|</span>  <span class="token punctuation">.</span>/word<span class="token punctuation">.</span>txt <span class="token class-name">HadoopRDD</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> at textFile at wordCount<span class="token punctuation">.</span>scala<span class="token operator">:</span><span class="token number">15</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">++</span><span class="token operator">=</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以看出每个RDD会存储所有的血缘关系</p>
+<p>同时使用dependices可以查看依赖关系</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> wordCount <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> config<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"MyWordCount"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> sc <span class="token operator">=</span> <span class="token keyword">new</span> SparkContext<span class="token punctuation">(</span>config<span class="token punctuation">)</span>
+    <span class="token keyword">val</span> lines<span class="token operator">:</span> RDD<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> sc<span class="token punctuation">.</span>textFile<span class="token punctuation">(</span><span class="token string">"./word.txt"</span><span class="token punctuation">)</span>
+    println<span class="token punctuation">(</span><span class="token string">"++++++++++++++++++++++++++++++++++="</span><span class="token punctuation">)</span>
+    println<span class="token punctuation">(</span>lines<span class="token punctuation">.</span>dependencies<span class="token punctuation">)</span>
+    <span class="token keyword">val</span> words<span class="token operator">:</span> RDD<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> lines<span class="token punctuation">.</span>flatMap<span class="token punctuation">(</span>_<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    println<span class="token punctuation">(</span><span class="token string">"++++++++++++++++++++++++++++++++++="</span><span class="token punctuation">)</span>
+    println<span class="token punctuation">(</span>words<span class="token punctuation">.</span>dependencies<span class="token punctuation">)</span>
+    <span class="token keyword">val</span> pairs<span class="token operator">:</span> RDD<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> words<span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    println<span class="token punctuation">

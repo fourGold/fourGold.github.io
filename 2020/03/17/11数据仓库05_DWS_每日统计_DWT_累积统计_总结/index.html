@@ -1,0 +1,969 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="数据仓库DWS与DWT, 觉浅">
+    <meta name="description" content="Jinxin Li的个人博客">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>数据仓库DWS与DWT | 觉浅</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">觉浅</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">觉浅</div>
+        <div class="logo-desc">
+            
+            Jinxin Li的个人博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="http://github.com/fourgold/" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="http://github.com/fourgold/" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">数据仓库DWS与DWT</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-03-17
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    5.6k
+                </div>
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+        <!-- 代码块折行 -->
+        <style type="text/css">
+            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
+        </style>
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="1-DWS-每日设备行为"><a href="#1-DWS-每日设备行为" class="headerlink" title="1. DWS-每日设备行为"></a>1. DWS-每日设备行为</h1><h2 id="dws-uv-detail-daycount"><a href="#dws-uv-detail-daycount" class="headerlink" title="dws_uv_detail_daycount"></a>dws_uv_detail_daycount</h2><h2 id="1-1-每日设备行为表存什么"><a href="#1-1-每日设备行为表存什么" class="headerlink" title="1.1 每日设备行为表存什么?"></a>1.1 每日设备行为表存什么?</h2><p>dws_uv_detail_daycount</p>
+<p>存储 : 主要存储以设备ID为分组,统计每个设备的 <strong>基本信息</strong> , <strong>每日的登录次数</strong> 与 <strong>页面访问的统计</strong></p>
+<p>来源 : 主要来源于dwd_start_log</p>
+<h3 id="1-1-1-dwd-start-log存什么"><a href="#1-1-1-dwd-start-log存什么" class="headerlink" title="1.1.1 dwd_start_log存什么?"></a>1.1.1 dwd_start_log存什么?</h3><p>data_warehouse_detail = 粒度最小</p>
+<p>dwd_start_log是启动日志表 以每次启动信息为粒度</p>
+<p>存储 : 启动日志表中每行数据对应<strong>一个启动记录</strong>，一个启动记录包含日志中的 公共信息(common) 和 启动信息。</p>
+<p>来源 : 先将所有包含start字段的日志过滤出来，然后使用get_json_object函数从**ods_log(源日志表)**里解析每个字段(line,’$start’)。</p>
+<h2 id="1-2-建表"><a href="#1-2-建表" class="headerlink" title="1.2 建表"></a>1.2 建表</h2><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> external <span class="token keyword">table</span> dws_uv_detail_daycount
+<span class="token punctuation">(</span>
+    <span class="token punctuation">`</span>mid_id<span class="token punctuation">`</span>      string <span class="token keyword">COMMENT</span> <span class="token string">'设备id'</span><span class="token punctuation">,</span><span class="token comment">--基本信息</span>
+    <span class="token punctuation">`</span>brand<span class="token punctuation">`</span>       string <span class="token keyword">COMMENT</span> <span class="token string">'手机品牌'</span><span class="token punctuation">,</span><span class="token comment">--基本信息</span>
+    <span class="token punctuation">`</span>model<span class="token punctuation">`</span>       string <span class="token keyword">COMMENT</span> <span class="token string">'手机型号'</span><span class="token punctuation">,</span><span class="token comment">--基本信息</span>
+    <span class="token punctuation">`</span>login_count<span class="token punctuation">`</span> <span class="token keyword">bigint</span> <span class="token keyword">COMMENT</span> <span class="token string">'活跃次数'</span><span class="token punctuation">,</span><span class="token comment">--每日的登录次数</span>
+    <span class="token punctuation">`</span>page_stats<span class="token punctuation">`</span>  array<span class="token operator">&lt;</span>struct<span class="token operator">&lt;</span>page_id:string<span class="token punctuation">,</span>page_count:<span class="token keyword">bigint</span><span class="token operator">>></span> <span class="token keyword">COMMENT</span> <span class="token string">'页面访问统计'</span>
+<span class="token punctuation">)</span> <span class="token keyword">COMMENT</span> <span class="token string">'每日设备行为表'</span>
+partitioned <span class="token keyword">by</span><span class="token punctuation">(</span>dt string<span class="token punctuation">)</span>
+stored <span class="token keyword">as</span> parquet
+location <span class="token string">'/warehouse/gmall/dws/dws_uv_detail_daycount'</span>
+tblproperties <span class="token punctuation">(</span><span class="token string">"parquet.compression"</span><span class="token operator">=</span><span class="token string">"lzo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="1-3-字段分析"><a href="#1-3-字段分析" class="headerlink" title="1.3 字段分析"></a>1.3 字段分析</h2><p>现在分析一下这个表格</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>设备id</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>mid_id</td>
+<td>设备id</td>
+<td>string</td>
+</tr>
+<tr>
+<td>brand</td>
+<td>手机品牌</td>
+<td>string</td>
+</tr>
+<tr>
+<td>model</td>
+<td>手机型号</td>
+<td>string</td>
+</tr>
+<tr>
+<td>login_count</td>
+<td>活跃次数</td>
+<td>bigint</td>
+</tr>
+<tr>
+<td>page_stats</td>
+<td>页面访问统计</td>
+<td>“array”</td>
+</tr>
+<tr>
+<td>dt</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>活跃次数应该为启动次数统计 应该使用dwd_start_log进行统计</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/20210204180922.png" alt="字段分析"></p>
+<p>页面统计应该为页面的信息,应该使用dwd_page_log进行统计</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/20210204180927.png" alt="1605259370236"></p>
+<h2 id="1-4-拉取sql书写"><a href="#1-4-拉取sql书写" class="headerlink" title="1.4 拉取sql书写"></a>1.4 拉取sql书写</h2><p>一</p>
+<p>首先统计登录启动次数(dwd_start_log) login_count</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span>
+       mid_id<span class="token punctuation">,</span>
+       brand<span class="token punctuation">,</span>
+       model<span class="token punctuation">,</span>
+       <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> login_count<span class="token comment">--启动信息为粒度,启动一次就活跃一次,count(*)就可以</span>
+<span class="token keyword">from</span> dwd_start_log
+<span class="token keyword">group</span> <span class="token keyword">by</span> mid_id<span class="token punctuation">,</span> brand<span class="token punctuation">,</span> model<span class="token comment">--按理说,设备ID就可以直接区别</span>
+<span class="token comment">--因为数据问题,所以要这样分组</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>二</p>
+<p>分组后统计page_status字段 一个包含页面与次数 K-V 的数组</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--page_stats 统计page_id:info  counts:info</span>
+<span class="token keyword">select</span>
+       tmp<span class="token punctuation">.</span>mid_id<span class="token punctuation">,</span>
+       tmp<span class="token punctuation">.</span>brand<span class="token punctuation">,</span>
+       tmp<span class="token punctuation">.</span>model<span class="token punctuation">,</span>
+       collect_set<span class="token punctuation">(</span>named_struct<span class="token punctuation">(</span><span class="token string">'page_id'</span><span class="token punctuation">,</span>tmp<span class="token punctuation">.</span>page_id<span class="token punctuation">,</span><span class="token string">'page_count'</span><span class="token punctuation">,</span>tmp<span class="token punctuation">.</span>page_count<span class="token punctuation">)</span><span class="token punctuation">)</span> page_stats<span class="token comment">--dwd_page_log中的page_id为浏览的一次记录一次,分组统计</span>
+<span class="token keyword">from</span> <span class="token punctuation">(</span><span class="token keyword">select</span> 
+            mid_id<span class="token punctuation">,</span>
+            brand<span class="token punctuation">,</span>
+            model<span class="token punctuation">,</span>
+            page_id<span class="token punctuation">,</span>
+            <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> page_count<span class="token comment">--获取每个页面的访问次数</span>
+        <span class="token keyword">from</span> dwd_page_log
+        <span class="token keyword">group</span> <span class="token keyword">by</span> mid_id<span class="token punctuation">,</span>brand<span class="token punctuation">,</span>model<span class="token punctuation">,</span>page_id<span class="token comment">--按照page_id进行分组统计</span>
+    <span class="token punctuation">)</span> tmp
+<span class="token keyword">group</span> <span class="token keyword">by</span> tmp<span class="token punctuation">.</span>mid_id<span class="token punctuation">,</span>tmp<span class="token punctuation">.</span>brand<span class="token punctuation">,</span>tmp<span class="token punctuation">.</span>model<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>三</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">with</span>
+tmp_start <span class="token keyword">as</span>
+<span class="token punctuation">(</span>
+    <span class="token keyword">select</span>  
+        mid_id<span class="token punctuation">,</span>
+        brand<span class="token punctuation">,</span>
+        model<span class="token punctuation">,</span>
+        <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> login_count<span class="token comment">--登录次数</span>
+    <span class="token keyword">from</span> dwd_start_log
+    <span class="token keyword">where</span> dt<span class="token operator">=</span><span class="token string">'2020-06-14'</span>
+    <span class="token keyword">group</span> <span class="token keyword">by</span> mid_id<span class="token punctuation">,</span>brand<span class="token punctuation">,</span>model
+<span class="token punctuation">)</span><span class="token punctuation">,</span>
+tmp_page <span class="token keyword">as</span>
+<span class="token punctuation">(</span>
+    <span class="token keyword">select</span>
+        mid_id<span class="token punctuation">,</span>
+        brand<span class="token punctuation">,</span>
+        model<span class="token punctuation">,</span>        collect_set<span class="token punctuation">(</span>named_struct<span class="token punctuation">(</span><span class="token string">'page_id'</span><span class="token punctuation">,</span>page_id<span class="token punctuation">,</span><span class="token string">'page_count'</span><span class="token punctuation">,</span>page_count<span class="token punctuation">)</span><span class="token punctuation">)</span> page_stats<span class="token comment">--页面访问次数统计</span>
+    <span class="token keyword">from</span>
+    <span class="token punctuation">(</span>
+        <span class="token keyword">select</span>
+            mid_id<span class="token punctuation">,</span>
+            brand<span class="token punctuation">,</span>
+            model<span class="token punctuation">,</span>
+            page_id<span class="token punctuation">,</span>
+            <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> page_count
+        <span class="token keyword">from</span> dwd_page_log
+        <span class="token keyword">where</span> dt<span class="token operator">=</span><span class="token string">'2020-06-14'</span>
+        <span class="token keyword">group</span> <span class="token keyword">by</span> mid_id<span class="token punctuation">,</span>brand<span class="token punctuation">,</span>model<span class="token punctuation">,</span>page_id
+    <span class="token punctuation">)</span>tmp
+    <span class="token keyword">group</span> <span class="token keyword">by</span> mid_id<span class="token punctuation">,</span>brand<span class="token punctuation">,</span>model
+<span class="token punctuation">)</span>
+<span class="token keyword">insert</span> overwrite <span class="token keyword">table</span> dws_uv_detail_daycount <span class="token keyword">partition</span><span class="token punctuation">(</span>dt<span class="token operator">=</span><span class="token string">'2020-06-14'</span><span class="token punctuation">)</span>
+<span class="token keyword">select</span>
+    nvl<span class="token punctuation">(</span>tmp_start<span class="token punctuation">.</span>mid_id<span class="token punctuation">,</span>tmp_page<span class="token punctuation">.</span>mid_id<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    nvl<span class="token punctuation">(</span>tmp_start<span class="token punctuation">.</span>brand<span class="token punctuation">,</span>tmp_page<span class="token punctuation">.</span>brand<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    nvl<span class="token punctuation">(</span>tmp_start<span class="token punctuation">.</span>model<span class="token punctuation">,</span>tmp_page<span class="token punctuation">.</span>model<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    tmp_start<span class="token punctuation">.</span>login_count<span class="token punctuation">,</span>
+    tmp_page<span class="token punctuation">.</span>page_stats
+<span class="token keyword">from</span> tmp_start 
+<span class="token keyword">full</span> <span class="token keyword">outer</span> <span class="token keyword">join</span> tmp_page
+<span class="token keyword">on</span> tmp_start<span class="token punctuation">.</span>mid_id<span class="token operator">=</span>tmp_page<span class="token punctuation">.</span>mid_id
+<span class="token operator">and</span> tmp_start<span class="token punctuation">.</span>brand<span class="token operator">=</span>tmp_page<span class="token punctuation">.</span>brand
+<span class="token operator">and</span> tmp_start<span class="token punctuation">.</span>model<span class="token operator">=</span>tmp_page<span class="token punctuation">.</span>model<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="2-DWT-设备主题宽表"><a href="#2-DWT-设备主题宽表" class="headerlink" title="2. DWT-设备主题宽表"></a>2. DWT-设备主题宽表</h1><h2 id="dwt-uv-topic"><a href="#dwt-uv-topic" class="headerlink" title="dwt_uv_topic"></a>dwt_uv_topic</h2><h2 id="2-1-设备主题宽表存什么"><a href="#2-1-设备主题宽表存什么" class="headerlink" title="2.1 设备主题宽表存什么"></a>2.1 设备主题宽表存什么</h2><p>dwt_uv_topic</p>
+<p>主要围绕设备的每日行为进行解析拉取出一个跨时间维度的表</p>
+<p>包括 设备的 首末时间, 累计活跃,周活,月活等</p>
+<p>粒度是一个设备的整个生命周期,不需要分区</p>
+<p>来源 : dws_uv_detail_daycount</p>
+<h2 id="2-2-建表"><a href="#2-2-建表" class="headerlink" title="2.2 建表"></a>2.2 建表</h2><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> external <span class="token keyword">table</span> dwt_uv_topic
+<span class="token punctuation">(</span>
+    <span class="token punctuation">`</span>mid_id<span class="token punctuation">`</span> string <span class="token keyword">comment</span> <span class="token string">'设备id'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>brand<span class="token punctuation">`</span> string <span class="token keyword">comment</span> <span class="token string">'手机品牌'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>model<span class="token punctuation">`</span> string <span class="token keyword">comment</span> <span class="token string">'手机型号'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>login_date_first<span class="token punctuation">`</span> string  <span class="token keyword">comment</span> <span class="token string">'首次活跃时间'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>login_date_last<span class="token punctuation">`</span> string  <span class="token keyword">comment</span> <span class="token string">'末次活跃时间'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>login_day_count<span class="token punctuation">`</span> <span class="token keyword">bigint</span> <span class="token keyword">comment</span> <span class="token string">'当日活跃次数'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>login_count<span class="token punctuation">`</span> <span class="token keyword">bigint</span> <span class="token keyword">comment</span> <span class="token string">'累积活跃天数'</span>
+<span class="token punctuation">)</span> <span class="token keyword">COMMENT</span> <span class="token string">'设备主题宽表'</span>
+stored <span class="token keyword">as</span> parquet
+location <span class="token string">'/warehouse/gmall/dwt/dwt_uv_topic'</span>
+tblproperties <span class="token punctuation">(</span><span class="token string">"parquet.compression"</span><span class="token operator">=</span><span class="token string">"lzo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>根据建表语句稍微分析一下字段</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/20210204180943.png" alt="1605260488291"></p>
+<h2 id="2-3-拉取sql书写"><a href="#2-3-拉取sql书写" class="headerlink" title="2.3 拉取sql书写"></a>2.3 拉取sql书写</h2><p>指定来源表:dws_uv_detail_daycount</p>
+<p>废话不多说直接开整</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span>
+       nvl<span class="token punctuation">(</span>old<span class="token punctuation">.</span>mid_id<span class="token punctuation">,</span>new<span class="token punctuation">.</span>mid_id<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>old<span class="token punctuation">.</span>brand<span class="token punctuation">,</span>new<span class="token punctuation">.</span>brand<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>old<span class="token punctuation">.</span>model<span class="token punctuation">,</span>new<span class="token punctuation">.</span>model<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       <span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>old<span class="token punctuation">.</span>login_date_first <span class="token operator">is</span> <span class="token boolean">null</span><span class="token punctuation">,</span><span class="token string">'2020-06-14'</span><span class="token punctuation">,</span>old<span class="token punctuation">.</span>login_date_first<span class="token punctuation">)</span> login_date_first<span class="token punctuation">,</span><span class="token comment">--首次活跃时间</span>
+       <span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>new<span class="token punctuation">.</span>login_count<span class="token operator">></span><span class="token number">0</span><span class="token punctuation">,</span><span class="token string">'2020-06-14'</span><span class="token punctuation">,</span>old<span class="token punctuation">.</span>login_date_last<span class="token punctuation">)</span> login_date_last<span class="token punctuation">,</span>
+       <span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>new<span class="token punctuation">.</span>login_count<span class="token operator">></span><span class="token number">0</span><span class="token punctuation">,</span>new<span class="token punctuation">.</span>login_count<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> login_day_count<span class="token punctuation">,</span>
+       <span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>old<span class="token punctuation">.</span>login_count <span class="token operator">is</span> <span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">,</span>old<span class="token punctuation">.</span>login_count<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>new<span class="token punctuation">.</span>login_count <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> login_count
+<span class="token keyword">from</span> <span class="token punctuation">(</span>
+         <span class="token keyword">select</span> mid_id<span class="token punctuation">,</span>
+                brand<span class="token punctuation">,</span>
+                model<span class="token punctuation">,</span>
+                login_date_first<span class="token punctuation">,</span>
+                login_date_last<span class="token punctuation">,</span>
+                login_day_count<span class="token punctuation">,</span>
+                login_count
+         <span class="token keyword">from</span> dwt_uv_topic<span class="token comment">--老表拉取</span>
+     <span class="token punctuation">)</span> old
+<span class="token keyword">full</span> <span class="token keyword">outer</span> <span class="token keyword">join</span>
+     <span class="token punctuation">(</span>
+         <span class="token keyword">select</span> mid_id<span class="token punctuation">,</span>
+                brand<span class="token punctuation">,</span>
+                model<span class="token punctuation">,</span>
+                login_count<span class="token punctuation">,</span>
+                page_stats
+         <span class="token keyword">from</span> dws_uv_detail_daycount
+         <span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span><span class="token comment">--新表直接拿过来</span>
+     <span class="token punctuation">)</span> new
+<span class="token keyword">on</span> old<span class="token punctuation">.</span>brand <span class="token operator">=</span> new<span class="token punctuation">.</span>brand
+<span class="token operator">and</span> old<span class="token punctuation">.</span>mid_id <span class="token operator">=</span> new<span class="token punctuation">.</span>mid_id
+<span class="token operator">and</span> old<span class="token punctuation">.</span>model <span class="token operator">=</span> new<span class="token punctuation">.</span>model<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="3-DWS-每日会员行为"><a href="#3-DWS-每日会员行为" class="headerlink" title="3. DWS-每日会员行为"></a>3. DWS-每日会员行为</h1><p>dws_user_action_daycount</p>
+<h2 id="3-1-每日会员行为存什么"><a href="#3-1-每日会员行为存什么" class="headerlink" title="3.1 每日会员行为存什么?"></a>3.1 每日会员行为存什么?</h2><p>dws_user_action_daycount</p>
+<p>主要是以每一个会员user_id为单位存储会员的登录 加购 下单 支付等动作的综合</p>
+<p>来源 : 先建表,在分析来源把</p>
+<h2 id="3-2-建表"><a href="#3-2-建表" class="headerlink" title="3.2 建表"></a>3.2 建表</h2><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> external <span class="token keyword">table</span> dws_user_action_daycount
+<span class="token punctuation">(</span>   
+    user_id string <span class="token keyword">comment</span> <span class="token string">'用户 id'</span><span class="token punctuation">,</span>
+    login_count <span class="token keyword">bigint</span> <span class="token keyword">comment</span> <span class="token string">'登录次数'</span><span class="token punctuation">,</span>
+    cart_count <span class="token keyword">bigint</span> <span class="token keyword">comment</span> <span class="token string">'加入购物车次数'</span><span class="token punctuation">,</span>
+    order_count <span class="token keyword">bigint</span> <span class="token keyword">comment</span> <span class="token string">'下单次数'</span><span class="token punctuation">,</span>
+    order_amount    <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span>  <span class="token keyword">comment</span> <span class="token string">'下单金额'</span><span class="token punctuation">,</span>
+    payment_count   <span class="token keyword">bigint</span>      <span class="token keyword">comment</span> <span class="token string">'支付次数'</span><span class="token punctuation">,</span>
+    payment_amount  <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">comment</span> <span class="token string">'支付金额'</span><span class="token punctuation">,</span>
+    order_detail_stats array<span class="token operator">&lt;</span>struct<span class="token operator">&lt;</span>sku_id:string<span class="token punctuation">,</span>sku_num:<span class="token keyword">bigint</span><span class="token punctuation">,</span>order_count:<span class="token keyword">bigint</span><span class="token punctuation">,</span>order_amount:<span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token operator">>></span> <span class="token keyword">comment</span> <span class="token string">'下单明细统计'</span>
+<span class="token punctuation">)</span> <span class="token keyword">COMMENT</span> <span class="token string">'每日会员行为'</span>
+PARTITIONED <span class="token keyword">BY</span> <span class="token punctuation">(</span><span class="token punctuation">`</span>dt<span class="token punctuation">`</span> string<span class="token punctuation">)</span>
+stored <span class="token keyword">as</span> parquet
+location <span class="token string">'/warehouse/gmall/dws/dws_user_action_daycount/'</span>
+tblproperties <span class="token punctuation">(</span><span class="token string">"parquet.compression"</span><span class="token operator">=</span><span class="token string">"lzo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="3-3-字段分析"><a href="#3-3-字段分析" class="headerlink" title="3.3 字段分析"></a>3.3 字段分析</h2><p>说实话这里面的字段挺蛋疼的</p>
+<p>加购次数 : dwd_action_log 动作日志表</p>
+<p>登录次数 : dwd_start_log 启动日志表</p>
+<p>下单次数与下单金额 : dwd_fact_order_info 订单事实表(累计快照事实表)</p>
+<p>支付次数与支付金额 : dwd_fact_payment_info 支付事实表(事务型事实表)</p>
+<p>四个表确定下来,现在连连看,有没有需要特殊处理的</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/20210204180950.png" alt="1605264501894"></p>
+<p>连起来,大体有个了解,下单明细统计还不知道是个啥</p>
+<p>这是下单明细需要的数组</p>
+<pre class="line-numbers language-none"><code class="language-none">array&lt;struct&lt;sku_id:string,sku_num:bigint,order_count:bigint,order_amount:decimal(20,2)&gt;&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>显然这个信息来源于订单明细表(事务性事实表)</p>
+<p>dwd_fact_order_detail</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/20210204181313.png" alt="1605264746465"></p>
+<p>显然我们将dwd_fact_order_detail表中按照user_id进行分组,统计</p>
+<h2 id="3-4-拉取sql书写"><a href="#3-4-拉取sql书写" class="headerlink" title="3.4 拉取sql书写"></a>3.4 拉取sql书写</h2><p>书写之前先思考一个问题</p>
+<p>每日会员行为是分区的,不需要新旧对比,直接拉取出来即可</p>
+<p>拉取的表</p>
+<ol>
+<li>dwd_start_log </li>
+<li>dwd_action_log </li>
+<li>dwd_fact_order_info</li>
+<li>dwd_fact_payment_info</li>
+<li>dwd_fact_order_detail</li>
+</ol>
+<p>架构采用</p>
+<p>with</p>
+<p>table_name as ()</p>
+<p>开整</p>
+<p>一</p>
+<p>login_count登录次数</p>
+<p>dwd_start_log</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--dwd_start_log  启动 </span>
+<span class="token comment">--获取login_count bigint comment '登录次数'</span>
+<span class="token keyword">select</span>
+	user_id<span class="token punctuation">,</span>
+	<span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> login_count<span class="token comment">--启动活跃次数</span>
+<span class="token keyword">from</span> dwd_start_log<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>二</p>
+<p>cart_count 加购次数</p>
+<p>dwd_action_log</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--dwd_action_log </span>
+<span class="token keyword">select</span>
+       user_id<span class="token punctuation">,</span>
+       <span class="token function">count</span><span class="token punctuation">(</span>action_id<span class="token punctuation">)</span> cart_count<span class="token comment">--简单</span>
+<span class="token keyword">from</span> dwd_action_log
+<span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span>
+  <span class="token operator">and</span> user_id <span class="token operator">is</span> <span class="token operator">not</span> <span class="token boolean">null</span>
+  <span class="token operator">and</span> action_id <span class="token operator">=</span> <span class="token string">'cart_add'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>三</p>
+<p>dwd_fact_order_info 下单次数与下单金额</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span>
+       user_id<span class="token punctuation">,</span>
+       <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> order_count<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span>final_total_amount<span class="token punctuation">)</span> order_amount<span class="token comment">--简单</span>
+<span class="token keyword">from</span> dwd_fact_order_info
+<span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span>
+<span class="token keyword">group</span> <span class="token keyword">by</span> user_id<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>四</p>
+<p>dwd_fact_payment_info 支付次数与支付金额</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span>
+       user_id<span class="token punctuation">,</span>
+       <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> payment_count<span class="token punctuation">,</span><span class="token comment">--支付次数</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span>payment_amount<span class="token punctuation">)</span> payment_amount
+<span class="token keyword">from</span>
+dwd_fact_payment_info
+<span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span>
+<span class="token keyword">group</span> <span class="token keyword">by</span> user_id<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>五</p>
+<p>dwd_fact_order_detail  下单明细统计</p>
+<p>这是下单明细需要的数组,数组里面的还有字段,所以需要分两步</p>
+<p>第一步先将数组中的字段(sku_id粒度)统计出来 group_by user_id,sku_id</p>
+<p>第二步进行造结构(user_id) group_by user_id</p>
+<pre class="line-numbers language-none"><code class="language-none">array&lt;struct&lt;sku_id:string,sku_num:bigint,order_count:bigint,order_amount:decimal(20,2)&gt;&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>按照user_id分组,统计</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"> <span class="token comment">-----------------------------------------1-----------------------</span>
+ <span class="token comment">--先将需要的字段拿出来</span>
+ <span class="token keyword">select</span> <span class="token comment">--每个会员的购买的每个商品的</span>
+       user_id<span class="token punctuation">,</span>
+       sku_id<span class="token punctuation">,</span><span class="token comment">--商品名称</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span>sku_num<span class="token punctuation">)</span> sku_num<span class="token punctuation">,</span><span class="token comment">--此类商品购买的商品总数量</span>
+       <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> order_count<span class="token punctuation">,</span><span class="token comment">--包含这个商品的订单总数</span>
+       cast<span class="token punctuation">(</span><span class="token function">sum</span><span class="token punctuation">(</span>final_amount_d<span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> order_amount<span class="token comment">--商品的总价格</span>
+<span class="token keyword">from</span>
+dwd_fact_order_detail<span class="token comment">-- 订单明细事实表,存储 订单里商品的明细</span>
+<span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span>
+<span class="token keyword">group</span> <span class="token keyword">by</span> user_id<span class="token punctuation">,</span>sku_id
+<span class="token comment">------------------------------------------2--------------------</span>
+ <span class="token comment">--转换结构</span>
+ <span class="token keyword">select</span>
+        user_id<span class="token punctuation">,</span>
+ collect_set<span class="token punctuation">(</span>named_struct<span class="token punctuation">(</span><span class="token string">'sku_id'</span><span class="token punctuation">,</span>sku_id<span class="token punctuation">,</span><span class="token string">'sku_num'</span><span class="token punctuation">,</span>sku_num<span class="token punctuation">,</span><span class="token string">'order_count'</span><span class="token punctuation">,</span>order_count<span class="token punctuation">,</span><span class="token string">'order_amount'</span><span class="token punctuation">,</span>order_amount<span class="token punctuation">)</span><span class="token punctuation">)</span> order_stats
+        <span class="token comment">--name_struct是处理各个字段,变成struct,是以一行为粒度的</span>
+        <span class="token comment">--collect是将每行的处理结果返回成一个数组</span>
+        <span class="token comment">--想更好的理解这里可以看范例</span>
+ <span class="token keyword">from</span>
+    <span class="token punctuation">(</span>
+        <span class="token keyword">select</span>
+            user_id<span class="token punctuation">,</span>
+            sku_id<span class="token punctuation">,</span>
+            <span class="token function">sum</span><span class="token punctuation">(</span>sku_num<span class="token punctuation">)</span> sku_num<span class="token punctuation">,</span>
+            <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> order_count<span class="token punctuation">,</span><span class="token comment">--统计订单</span>
+            cast<span class="token punctuation">(</span><span class="token function">sum</span><span class="token punctuation">(</span>final_amount_d<span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> order_amount
+        <span class="token keyword">from</span> dwd_fact_order_detail
+        <span class="token keyword">where</span> dt<span class="token operator">=</span><span class="token string">'2020-06-14'</span>
+        <span class="token keyword">group</span> <span class="token keyword">by</span> user_id<span class="token punctuation">,</span>sku_id
+    <span class="token punctuation">)</span>tmp
+    <span class="token keyword">group</span> <span class="token keyword">by</span> user_id
+<span class="token keyword">order</span> <span class="token keyword">by</span> user_id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其实走到这里这个named_struct有点懵的,为什么呢,数据有问题</p>
+<p>比如</p>
+<p>1号结果为19条</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/20210204181030.png" alt="1605269449570"></p>
+<p>2号结果也为19条</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/20210204181024.png" alt="1605269495672"></p>
+<p>每个都只有数组仅仅有一个元素,一个sku_id是一个元素</p>
+<p>真真难以体会named_struct与collect_set()的区别.但是其实两者区别挺大</p>
+<p>named_struct是横向处理,把横向的列变成一个KV的struct结构</p>
+<p>collect_set把一组的数据纵向处理,把struct结构进行捏成一个set数组</p>
+<p>测试一下吧</p>
+<pre class="line-numbers language-SQL" data-language="SQL"><code class="language-SQL">--感悟测试
+--使用1号创建数组
+create table tmp_test as
+select --每个会员的购买的每个商品的
+       user_id,
+       sku_id,
+       sum(sku_num) sku_num,--商品总数量
+       count(*) order_count,--订单总数
+       cast(sum(final_amount_d) as decimal(20,2)) order_amount--商品的总价格
+from
+dwd_fact_order_detail
+where dt &#x3D; &#39;2020-06-14&#39;
+group by user_id,sku_id
+order by user_id desc;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>先把内部的拿出来,测试一下,</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--插入一条跟原来重复sku的数据</span>
+<span class="token keyword">insert</span> <span class="token keyword">into</span> <span class="token keyword">table</span> tmp_test <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">996</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2232.00</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">--查看一下数据</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span>  tmp_test<span class="token punctuation">;</span>
+<span class="token comment">--然后执行一下2</span>
+<span class="token keyword">select</span>
+        user_id<span class="token punctuation">,</span>
+        collect_set<span class="token punctuation">(</span><span class="token punctuation">)</span> order_stats
+    <span class="token keyword">from</span>
+        tmp_test<span class="token comment">--1</span>
+    <span class="token keyword">group</span> <span class="token keyword">by</span> user_id
+<span class="token keyword">order</span> <span class="token keyword">by</span> user_id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>查看结果</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/20210204181017.png" alt="1605269895480"></p>
+<p>这样的话,我们array中就变成两个元素了,也就是说这个user_id买了两种sku_id,内部数组根据sku_id变成一个struct</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--最后删除掉自己的测试表</span>
+<span class="token keyword">drop</span> <span class="token keyword">table</span> tmp_test<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>六</p>
+<p>五剑合璧,整合一下</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">with</span> tmp_login <span class="token keyword">as</span>
+         <span class="token punctuation">(</span>
+             <span class="token keyword">select</span> user_id<span class="token punctuation">,</span>
+                    <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> login_count<span class="token comment">--启动活跃次数</span>
+             <span class="token keyword">from</span> dwd_start_log
+             <span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span>
+         <span class="token punctuation">)</span><span class="token punctuation">,</span>
+    tmp_cart <span class="token keyword">as</span>
+        <span class="token punctuation">(</span>
+            <span class="token keyword">select</span> user_id<span class="token punctuation">,</span>
+                   <span class="token function">count</span><span class="token punctuation">(</span>action_id<span class="token punctuation">)</span> cart_count
+            <span class="token keyword">from</span> dwd_action_log
+            <span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span>
+              <span class="token operator">and</span> user_id <span class="token operator">is</span> <span class="token operator">not</span> <span class="token boolean">null</span>
+              <span class="token operator">and</span> action_id <span class="token operator">=</span> <span class="token string">'cart_add'</span>
+        <span class="token punctuation">)</span><span class="token punctuation">,</span>
+     tmp_order <span class="token keyword">as</span>
+         <span class="token punctuation">(</span>
+             <span class="token keyword">select</span> user_id<span class="token punctuation">,</span>
+                    <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span>                order_count<span class="token punctuation">,</span>
+                    <span class="token function">sum</span><span class="token punctuation">(</span>final_total_amount<span class="token punctuation">)</span> order_amount
+             <span class="token keyword">from</span> dwd_fact_order_info
+             <span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span>
+             <span class="token keyword">group</span> <span class="token keyword">by</span> user_id
+         <span class="token punctuation">)</span><span class="token punctuation">,</span>
+     tmp_payment <span class="token keyword">as</span>
+         <span class="token punctuation">(</span>
+             <span class="token keyword">select</span> user_id<span class="token punctuation">,</span>
+                    <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span>            payment_count<span class="token punctuation">,</span><span class="token comment">--支付次数</span>
+                    <span class="token function">sum</span><span class="token punctuation">(</span>payment_amount<span class="token punctuation">)</span> payment_amount
+             <span class="token keyword">from</span> dwd_fact_payment_info
+             <span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span>
+             <span class="token keyword">group</span> <span class="token keyword">by</span> user_id
+         <span class="token punctuation">)</span><span class="token punctuation">,</span>
+     tmp_order_detail <span class="token keyword">as</span>
+         <span class="token punctuation">(</span>
+             <span class="token keyword">select</span> user_id<span class="token punctuation">,</span>
+                    collect_set<span class="token punctuation">(</span>named_struct<span class="token punctuation">(</span><span class="token string">'sku_id'</span><span class="token punctuation">,</span> sku_id<span class="token punctuation">,</span> <span class="token string">'sku_num'</span><span class="token punctuation">,</span> sku_num<span class="token punctuation">,</span> <span class="token string">'order_count'</span><span class="token punctuation">,</span> order_count<span class="token punctuation">,</span>
+                                             <span class="token string">'order_amount'</span><span class="token punctuation">,</span> order_amount<span class="token punctuation">)</span><span class="token punctuation">)</span> order_stats
+                    <span class="token comment">--name_struct是处理各个字段,变成struct,是以一行为粒度的</span>
+                    <span class="token comment">--collect是将每行的处理结果返回成一个数组</span>
+                    <span class="token comment">--想更好的理解这里可以看范例</span>
+             <span class="token keyword">from</span> <span class="token punctuation">(</span>
+                      <span class="token keyword">select</span> user_id<span class="token punctuation">,</span>
+                             sku_id<span class="token punctuation">,</span>
+                             <span class="token function">sum</span><span class="token punctuation">(</span>sku_num<span class="token punctuation">)</span>                                sku_num<span class="token punctuation">,</span>
+                             <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span>                                    order_count<span class="token punctuation">,</span>
+                             cast<span class="token punctuation">(</span><span class="token function">sum</span><span class="token punctuation">(</span>final_amount_d<span class="token punctuation">)</span> <span class="token keyword">as</span> <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> order_amount
+                      <span class="token keyword">from</span> dwd_fact_order_detail
+                      <span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span>
+                      <span class="token keyword">group</span> <span class="token keyword">by</span> user_id<span class="token punctuation">,</span> sku_id
+                  <span class="token punctuation">)</span> tmp
+             <span class="token keyword">group</span> <span class="token keyword">by</span> user_id
+         <span class="token punctuation">)</span>
+<span class="token keyword">insert</span> overwrite <span class="token keyword">table</span> dws_user_action_daycount <span class="token keyword">partition</span><span class="token punctuation">(</span>dt<span class="token operator">=</span><span class="token string">'2020-06-14'</span><span class="token punctuation">)</span>
+<span class="token keyword">select</span>
+    tmp_login<span class="token punctuation">.</span>user_id<span class="token punctuation">,</span>
+    login_count<span class="token punctuation">,</span>
+    nvl<span class="token punctuation">(</span>cart_count<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    nvl<span class="token punctuation">(</span>order_count<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    nvl<span class="token punctuation">(</span>order_amount<span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    nvl<span class="token punctuation">(</span>payment_count<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    nvl<span class="token punctuation">(</span>payment_amount<span class="token punctuation">,</span><span class="token number">0.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    order_stats
+<span class="token keyword">from</span> tmp_login<span class="token comment">--登录活跃</span>
+<span class="token keyword">left</span> <span class="token keyword">join</span> tmp_cart <span class="token keyword">on</span> tmp_login<span class="token punctuation">.</span>user_id<span class="token operator">=</span>tmp_cart<span class="token punctuation">.</span>user_id<span class="token comment">--加购</span>
+<span class="token keyword">left</span> <span class="token keyword">join</span> tmp_order <span class="token keyword">on</span> tmp_login<span class="token punctuation">.</span>user_id<span class="token operator">=</span>tmp_order<span class="token punctuation">.</span>user_id<span class="token comment">--下单</span>
+<span class="token keyword">left</span> <span class="token keyword">join</span> tmp_payment <span class="token keyword">on</span> tmp_login<span class="token punctuation">.</span>user_id<span class="token operator">=</span>tmp_payment<span class="token punctuation">.</span>user_id<span class="token comment">--支付</span>
+<span class="token keyword">left</span> <span class="token keyword">join</span> tmp_order_detail <span class="token keyword">on</span> tmp_login<span class="token punctuation">.</span>user_id<span class="token operator">=</span>tmp_order_detail<span class="token punctuation">.</span>user_id<span class="token punctuation">;</span><span class="token comment">--细节</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="4-DWT-会员主题宽表"><a href="#4-DWT-会员主题宽表" class="headerlink" title="4. DWT-会员主题宽表"></a>4. DWT-会员主题宽表</h1><p>主题表存累积量,不多比比,直接建表</p>
+<p>存储会员相关的累积量</p>
+<p>dwt_user_topic</p>
+<h2 id="4-1-建表语句"><a href="#4-1-建表语句" class="headerlink" title="4.1 建表语句"></a>4.1 建表语句</h2><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> external <span class="token keyword">table</span> dwt_user_topic
+<span class="token punctuation">(</span>
+    user_id string  <span class="token keyword">comment</span> <span class="token string">'用户id'</span><span class="token punctuation">,</span>
+    login_date_first string  <span class="token keyword">comment</span> <span class="token string">'首次登录时间'</span><span class="token punctuation">,</span>
+    login_date_last string  <span class="token keyword">comment</span> <span class="token string">'末次登录时间'</span><span class="token punctuation">,</span>
+    login_count <span class="token keyword">bigint</span> <span class="token keyword">comment</span> <span class="token string">'累积登录天数'</span><span class="token punctuation">,</span>
+    login_last_30d_count <span class="token keyword">bigint</span> <span class="token keyword">comment</span> <span class="token string">'最近30日登录天数'</span><span class="token punctuation">,</span>
+    order_date_first string  <span class="token keyword">comment</span> <span class="token string">'首次下单时间'</span><span class="token punctuation">,</span>
+    order_date_last string  <span class="token keyword">comment</span> <span class="token string">'末次下单时间'</span><span class="token punctuation">,</span>
+    order_count <span class="token keyword">bigint</span> <span class="token keyword">comment</span> <span class="token string">'累积下单次数'</span><span class="token punctuation">,</span>
+    order_amount <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">comment</span> <span class="token string">'累积下单金额'</span><span class="token punctuation">,</span>
+    order_last_30d_count <span class="token keyword">bigint</span> <span class="token keyword">comment</span> <span class="token string">'最近30日下单次数'</span><span class="token punctuation">,</span>
+    order_last_30d_amount <span class="token keyword">bigint</span> <span class="token keyword">comment</span> <span class="token string">'最近30日下单金额'</span><span class="token punctuation">,</span>
+    payment_date_first string  <span class="token keyword">comment</span> <span class="token string">'首次支付时间'</span><span class="token punctuation">,</span>
+    payment_date_last string  <span class="token keyword">comment</span> <span class="token string">'末次支付时间'</span><span class="token punctuation">,</span>
+    payment_count <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">comment</span> <span class="token string">'累积支付次数'</span><span class="token punctuation">,</span>
+    payment_amount <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">comment</span> <span class="token string">'累积支付金额'</span><span class="token punctuation">,</span>
+    payment_last_30d_count <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">comment</span> <span class="token string">'最近30日支付次数'</span><span class="token punctuation">,</span>
+    payment_last_30d_amount <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">comment</span> <span class="token string">'最近30日支付金额'</span>
+<span class="token punctuation">)</span><span class="token keyword">COMMENT</span> <span class="token string">'会员主题宽表'</span>
+stored <span class="token keyword">as</span> parquet
+location <span class="token string">'/warehouse/gmall/dwt/dwt_user_topic/'</span>
+tblproperties <span class="token punctuation">(</span><span class="token string">"parquet.compression"</span><span class="token operator">=</span><span class="token string">"lzo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="4-2-字段分析"><a href="#4-2-字段分析" class="headerlink" title="4.2 字段分析"></a>4.2 字段分析</h2><p>首先,想都要想,来源肯定是同等DWS</p>
+<p>dws_user_action_daycount</p>
+<p>说白了要想统计累积的不就靠的是每日的么</p>
+<p>画画线</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/20210204181239.png" alt="1605271068813"></p>
+<p>大体有这么意思就行,原理还是新旧表对比,跟设备主题宽表一样,关键在于30天,所以拉取新表的时候既要拉取一下30天的信息,还要拉取新增当天的信息进行对比,这个新30天要顶替原来的旧30天</p>
+<p>注意这种新旧表体系</p>
+<p>拉取新表因为要参与对比,需要直接拉取成旧表的样子</p>
+<p>所以废话不说,直接照着旧表拉取新表把</p>
+<h2 id="4-3-拉取sql书写"><a href="#4-3-拉取sql书写" class="headerlink" title="4.3 拉取sql书写"></a>4.3 拉取sql书写</h2><p>书写之前也要明白</p>
+<p>需要拉30天数据</p>
+<p>因为从每日会员行为变成累积</p>
+<p>所有要group by user_id</p>
+<p>一</p>
+<p>new表的拉取</p>
+<p>注意分析粒度 : 每个会员每天的累积量</p>
+<p>dws_user_action_daycount</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span>
+       user_id<span class="token punctuation">,</span>
+       <span class="token comment">--xxx x1,--首次登录时间,这个对比的时候取老表就可以了</span>
+       <span class="token string">'2020-06-14'</span> login_date_last<span class="token punctuation">,</span><span class="token comment">--末次登录时间取今天</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>dt<span class="token operator">=</span><span class="token string">'2020-06-14'</span><span class="token punctuation">,</span>login_count<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> login_count<span class="token punctuation">,</span><span class="token comment">--参与累加,只取一天,旧表+1累积登录天数</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_count<span class="token operator">></span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> login_last_30dcount<span class="token punctuation">,</span><span class="token comment">--最近30日登录天数</span>
+       <span class="token comment">--xxx x2,--首次下单时间,对比获得老表数据</span>
+       <span class="token string">'2020-06-14'</span> order_date_last<span class="token punctuation">,</span><span class="token comment">--末次下单时间,获取当前日期</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>dt<span class="token operator">=</span><span class="token string">'2020-06-14'</span><span class="token punctuation">,</span>order_count<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> order_count<span class="token punctuation">,</span><span class="token comment">--累积下单次数,当前取1,加上老表</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>dt<span class="token operator">=</span><span class="token string">'2020-06-14'</span><span class="token punctuation">,</span>order_amount<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> login_last_30dcount<span class="token punctuation">,</span><span class="token comment">--累积下单金额,取当前下单金额,加上老表的累积下单金额</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>order_count<span class="token operator">></span><span class="token number">0</span><span class="token punctuation">,</span>order_count<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> order_last_30d_count<span class="token punctuation">,</span><span class="token comment">--30日下单次数,发生订单取1</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>order_amount<span class="token operator">></span><span class="token number">0</span><span class="token punctuation">,</span>order_amount<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> order_last_30d_amount<span class="token punctuation">,</span><span class="token comment">--30日下单金额</span>
+       <span class="token comment">--xxx x3,--首次支付时间</span>
+       <span class="token string">'2020-06-14'</span> payment_date_last<span class="token punctuation">,</span><span class="token comment">--末次支付时间</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>dt<span c

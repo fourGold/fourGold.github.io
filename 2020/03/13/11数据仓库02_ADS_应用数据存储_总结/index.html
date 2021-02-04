@@ -1,0 +1,777 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="数据仓库ADS的普通需求, 觉浅">
+    <meta name="description" content="Jinxin Li的个人博客">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>数据仓库ADS的普通需求 | 觉浅</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 5.3.0"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">觉浅</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">觉浅</div>
+        <div class="logo-desc">
+            
+            Jinxin Li的个人博客
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="http://github.com/fourgold/" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="http://github.com/fourgold/" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">数据仓库ADS的普通需求</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2020-03-13
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    3.6k
+                </div>
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+        <!-- 代码块折行 -->
+        <style type="text/css">
+            code[class*="language-"], pre[class*="language-"] { white-space: pre-wrap !important; }
+        </style>
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="ADS-应用数据存储"><a href="#ADS-应用数据存储" class="headerlink" title="ADS-应用数据存储"></a>ADS-应用数据存储</h1><p>application data store </p>
+<p>提供即时的一些常用指标数据库</p>
+<h1 id="1-设备主题"><a href="#1-设备主题" class="headerlink" title="1. 设备主题"></a>1. 设备主题</h1><p>设备主题主要是针对设备查看设备的活跃状态</p>
+<h2 id="1-1-最近连续三周活跃用户数"><a href="#1-1-最近连续三周活跃用户数" class="headerlink" title="1.1 最近连续三周活跃用户数"></a>1.1 最近连续三周活跃用户数</h2><p>连续三周活跃用户话不多说直接建表</p>
+<h3 id="1-1-1-直接建表"><a href="#1-1-1-直接建表" class="headerlink" title="1.1.1 直接建表"></a>1.1.1 直接建表</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> external <span class="token keyword">table</span> ads_continuity_wk_count<span class="token punctuation">(</span> 
+    <span class="token punctuation">`</span>dt<span class="token punctuation">`</span> string <span class="token keyword">COMMENT</span> <span class="token string">'统计日期,一般用结束周周日日期,如果每天计算一次,可用当天日期'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>wk_dt<span class="token punctuation">`</span> string <span class="token keyword">COMMENT</span> <span class="token string">'持续时间'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>continuity_count<span class="token punctuation">`</span> <span class="token keyword">bigint</span> <span class="token keyword">COMMENT</span> <span class="token string">'活跃设备数'</span>
+<span class="token punctuation">)</span> <span class="token keyword">COMMENT</span> <span class="token string">'最近连续三周活跃用户数'</span>
+<span class="token keyword">row</span> format delimited <span class="token keyword">fields</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">'\t'</span>
+location <span class="token string">'/warehouse/gmall/ads/ads_continuity_wk_count'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="1-1-2-字段分析"><a href="#1-1-2-字段分析" class="headerlink" title="1.1.2 字段分析"></a>1.1.2 字段分析</h3><p>首先连续三周其实是一个不好计算的东西</p>
+<p>设备主题先分析</p>
+<p><img src="C:/Users/89388/Desktop/MY_POSTS/images/1605617321499.png" alt="1605617321499"></p>
+<p>统计连续三周,首先设备主题宽表是可以覆盖的,所以最好使用每日设备行为表,这个表示每日一个数据,比较方便拿取</p>
+<h3 id="1-1-3-sql拉取"><a href="#1-1-3-sql拉取" class="headerlink" title="1.1.3 sql拉取"></a>1.1.3 sql拉取</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span>
+       <span class="token string">'2020-06-25'</span> dt<span class="token punctuation">,</span>
+       concat<span class="token punctuation">(</span>date_add<span class="token punctuation">(</span>next_day<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span> <span class="token string">'mo'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">7</span><span class="token operator">*</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">'-'</span><span class="token punctuation">,</span>date_add<span class="token punctuation">(</span>next_day<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span> <span class="token string">'mo'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> wk_dt<span class="token punctuation">,</span>
+       <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span>
+<span class="token keyword">from</span> <span class="token punctuation">(</span>
+<span class="token comment">--第一周</span>
+         <span class="token keyword">select</span> mid_id
+         <span class="token keyword">from</span> dws_uv_detail_daycount
+         <span class="token keyword">where</span> dt <span class="token operator">&lt;=</span> date_add<span class="token punctuation">(</span>next_day<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span> <span class="token string">'mo'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>
+           <span class="token operator">and</span> dt <span class="token operator">></span> date_add<span class="token punctuation">(</span>next_day<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span> <span class="token string">'mo'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">7</span><span class="token punctuation">)</span>
+           <span class="token operator">and</span> login_count <span class="token operator">></span> <span class="token number">0</span>
+         <span class="token keyword">group</span> <span class="token keyword">by</span> mid_id
+     <span class="token punctuation">)</span>t1
+<span class="token keyword">join</span> <span class="token punctuation">(</span><span class="token comment">--在这里直接使用join就可以</span>
+<span class="token comment">--前二周</span>
+    <span class="token keyword">select</span> mid_id
+    <span class="token keyword">from</span> dws_uv_detail_daycount
+    <span class="token keyword">where</span> dt <span class="token operator">&lt;=</span> date_add<span class="token punctuation">(</span>next_day<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span> <span class="token string">'mo'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span><span class="token number">7</span><span class="token punctuation">)</span>
+      <span class="token operator">and</span> dt <span class="token operator">></span> date_add<span class="token punctuation">(</span>next_day<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span> <span class="token string">'mo'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">7</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+      <span class="token operator">and</span> login_count <span class="token operator">></span> <span class="token number">0</span>
+    <span class="token keyword">group</span> <span class="token keyword">by</span> mid_id
+<span class="token punctuation">)</span> t2
+<span class="token keyword">on</span> t1<span class="token punctuation">.</span>mid_id<span class="token operator">=</span>t2<span class="token punctuation">.</span>mid_id
+<span class="token keyword">join</span> <span class="token punctuation">(</span>
+<span class="token comment">--前三周</span>
+    <span class="token keyword">select</span> mid_id
+    <span class="token keyword">from</span> dws_uv_detail_daycount
+    <span class="token keyword">where</span> dt <span class="token operator">&lt;=</span> date_add<span class="token punctuation">(</span>next_day<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span> <span class="token string">'mo'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token operator">-</span><span class="token number">7</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+      <span class="token operator">and</span> dt <span class="token operator">></span> date_add<span class="token punctuation">(</span>next_day<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span> <span class="token string">'mo'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">7</span><span class="token operator">*</span><span class="token number">3</span><span class="token punctuation">)</span>
+      <span class="token operator">and</span> login_count <span class="token operator">></span> <span class="token number">0</span>
+    <span class="token keyword">group</span> <span class="token keyword">by</span> mid_id
+<span class="token punctuation">)</span>t3
+<span class="token keyword">on</span> t2<span class="token punctuation">.</span>mid_id<span class="token operator">=</span>t3<span class="token punctuation">.</span>mid_id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="1-2-最近七天内连续三天活跃用户数"><a href="#1-2-最近七天内连续三天活跃用户数" class="headerlink" title="1.2 最近七天内连续三天活跃用户数"></a>1.2 最近七天内连续三天活跃用户数</h2><h3 id="1-2-1-需求分析"><a href="#1-2-1-需求分析" class="headerlink" title="1.2.1 需求分析"></a>1.2.1 需求分析</h3><p>字段直接见下图</p>
+<p><img src="C:/Users/89388/Desktop/MY_POSTS/images/1605754922865.png" alt="1605754922865"></p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> external <span class="token keyword">table</span> ads_continuity_uv_count<span class="token punctuation">(</span> 
+    <span class="token punctuation">`</span>dt<span class="token punctuation">`</span> string <span class="token keyword">COMMENT</span> <span class="token string">'统计日期'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>wk_dt<span class="token punctuation">`</span> string <span class="token keyword">COMMENT</span> <span class="token string">'最近7天日期'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>continuity_count<span class="token punctuation">`</span> <span class="token keyword">bigint</span>
+<span class="token punctuation">)</span> <span class="token keyword">COMMENT</span> <span class="token string">'最近七天内连续三天活跃用户数'</span>
+<span class="token keyword">row</span> format delimited <span class="token keyword">fields</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">'\t'</span>
+location <span class="token string">'/warehouse/gmall/ads/ads_continuity_uv_count'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>七天内连续三天的活跃用户</p>
+<p>思想简而言之就是从dws_uv_detail_daycount(每日设备行为表)</p>
+<p>拿取七天的登录信息,找出连续三天的login_count&gt;1的设备id</p>
+<h3 id="1-2-2-求取sql"><a href="#1-2-2-求取sql" class="headerlink" title="1.2.2 求取sql"></a>1.2.2 求取sql</h3><p>一</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--先拿七天数据,然后对数据进行开窗排序</span>
+<span class="token keyword">select</span>
+       mid_id<span class="token punctuation">,</span>
+       dt<span class="token punctuation">,</span>
+       rank<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">over</span> <span class="token punctuation">(</span><span class="token keyword">partition</span> <span class="token keyword">by</span> mid_id <span class="token keyword">order</span> <span class="token keyword">by</span> dt<span class="token punctuation">)</span> rk
+<span class="token keyword">from</span> dws_uv_detail_daycount
+<span class="token keyword">where</span> dt <span class="token operator">></span> date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">7</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>二</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--对数据进行相减,如果连续得到连续相同的数据</span>
+<span class="token keyword">select</span>
+       mid_id<span class="token punctuation">,</span>
+       dt<span class="token punctuation">,</span>
+       rk<span class="token punctuation">,</span>
+       date_add<span class="token punctuation">(</span>dt<span class="token punctuation">,</span><span class="token operator">-</span>rk<span class="token punctuation">)</span> date_dif
+<span class="token keyword">from</span> <span class="token punctuation">(</span>
+         <span class="token keyword">select</span> mid_id<span class="token punctuation">,</span>
+                dt<span class="token punctuation">,</span>
+                rank<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">over</span> <span class="token punctuation">(</span><span class="token keyword">partition</span> <span class="token keyword">by</span> mid_id <span class="token keyword">order</span> <span class="token keyword">by</span> dt<span class="token punctuation">)</span> rk
+         <span class="token keyword">from</span> dws_uv_detail_daycount
+         <span class="token keyword">where</span> dt <span class="token operator">></span> date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">7</span><span class="token punctuation">)</span>
+     <span class="token punctuation">)</span>t1<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>三</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--对数据进行分组,得到连续的相同的数据</span>
+<span class="token keyword">select</span>
+        mid_id<span class="token punctuation">,</span>
+        date_dif
+<span class="token keyword">from</span> <span class="token punctuation">(</span>
+         <span class="token keyword">select</span> mid_id<span class="token punctuation">,</span>
+                dt<span class="token punctuation">,</span>
+                rk<span class="token punctuation">,</span>
+                date_add<span class="token punctuation">(</span>dt<span class="token punctuation">,</span> <span class="token operator">-</span>rk<span class="token punctuation">)</span> date_dif
+         <span class="token keyword">from</span> <span class="token punctuation">(</span>
+                  <span class="token keyword">select</span> mid_id<span class="token punctuation">,</span>
+                         dt<span class="token punctuation">,</span>
+                         rank<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">over</span> <span class="token punctuation">(</span><span class="token keyword">partition</span> <span class="token keyword">by</span> mid_id <span class="token keyword">order</span> <span class="token keyword">by</span> dt<span class="token punctuation">)</span> rk
+                  <span class="token keyword">from</span> dws_uv_detail_daycount
+                  <span class="token keyword">where</span> dt <span class="token operator">></span> date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">7</span><span class="token punctuation">)</span>
+              <span class="token punctuation">)</span> t1
+     <span class="token punctuation">)</span>t2
+<span class="token keyword">group</span> <span class="token keyword">by</span> mid_id<span class="token punctuation">,</span>date_dif
+<span class="token keyword">having</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">3</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>四</p>
+<p>去重,除掉一个七天内,存在两个连续三天登录导致产生了两个mid_id</p>
+<p>使用group_by</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span>
+       <span class="token string">'2020-06-25'</span> dt<span class="token punctuation">,</span>
+       concat<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token string">'-'</span><span class="token punctuation">,</span>date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">)</span> wk_dt<span class="token punctuation">,</span>
+       <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> continuity_count
+<span class="token keyword">from</span> <span class="token punctuation">(</span><span class="token keyword">select</span>
+    mid_id
+<span class="token keyword">from</span> <span class="token punctuation">(</span>
+     <span class="token keyword">select</span> mid_id<span class="token punctuation">,</span>
+            date_dif
+     <span class="token keyword">from</span> <span class="token punctuation">(</span>
+          <span class="token keyword">select</span> mid_id<span class="token punctuation">,</span>
+                 dt<span class="token punctuation">,</span>
+                 rk<span class="token punctuation">,</span>
+                 date_add<span class="token punctuation">(</span>dt<span class="token punctuation">,</span> <span class="token operator">-</span>rk<span class="token punctuation">)</span> date_dif
+          <span class="token keyword">from</span> <span class="token punctuation">(</span>
+               <span class="token keyword">select</span> mid_id<span class="token punctuation">,</span>
+                      dt<span class="token punctuation">,</span>
+                      rank<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">over</span> <span class="token punctuation">(</span><span class="token keyword">partition</span> <span class="token keyword">by</span> mid_id <span class="token keyword">order</span> <span class="token keyword">by</span> dt<span class="token punctuation">)</span> rk
+               <span class="token keyword">from</span> dws_uv_detail_daycount
+               <span class="token keyword">where</span> dt <span class="token operator">></span> date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">7</span><span class="token punctuation">)</span>
+                 <span class="token operator">and</span> dt <span class="token operator">&lt;=</span> <span class="token string">'2020-06-25'</span>
+               <span class="token punctuation">)</span> t1
+          <span class="token punctuation">)</span> t2
+     <span class="token keyword">group</span> <span class="token keyword">by</span> mid_id<span class="token punctuation">,</span> date_dif
+     <span class="token keyword">having</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token operator">>=</span> <span class="token number">3</span>
+     <span class="token punctuation">)</span>t3
+<span class="token keyword">group</span> <span class="token keyword">by</span> mid_id<span class="token punctuation">)</span>t4<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>五</p>
+<p>最终的count</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span>
+       <span class="token string">'2020-06-25'</span> dt<span class="token punctuation">,</span>
+       concat<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token string">'-'</span><span class="token punctuation">,</span>date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">7</span><span class="token punctuation">)</span><span class="token punctuation">)</span> wk_dt<span class="token punctuation">,</span>
+       <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> continuity_count
+<span class="token keyword">from</span> <span class="token punctuation">(</span><span class="token keyword">select</span>
+    mid_id
+<span class="token keyword">from</span> <span class="token punctuation">(</span>
+     <span class="token keyword">select</span> mid_id<span class="token punctuation">,</span>
+            date_dif
+     <span class="token keyword">from</span> <span class="token punctuation">(</span>
+          <span class="token keyword">select</span> mid_id<span class="token punctuation">,</span>
+                 dt<span class="token punctuation">,</span>
+                 rk<span class="token punctuation">,</span>
+                 date_add<span class="token punctuation">(</span>dt<span class="token punctuation">,</span> <span class="token operator">-</span>rk<span class="token punctuation">)</span> date_dif
+          <span class="token keyword">from</span> <span class="token punctuation">(</span>
+               <span class="token keyword">select</span> mid_id<span class="token punctuation">,</span>
+                      dt<span class="token punctuation">,</span>
+                      rank<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">over</span> <span class="token punctuation">(</span><span class="token keyword">partition</span> <span class="token keyword">by</span> mid_id <span class="token keyword">order</span> <span class="token keyword">by</span> dt<span class="token punctuation">)</span> rk
+               <span class="token keyword">from</span> dws_uv_detail_daycount
+               <span class="token keyword">where</span> dt <span class="token operator">></span> date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">7</span><span class="token punctuation">)</span>
+               <span class="token punctuation">)</span> t1
+          <span class="token punctuation">)</span> t2
+     <span class="token keyword">group</span> <span class="token keyword">by</span> mid_id<span class="token punctuation">,</span> date_dif
+     <span class="token keyword">having</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">3</span>
+     <span class="token punctuation">)</span>t3
+<span class="token keyword">group</span> <span class="token keyword">by</span> mid_id<span class="token punctuation">)</span>t4<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="1-3-用户留存率"><a href="#1-3-用户留存率" class="headerlink" title="1.3 用户留存率"></a>1.3 用户留存率</h2><h3 id="1-3-1-需求分析"><a href="#1-3-1-需求分析" class="headerlink" title="1.3.1 需求分析"></a>1.3.1 需求分析</h3><p>计算问题分析:</p>
+<p>就是当日,比如2020-06-25,能够计算,昨天的1日留存率,前天的2日留存率,大前天的是三日留存率</p>
+<p>所以这个是要插入三条数据</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_02/20210204180407.png" alt="用户留存率的字段分析"></p>
+<h3 id="1-3-2-直接建表"><a href="#1-3-2-直接建表" class="headerlink" title="1.3.2 直接建表"></a>1.3.2 直接建表</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> external <span class="token keyword">table</span> ads_user_retention_day_rate 
+<span class="token punctuation">(</span>
+     <span class="token punctuation">`</span>stat_date<span class="token punctuation">`</span>          string <span class="token keyword">comment</span> <span class="token string">'统计日期'</span><span class="token punctuation">,</span>
+     <span class="token punctuation">`</span>create_date<span class="token punctuation">`</span>       string  <span class="token keyword">comment</span> <span class="token string">'设备新增日期'</span><span class="token punctuation">,</span>
+     <span class="token punctuation">`</span>retention_day<span class="token punctuation">`</span>     <span class="token keyword">int</span> <span class="token keyword">comment</span> <span class="token string">'截止当前日期留存天数'</span><span class="token punctuation">,</span>
+     <span class="token punctuation">`</span>retention_count<span class="token punctuation">`</span>    <span class="token keyword">bigint</span> <span class="token keyword">comment</span>  <span class="token string">'留存数量'</span><span class="token punctuation">,</span>
+     <span class="token punctuation">`</span>new_mid_count<span class="token punctuation">`</span>     <span class="token keyword">bigint</span> <span class="token keyword">comment</span> <span class="token string">'设备新增数量'</span><span class="token punctuation">,</span>
+     <span class="token punctuation">`</span>retention_ratio<span class="token punctuation">`</span>   <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">comment</span> <span class="token string">'留存率'</span>
+<span class="token punctuation">)</span>  <span class="token keyword">COMMENT</span> <span class="token string">'留存率'</span>
+<span class="token keyword">row</span> format delimited <span class="token keyword">fields</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">'\t'</span>
+location <span class="token string">'/warehouse/gmall/ads/ads_user_retention_day_rate/'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="1-3-3-拉取sql"><a href="#1-3-3-拉取sql" class="headerlink" title="1.3.3 拉取sql"></a>1.3.3 拉取sql</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--一日</span>
+<span class="token keyword">select</span>
+       <span class="token string">'2020-06-25'</span> stat_date<span class="token punctuation">,</span>
+       date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> create_date<span class="token punctuation">,</span>
+       <span class="token number">1</span> retention_day<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_last <span class="token operator">=</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> retention_count<span class="token punctuation">,</span>
+       <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> new_mid_count<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_last <span class="token operator">=</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> retention_countretention_ratio
+<span class="token keyword">from</span> dwt_uv_topic
+<span class="token keyword">where</span> login_date_first <span class="token operator">=</span> date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">--二日</span>
+<span class="token keyword">select</span>
+       <span class="token string">'2020-06-25'</span> stat_date<span class="token punctuation">,</span>
+       date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">)</span> create_date<span class="token punctuation">,</span>
+       <span class="token number">2</span> retention_day<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_last <span class="token operator">=</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> retention_count<span class="token punctuation">,</span>
+       <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> new_mid_count<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_last <span class="token operator">=</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> retention_countretention_ratio
+<span class="token keyword">from</span> dwt_uv_topic
+<span class="token keyword">where</span> login_date_first <span class="token operator">=</span> date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">--三日</span>
+<span class="token keyword">select</span>
+       <span class="token string">'2020-06-25'</span> stat_date<span class="token punctuation">,</span>
+       date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">)</span> create_date<span class="token punctuation">,</span>
+       <span class="token number">3</span> retention_day<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_last <span class="token operator">=</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> retention_count<span class="token punctuation">,</span>
+       <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> new_mid_count<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_last <span class="token operator">=</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> retention_countretention_ratio
+<span class="token keyword">from</span> dwt_uv_topic
+<span class="token keyword">where</span> login_date_first <span class="token operator">=</span> date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>复合之后直接insert</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span>
+       <span class="token string">'2020-06-25'</span> stat_date<span class="token punctuation">,</span>
+       date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> create_date<span class="token punctuation">,</span>
+       <span class="token number">1</span> retention_day<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_last <span class="token operator">=</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> retention_count<span class="token punctuation">,</span>
+       <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> new_mid_count<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_last <span class="token operator">=</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> retention_countretention_ratio <span class="token comment">--</span>
+<span class="token keyword">from</span> dwt_uv_topic
+<span class="token keyword">where</span> login_date_first <span class="token operator">=</span> date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token comment">--在选表的时候直接上过滤条件</span>
+<span class="token keyword">union</span> <span class="token keyword">all</span>
+<span class="token keyword">select</span>
+       <span class="token string">'2020-06-25'</span> stat_date<span class="token punctuation">,</span>
+       date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">)</span> create_date<span class="token punctuation">,</span>
+       <span class="token number">2</span> retention_day<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_last <span class="token operator">=</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> retention_count<span class="token punctuation">,</span>
+       <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> new_mid_count<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_last <span class="token operator">=</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> retention_countretention_ratio
+<span class="token keyword">from</span> dwt_uv_topic
+<span class="token keyword">where</span> login_date_first <span class="token operator">=</span> date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">union</span> <span class="token keyword">all</span>
+<span class="token keyword">select</span>
+       <span class="token string">'2020-06-25'</span> stat_date<span class="token punctuation">,</span>
+       date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">)</span> create_date<span class="token punctuation">,</span>
+       <span class="token number">3</span> retention_day<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_last <span class="token operator">=</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> retention_count<span class="token punctuation">,</span>
+       <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> new_mid_count<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_last <span class="token operator">=</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> retention_countretention_ratio
+<span class="token keyword">from</span> dwt_uv_topic
+<span class="token keyword">where</span> login_date_first <span class="token operator">=</span> date_add<span class="token punctuation">(</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h1 id="2-会员主题"><a href="#2-会员主题" class="headerlink" title="2. 会员主题"></a>2. 会员主题</h1><h2 id="2-1会员信息"><a href="#2-1会员信息" class="headerlink" title="2.1会员信息"></a>2.1会员信息</h2><p>ads层是一个整体的应用,用于查看会员的整体状态,信息来源于会员主题宽表,会员主题宽表存储</p>
+<p><img src="C:%5CUsers%5C89388%5CDesktop%5CMY_POSTS%5Cimages%5C1605764267038.png" alt="会员主题宽表"></p>
+<h3 id="2-1-1-直接建表"><a href="#2-1-1-直接建表" class="headerlink" title="2.1.1 直接建表"></a>2.1.1 直接建表</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">drop</span> <span class="token keyword">table</span> <span class="token keyword">if</span> <span class="token keyword">exists</span> ads_user_topic<span class="token punctuation">;</span>
+<span class="token keyword">create</span> external <span class="token keyword">table</span> ads_user_topic<span class="token punctuation">(</span>
+    <span class="token punctuation">`</span>dt<span class="token punctuation">`</span> string <span class="token keyword">COMMENT</span> <span class="token string">'统计日期'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>day_users<span class="token punctuation">`</span> string <span class="token keyword">COMMENT</span> <span class="token string">'活跃会员数'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>day_new_users<span class="token punctuation">`</span> string <span class="token keyword">COMMENT</span> <span class="token string">'新增会员数'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>day_new_payment_users<span class="token punctuation">`</span> string <span class="token keyword">COMMENT</span> <span class="token string">'新增消费会员数'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>payment_users<span class="token punctuation">`</span> string <span class="token keyword">COMMENT</span> <span class="token string">'总付费会员数'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>users<span class="token punctuation">`</span> string <span class="token keyword">COMMENT</span> <span class="token string">'总会员数'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>day_users2users<span class="token punctuation">`</span> <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">COMMENT</span> <span class="token string">'会员活跃率'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>payment_users2users<span class="token punctuation">`</span> <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">COMMENT</span> <span class="token string">'会员付费率'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>day_new_users2users<span class="token punctuation">`</span> <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">COMMENT</span> <span class="token string">'会员新鲜度'</span>
+<span class="token punctuation">)</span> <span class="token keyword">COMMENT</span> <span class="token string">'会员信息表'</span>
+<span class="token keyword">row</span> format delimited <span class="token keyword">fields</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">'\t'</span>
+location <span class="token string">'/warehouse/gmall/ads/ads_user_topic'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-1-2-拉取sql"><a href="#2-1-2-拉取sql" class="headerlink" title="2.1.2 拉取sql"></a>2.1.2 拉取sql</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span>
+       <span class="token string">'2020-06-25'</span> dt<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_last<span class="token operator">=</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> day_users<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_first <span class="token operator">=</span> <span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> day_new_users<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_first<span class="token operator">=</span><span class="token string">'2020-06-25'</span> <span class="token operator">and</span> payment_date_first<span class="token operator">=</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> day_new_payment_users<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>payment_count<span class="token operator">></span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> payment_users<span class="token punctuation">,</span>
+       <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> users<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_last<span class="token operator">=</span><span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> day_users2users<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>payment_count<span class="token operator">></span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> payment_users2users<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>login_date_first <span class="token operator">=</span> <span class="token string">'2020-06-25'</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">/</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> day_new_users2users
+<span class="token keyword">from</span> dwt_user_topic<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个题目比较简单,注意细微处的拿捏就可以了</p>
+<h2 id="2-2-漏斗分析"><a href="#2-2-漏斗分析" class="headerlink" title="2.2 漏斗分析"></a>2.2 漏斗分析</h2><h3 id="2-2-1-字段分析"><a href="#2-2-1-字段分析" class="headerlink" title="2.2.1 字段分析"></a>2.2.1 字段分析</h3><p>统计“浏览首页-&gt;浏览商品详情页-&gt;加入购物车-&gt;下单-&gt;支付”的转化率</p>
+<p>思路：统计各个行为的人数，然后计算比值。</p>
+<p><img src="C:%5CUsers%5C89388%5CDesktop%5CMY_POSTS%5Cimages%5C1605766343265.png" alt="字段分析"></p>
+<p>浏览首页人数,只能去页面日志表里找</p>
+<h3 id="2-2-2-直接建表"><a href="#2-2-2-直接建表" class="headerlink" title="2.2.2 直接建表"></a>2.2.2 直接建表</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> external  <span class="token keyword">table</span> ads_user_action_convert_day<span class="token punctuation">(</span>
+    <span class="token punctuation">`</span>dt<span class="token punctuation">`</span> string <span class="token keyword">COMMENT</span> <span class="token string">'统计日期'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>home_count<span class="token punctuation">`</span>  <span class="token keyword">bigint</span> <span class="token keyword">COMMENT</span> <span class="token string">'浏览首页人数'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>good_detail_count<span class="token punctuation">`</span> <span class="token keyword">bigint</span> <span class="token keyword">COMMENT</span> <span class="token string">'浏览商品详情页人数'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>home2good_detail_convert_ratio<span class="token punctuation">`</span> <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">COMMENT</span> <span class="token string">'首页到商品详情转化率'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>cart_count<span class="token punctuation">`</span> <span class="token keyword">bigint</span> <span class="token keyword">COMMENT</span> <span class="token string">'加入购物车的人数'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>good_detail2cart_convert_ratio<span class="token punctuation">`</span> <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">COMMENT</span> <span class="token string">'商品详情页到加入购物车转化率'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>order_count<span class="token punctuation">`</span> <span class="token keyword">bigint</span>     <span class="token keyword">COMMENT</span> <span class="token string">'下单人数'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>cart2order_convert_ratio<span class="token punctuation">`</span>  <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">COMMENT</span> <span class="token string">'加入购物车到下单转化率'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>payment_count<span class="token punctuation">`</span> <span class="token keyword">bigint</span>     <span class="token keyword">COMMENT</span> <span class="token string">'支付人数'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">`</span>order2payment_convert_ratio<span class="token punctuation">`</span> <span class="token keyword">decimal</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">COMMENT</span> <span class="token string">'下单到支付的转化率'</span>
+<span class="token punctuation">)</span> <span class="token keyword">COMMENT</span> <span class="token string">'漏斗分析'</span>
+<span class="token keyword">row</span> format delimited  <span class="token keyword">fields</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">'\t'</span>
+location <span class="token string">'/warehouse/gmall/ads/ads_user_action_convert_day/'</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-2-3-拉取sql"><a href="#2-2-3-拉取sql" class="headerlink" title="2.2.3 拉取sql"></a>2.2.3 拉取sql</h3><p>一</p>
+<p>分开求字段</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--先求当日浏览首页人数</span>
+<span class="token keyword">select</span> <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>page_id <span class="token operator">=</span> <span class="token string">'home'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                                            home_count<span class="token punctuation">,</span><span class="token comment">--浏览首页人数</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>page_id <span class="token operator">=</span> <span class="token string">'good_detail'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                                     good_detail_count<span class="token punctuation">,</span><span class="token comment">--商品详情人数</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>page_id <span class="token operator">=</span> <span class="token string">'good_detail'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>page_id <span class="token operator">=</span> <span class="token string">'home'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> home2good_detail_convert_ratio<span class="token punctuation">,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>page_id <span class="token operator">=</span> <span class="token string">'cart'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>                                            cart_count<span class="token punctuation">,</span><span class="token comment">--加购人数</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>page_id <span class="token operator">=</span> <span class="token string">'cart'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>page_id <span class="token operator">=</span> <span class="token string">'good_detail'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> good_detail2cart_convert_ratio
+<span class="token keyword">from</span> dwd_page_log<span class="token comment">--页面日志表</span>
+<span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-25'</span><span class="token punctuation">;</span>
+
+<span class="token comment">--在求取下单人数</span>
+<span class="token keyword">select</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span class="token punctuation">`</span><span class="token punctuation">(</span>order_count<span class="token operator">></span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> order_count<span class="token punctuation">,</span> <span class="token comment">--下单人数,</span>
+       <span class="token function">sum</span><span class="token punctuation">(</span><span class="token punctuation">`</span><span class="token keyword">if</span><span cla
