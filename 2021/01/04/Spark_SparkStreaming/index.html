@@ -465,7 +465,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3.1k
+                    2.7k
                 </div>
                 
 
@@ -490,7 +490,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>云盘：<a href="mailto:&#109;&#x69;&#97;&#111;&#x63;&#x68;&#117;&#x61;&#x6e;&#104;&#97;&#x69;&#x40;&#49;&#54;&#x33;&#x2e;&#x63;&#111;&#109;">&#109;&#x69;&#97;&#111;&#x63;&#x68;&#117;&#x61;&#x6e;&#104;&#97;&#x69;&#x40;&#49;&#54;&#x33;&#x2e;&#x63;&#111;&#109;</a><br>暗号：大海哥最帅</p>
+                <p>云盘：<a href="mailto:&#109;&#105;&#x61;&#x6f;&#x63;&#x68;&#x75;&#97;&#x6e;&#104;&#97;&#105;&#64;&#x31;&#54;&#51;&#x2e;&#x63;&#x6f;&#x6d;">&#109;&#105;&#x61;&#x6f;&#x63;&#x68;&#x75;&#97;&#x6e;&#104;&#97;&#105;&#64;&#x31;&#54;&#51;&#x2e;&#x63;&#x6f;&#x6d;</a><br>暗号：大海哥最帅</p>
 <hr>
 <h1 id="一-概述"><a href="#一-概述" class="headerlink" title="一 概述"></a>一 概述</h1><h2 id="1-Spark架构"><a href="#1-Spark架构" class="headerlink" title="1.Spark架构"></a>1.Spark架构</h2><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/Spark%E7%BB%93%E6%9E%84.png" alt="SparkStreaming整体架构图"></p>
 <h2 id="2-DStream是什么"><a href="#2-DStream是什么" class="headerlink" title="2.DStream是什么?"></a>2.DStream是什么?</h2><p>每个时间区间收到的数据作为RDD存在</p>
@@ -498,183 +498,183 @@
 <h2 id="3-背压机制"><a href="#3-背压机制" class="headerlink" title="3.背压机制"></a>3.背压机制</h2><p>可以自动调节receiver的接受速率</p>
 <p>通过属性“spark.streaming.backpressure.enabled”来控制是否启用backpressure机制，默认值false，即不启用。</p>
 <h1 id="二-DSteam入门"><a href="#二-DSteam入门" class="headerlink" title="二 DSteam入门"></a>二 DSteam入门</h1><h2 id="1-wordCount"><a href="#1-wordCount" class="headerlink" title="1.wordCount"></a>1.wordCount</h2><p>需求：使用netcat工具向9999端口不断的发送数据，通过SparkStreaming读取端口数据并统计不同单词出现的次数</p>
-<h3 id="1-1使用netcat作为源头wordcount"><a href="#1-1使用netcat作为源头wordcount" class="headerlink" title="1.1使用netcat作为源头wordcount"></a>1.1使用netcat作为源头wordcount</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object WordCount &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local[*]&quot;).setAppName(&quot;sparkStreaming&quot;)
-    &#x2F;&#x2F;初始化配置信息
-    val ssc &#x3D; new StreamingContext(sparkConf, Seconds(3))
-    &#x2F;&#x2F;接收数据
-    val line: ReceiverInputDStream[String] &#x3D; ssc.socketTextStream(&quot;hadoop102&quot;, 9999)
-    &#x2F;&#x2F;处理
-    val wordToSumStream: DStream[(String, Int)] &#x3D; line.flatMap(_.split(&quot; &quot;)).map((_, 1)).reduceByKey(_ + _)
-    wordToSumStream.print()
-    ssc.start()
-    ssc.awaitTermination()
-  &#125;
-&#125;
+<h3 id="1-1使用netcat作为源头wordcount"><a href="#1-1使用netcat作为源头wordcount" class="headerlink" title="1.1使用netcat作为源头wordcount"></a>1.1使用netcat作为源头wordcount</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> WordCount <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"sparkStreaming"</span><span class="token punctuation">)</span>
+    <span class="token comment">//初始化配置信息</span>
+    <span class="token keyword">val</span> ssc <span class="token operator">=</span> <span class="token keyword">new</span> StreamingContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">,</span> Seconds<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//接收数据</span>
+    <span class="token keyword">val</span> line<span class="token operator">:</span> ReceiverInputDStream<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> ssc<span class="token punctuation">.</span>socketTextStream<span class="token punctuation">(</span><span class="token string">"hadoop102"</span><span class="token punctuation">,</span> <span class="token number">9999</span><span class="token punctuation">)</span>
+    <span class="token comment">//处理</span>
+    <span class="token keyword">val</span> wordToSumStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> line<span class="token punctuation">.</span>flatMap<span class="token punctuation">(</span>_<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>reduceByKey<span class="token punctuation">(</span>_ <span class="token operator">+</span> _<span class="token punctuation">)</span>
+    wordToSumStream<span class="token punctuation">.</span>print<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    ssc<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    ssc<span class="token punctuation">.</span>awaitTermination<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="1-2使用队列源计算wordcount"><a href="#1-2使用队列源计算wordcount" class="headerlink" title="1.2使用队列源计算wordcount"></a>1.2使用队列源计算wordcount</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object queuePractice &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local[*]&quot;).setAppName(&quot;opt&quot;)
-    val ssc &#x3D; new StreamingContext(sparkConf, Seconds(3))
-    &#x2F;&#x2F;创建RDD队列
-    val rddQueue &#x3D; new mutable.Queue[RDD[Int]]()
-    &#x2F;&#x2F;创建queueInputDsteam
-    val value: InputDStream[Int] &#x3D; ssc.queueStream(rddQueue, oneAtATime &#x3D; false)
-    val result: DStream[Int] &#x3D; value.reduce(_ + _)
-    &#x2F;&#x2F;打印结果
-    result.print()
-    ssc.start()
-    for (i &lt;- 1 to 5)&#123;
-      rddQueue +&#x3D; ssc.sparkContext.makeRDD(1 to 5)
-      Thread.sleep((2000))
-    &#125;
-    ssc.awaitTermination()
-  &#125;
-&#125;
+<h3 id="1-2使用队列源计算wordcount"><a href="#1-2使用队列源计算wordcount" class="headerlink" title="1.2使用队列源计算wordcount"></a>1.2使用队列源计算wordcount</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> queuePractice <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"opt"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> ssc <span class="token operator">=</span> <span class="token keyword">new</span> StreamingContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">,</span> Seconds<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//创建RDD队列</span>
+    <span class="token keyword">val</span> rddQueue <span class="token operator">=</span> <span class="token keyword">new</span> mutable<span class="token punctuation">.</span>Queue<span class="token punctuation">[</span>RDD<span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">//创建queueInputDsteam</span>
+    <span class="token keyword">val</span> value<span class="token operator">:</span> InputDStream<span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span> <span class="token operator">=</span> ssc<span class="token punctuation">.</span>queueStream<span class="token punctuation">(</span>rddQueue<span class="token punctuation">,</span> oneAtATime <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> result<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span> <span class="token operator">=</span> value<span class="token punctuation">.</span>reduce<span class="token punctuation">(</span>_ <span class="token operator">+</span> _<span class="token punctuation">)</span>
+    <span class="token comment">//打印结果</span>
+    result<span class="token punctuation">.</span>print<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    ssc<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token keyword">&lt;-</span> <span class="token number">1</span> to <span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      rddQueue <span class="token operator">+=</span> ssc<span class="token punctuation">.</span>sparkContext<span class="token punctuation">.</span>makeRDD<span class="token punctuation">(</span><span class="token number">1</span> to <span class="token number">5</span><span class="token punctuation">)</span>
+      Thread<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+    ssc<span class="token punctuation">.</span>awaitTermination<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="2-自定义数据源"><a href="#2-自定义数据源" class="headerlink" title="2.自定义数据源"></a>2.自定义数据源</h2><h3 id="2-1自定义数据源receiver"><a href="#2-1自定义数据源receiver" class="headerlink" title="2.1自定义数据源receiver"></a>2.1自定义数据源receiver</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">class defReceiver(host:String,port:Int) extends Receiver[String](StorageLevel.MEMORY_ONLY)&#123;
-  override def onStart(): Unit &#x3D; &#123;
-    new Thread(&quot;Socket Receiver&quot;)&#123;
-      override def run(): Unit &#x3D; &#123;receive()&#125;
-    &#125;.start()
-  &#125;
-  def receive(): Unit &#x3D; &#123;
-    val socket &#x3D; new Socket(host, port)
-    &#x2F;&#x2F;创建一个bufferReader
-    val reader &#x3D; new BufferedReader(new InputStreamReader(socket.getInputStream, StandardCharsets.UTF_8))
-    &#x2F;&#x2F;读取数据
-    var input: String &#x3D; reader.readLine()
-    &#x2F;&#x2F;当receiver没有关闭并且输入数据不为空,则循环发送数据给spark
-    while(!isStopped()&amp;&amp;input !&#x3D;null)&#123;
-      store(input)
-      input&#x3D; reader.readLine()
-    &#125;
-    &#x2F;&#x2F;如果循环结束,则关闭资源
-    reader.close()
-    socket.close()
-    &#x2F;&#x2F;重启
-    restart(&quot;restart&quot;)
-  &#125;
-  override def onStop(): Unit &#x3D; &#123;&#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="2-2自定数据源的使用"><a href="#2-2自定数据源的使用" class="headerlink" title="2.2自定数据源的使用"></a>2.2自定数据源的使用</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object defSource &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local[*]&quot;).setAppName(&quot;opt&quot;)
-    val ssc &#x3D; new StreamingContext(sparkConf, Seconds(3))
-    &#x2F;&#x2F;创建自动receiver的Streaming
-    val lineDStream: ReceiverInputDStream[String] &#x3D; ssc.receiverStream(new defReceiver(&quot;hadoop102&quot;, 9999))
-    &#x2F;&#x2F;将每一行数据做切分,形成一个个单词
-    val result: DStream[(String, Int)] &#x3D; lineDStream.flatMap(_.split(&quot; &quot;)).map((_, 1)).reduceByKey(_ + _)
-    result.print()
-    &#x2F;&#x2F;启动并且阻塞
-    ssc.start()
-    ssc.awaitTermination()
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="2-自定义数据源"><a href="#2-自定义数据源" class="headerlink" title="2.自定义数据源"></a>2.自定义数据源</h2><h3 id="2-1自定义数据源receiver"><a href="#2-1自定义数据源receiver" class="headerlink" title="2.1自定义数据源receiver"></a>2.1自定义数据源receiver</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">class</span> defReceiver<span class="token punctuation">(</span>host<span class="token operator">:</span><span class="token builtin">String</span><span class="token punctuation">,</span>port<span class="token operator">:</span><span class="token builtin">Int</span><span class="token punctuation">)</span> <span class="token keyword">extends</span> Receiver<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">(</span>StorageLevel<span class="token punctuation">.</span>MEMORY_ONLY<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> onStart<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">new</span> Thread<span class="token punctuation">(</span><span class="token string">"Socket Receiver"</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      <span class="token keyword">override</span> <span class="token keyword">def</span> run<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>receive<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">def</span> receive<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> socket <span class="token operator">=</span> <span class="token keyword">new</span> Socket<span class="token punctuation">(</span>host<span class="token punctuation">,</span> port<span class="token punctuation">)</span>
+    <span class="token comment">//创建一个bufferReader</span>
+    <span class="token keyword">val</span> reader <span class="token operator">=</span> <span class="token keyword">new</span> BufferedReader<span class="token punctuation">(</span><span class="token keyword">new</span> InputStreamReader<span class="token punctuation">(</span>socket<span class="token punctuation">.</span>getInputStream<span class="token punctuation">,</span> StandardCharsets<span class="token punctuation">.</span>UTF_8<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//读取数据</span>
+    <span class="token keyword">var</span> input<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> reader<span class="token punctuation">.</span>readLine<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">//当receiver没有关闭并且输入数据不为空,则循环发送数据给spark</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span>isStopped<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span>input <span class="token operator">!=</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      store<span class="token punctuation">(</span>input<span class="token punctuation">)</span>
+      input<span class="token operator">=</span> reader<span class="token punctuation">.</span>readLine<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token comment">//如果循环结束,则关闭资源</span>
+    reader<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    socket<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">//重启</span>
+    restart<span class="token punctuation">(</span><span class="token string">"restart"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> onStop<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-2自定数据源的使用"><a href="#2-2自定数据源的使用" class="headerlink" title="2.2自定数据源的使用"></a>2.2自定数据源的使用</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> defSource <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"opt"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> ssc <span class="token operator">=</span> <span class="token keyword">new</span> StreamingContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">,</span> Seconds<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//创建自动receiver的Streaming</span>
+    <span class="token keyword">val</span> lineDStream<span class="token operator">:</span> ReceiverInputDStream<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> ssc<span class="token punctuation">.</span>receiverStream<span class="token punctuation">(</span><span class="token keyword">new</span> defReceiver<span class="token punctuation">(</span><span class="token string">"hadoop102"</span><span class="token punctuation">,</span> <span class="token number">9999</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//将每一行数据做切分,形成一个个单词</span>
+    <span class="token keyword">val</span> result<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> lineDStream<span class="token punctuation">.</span>flatMap<span class="token punctuation">(</span>_<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>reduceByKey<span class="token punctuation">(</span>_ <span class="token operator">+</span> _<span class="token punctuation">)</span>
+    result<span class="token punctuation">.</span>print<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">//启动并且阻塞</span>
+    ssc<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    ssc<span class="token punctuation">.</span>awaitTermination<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="3-kafka数据源"><a href="#3-kafka数据源" class="headerlink" title="3.kafka数据源"></a>3.kafka数据源</h2><p>Kafka数据源在SparkStreaming中存在两种API,一种是ReceiverAPI,另一种是DirectAPI</p>
 <p>ReceiverAPI已经弃用</p>
 <p><strong>DirectAPI</strong>:是由计算的Executor来主动消费Kafka的数据,速度由自身控制</p>
-<h3 id="3-1kafka的命令行代码"><a href="#3-1kafka的命令行代码" class="headerlink" title="3.1kafka的命令行代码"></a>3.1kafka的命令行代码</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#查看消费topic
-bin&#x2F;kafka-topics.sh --zookeeper hadoop102:2181&#x2F;kafka -list
-#创建kafka的topic
-bin&#x2F;kafka-topics.sh --zookeeper hadoop102:2181&#x2F;kafka  --create --replication-factor 1 --partitions 2 --topic testTopic
-#查看Topic详情
-bin&#x2F;kafka-topics.sh --zookeeper hadoop102:2181&#x2F;kafka \
+<h3 id="3-1kafka的命令行代码"><a href="#3-1kafka的命令行代码" class="headerlink" title="3.1kafka的命令行代码"></a>3.1kafka的命令行代码</h3><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment">#查看消费topic</span>
+bin/kafka-topics.sh --zookeeper hadoop102:2181/kafka -list
+<span class="token comment">#创建kafka的topic</span>
+bin/kafka-topics.sh --zookeeper hadoop102:2181/kafka  --create --replication-factor <span class="token number">1</span> --partitions <span class="token number">2</span> --topic testTopic
+<span class="token comment">#查看Topic详情</span>
+bin/kafka-topics.sh --zookeeper hadoop102:2181/kafka <span class="token punctuation">\</span>
 --describe --topic testTopic
-#创建生产者
-bin&#x2F;kafka-console-producer.sh \
+<span class="token comment">#创建生产者</span>
+bin/kafka-console-producer.sh <span class="token punctuation">\</span>
 --broker-list hadoop102:9092 --topic testTopic
-#创建消费者
-[atguigu@hadoop102 kafka]$ bin&#x2F;kafka-console-consumer.sh \
+<span class="token comment">#创建消费者</span>
+<span class="token punctuation">[</span>atguigu@hadoop102 kafka<span class="token punctuation">]</span>$ bin/kafka-console-consumer.sh <span class="token punctuation">\</span>
 --bootstrap-server hadoop102:9092 --from-beginning --topic testTopic
-#查看_consumer_offsets主题中存储的offset
-bin&#x2F;kafka-consumer-groups.sh --bootstrap-server hadoop102:9092 --describe --group atguiguGroup
-#如何查看消费者组的位置<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="3-2使用kafka源来流数据wordcount处理"><a href="#3-2使用kafka源来流数据wordcount处理" class="headerlink" title="3.2使用kafka源来流数据wordcount处理"></a>3.2使用kafka源来流数据wordcount处理</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object SparkStreaming_DirectAuto &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;KakfaSource&quot;).setMaster(&quot;local[*]&quot;)
-    val scc &#x3D; new StreamingContext(sparkConf, Seconds(3))
+<span class="token comment">#查看_consumer_offsets主题中存储的offset</span>
+bin/kafka-consumer-groups.sh --bootstrap-server hadoop102:9092 --describe --group atguiguGroup
+<span class="token comment">#如何查看消费者组的位置</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-2使用kafka源来流数据wordcount处理"><a href="#3-2使用kafka源来流数据wordcount处理" class="headerlink" title="3.2使用kafka源来流数据wordcount处理"></a>3.2使用kafka源来流数据wordcount处理</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> SparkStreaming_DirectAuto <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"KakfaSource"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> scc <span class="token operator">=</span> <span class="token keyword">new</span> StreamingContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">,</span> Seconds<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;配置参数,为map
-    &#x2F;&#x2F;3.定义Kafka参数：kafka集群地址、消费者组名称、key序列化、value序列化
-    val kafkaPara: Map[String, Object] &#x3D; Map[String, Object](
-      ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG -&gt; &quot;hadoop102:9092,hadoop103:9092,hadoop104:9092&quot;,
-      ConsumerConfig.GROUP_ID_CONFIG -&gt; &quot;atguiguGroup&quot;,
-      ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG -&gt; &quot;org.apache.kafka.common.serialization.StringDeserializer&quot;,
-      ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG -&gt; classOf[StringDeserializer]
-    )
-    &#x2F;&#x2F;使用DirectAPI创建DStream
-    val kafkaToDStream: InputDStream[ConsumerRecord[String, String]] &#x3D; KafkaUtils.createDirectStream(scc,
-      LocationStrategies.PreferConsistent,
-      ConsumerStrategies.Subscribe[String, String](Set(&quot;testTopic&quot;), kafkaPara))
-    &#x2F;&#x2F;处理数据
-    kafkaToDStream.map(record&#x3D;&gt;record.value())
-      .flatMap(_.split(&quot; &quot;))
-      .map((_,1))
-      .reduceByKey(_+_)
-      .print()
-    &#x2F;&#x2F;关闭并堵塞
-    scc.start()
-    scc.awaitTermination()
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token comment">//配置参数,为map</span>
+    <span class="token comment">//3.定义Kafka参数：kafka集群地址、消费者组名称、key序列化、value序列化</span>
+    <span class="token keyword">val</span> kafkaPara<span class="token operator">:</span> Map<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> Object<span class="token punctuation">]</span> <span class="token operator">=</span> Map<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> Object<span class="token punctuation">]</span><span class="token punctuation">(</span>
+      ConsumerConfig<span class="token punctuation">.</span>BOOTSTRAP_SERVERS_CONFIG <span class="token operator">-></span> <span class="token string">"hadoop102:9092,hadoop103:9092,hadoop104:9092"</span><span class="token punctuation">,</span>
+      ConsumerConfig<span class="token punctuation">.</span>GROUP_ID_CONFIG <span class="token operator">-></span> <span class="token string">"atguiguGroup"</span><span class="token punctuation">,</span>
+      ConsumerConfig<span class="token punctuation">.</span>KEY_DESERIALIZER_CLASS_CONFIG <span class="token operator">-></span> <span class="token string">"org.apache.kafka.common.serialization.StringDeserializer"</span><span class="token punctuation">,</span>
+      ConsumerConfig<span class="token punctuation">.</span>VALUE_DESERIALIZER_CLASS_CONFIG <span class="token operator">-></span> classOf<span class="token punctuation">[</span>StringDeserializer<span class="token punctuation">]</span>
+    <span class="token punctuation">)</span>
+    <span class="token comment">//使用DirectAPI创建DStream</span>
+    <span class="token keyword">val</span> kafkaToDStream<span class="token operator">:</span> InputDStream<span class="token punctuation">[</span>ConsumerRecord<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> KafkaUtils<span class="token punctuation">.</span>createDirectStream<span class="token punctuation">(</span>scc<span class="token punctuation">,</span>
+      LocationStrategies<span class="token punctuation">.</span>PreferConsistent<span class="token punctuation">,</span>
+      ConsumerStrategies<span class="token punctuation">.</span>Subscribe<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">(</span>Set<span class="token punctuation">(</span><span class="token string">"testTopic"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> kafkaPara<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//处理数据</span>
+    kafkaToDStream<span class="token punctuation">.</span>map<span class="token punctuation">(</span>record<span class="token keyword">=></span>record<span class="token punctuation">.</span>value<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span>flatMap<span class="token punctuation">(</span>_<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span>reduceByKey<span class="token punctuation">(</span>_<span class="token operator">+</span>_<span class="token punctuation">)</span>
+      <span class="token punctuation">.</span>print<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">//关闭并堵塞</span>
+    scc<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    scc<span class="token punctuation">.</span>awaitTermination<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="三-DStream转换"><a href="#三-DStream转换" class="headerlink" title="三 DStream转换"></a>三 DStream转换</h1><p>DStream上的操作与RDD的类似，分为转换和输出两种，此外转换操作中还有一些比较特殊的原语，如：updateStateByKey()、transform()以及各种Window相关的原语。</p>
 <h2 id="3-1无状态转换"><a href="#3-1无状态转换" class="headerlink" title="3.1无状态转换"></a>3.1无状态转换</h2><p>transfrom()是在Driver端开始执行的</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">&#x2F;&#x2F;DStream其实就是内部封装了一个RDD,因此
-object SparkStreaming_Transform &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    &#x2F;&#x2F;初始化配置
-    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;KakfaSource&quot;).setMaster(&quot;local[*]&quot;)
-    val scc &#x3D; new StreamingContext(sparkConf, Seconds(3))
-    &#x2F;&#x2F;接受参数
-    val rDStream: ReceiverInputDStream[String] &#x3D; scc.socketTextStream(&quot;hadoop102&quot;, 9999)
-    &#x2F;&#x2F;使用transform可以将DStream转换成rdd
-    println(&quot;主程序执行&quot;+Thread.currentThread().getName)&#x2F;&#x2F;JobGenerator Driver
-    rDStream.transform(rdd&#x3D;&gt;&#123;
-      println(&quot;transform执行位置&quot;+Thread.currentThread().getName)
-      rdd.flatMap(line&#x3D;&gt;line.split(&quot; &quot;)).map((_,1)).reduceByKey(_+_)&#125;).print()
-    &#x2F;&#x2F;关闭并堵塞
-    scc.start()
-    scc.awaitTermination()
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token comment">//DStream其实就是内部封装了一个RDD,因此</span>
+<span class="token keyword">object</span> SparkStreaming_Transform <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//初始化配置</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"KakfaSource"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> scc <span class="token operator">=</span> <span class="token keyword">new</span> StreamingContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">,</span> Seconds<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//接受参数</span>
+    <span class="token keyword">val</span> rDStream<span class="token operator">:</span> ReceiverInputDStream<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> scc<span class="token punctuation">.</span>socketTextStream<span class="token punctuation">(</span><span class="token string">"hadoop102"</span><span class="token punctuation">,</span> <span class="token number">9999</span><span class="token punctuation">)</span>
+    <span class="token comment">//使用transform可以将DStream转换成rdd</span>
+    println<span class="token punctuation">(</span><span class="token string">"主程序执行"</span><span class="token operator">+</span>Thread<span class="token punctuation">.</span>currentThread<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>getName<span class="token punctuation">)</span><span class="token comment">//JobGenerator Driver</span>
+    rDStream<span class="token punctuation">.</span>transform<span class="token punctuation">(</span>rdd<span class="token keyword">=></span><span class="token punctuation">&#123;</span>
+      println<span class="token punctuation">(</span><span class="token string">"transform执行位置"</span><span class="token operator">+</span>Thread<span class="token punctuation">.</span>currentThread<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>getName<span class="token punctuation">)</span>
+      rdd<span class="token punctuation">.</span>flatMap<span class="token punctuation">(</span>line<span class="token keyword">=></span>line<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>reduceByKey<span class="token punctuation">(</span>_<span class="token operator">+</span>_<span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span>print<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">//关闭并堵塞</span>
+    scc<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    scc<span class="token punctuation">.</span>awaitTermination<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="3-2有状态转换"><a href="#3-2有状态转换" class="headerlink" title="3.2有状态转换"></a>3.2有状态转换</h2><p>有状态转化操作：计算当前批次RDD时，需要用到历史RDD的数据。</p>
 <h3 id="1-UpdateStateByKey"><a href="#1-UpdateStateByKey" class="headerlink" title="(1)UpdateStateByKey()"></a>(1)UpdateStateByKey()</h3><p>参数中需要传递一个函数,在函数内部根据需求对==当前数据==与==历史数据==进行整合</p>
 <p>需求:使用UpdateStateByKey计算WordCount</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">&#x2F;**
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token comment">/**
  * @author Jinxin Li
  * @create 2020-11-24 18:24
  * 通过累积历史状态做的实时的wordcount
- *&#x2F;
-object sparkStreaming_updateStateByKey &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
+ */</span>
+<span class="token keyword">object</span> sparkStreaming_updateStateByKey <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
 
-    &#x2F;&#x2F;这里只会相加key相同的数值,因为是reduce,key相同进来,只要设定value的方法即可
-    &#x2F;&#x2F; 定义更新状态方法，参数seq为当前批次单词次数，state为以往批次单词次数
-    val updateFunc &#x3D; (seq:Seq[Int],state:Option[Int])&#x3D;&gt;&#123;
-      &#x2F;&#x2F;当前批次
-      val currentCount &#x3D; seq.sum
-      &#x2F;&#x2F;历史批次
-      val previousCount &#x3D;  state.getOrElse(0)
-      &#x2F;&#x2F;总的数据累加
-      Some(currentCount+previousCount)
-    &#125;
-    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;KakfaSource&quot;).setMaster(&quot;local[*]&quot;)
-    val scc &#x3D; new StreamingContext(sparkConf, Seconds(3))
+    <span class="token comment">//这里只会相加key相同的数值,因为是reduce,key相同进来,只要设定value的方法即可</span>
+    <span class="token comment">// 定义更新状态方法，参数seq为当前批次单词次数，state为以往批次单词次数</span>
+    <span class="token keyword">val</span> updateFunc <span class="token operator">=</span> <span class="token punctuation">(</span>seq<span class="token operator">:</span>Seq<span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">,</span>state<span class="token operator">:</span>Option<span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token keyword">=></span><span class="token punctuation">&#123;</span>
+      <span class="token comment">//当前批次</span>
+      <span class="token keyword">val</span> currentCount <span class="token operator">=</span> seq<span class="token punctuation">.</span>sum
+      <span class="token comment">//历史批次</span>
+      <span class="token keyword">val</span> previousCount <span class="token operator">=</span>  state<span class="token punctuation">.</span>getOrElse<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+      <span class="token comment">//总的数据累加</span>
+      Some<span class="token punctuation">(</span>currentCount<span class="token operator">+</span>previousCount<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"KakfaSource"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> scc <span class="token operator">=</span> <span class="token keyword">new</span> StreamingContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">,</span> Seconds<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-    scc.checkpoint(&quot;.&#x2F;SparkStreaming&#x2F;ck&quot;)&#x2F;&#x2F;设定存储点,默认的计算与历史相关的都要设定检查点
+    scc<span class="token punctuation">.</span>checkpoint<span class="token punctuation">(</span><span class="token string">"./SparkStreaming/ck"</span><span class="token punctuation">)</span><span class="token comment">//设定存储点,默认的计算与历史相关的都要设定检查点</span>
 
-    val reDStream: ReceiverInputDStream[String] &#x3D; scc.socketTextStream(&quot;hadoop102&quot;, 9999)
-    val KvDStream: DStream[(String, Int)] &#x3D; reDStream.flatMap(_.split(&quot; &quot;)).map((_, 1))
-    KvDStream.updateStateByKey[Int](
-      updateFunc,
-      new HashPartitioner(2)).print()
-    &#x2F;&#x2F;关闭并堵塞
-    scc.start()
-    scc.awaitTermination()
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token keyword">val</span> reDStream<span class="token operator">:</span> ReceiverInputDStream<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> scc<span class="token punctuation">.</span>socketTextStream<span class="token punctuation">(</span><span class="token string">"hadoop102"</span><span class="token punctuation">,</span> <span class="token number">9999</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> KvDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> reDStream<span class="token punctuation">.</span>flatMap<span class="token punctuation">(</span>_<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    KvDStream<span class="token punctuation">.</span>updateStateByKey<span class="token punctuation">[</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">(</span>
+      updateFunc<span class="token punctuation">,</span>
+      <span class="token keyword">new</span> HashPartitioner<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>print<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">//关闭并堵塞</span>
+    scc<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    scc<span class="token punctuation">.</span>awaitTermination<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>缺点**</strong></p>
 <p>这种UpdateStateByKey在企业中几乎不用,因为存在很多缺点</p>
 <ol>
@@ -690,135 +690,135 @@ object sparkStreaming_updateStateByKey &#123;
 <p><strong>需求</strong></p>
 <p>基本语法：window(windowLength, slideInterval): 基于对源DStream窗化的批次进行计算返回一个新的DStream。</p>
 <p>需求：统计WordCount:3秒一个批次，窗口12秒，滑步6秒。</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object SparkStreaming_window &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    &#x2F;&#x2F;这里只会相加key相同的数值,因为是reduce,key相同进来,只要设定value的方法即可
-    &#x2F;&#x2F; 定义更新状态方法，参数seq为当前批次单词次数，state为以往批次单词次数
-    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;KakfaSource&quot;).setMaster(&quot;local[*]&quot;)
-    val scc &#x3D; new StreamingContext(sparkConf, Seconds(3))
-    scc.checkpoint(&quot;.&#x2F;SparkStreaming&#x2F;ck&quot;)&#x2F;&#x2F;设定存储点,默认的计算与历史相关的都要设定检查点
-    val reDStream: ReceiverInputDStream[String] &#x3D; scc.socketTextStream(&quot;hadoop102&quot;, 9999)
-    val lineToTuples: DStream[(String, Int)] &#x3D; reDStream.flatMap(_.split(&quot; &quot;)).map((_, 1))
-    &#x2F;&#x2F;设定窗口,3秒一个批次,窗口持续12秒,步长6秒
-    val windowDStream: DStream[(String, Int)] &#x3D; lineToTuples.window(Seconds(12), Seconds(6))
-    windowDStream.reduceByKey(_+_).print()
-    &#x2F;&#x2F;关闭并堵塞
-    scc.start()
-    scc.awaitTermination()
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> SparkStreaming_window <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//这里只会相加key相同的数值,因为是reduce,key相同进来,只要设定value的方法即可</span>
+    <span class="token comment">// 定义更新状态方法，参数seq为当前批次单词次数，state为以往批次单词次数</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"KakfaSource"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> scc <span class="token operator">=</span> <span class="token keyword">new</span> StreamingContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">,</span> Seconds<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    scc<span class="token punctuation">.</span>checkpoint<span class="token punctuation">(</span><span class="token string">"./SparkStreaming/ck"</span><span class="token punctuation">)</span><span class="token comment">//设定存储点,默认的计算与历史相关的都要设定检查点</span>
+    <span class="token keyword">val</span> reDStream<span class="token operator">:</span> ReceiverInputDStream<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> scc<span class="token punctuation">.</span>socketTextStream<span class="token punctuation">(</span><span class="token string">"hadoop102"</span><span class="token punctuation">,</span> <span class="token number">9999</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> lineToTuples<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> reDStream<span class="token punctuation">.</span>flatMap<span class="token punctuation">(</span>_<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//设定窗口,3秒一个批次,窗口持续12秒,步长6秒</span>
+    <span class="token keyword">val</span> windowDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> lineToTuples<span class="token punctuation">.</span>window<span class="token punctuation">(</span>Seconds<span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">,</span> Seconds<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    windowDStream<span class="token punctuation">.</span>reduceByKey<span class="token punctuation">(</span>_<span class="token operator">+</span>_<span class="token punctuation">)</span><span class="token punctuation">.</span>print<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">//关闭并堵塞</span>
+    scc<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    scc<span class="token punctuation">.</span>awaitTermination<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E7%AA%97%E5%8F%A3%E8%AE%A1%E7%AE%97%E6%B5%81%E7%A8%8B.png" alt="窗口计算流程图"></p>
 <h3 id="3-reduceByKeyAndWindow"><a href="#3-reduceByKeyAndWindow" class="headerlink" title="(3)reduceByKeyAndWindow"></a>(3)reduceByKeyAndWindow</h3><p>reduceByKeyAndWindow(func, windowLength, slideInterval,[numTasks])：</p>
 <p>当在一个(K,V)对的DStream上调用此函数，会返回一个新(K,V)对的DStream，此处通过对滑动窗口中批次数据使用reduce函数来整合每个key的value值。</p>
 <p>这个是window程序的简化版</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object SparkStreaming_reduceByKeyAndWindow &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    &#x2F;&#x2F;初始化配置
-    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;KakfaSource&quot;).setMaster(&quot;local[*]&quot;)
-    val scc &#x3D; new StreamingContext(sparkConf, Seconds(3))
-    &#x2F;&#x2F;接受参数
-    val line: ReceiverInputDStream[String] &#x3D; scc.socketTextStream(&quot;hadoop102&quot;, 9999)
-    val tuplesDStream: DStream[(String, Int)] &#x3D; line.flatMap(_.split(&quot; &quot;)).map((_, 1))
-    tuplesDStream.reduceByKeyAndWindow(
-      (a:Int,b:Int)&#x3D;&gt;a+b,&#x2F;&#x2F;这里要表明类型
-      Seconds(6),
-      Seconds(12)
-    ).print()
-    scc.start()
-    scc.awaitTermination()
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> SparkStreaming_reduceByKeyAndWindow <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//初始化配置</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"KakfaSource"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> scc <span class="token operator">=</span> <span class="token keyword">new</span> StreamingContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">,</span> Seconds<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//接受参数</span>
+    <span class="token keyword">val</span> line<span class="token operator">:</span> ReceiverInputDStream<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> scc<span class="token punctuation">.</span>socketTextStream<span class="token punctuation">(</span><span class="token string">"hadoop102"</span><span class="token punctuation">,</span> <span class="token number">9999</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> tuplesDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> line<span class="token punctuation">.</span>flatMap<span class="token punctuation">(</span>_<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    tuplesDStream<span class="token punctuation">.</span>reduceByKeyAndWindow<span class="token punctuation">(</span>
+      <span class="token punctuation">(</span>a<span class="token operator">:</span><span class="token builtin">Int</span><span class="token punctuation">,</span>b<span class="token operator">:</span><span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token keyword">=></span>a<span class="token operator">+</span>b<span class="token punctuation">,</span><span class="token comment">//这里要表明类型</span>
+      Seconds<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      Seconds<span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">.</span>print<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    scc<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    scc<span class="token punctuation">.</span>awaitTermination<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="4-reduceByKeyAndWindow（反向Reduce）"><a href="#4-reduceByKeyAndWindow（反向Reduce）" class="headerlink" title="(4)reduceByKeyAndWindow（反向Reduce）"></a>(4)reduceByKeyAndWindow（反向Reduce）</h3><p>reduceByKeyAndWindow(func, invFunc, windowLength, slideInterval,[numTasks])</p>
 <p>这个是上一个函数的升级版</p>
 <p>通过一个减法,减少统计窗口之间的重复部分</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object SparkStreaming_reduceByKeyAndWindow_reduce &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    &#x2F;&#x2F;初始化配置
-    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;KakfaSource&quot;).setMaster(&quot;local[*]&quot;)
-    val scc &#x3D; new StreamingContext(sparkConf, Seconds(3))
-    &#x2F;&#x2F;接受参数
-    scc.checkpoint(&quot;.&#x2F;ck&quot;)
-    val line: ReceiverInputDStream[String] &#x3D; scc.socketTextStream(&quot;hadoop102&quot;, 9999)
-    val tuplesDStream: DStream[(String, Int)] &#x3D; line.flatMap(_.split(&quot; &quot;)).map((_, 1))
-    tuplesDStream.reduceByKeyAndWindow(
-      (a:Int,b:Int)&#x3D;&gt;a+b,&#x2F;&#x2F;这里要表明类型
-      (x:Int,y:Int)&#x3D;&gt;x-y,
-      Seconds(12),&#x2F;&#x2F;这个是窗口间隔
-      Seconds(6),&#x2F;&#x2F;这个是滑动距离
-      new HashPartitioner(2),
-      (x:(String, Int)) &#x3D;&gt; x._2 &gt; 0&#x2F;&#x2F;过滤小于0值
-    ).print()
-    scc.start()
-    scc.awaitTermination()
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> SparkStreaming_reduceByKeyAndWindow_reduce <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//初始化配置</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"KakfaSource"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> scc <span class="token operator">=</span> <span class="token keyword">new</span> StreamingContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">,</span> Seconds<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//接受参数</span>
+    scc<span class="token punctuation">.</span>checkpoint<span class="token punctuation">(</span><span class="token string">"./ck"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> line<span class="token operator">:</span> ReceiverInputDStream<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> scc<span class="token punctuation">.</span>socketTextStream<span class="token punctuation">(</span><span class="token string">"hadoop102"</span><span class="token punctuation">,</span> <span class="token number">9999</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> tuplesDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> line<span class="token punctuation">.</span>flatMap<span class="token punctuation">(</span>_<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    tuplesDStream<span class="token punctuation">.</span>reduceByKeyAndWindow<span class="token punctuation">(</span>
+      <span class="token punctuation">(</span>a<span class="token operator">:</span><span class="token builtin">Int</span><span class="token punctuation">,</span>b<span class="token operator">:</span><span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token keyword">=></span>a<span class="token operator">+</span>b<span class="token punctuation">,</span><span class="token comment">//这里要表明类型</span>
+      <span class="token punctuation">(</span>x<span class="token operator">:</span><span class="token builtin">Int</span><span class="token punctuation">,</span>y<span class="token operator">:</span><span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token keyword">=></span>x<span class="token operator">-</span>y<span class="token punctuation">,</span>
+      Seconds<span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token comment">//这个是窗口间隔</span>
+      Seconds<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token comment">//这个是滑动距离</span>
+      <span class="token keyword">new</span> HashPartitioner<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token punctuation">(</span>x<span class="token operator">:</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">=></span> x<span class="token punctuation">.</span>_2 <span class="token operator">></span> <span class="token number">0</span><span class="token comment">//过滤小于0值</span>
+    <span class="token punctuation">)</span><span class="token punctuation">.</span>print<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    scc<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    scc<span class="token punctuation">.</span>awaitTermination<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="3-3其他操作"><a href="#3-3其他操作" class="headerlink" title="3.3其他操作"></a>3.3其他操作</h2><p>（1）countByWindow(windowLength, slideInterval): 返回一个滑动窗口计数流中的元素个数；</p>
 <p>（2）reduceByWindow(func, windowLength, slideInterval): 通过使用自定义函数整合滑动区间流元素来创建一个新的单元素流；</p>
 <h1 id="五-DSteam输出"><a href="#五-DSteam输出" class="headerlink" title="五 DSteam输出"></a>五 DSteam输出</h1><p>企业中常用以下方法进行DSteam输出</p>
 <p>print()：在运行流程序的驱动结点上打印DStream中每一批次数据的最开始10个元素。这用于开发和调试。</p>
 <p>foreachRDD(func)：这是最通用的输出操作，函数func用于产生DStream的每一个RDD。其中参数传入的函数func应该实现将每一个RDD中数据推送到外部系统，如将RDD存入文件或者写入数据库。</p>
 <p>在企业开发中通常采用foreachRDD()，它用来对DStream中的RDD进行任意计算。这和transform()有些类似，都可以让我们访问任意RDD。在foreachRDD()中，可以重用我们在Spark中实现的所有行动操作。比如，常见的用例之一是把数据写到如MySQL的外部数据库中</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object SparkStreaming_output &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    &#x2F;&#x2F;初始化配置
-    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;KakfaSource&quot;).setMaster(&quot;local[*]&quot;)
-    val scc &#x3D; new StreamingContext(sparkConf, Seconds(3))
-    &#x2F;&#x2F;接受参数
-    scc.checkpoint(&quot;.&#x2F;ck&quot;)
-    val line: ReceiverInputDStream[String] &#x3D; scc.socketTextStream(&quot;hadoop102&quot;, 9999)
-    val tuplesDStream: DStream[(String, Int)] &#x3D; line.flatMap(_.split(&quot; &quot;)).map((_, 1))
-    &#x2F;&#x2F;tuplesDStream.foreachRDD(rdd&#x3D;&gt;rdd.collect().foreach(println))
-    &#x2F;&#x2F;常规这样输出是一条一条的输出,但是常规不适合这样操作
-    tuplesDStream.foreachRDD(rdd&#x3D;&gt;rdd.foreachPartition &#123;
-      println(Thread.currentThread().getName&#x2F;&#x2F;需要注意的是,转换输出也是在Driver端执行的
-      item &#x3D;&gt; item.foreach(println)
-    &#125;)
-    scc.start()
-    scc.awaitTermination()
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> SparkStreaming_output <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//初始化配置</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"KakfaSource"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> scc <span class="token operator">=</span> <span class="token keyword">new</span> StreamingContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">,</span> Seconds<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//接受参数</span>
+    scc<span class="token punctuation">.</span>checkpoint<span class="token punctuation">(</span><span class="token string">"./ck"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> line<span class="token operator">:</span> ReceiverInputDStream<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> scc<span class="token punctuation">.</span>socketTextStream<span class="token punctuation">(</span><span class="token string">"hadoop102"</span><span class="token punctuation">,</span> <span class="token number">9999</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> tuplesDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> line<span class="token punctuation">.</span>flatMap<span class="token punctuation">(</span>_<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//tuplesDStream.foreachRDD(rdd=>rdd.collect().foreach(println))</span>
+    <span class="token comment">//常规这样输出是一条一条的输出,但是常规不适合这样操作</span>
+    tuplesDStream<span class="token punctuation">.</span>foreachRDD<span class="token punctuation">(</span>rdd<span class="token keyword">=></span>rdd<span class="token punctuation">.</span>foreachPartition <span class="token punctuation">&#123;</span>
+      println<span class="token punctuation">(</span>Thread<span class="token punctuation">.</span>currentThread<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>getName<span class="token comment">//需要注意的是,转换输出也是在Driver端执行的</span>
+      item <span class="token keyword">=></span> item<span class="token punctuation">.</span>foreach<span class="token punctuation">(</span>println<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+    scc<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    scc<span class="token punctuation">.</span>awaitTermination<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>（1）连接不能写在Driver层面（序列化）</p>
 <p>（2）如果写在foreach则每个RDD中的每一条数据都创建，得不偿失；</p>
 <p>（3）增加foreachPartition，在分区创建（获取）。还是在Driver端进行?</p>
 <h1 id="六-优雅的关闭"><a href="#六-优雅的关闭" class="headerlink" title="六 优雅的关闭"></a>六 优雅的关闭</h1><p>使用外部文件系统来控制内部程序关闭</p>
 <p>使用object</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object close2 &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    val properties &#x3D; new Properties()
-    val config &#x3D; PropertiesUtil.load(&quot;config.properties&quot;)
-    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;sparkStreaming&quot;).setMaster(&quot;local[*]&quot;)
-      .set(&quot;spark.streaming.stopGracefullyOnShutdown&quot;, config.getProperty(&quot;spark.streaming.stopGracefullyOnShutdown&quot;))
-    val ssc &#x3D; new StreamingContext(sparkConf, Seconds(3))
-    val lineDStream: ReceiverInputDStream[String] &#x3D; ssc.socketTextStream(&quot;hadoop102&quot;, 9999)
-    lineDStream.flatMap(_.split(&quot; &quot;)).map((_,1)).reduceByKey(_+_).print()
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> close2 <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> properties <span class="token operator">=</span> <span class="token keyword">new</span> Properties<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> config <span class="token operator">=</span> PropertiesUtil<span class="token punctuation">.</span>load<span class="token punctuation">(</span><span class="token string">"config.properties"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"sparkStreaming"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span>set<span class="token punctuation">(</span><span class="token string">"spark.streaming.stopGracefullyOnShutdown"</span><span class="token punctuation">,</span> config<span class="token punctuation">.</span>getProperty<span class="token punctuation">(</span><span class="token string">"spark.streaming.stopGracefullyOnShutdown"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> ssc <span class="token operator">=</span> <span class="token keyword">new</span> StreamingContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">,</span> Seconds<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> lineDStream<span class="token operator">:</span> ReceiverInputDStream<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> ssc<span class="token punctuation">.</span>socketTextStream<span class="token punctuation">(</span><span class="token string">"hadoop102"</span><span class="token punctuation">,</span> <span class="token number">9999</span><span class="token punctuation">)</span>
+    lineDStream<span class="token punctuation">.</span>flatMap<span class="token punctuation">(</span>_<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>reduceByKey<span class="token punctuation">(</span>_<span class="token operator">+</span>_<span class="token punctuation">)</span><span class="token punctuation">.</span>print<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    new Thread(new StopMonitor(ssc)).start()
+    <span class="token keyword">new</span> Thread<span class="token punctuation">(</span><span class="token keyword">new</span> StopMonitor<span class="token punctuation">(</span>ssc<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;关闭
-    ssc.start()
-    ssc.awaitTermination()
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token comment">//关闭</span>
+    ssc<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    ssc<span class="token punctuation">.</span>awaitTermination<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>关闭object</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">class StopMonitor(ssc: StreamingContext) extends Runnable&#123;
-  override def run(): Unit &#x3D; &#123;
-    &#x2F;&#x2F;获得文件系统
-    val fileSystem: FileSystem &#x3D; FileSystem.get(new URI(&quot;hdfs:&#x2F;&#x2F;hadoop102:8020&quot;), new Configuration(), &quot;atguigu&quot;)
-    &#x2F;&#x2F;循环监测
-    while (true)&#123;
-      val bool: Boolean &#x3D; fileSystem.exists(new Path(&quot;hdfs:&#x2F;&#x2F;hadoop102:8020&#x2F;stopSpark&quot;))
-      Thread.sleep(5000)
-      &#x2F;&#x2F;判断
-      if (bool)&#123;
-        val state: StreamingContextState &#x3D; ssc.getState()
-        if (state&#x3D;&#x3D;StreamingContextState.ACTIVE)&#123;
-          ssc.stop(stopSparkContext &#x3D; true,stopGracefully &#x3D; true)
-          System.exit(0)
-        &#125;
-      &#125;
-    &#125;
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">class</span> StopMonitor<span class="token punctuation">(</span>ssc<span class="token operator">:</span> StreamingContext<span class="token punctuation">)</span> <span class="token keyword">extends</span> Runnable<span class="token punctuation">&#123;</span>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> run<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//获得文件系统</span>
+    <span class="token keyword">val</span> fileSystem<span class="token operator">:</span> FileSystem <span class="token operator">=</span> FileSystem<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token keyword">new</span> URI<span class="token punctuation">(</span><span class="token string">"hdfs://hadoop102:8020"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> Configuration<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"atguigu"</span><span class="token punctuation">)</span>
+    <span class="token comment">//循环监测</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+      <span class="token keyword">val</span> bool<span class="token operator">:</span> <span class="token builtin">Boolean</span> <span class="token operator">=</span> fileSystem<span class="token punctuation">.</span>exists<span class="token punctuation">(</span><span class="token keyword">new</span> Path<span class="token punctuation">(</span><span class="token string">"hdfs://hadoop102:8020/stopSpark"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      Thread<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span>
+      <span class="token comment">//判断</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>bool<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">val</span> state<span class="token operator">:</span> StreamingContextState <span class="token operator">=</span> ssc<span class="token punctuation">.</span>getState<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>state<span class="token operator">==</span>StreamingContextState<span class="token punctuation">.</span>ACTIVE<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+          ssc<span class="token punctuation">.</span>stop<span class="token punctuation">(</span>stopSparkContext <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">,</span>stopGracefully <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+          System<span class="token punctuation">.</span>exit<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -1369,7 +1369,7 @@ object sparkStreaming_updateStateByKey &#123;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">219.3k</span>&nbsp;字
+                class="white-color">214.8k</span>&nbsp;字
             
             
             

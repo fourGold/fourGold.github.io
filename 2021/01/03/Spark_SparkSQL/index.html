@@ -465,7 +465,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    4.4k
+                    3.9k
                 </div>
                 
 
@@ -515,12 +515,12 @@
 <p>DataSet是强类型的。比如可以有DataSet[Car]，DataSet[User]。具有类型安全检查</p>
 <p><code>DataFrame</code>是<code>DataSet</code>的特例,<code>type DataFrame = DataSet[Row]</code> ，<code>Row</code>是一个类型，跟Car、User这些的类型一样，所有的表结构信息都用Row来表示。</p>
 <h3 id="0x0-为什么是DataSet"><a href="#0x0-为什么是DataSet" class="headerlink" title="0x0 为什么是DataSet"></a>0x0 为什么是DataSet</h3><p>DataFrame虽然定义了保存了表结构的原信息</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java">ResultSet rs &#x3D; pstat.executeQuery(&quot;select id,name from user&quot;);
-while (rs.next())&#123;
-    rs.getInt(1)&#x2F;&#x2F;我们知道是id,但是如果我们sql改变顺序,
-        &#x2F;&#x2F;比如name,id
-        &#x2F;&#x2F;调用结果就得修改
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">ResultSet</span> rs <span class="token operator">=</span> pstat<span class="token punctuation">.</span><span class="token function">executeQuery</span><span class="token punctuation">(</span><span class="token string">"select id,name from user"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">while</span> <span class="token punctuation">(</span>rs<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    rs<span class="token punctuation">.</span><span class="token function">getInt</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token comment">//我们知道是id,但是如果我们sql改变顺序,</span>
+        <span class="token comment">//比如name,id</span>
+        <span class="token comment">//调用结果就得修改</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>所以spark就对DataFrame的里面的表结构封装成一个对象,直接使用对象点的方式进行调用,对象的类型就设置为Row类型</p>
 <p>DataSet(row) = DataFrame</p>
 <h3 id="0x1-Encoder"><a href="#0x1-Encoder" class="headerlink" title="0x1 Encoder"></a>0x1 Encoder</h3><p>Encoder编码器是 Spark SQL 中序列化和反序列化(SerDes)框架的基本概念。编码器在<strong>对象</strong>和 Spark 的内部<strong>二进制格式</strong>之间进行转换</p>
@@ -532,31 +532,31 @@ while (rs.next())&#123;
 <h2 id="DS-DF-RDD转换"><a href="#DS-DF-RDD转换" class="headerlink" title="DS-DF-RDD转换"></a>DS-DF-RDD转换</h2><p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/DataFrame%E4%B8%8ERDD%E7%9A%84%E8%BD%AC%E6%8D%A2%E5%85%B3%E7%B3%BB%E5%9B%BE.png" alt="DataFrame与RDD的转换关系图"></p>
 <p>￼</p>
 <p>由DataFrame转换过来的RDD的是Row类型</p>
-<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">--1.RDD &lt;&#x3D;&gt; DF
-	--a. RDD --&gt; DF 
-	rdd.toDF(&quot;列名1&quot;，&quot;列名2&quot;，...)
-	--b. DF --&gt; RDD
-	df.rdd
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--1.RDD &lt;=> DF</span>
+	<span class="token comment">--a. RDD --> DF </span>
+	rdd<span class="token punctuation">.</span>toDF<span class="token punctuation">(</span><span class="token string">"列名1"</span>，<span class="token string">"列名2"</span>，<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
+	<span class="token comment">--b. DF --> RDD</span>
+	df<span class="token punctuation">.</span>rdd
 	
---2.RDD &lt;&#x3D;&gt; DS
-	--a、RDD --&gt; DS
-	--将rdd的数据转换为样例类的格式。
-    rdd.toDS 
-	--这里声明一点
-	--rdd如果是字符串创建来的,是没有能力toDS的
-	--这里要实现把对象准备好
-	val rdd &#x3D; sc.makeRDD(List(Emp(30,&quot;张三&quot;),Emp(40,&quot;李四&quot;))
-	rdd.toDS
-	--这样才能真正的转变
-	--b. DS --&gt; RDD
-	ds.rdd
+<span class="token comment">--2.RDD &lt;=> DS</span>
+	<span class="token comment">--a、RDD --> DS</span>
+	<span class="token comment">--将rdd的数据转换为样例类的格式。</span>
+    rdd<span class="token punctuation">.</span>toDS 
+	<span class="token comment">--这里声明一点</span>
+	<span class="token comment">--rdd如果是字符串创建来的,是没有能力toDS的</span>
+	<span class="token comment">--这里要实现把对象准备好</span>
+	val rdd <span class="token operator">=</span> sc<span class="token punctuation">.</span>makeRDD<span class="token punctuation">(</span>List<span class="token punctuation">(</span>Emp<span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">,</span><span class="token string">"张三"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>Emp<span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">,</span><span class="token string">"李四"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	rdd<span class="token punctuation">.</span>toDS
+	<span class="token comment">--这样才能真正的转变</span>
+	<span class="token comment">--b. DS --> RDD</span>
+	ds<span class="token punctuation">.</span>rdd
 
--- 3.DF &lt;&#x3D;&gt; DS
-	--a. DF --&gt; DS 
-    df.as[样例类]
-	--该样例类必须存在，而且df中的数据个样例类对应
-	--b. DS --&gt; DS
-	ds.toDF<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment">-- 3.DF &lt;=> DS</span>
+	<span class="token comment">--a. DF --> DS </span>
+    df<span class="token punctuation">.</span><span class="token keyword">as</span><span class="token punctuation">[</span>样例类<span class="token punctuation">]</span>
+	<span class="token comment">--该样例类必须存在，而且df中的数据个样例类对应</span>
+	<span class="token comment">--b. DS --> DS</span>
+	ds<span class="token punctuation">.</span>toDF<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E4%B8%89%E8%80%85%E8%BD%AC%E6%8D%A2%E5%9B%BE.png" alt="DS与DF,RDD转换图"></p>
 <h1 id="SparkSQL-API"><a href="#SparkSQL-API" class="headerlink" title="SparkSQL_API"></a>SparkSQL_API</h1><h2 id="IDEA中使用SparkSQL"><a href="#IDEA中使用SparkSQL" class="headerlink" title="IDEA中使用SparkSQL"></a>IDEA中使用SparkSQL</h2><h3 id="0x0添加依赖"><a href="#0x0添加依赖" class="headerlink" title="0x0添加依赖"></a>0x0添加依赖</h3><pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.apache.spark<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
@@ -566,143 +566,143 @@ while (rs.next())&#123;
 <h3 id="0x1构建sparkSession对象"><a href="#0x1构建sparkSession对象" class="headerlink" title="0x1构建sparkSession对象"></a>0x1构建sparkSession对象</h3><ol>
 <li>重要：连接SparkSQL</li>
 </ol>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">&#x2F;&#x2F; 1. 创建环境
-val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local[*]&quot;).setAppName(&quot;sparksql&quot;)
-&#x2F;&#x2F; 2. 创建SparkSession对象
-val spark: SparkSession &#x3D; SparkSession.builder().config(sparkConf).getOrCreate()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token comment">// 1. 创建环境</span>
+<span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"sparksql"</span><span class="token punctuation">)</span>
+<span class="token comment">// 2. 创建SparkSession对象</span>
+<span class="token keyword">val</span> spark<span class="token operator">:</span> SparkSession <span class="token operator">=</span> SparkSession<span class="token punctuation">.</span>builder<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>config<span class="token punctuation">(</span>sparkConf<span class="token punctuation">)</span><span class="token punctuation">.</span>getOrCreate<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <ol start="2">
 <li>添加隐式转换，每次构建完对象以后都需要增加这个 隐式转换的代码</li>
 </ol>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"> &#x2F;&#x2F; 3. 增加隐式转换
-    import spark.implicits._
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"> <span class="token comment">// 3. 增加隐式转换</span>
+    <span class="token keyword">import</span> <span class="token namespace">spark<span class="token punctuation">.</span>implicits<span class="token punctuation">.</span></span>_
 
-&quot;1. 这里的spark不是Scala中的包名，而是创建的sparkSession对象的变量名称
- 2. spark对象不能使用var声明，因为Scala只支持val修饰的对象的引入&quot;
-&#x2F;&#x2F;为什么要导入这个对象的隐式转换呢,为了方便调用 $age等<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+"<span class="token number">1.</span> 这里的spark不是Scala中的包名，而是创建的sparkSession对象的变量名称
+ <span class="token number">2.</span> spark对象不能使用<span class="token keyword">var</span>声明，因为Scala只支持<span class="token keyword">val</span>修饰的对象的引入"
+<span class="token comment">//为什么要导入这个对象的隐式转换呢,为了方便调用 $age等</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ol start="3">
 <li>说明</li>
 </ol>
-<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">-- 为啥要导入隐式转换
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 为啥要导入隐式转换</span>
 sparkSQL是在spark的基础上进行延伸，属于功能的扩展，使用隐式转换，体现了OCP开发原则。
 
---构建对象为什么不直接new呢？
+<span class="token comment">--构建对象为什么不直接new呢？</span>
 因为sparkSession是对sparkContext的包装，创建这个对象时，需要很多步骤，将这些过程进行封装，让开发更容易，使用一个构建器来创建对象。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="0x3代码实现"><a href="#0x3代码实现" class="headerlink" title="0x3代码实现"></a>0x3代码实现</h3><p>直接从SparkSQL里看</p>
 <p>这里仅仅展示一个示例</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">git clone git@github.com:fourgold&#x2F;Spark.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object SparkSQL01_DSL &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    &#x2F;&#x2F;创建SparkSQL的运行环境
-    val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local[*]&quot;).setAppName(&quot;BASIC&quot;)
-    val sparkSession: SparkSession &#x3D; SparkSession.builder().config(sparkConf).getOrCreate()
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> clone git@github.com:fourgold/Spark.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> SparkSQL01_DSL <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//创建SparkSQL的运行环境</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"BASIC"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> sparkSession<span class="token operator">:</span> SparkSession <span class="token operator">=</span> SparkSession<span class="token punctuation">.</span>builder<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>config<span class="token punctuation">(</span>sparkConf<span class="token punctuation">)</span><span class="token punctuation">.</span>getOrCreate<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;DataFrame
-    val dataFrame: DataFrame &#x3D; sparkSession.read.json(&quot;.&#x2F;input&#x2F;user.json&quot;)
-&#x2F;&#x2F;    dataFrame.show()
+    <span class="token comment">//DataFrame</span>
+    <span class="token keyword">val</span> dataFrame<span class="token operator">:</span> DataFrame <span class="token operator">=</span> sparkSession<span class="token punctuation">.</span>read<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token string">"./input/user.json"</span><span class="token punctuation">)</span>
+<span class="token comment">//    dataFrame.show()</span>
 
-    &#x2F;&#x2F;DSL语句使用调用方法,类似于Flink总的TABLE API与SQL API
-    dataFrame.select(&quot;name&quot;,&quot;age&quot;).show()
+    <span class="token comment">//DSL语句使用调用方法,类似于Flink总的TABLE API与SQL API</span>
+    dataFrame<span class="token punctuation">.</span>select<span class="token punctuation">(</span><span class="token string">"name"</span><span class="token punctuation">,</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    import sparkSession.implicits._
-    dataFrame.select($&quot;age&quot;+1).as(&quot;age&quot;).show()
-    &#x2F;&#x2F;怎么选择两列
-    &#x2F;&#x2F;可以使用单引号代表引用
-    dataFrame.select(&#39;age+1).as(&quot;age&quot;).show()
+    <span class="token keyword">import</span> <span class="token namespace">sparkSession<span class="token punctuation">.</span>implicits<span class="token punctuation">.</span></span>_
+    dataFrame<span class="token punctuation">.</span>select<span class="token punctuation">(</span>$<span class="token string">"age"</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>as<span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">//怎么选择两列</span>
+    <span class="token comment">//可以使用单引号代表引用</span>
+    dataFrame<span class="token punctuation">.</span>select<span class="token punctuation">(</span><span class="token symbol">'age</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>as<span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;关闭环境
-    sparkSession.close()
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token comment">//关闭环境</span>
+    sparkSession<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="自定义UDF函数"><a href="#自定义UDF函数" class="headerlink" title="自定义UDF函数"></a>自定义UDF函数</h2><p>需求:将一个字段的string,加一个前缀</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object Demo02_Practice &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    val spark: SparkSession &#x3D; SparkSession.builder().config(new SparkConf().setMaster(&quot;local[1]&quot;).setAppName(&quot;SparkSQL&quot;)).getOrCreate()
-    &#x2F;&#x2F;用户自定函数
-    import spark.implicits._
-    val df: DataFrame &#x3D; spark.read.json(&quot;Day08&#x2F;input&#x2F;person.json&quot;)
-    df.createOrReplaceTempView(&quot;user&quot;)
-    df.show()
-    &#x2F;&#x2F;自定义udf函数
-    spark.udf.register(&quot;addName&quot;,(name:String)&#x3D;&gt;&quot;name:&quot;+name)
-    spark.sql(&quot;select age,addName(username) from user&quot;).show()
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> Demo02_Practice <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> spark<span class="token operator">:</span> SparkSession <span class="token operator">=</span> SparkSession<span class="token punctuation">.</span>builder<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>config<span class="token punctuation">(</span><span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[1]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"SparkSQL"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>getOrCreate<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">//用户自定函数</span>
+    <span class="token keyword">import</span> <span class="token namespace">spark<span class="token punctuation">.</span>implicits<span class="token punctuation">.</span></span>_
+    <span class="token keyword">val</span> df<span class="token operator">:</span> DataFrame <span class="token operator">=</span> spark<span class="token punctuation">.</span>read<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token string">"Day08/input/person.json"</span><span class="token punctuation">)</span>
+    df<span class="token punctuation">.</span>createOrReplaceTempView<span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+    df<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">//自定义udf函数</span>
+    spark<span class="token punctuation">.</span>udf<span class="token punctuation">.</span>register<span class="token punctuation">(</span><span class="token string">"addName"</span><span class="token punctuation">,</span><span class="token punctuation">(</span>name<span class="token operator">:</span><span class="token builtin">String</span><span class="token punctuation">)</span><span class="token keyword">=></span><span class="token string">"name:"</span><span class="token operator">+</span>name<span class="token punctuation">)</span>
+    spark<span class="token punctuation">.</span>sql<span class="token punctuation">(</span><span class="token string">"select age,addName(username) from user"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="自定义UDAF函数"><a href="#自定义UDAF函数" class="headerlink" title="自定义UDAF函数"></a>自定义UDAF函数</h2><p>需求:</p>
 <p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E8%87%AA%E5%AE%9AUDAF%E5%87%BD%E6%95%B0%E5%AE%9E%E7%8E%B0%E9%9C%80%E6%B1%82.png" alt="自定义UDAF函数实现需求"></p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.SparkSql
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span></span>SparkSql
 
-import org.apache.spark.sql.Row
-import org.apache.spark.sql.expressions.&#123;MutableAggregationBuffer, UserDefinedAggregateFunction&#125;
-import org.apache.spark.sql.types.&#123;DataType, DoubleType, LongType, StructField, StructType&#125;
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>sql<span class="token punctuation">.</span></span>Row
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>sql<span class="token punctuation">.</span>expressions<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>MutableAggregationBuffer<span class="token punctuation">,</span> UserDefinedAggregateFunction<span class="token punctuation">&#125;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>sql<span class="token punctuation">.</span>types<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>DataType<span class="token punctuation">,</span> DoubleType<span class="token punctuation">,</span> LongType<span class="token punctuation">,</span> StructField<span class="token punctuation">,</span> StructType<span class="token punctuation">&#125;</span>
 
-class MyAvg extends UserDefinedAggregateFunction&#123;
-  &#x2F;&#x2F;输入类型
-  override def inputSchema: StructType &#x3D; StructType(Array(StructField(&quot;age&quot;,LongType)))
-  &#x2F;&#x2F;缓冲区
-  override def bufferSchema: StructType &#x3D;StructType(Array(StructField(&quot;sum&quot;,LongType),StructField(&quot;count&quot;,LongType)))
-  &#x2F;&#x2F;返回值的数据类型
-  override def dataType: DataType &#x3D; DoubleType
-  &#x2F;&#x2F;稳定性：对于相同的输入是否一直返回相同的输出。
-  override def deterministic: Boolean &#x3D; true
-  &#x2F;&#x2F;缓冲区的初始化
-  override def initialize(buffer: MutableAggregationBuffer): Unit &#x3D; &#123;
-    buffer(0) &#x3D; 0L&#x2F;&#x2F;sum
-    buffer(1) &#x3D; 0L&#x2F;&#x2F;count
-  &#125;
-  &#x2F;&#x2F; 更新缓冲区中的数据
-  override def update(buffer: MutableAggregationBuffer, input: Row): Unit &#x3D; &#123;
-    if (!input.isNullAt(0)) &#123;
-      buffer(0) &#x3D; buffer.getLong(0) + input.getLong(0)
-      buffer(1) &#x3D; buffer.getLong(1) + 1
-    &#125;
-  &#125;
-  &#x2F;&#x2F; 合并缓冲区
-  override def merge(buffer1: MutableAggregationBuffer, buffer2: Row): Unit &#x3D; &#123;
-    buffer1(0) &#x3D; buffer1.getLong(0) + buffer2.getLong(0)
-    buffer1(1) &#x3D; buffer1.getLong(1) + buffer2.getLong(1)
-  &#125;
+<span class="token keyword">class</span> MyAvg <span class="token keyword">extends</span> UserDefinedAggregateFunction<span class="token punctuation">&#123;</span>
+  <span class="token comment">//输入类型</span>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> inputSchema<span class="token operator">:</span> StructType <span class="token operator">=</span> StructType<span class="token punctuation">(</span>Array<span class="token punctuation">(</span>StructField<span class="token punctuation">(</span><span class="token string">"age"</span><span class="token punctuation">,</span>LongType<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token comment">//缓冲区</span>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> bufferSchema<span class="token operator">:</span> StructType <span class="token operator">=</span>StructType<span class="token punctuation">(</span>Array<span class="token punctuation">(</span>StructField<span class="token punctuation">(</span><span class="token string">"sum"</span><span class="token punctuation">,</span>LongType<span class="token punctuation">)</span><span class="token punctuation">,</span>StructField<span class="token punctuation">(</span><span class="token string">"count"</span><span class="token punctuation">,</span>LongType<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token comment">//返回值的数据类型</span>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> dataType<span class="token operator">:</span> DataType <span class="token operator">=</span> DoubleType
+  <span class="token comment">//稳定性：对于相同的输入是否一直返回相同的输出。</span>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> deterministic<span class="token operator">:</span> <span class="token builtin">Boolean</span> <span class="token operator">=</span> <span class="token boolean">true</span>
+  <span class="token comment">//缓冲区的初始化</span>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> initialize<span class="token punctuation">(</span>buffer<span class="token operator">:</span> MutableAggregationBuffer<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    buffer<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token number">0L</span><span class="token comment">//sum</span>
+    buffer<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token number">0L</span><span class="token comment">//count</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token comment">// 更新缓冲区中的数据</span>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> update<span class="token punctuation">(</span>buffer<span class="token operator">:</span> MutableAggregationBuffer<span class="token punctuation">,</span> input<span class="token operator">:</span> Row<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>input<span class="token punctuation">.</span>isNullAt<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      buffer<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">=</span> buffer<span class="token punctuation">.</span>getLong<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">+</span> input<span class="token punctuation">.</span>getLong<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+      buffer<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">=</span> buffer<span class="token punctuation">.</span>getLong<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token comment">// 合并缓冲区</span>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> merge<span class="token punctuation">(</span>buffer1<span class="token operator">:</span> MutableAggregationBuffer<span class="token punctuation">,</span> buffer2<span class="token operator">:</span> Row<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    buffer1<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">=</span> buffer1<span class="token punctuation">.</span>getLong<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">+</span> buffer2<span class="token punctuation">.</span>getLong<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+    buffer1<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">=</span> buffer1<span class="token punctuation">.</span>getLong<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">+</span> buffer2<span class="token punctuation">.</span>getLong<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
 
-  override def evaluate(buffer: Row): Any &#x3D; buffer.getLong(0).toDouble&#x2F;buffer.getLong(1).toDouble
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> evaluate<span class="token punctuation">(</span>buffer<span class="token operator">:</span> Row<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Any</span> <span class="token operator">=</span> buffer<span class="token punctuation">.</span>getLong<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span>toDouble<span class="token operator">/</span>buffer<span class="token punctuation">.</span>getLong<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span>toDouble
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>聚合函数的使用</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">&#x2F;&#x2F;使用
-package com.SparkSql
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token comment">//使用</span>
+<span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span></span>SparkSql
 
-import org.apache.spark.SparkConf
-import org.apache.spark.sql.expressions.UserDefinedAggregateFunction
-import org.apache.spark.sql.&#123;DataFrame, SparkSession&#125;
-&#x2F;**
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span></span>SparkConf
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>sql<span class="token punctuation">.</span>expressions<span class="token punctuation">.</span></span>UserDefinedAggregateFunction
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>sql<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>DataFrame<span class="token punctuation">,</span> SparkSession<span class="token punctuation">&#125;</span>
+<span class="token comment">/**
  * @author Jinxin Li
  * @create 2020-11-03 16:55
- *&#x2F;
-object Demo02_Practice &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    val spark: SparkSession &#x3D; SparkSession.builder().config(new SparkConf().setMaster(&quot;local[1]&quot;).setAppName(&quot;SparkSQL&quot;)).getOrCreate()
-    &#x2F;&#x2F;用户自定函数
-    import spark.implicits._
-    val df: DataFrame &#x3D; spark.read.json(&quot;Day08&#x2F;input&#x2F;person.json&quot;)
-    df.createOrReplaceTempView(&quot;user&quot;)
-    df.show()
-    &#x2F;&#x2F;自定义udf函数
-    spark.udf.register(&quot;addName&quot;,(name:String)&#x3D;&gt;&quot;name:&quot;+name)
-    spark.sql(&quot;select age,addName(username) from user&quot;).show()
+ */</span>
+<span class="token keyword">object</span> Demo02_Practice <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> spark<span class="token operator">:</span> SparkSession <span class="token operator">=</span> SparkSession<span class="token punctuation">.</span>builder<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>config<span class="token punctuation">(</span><span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[1]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"SparkSQL"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>getOrCreate<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">//用户自定函数</span>
+    <span class="token keyword">import</span> <span class="token namespace">spark<span class="token punctuation">.</span>implicits<span class="token punctuation">.</span></span>_
+    <span class="token keyword">val</span> df<span class="token operator">:</span> DataFrame <span class="token operator">=</span> spark<span class="token punctuation">.</span>read<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token string">"Day08/input/person.json"</span><span class="token punctuation">)</span>
+    df<span class="token punctuation">.</span>createOrReplaceTempView<span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+    df<span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment">//自定义udf函数</span>
+    spark<span class="token punctuation">.</span>udf<span class="token punctuation">.</span>register<span class="token punctuation">(</span><span class="token string">"addName"</span><span class="token punctuation">,</span><span class="token punctuation">(</span>name<span class="token operator">:</span><span class="token builtin">String</span><span class="token punctuation">)</span><span class="token keyword">=></span><span class="token string">"name:"</span><span class="token operator">+</span>name<span class="token punctuation">)</span>
+    spark<span class="token punctuation">.</span>sql<span class="token punctuation">(</span><span class="token string">"select age,addName(username) from user"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;在spark中注册聚合函数&#x3D;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;
-    var MyAvg &#x3D; new MyAvg
-    spark.udf.register(&quot;avgAge&quot;,MyAvg)
+    <span class="token comment">//在spark中注册聚合函数=&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</span>
+    <span class="token keyword">var</span> MyAvg <span class="token operator">=</span> <span class="token keyword">new</span> MyAvg
+    spark<span class="token punctuation">.</span>udf<span class="token punctuation">.</span>register<span class="token punctuation">(</span><span class="token string">"avgAge"</span><span class="token punctuation">,</span>MyAvg<span class="token punctuation">)</span>
 
-    spark.sql(&quot;select avgAge(age) from user&quot;).show()
+    spark<span class="token punctuation">.</span>sql<span class="token punctuation">(</span><span class="token string">"select avgAge(age) from user"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    spark.close()
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="自定义强类型AggregateUDAF函数"><a href="#自定义强类型AggregateUDAF函数" class="headerlink" title="自定义强类型AggregateUDAF函数"></a>自定义强类型AggregateUDAF函数</h2><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.SparkSql
+    spark<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="自定义强类型AggregateUDAF函数"><a href="#自定义强类型AggregateUDAF函数" class="headerlink" title="自定义强类型AggregateUDAF函数"></a>自定义强类型AggregateUDAF函数</h2><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span></span>SparkSql
 
-import org.apache.spark.sql.&#123;Encoder, Encoders&#125;
-import org.apache.spark.sql.expressions.Aggregator
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>sql<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>Encoder<span class="token punctuation">,</span> Encoders<span class="token punctuation">&#125;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>sql<span class="token punctuation">.</span>expressions<span class="token punctuation">.</span></span>Aggregator
 
 
-&#x2F;**
+<span class="token comment">/**
  * @author Jinxin Li
  * @create 2020-11-03 19:16
  * 求user的平均年龄
@@ -712,161 +712,161 @@ import org.apache.spark.sql.expressions.Aggregator
  * Buf
  * out Double输出的数据类型
  * 3.重写方法(6)
- *&#x2F;
-case class Buff(var total:Long,var count:Long)
-class MyAvg2 extends Aggregator[Long,Buff,Double]&#123;
-  &#x2F;&#x2F;scala用zero,初始值,零值
-  &#x2F;&#x2F;缓冲区的初始化
-  override def zero: Buff &#x3D; &#123;
-    Buff(0L,0L)
-  &#125;
-  &#x2F;&#x2F;根据输入的数据更新缓冲区的数据
-  override def reduce(b: Buff, a: Long): Buff &#x3D; &#123;
-    b.total +&#x3D; a
-    b.count +&#x3D; 1
+ */</span>
+<span class="token keyword">case</span> <span class="token keyword">class</span> Buff<span class="token punctuation">(</span><span class="token keyword">var</span> total<span class="token operator">:</span><span class="token builtin">Long</span><span class="token punctuation">,</span><span class="token keyword">var</span> count<span class="token operator">:</span><span class="token builtin">Long</span><span class="token punctuation">)</span>
+<span class="token keyword">class</span> MyAvg2 <span class="token keyword">extends</span> Aggregator<span class="token punctuation">[</span><span class="token builtin">Long</span><span class="token punctuation">,</span>Buff<span class="token punctuation">,</span><span class="token builtin">Double</span><span class="token punctuation">]</span><span class="token punctuation">&#123;</span>
+  <span class="token comment">//scala用zero,初始值,零值</span>
+  <span class="token comment">//缓冲区的初始化</span>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> zero<span class="token operator">:</span> Buff <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    Buff<span class="token punctuation">(</span><span class="token number">0L</span><span class="token punctuation">,</span><span class="token number">0L</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token comment">//根据输入的数据更新缓冲区的数据</span>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> reduce<span class="token punctuation">(</span>b<span class="token operator">:</span> Buff<span class="token punctuation">,</span> a<span class="token operator">:</span> <span class="token builtin">Long</span><span class="token punctuation">)</span><span class="token operator">:</span> Buff <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    b<span class="token punctuation">.</span>total <span class="token operator">+=</span> a
+    b<span class="token punctuation">.</span>count <span class="token operator">+=</span> <span class="token number">1</span>
     b
 
-  &#125;
+  <span class="token punctuation">&#125;</span>
 
-  override def merge(b1: Buff, b2: Buff): Buff &#x3D; &#123;
-    b1.count +&#x3D; b2.count
-    b1.total +&#x3D; b2.total
+  <span class="token keyword">override</span> <span class="token keyword">def</span> merge<span class="token punctuation">(</span>b1<span class="token operator">:</span> Buff<span class="token punctuation">,</span> b2<span class="token operator">:</span> Buff<span class="token punctuation">)</span><span class="token operator">:</span> Buff <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    b1<span class="token punctuation">.</span>count <span class="token operator">+=</span> b2<span class="token punctuation">.</span>count
+    b1<span class="token punctuation">.</span>total <span class="token operator">+=</span> b2<span class="token punctuation">.</span>total
     b1
-  &#125;
+  <span class="token punctuation">&#125;</span>
 
-  override def finish(reduction: Buff): Double &#x3D; reduction.total.toDouble&#x2F;reduction.count.toDouble
+  <span class="token keyword">override</span> <span class="token keyword">def</span> finish<span class="token punctuation">(</span>reduction<span class="token operator">:</span> Buff<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Double</span> <span class="token operator">=</span> reduction<span class="token punctuation">.</span>total<span class="token punctuation">.</span>toDouble<span class="token operator">/</span>reduction<span class="token punctuation">.</span>count<span class="token punctuation">.</span>toDouble
 
-  override def bufferEncoder: Encoder[Buff] &#x3D; Encoders.product
+  <span class="token keyword">override</span> <span class="token keyword">def</span> bufferEncoder<span class="token operator">:</span> Encoder<span class="token punctuation">[</span>Buff<span class="token punctuation">]</span> <span class="token operator">=</span> Encoders<span class="token punctuation">.</span>product
 
-  override def outputEncoder: Encoder[Double] &#x3D; Encoders.scalaDouble
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="0x0注册"><a href="#0x0注册" class="headerlink" title="0x0注册"></a>0x0注册</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">val MyAvg2 &#x3D; new MyAvg2
-    spark.udf.register(&quot;avgAge1&quot;, functions.udaf(MyAvg2))
-    spark.sql(&quot;select avgAge1(age) from user&quot;).show()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<h3 id="0x1使用"><a href="#0x1使用" class="headerlink" title="0x1使用"></a>0x1使用</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">&#x2F;**
+  <span class="token keyword">override</span> <span class="token keyword">def</span> outputEncoder<span class="token operator">:</span> Encoder<span class="token punctuation">[</span><span class="token builtin">Double</span><span class="token punctuation">]</span> <span class="token operator">=</span> Encoders<span class="token punctuation">.</span>scalaDouble
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="0x0注册"><a href="#0x0注册" class="headerlink" title="0x0注册"></a>0x0注册</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">val</span> MyAvg2 <span class="token operator">=</span> <span class="token keyword">new</span> MyAvg2
+    spark<span class="token punctuation">.</span>udf<span class="token punctuation">.</span>register<span class="token punctuation">(</span><span class="token string">"avgAge1"</span><span class="token punctuation">,</span> functions<span class="token punctuation">.</span>udaf<span class="token punctuation">(</span>MyAvg2<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    spark<span class="token punctuation">.</span>sql<span class="token punctuation">(</span><span class="token string">"select avgAge1(age) from user"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="0x1使用"><a href="#0x1使用" class="headerlink" title="0x1使用"></a>0x1使用</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token comment">/**
  * 弱类型操作,只有0,1 没有类型的概念
  * 没有类型的概念
  * 强类型通过属性操作,跟属性没关系
  * 自定属性类,定义泛型
- *&#x2F;
-object SparkSQL03_UDAF &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    &#x2F;&#x2F;创建SparkSQL的运行环境
-    val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local[*]&quot;).setAppName(&quot;BASIC&quot;)
-    val sparkSession: SparkSession &#x3D; SparkSession.builder().config(sparkConf).getOrCreate()
+ */</span>
+<span class="token keyword">object</span> SparkSQL03_UDAF <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//创建SparkSQL的运行环境</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"BASIC"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> sparkSession<span class="token operator">:</span> SparkSession <span class="token operator">=</span> SparkSession<span class="token punctuation">.</span>builder<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>config<span class="token punctuation">(</span>sparkConf<span class="token punctuation">)</span><span class="token punctuation">.</span>getOrCreate<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 
-    &#x2F;&#x2F;聚合函数也是比较重要的,比如,平均值,最大值,最小值
-    &#x2F;&#x2F;DataFrame
-    val dataFrame: DataFrame &#x3D; sparkSession.read.json(&quot;.&#x2F;input&#x2F;user.json&quot;)
-&#x2F;&#x2F;    dataFrame.show()
+    <span class="token comment">//聚合函数也是比较重要的,比如,平均值,最大值,最小值</span>
+    <span class="token comment">//DataFrame</span>
+    <span class="token keyword">val</span> dataFrame<span class="token operator">:</span> DataFrame <span class="token operator">=</span> sparkSession<span class="token punctuation">.</span>read<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token string">"./input/user.json"</span><span class="token punctuation">)</span>
+<span class="token comment">//    dataFrame.show()</span>
 
-    &#x2F;&#x2F;将数据创建临时表
-    dataFrame.createOrReplaceTempView(&quot;user&quot;)
-    &#x2F;&#x2F;view只能查不能改
+    <span class="token comment">//将数据创建临时表</span>
+    dataFrame<span class="token punctuation">.</span>createOrReplaceTempView<span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+    <span class="token comment">//view只能查不能改</span>
 
-    sparkSession.udf.register(&quot;prefixName&quot;,(name:String)&#x3D;&gt;&#123;&quot;name+&quot;+name&#125;)
+    sparkSession<span class="token punctuation">.</span>udf<span class="token punctuation">.</span>register<span class="token punctuation">(</span><span class="token string">"prefixName"</span><span class="token punctuation">,</span><span class="token punctuation">(</span>name<span class="token operator">:</span><span class="token builtin">String</span><span class="token punctuation">)</span><span class="token keyword">=></span><span class="token punctuation">&#123;</span><span class="token string">"name+"</span><span class="token operator">+</span>name<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;将某一字段的名字加上前缀
-    sparkSession.sql(
-      &quot;&quot;&quot;
+    <span class="token comment">//将某一字段的名字加上前缀</span>
+    sparkSession<span class="token punctuation">.</span>sql<span class="token punctuation">(</span>
+      <span class="token triple-quoted-string string">"""
         |select prefixName(name),age from user
-        |&quot;&quot;&quot;.stripMargin).show()
+        |"""</span><span class="token punctuation">.</span>stripMargin<span class="token punctuation">)</span><span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;使用udaf-aggregator函数
-    val myAvg &#x3D; new MyAvg()
-    sparkSession.udf.register(&quot;myAvg&quot;,functions.udaf(new MyAvgAgg))
-    sparkSession.sql(
-      &quot;&quot;&quot;
+    <span class="token comment">//使用udaf-aggregator函数</span>
+    <span class="token keyword">val</span> myAvg <span class="token operator">=</span> <span class="token keyword">new</span> MyAvg<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    sparkSession<span class="token punctuation">.</span>udf<span class="token punctuation">.</span>register<span class="token punctuation">(</span><span class="token string">"myAvg"</span><span class="token punctuation">,</span>functions<span class="token punctuation">.</span>udaf<span class="token punctuation">(</span><span class="token keyword">new</span> MyAvgAgg<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    sparkSession<span class="token punctuation">.</span>sql<span class="token punctuation">(</span>
+      <span class="token triple-quoted-string string">"""
         |select myAvg(age) as avgAge from user
-        |&quot;&quot;&quot;.stripMargin).show()
+        |"""</span><span class="token punctuation">.</span>stripMargin<span class="token punctuation">)</span><span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;关闭环境
-    sparkSession.close()
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token comment">//关闭环境</span>
+    sparkSession<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h1 id="SparkSQL-Data"><a href="#SparkSQL-Data" class="headerlink" title="SparkSQL_Data"></a>SparkSQL_Data</h1><h2 id="加载数据"><a href="#加载数据" class="headerlink" title="加载数据"></a>加载数据</h2><p>如果不指定加载类型,默认的保存与加载类型是parquet</p>
 <p>spark.read.load 是加载数据的通用方法</p>
 <p>如果读取不同格式的数据，可以对不同的数据格式进行设定</p>
 <p>我们前面都是使用 read API 先把文件加载到 DataFrame 然后再查询，其实，我们也可以直接在文件上查询</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">scala&gt; spark.read. 
-scala&gt; spark.read.format(&quot;…&quot;)[.option(&quot;…&quot;)].load(&quot;…&quot;) 
-	#format(&quot;…&quot;)：指定加载的数据类型，包括&quot;csv&quot;、&quot;jdbc&quot;、&quot;json&quot;、&quot;orc&quot;、&quot;parquet&quot;和&quot;textFile&quot;。
-	#load(&quot;…&quot;)：在&quot;csv&quot;、&quot;jdbc&quot;、&quot;json&quot;、&quot;orc&quot;、&quot;parquet&quot;和&quot;textFile&quot;格式下需要传入加载数据的路径。 
-	#option(&quot;…&quot;)：在&quot;jdbc&quot;格式下需要传入 JDBC 相应参数，url、user、password 和 dbtable 
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">scala<span class="token operator">></span> spark.read. 
+scala<span class="token operator">></span> spark.read.format<span class="token punctuation">(</span><span class="token string">"…"</span><span class="token punctuation">)</span><span class="token punctuation">[</span>.option<span class="token punctuation">(</span><span class="token string">"…"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>.load<span class="token punctuation">(</span><span class="token string">"…"</span><span class="token punctuation">)</span> 
+	<span class="token comment">#format("…")：指定加载的数据类型，包括"csv"、"jdbc"、"json"、"orc"、"parquet"和"textFile"。</span>
+	<span class="token comment">#load("…")：在"csv"、"jdbc"、"json"、"orc"、"parquet"和"textFile"格式下需要传入加载数据的路径。 </span>
+	<span class="token comment">#option("…")：在"jdbc"格式下需要传入 JDBC 相应参数，url、user、password 和 dbtable </span>
 
-#直接在文件上进行查询:  文件格式.&#96;文件路径&#96; 
-scala&gt; spark.sql(&quot;select * from json.&#96;&#x2F;opt&#x2F;module&#x2F;data&#x2F;user.json&#96;&quot;).show <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment">#直接在文件上进行查询:  文件格式.`文件路径` </span>
+scala<span class="token operator">></span> spark.sql<span class="token punctuation">(</span><span class="token string">"select * from json.<span class="token variable"><span class="token variable">`</span>/opt/module/data/user.json<span class="token variable">`</span></span>"</span><span class="token punctuation">)</span>.show <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>实战</strong>:JSON与Parquet文件的读取与保存</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">spark.read.load()
-#默认情况下读取的格式是parquet文件
-val df &#x3D; spark.read.load(&quot;&#x2F;opt&#x2F;module&#x2F;spark&#x2F;examples&#x2F;src&#x2F;main&#x2F;resources&#x2F;users.parquet&quot;)
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">spark.read.load<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">#默认情况下读取的格式是parquet文件</span>
+val <span class="token function">df</span> <span class="token operator">=</span> spark.read.load<span class="token punctuation">(</span><span class="token string">"/opt/module/spark/examples/src/main/resources/users.parquet"</span><span class="token punctuation">)</span>
 
-#格式,例子的地方
-#&#x2F;opt&#x2F;module&#x2F;spark&#x2F;examples&#x2F;src&#x2F;main&#x2F;resources
-#保存数据 SparkSQL默认读取或者保存的文件格式parquet
-df.write.save(&quot;output&quot;)
+<span class="token comment">#格式,例子的地方</span>
+<span class="token comment">#/opt/module/spark/examples/src/main/resources</span>
+<span class="token comment">#保存数据 SparkSQL默认读取或者保存的文件格式parquet</span>
+df.write.save<span class="token punctuation">(</span><span class="token string">"output"</span><span class="token punctuation">)</span>
 
-#就想读json文件
-val df &#x3D; spark.read.format(&quot;json&quot;).load(&quot;data&#x2F;user.json&quot;)
+<span class="token comment">#就想读json文件</span>
+val <span class="token function">df</span> <span class="token operator">=</span> spark.read.format<span class="token punctuation">(</span><span class="token string">"json"</span><span class="token punctuation">)</span>.load<span class="token punctuation">(</span><span class="token string">"data/user.json"</span><span class="token punctuation">)</span>
 
-#比较简单的json文件
-spark.read.json()
+<span class="token comment">#比较简单的json文件</span>
+spark.read.json<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-#保存json文件
-df.write.format(&quot;json&quot;).save(&quot;output1&quot;)
+<span class="token comment">#保存json文件</span>
+df.write.format<span class="token punctuation">(</span><span class="token string">"json"</span><span class="token punctuation">)</span>.save<span class="token punctuation">(</span><span class="token string">"output1"</span><span class="token punctuation">)</span>
 
-#选择表 转换过程由spark自己完成 注意使用飘号
-spark.sql(&quot;select * from json.&#96;data&#x2F;user.json&#96;&quot;).show<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment">#选择表 转换过程由spark自己完成 注意使用飘号</span>
+spark.sql<span class="token punctuation">(</span><span class="token string">"select * from json.<span class="token variable"><span class="token variable">`</span>data/user.json<span class="token variable">`</span></span>"</span><span class="token punctuation">)</span>.show<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="保存数据"><a href="#保存数据" class="headerlink" title="保存数据"></a>保存数据</h2><p>df.write.save 是保存数据的通用方法 </p>
 <p>scala&gt;df.write. csv  jdbc   json  orc   parquet textFile… … 如果保存不同格式的数据，可以对不同的数据格式进行设定 </p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">scala&gt;df.write. 
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">scala<span class="token operator">></span>df.write. 
 csv  jdbc   json  orc   parquet textFile… … <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/SparkSQL%E6%95%B0%E6%8D%AE%E4%BF%9D%E5%AD%98%E6%A0%BC%E5%BC%8F.png" alt="SparkSQL数据的保存"></p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">scala&gt;df.write.format(&quot;…&quot;)[.option(&quot;…&quot;)].save(&quot;…&quot;) 
-# format(&quot;…&quot;)：指定保存的数据类型，包括&quot;csv&quot;、&quot;jdbc&quot;、&quot;json&quot;、&quot;orc&quot;、&quot;parquet&quot;和&quot;textFile&quot;。 
-# save (&quot;…&quot;)：在&quot;csv&quot;、&quot;orc&quot;、&quot;parquet&quot;和&quot;textFile&quot;格式下需要传入保存数据的路径。 
-# option(&quot;…&quot;)：在&quot;jdbc&quot;格式下需要传入 JDBC 相应参数，url、user、password 和 dbtable 
-# 保存操作可以使用 SaveMode, 用来指明如何处理数据，使用 mode()方法来设置。 有一点很重要: 这些 SaveMode 都是没有加锁的, 也不是原子操作。 
-#SaveMode 是一个枚举类，其中的常量包括： 
-#SaveMode.ErrorIfExists(default) &quot;error&quot;(default) 如果文件已经存在则抛出异常 
-#SaveMode.Append &quot;append&quot; 如果文件已经存在则追加 #SaveMode.Overwrite &quot;overwrite&quot; 如果文件已经存在则覆盖 #SaveMode.Ignore &quot;ignore&quot; 如果文件已经存在则忽略 
-df.write.mode(&quot;append&quot;).json(&quot;&#x2F;opt&#x2F;module&#x2F;data&#x2F;output&quot;) .save(&quot;output&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">scala<span class="token operator">></span>df.write.format<span class="token punctuation">(</span><span class="token string">"…"</span><span class="token punctuation">)</span><span class="token punctuation">[</span>.option<span class="token punctuation">(</span><span class="token string">"…"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>.save<span class="token punctuation">(</span><span class="token string">"…"</span><span class="token punctuation">)</span> 
+<span class="token comment"># format("…")：指定保存的数据类型，包括"csv"、"jdbc"、"json"、"orc"、"parquet"和"textFile"。 </span>
+<span class="token comment"># save ("…")：在"csv"、"orc"、"parquet"和"textFile"格式下需要传入保存数据的路径。 </span>
+<span class="token comment"># option("…")：在"jdbc"格式下需要传入 JDBC 相应参数，url、user、password 和 dbtable </span>
+<span class="token comment"># 保存操作可以使用 SaveMode, 用来指明如何处理数据，使用 mode()方法来设置。 有一点很重要: 这些 SaveMode 都是没有加锁的, 也不是原子操作。 </span>
+<span class="token comment">#SaveMode 是一个枚举类，其中的常量包括： </span>
+<span class="token comment">#SaveMode.ErrorIfExists(default) "error"(default) 如果文件已经存在则抛出异常 </span>
+<span class="token comment">#SaveMode.Append "append" 如果文件已经存在则追加 #SaveMode.Overwrite "overwrite" 如果文件已经存在则覆盖 #SaveMode.Ignore "ignore" 如果文件已经存在则忽略 </span>
+df.write.mode<span class="token punctuation">(</span><span class="token string">"append"</span><span class="token punctuation">)</span>.json<span class="token punctuation">(</span><span class="token string">"/opt/module/data/output"</span><span class="token punctuation">)</span> .save<span class="token punctuation">(</span><span class="token string">"output"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="JSON-Parquet-CSV"><a href="#JSON-Parquet-CSV" class="headerlink" title="JSON/Parquet/CSV"></a>JSON/Parquet/CSV</h2><h3 id="Parquet"><a href="#Parquet" class="headerlink" title="Parquet"></a>Parquet</h3><p>Spark SQL 的默认数据源为 Parquet 格式。Parquet 是一种能够有效存储嵌套数据的列式存储格式。<br>数据源为 Parquet 文件时，Spark SQL 可以方便的执行所有的操作，不需要使用 format。<br>修改配置项 spark.sql.sources.default，可修改默认数据源格式。 </p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">scala&gt; val df &#x3D; spark.read.load(&quot;examples&#x2F;src&#x2F;main&#x2F;resources&#x2F;users.parquet&quot;) 
-scala&gt; df.show
-scala&gt; var df &#x3D; spark.read.json(&quot;&#x2F;opt&#x2F;module&#x2F;data&#x2F;input&#x2F;people.json&quot;) 
-#保存为 parquet 格式 
-scala&gt; df.write.mode(&quot;append&quot;).save(&quot;&#x2F;opt&#x2F;module&#x2F;data&#x2F;output&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">scala<span class="token operator">></span> val <span class="token function">df</span> <span class="token operator">=</span> spark.read.load<span class="token punctuation">(</span><span class="token string">"examples/src/main/resources/users.parquet"</span><span class="token punctuation">)</span> 
+scala<span class="token operator">></span> df.show
+scala<span class="token operator">></span> var <span class="token function">df</span> <span class="token operator">=</span> spark.read.json<span class="token punctuation">(</span><span class="token string">"/opt/module/data/input/people.json"</span><span class="token punctuation">)</span> 
+<span class="token comment">#保存为 parquet 格式 </span>
+scala<span class="token operator">></span> df.write.mode<span class="token punctuation">(</span><span class="token string">"append"</span><span class="token punctuation">)</span>.save<span class="token punctuation">(</span><span class="token string">"/opt/module/data/output"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a>JSON</h3><p>Spark SQL 能够自动推测 JSON 数据集的结构，并将它加载为一个 Dataset[Row]. 可以通过 SparkSession.read.json()去加载 JSON 文件。 </p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">#将读取的文件保存
-val df &#x3D; spark.read.json(&quot;data&#x2F;user.json&quot;)
-#保存 因为保存模式的原因,再次保存会报错
-df.write.format(&quot;json&quot;).save(&quot;output&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#将读取的文件保存</span>
+val <span class="token function">df</span> <span class="token operator">=</span> spark.read.json<span class="token punctuation">(</span><span class="token string">"data/user.json"</span><span class="token punctuation">)</span>
+<span class="token comment">#保存 因为保存模式的原因,再次保存会报错</span>
+df.write.format<span class="token punctuation">(</span><span class="token string">"json"</span><span class="token punctuation">)</span>.save<span class="token punctuation">(</span><span class="token string">"output"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>注意：Spark 读取的 JSON 文件不是传统的 JSON 文件，每一行都应该是一个 JSON 串。格式如下： </p>
-<pre class="line-numbers language-json" data-language="json"><code class="language-json">&#123;&quot;name&quot;:&quot;Michael&quot;&#125; 
-&#123;&quot;name&quot;:&quot;Andy&quot;， &quot;age&quot;:30&#125; 
-[&#123;&quot;name&quot;:&quot;Justin&quot;， &quot;age&quot;:19&#125;,&#123;&quot;name&quot;:&quot;Justin&quot;， &quot;age&quot;:19&#125;] 
-#因为Spark读取是一行一行读的,所以一行应该是一个标准的json文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span><span class="token property">"name"</span><span class="token operator">:</span><span class="token string">"Michael"</span><span class="token punctuation">&#125;</span> 
+<span class="token punctuation">&#123;</span><span class="token property">"name"</span><span class="token operator">:</span><span class="token string">"Andy"</span>， <span class="token property">"age"</span><span class="token operator">:</span><span class="token number">30</span><span class="token punctuation">&#125;</span> 
+<span class="token punctuation">[</span><span class="token punctuation">&#123;</span><span class="token property">"name"</span><span class="token operator">:</span><span class="token string">"Justin"</span>， <span class="token property">"age"</span><span class="token operator">:</span><span class="token number">19</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span class="token punctuation">&#123;</span><span class="token property">"name"</span><span class="token operator">:</span><span class="token string">"Justin"</span>， <span class="token property">"age"</span><span class="token operator">:</span><span class="token number">19</span><span class="token punctuation">&#125;</span><span class="token punctuation">]</span> 
+#因为Spark读取是一行一行读的<span class="token punctuation">,</span>所以一行应该是一个标准的json文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="CSV"><a href="#CSV" class="headerlink" title="CSV"></a>CSV</h3><p>Spark SQL 可以配置 CSV 文件的列表信息，读取 CSV 文件,CSV 文件的第一行设置为数据列 spark</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">#option例子是分号 optipn-分隔符 header-表头 inferSchema-??
-spark.read.format(&quot;csv&quot;).option(&quot;sep&quot;, &quot;;&quot;).option(&quot;inferSchema&quot;, &quot;true&quot;).option(&quot;header&quot;, &quot;true&quot;).load(&quot;data&#x2F;user.csv&quot;) <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#option例子是分号 optipn-分隔符 header-表头 inferSchema-??</span>
+spark.read.format<span class="token punctuation">(</span><span class="token string">"csv"</span><span class="token punctuation">)</span>.option<span class="token punctuation">(</span><span class="token string">"sep"</span>, <span class="token string">";"</span><span class="token punctuation">)</span>.option<span class="token punctuation">(</span><span class="token string">"inferSchema"</span>, <span class="token string">"true"</span><span class="token punctuation">)</span>.option<span class="token punctuation">(</span><span class="token string">"header"</span>, <span class="token string">"true"</span><span class="token punctuation">)</span>.load<span class="token punctuation">(</span><span class="token string">"data/user.csv"</span><span class="token punctuation">)</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h2 id="HIVE"><a href="#HIVE" class="headerlink" title="HIVE"></a>HIVE</h2><p>Apache Hive 是 Hadoop 上的 SQL 引擎，Spark SQL 编译时可以包含 Hive 支持，也可以不包含。</p>
 <p>包含 Hive 支持的 Spark SQL 可以支持 Hive 表访问、UDF (用户自定义函数)以及 Hive 查询语言(HiveQL/HQL)等。</p>
 <p>SparkSQL想连接HIVE有两种连接方式</p>
 <h3 id="内置Hive"><a href="#内置Hive" class="headerlink" title="内置Hive"></a>内置Hive</h3><p>SparkSQL本身也具有元数据,数据仓库,全部都有,通过内置Hive实现</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">#显示全部表
-spark.sql(&quot;show tables&quot;).show<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#显示全部表</span>
+spark.sql<span class="token punctuation">(</span><span class="token string">"show tables"</span><span class="token punctuation">)</span>.show<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>发现内部文件系统自动生成了metadb</p>
 <p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/Spark%E5%86%85%E9%83%A8%E6%96%87%E4%BB%B6.png" alt="Spark内置文件系统"></p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"># 导入数据
-val df &#x3D; spark.read.json(&quot;data&#x2F;user.json&quot;)
-# 创建表
-spark.sql(&quot;create table test(age int)&quot;)
-#查看表
-spark.sql(&quot;show tables&quot;).show
-#加载数据
-spark.sql(&quot;load data local inpath &#39;data&#x2F;user.text&#39; into table test&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 导入数据</span>
+val <span class="token function">df</span> <span class="token operator">=</span> spark.read.json<span class="token punctuation">(</span><span class="token string">"data/user.json"</span><span class="token punctuation">)</span>
+<span class="token comment"># 创建表</span>
+spark.sql<span class="token punctuation">(</span><span class="token string">"create table test(age int)"</span><span class="token punctuation">)</span>
+<span class="token comment">#查看表</span>
+spark.sql<span class="token punctuation">(</span><span class="token string">"show tables"</span><span class="token punctuation">)</span>.show
+<span class="token comment">#加载数据</span>
+spark.sql<span class="token punctuation">(</span><span class="token string">"load data local inpath 'data/user.text' into table test"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/spark%E5%86%85%E7%BD%AEhive%E7%9A%84warehouse.png" alt="spark-sql数据仓库"></p>
 <h3 id="外置Hive"><a href="#外置Hive" class="headerlink" title="外置Hive"></a>外置Hive</h3><p>一般使用外置Hive如果想连接外部已经部署好的 Hive，需要通过以下几个步骤： </p>
 <ol>
@@ -877,8 +877,8 @@ spark.sql(&quot;load data local inpath &#39;data&#x2F;user.text&#39; into table 
 </ol>
 <p>然后查看一下数据库</p>
 <p>已经连接到Hive了</p>
-<h3 id="Beeline"><a href="#Beeline" class="headerlink" title="Beeline"></a>Beeline</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">bin&#x2F;spark-sql
-#为什么带有(default)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="Beeline"><a href="#Beeline" class="headerlink" title="Beeline"></a>Beeline</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">bin/spark-sql
+<span class="token comment">#为什么带有(default)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/spark-sql.png" alt="spark-sql显示bug"></p>
 <p>Spark Thrift Server 是 Spark 社区基于 HiveServer2 实现的一个 Thrift 服务。旨在无缝兼容HiveServer2。</p>
 <p>因为 Spark Thrift Server 的接口和协议都和 HiveServer2 完全一致，因此我们部署好 Spark Thrift Server 后，可以直接使用 hive 的 beeline 访问 Spark Thrift Server 执行相关语句。</p>
@@ -895,14 +895,14 @@ spark.sql(&quot;load data local inpath &#39;data&#x2F;user.text&#39; into table 
 </li>
 </ol>
 <p><strong>beeline客户端连接</strong></p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">sbin&#x2F;start-thriftserver.sh 
-# 使用 beeline 连接 Thrift Server 
-bin&#x2F;beeline -u jdbc:hive2:&#x2F;&#x2F;linux1:10000 -n root <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">sbin/start-thriftserver.sh 
+<span class="token comment"># 使用 beeline 连接 Thrift Server </span>
+bin/beeline -u jdbc:hive2://linux1:10000 -n root <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>代码操作</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">#注意：在开发工具中创建数据库默认是在本地仓库，通过参数修改数据库仓库的地址: 
-config(&quot;spark.sql.warehouse.dir&quot;, &quot;hdfs:&#x2F;&#x2F;linux1:8020&#x2F;user&#x2F;hive&#x2F;warehouse&quot;) <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#注意：在开发工具中创建数据库默认是在本地仓库，通过参数修改数据库仓库的地址: </span>
+config<span class="token punctuation">(</span><span class="token string">"spark.sql.warehouse.dir"</span>, <span class="token string">"hdfs://linux1:8020/user/hive/warehouse"</span><span class="token punctuation">)</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>权限问题</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java">System.setProperty(&quot;HADOOP_USER_NAME&quot;, &quot;root&quot;)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">"HADOOP_USER_NAME"</span><span class="token punctuation">,</span> <span class="token string">"root"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
                 
             </div>
@@ -1447,7 +1447,7 @@ config(&quot;spark.sql.warehouse.dir&quot;, &quot;hdfs:&#x2F;&#x2F;linux1:8020&#
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">219.3k</span>&nbsp;字
+                class="white-color">214.8k</span>&nbsp;字
             
             
             

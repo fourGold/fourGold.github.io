@@ -478,16 +478,16 @@
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="0x0-Kafka运维命令"><a href="#0x0-Kafka运维命令" class="headerlink" title="0x0 Kafka运维命令"></a>0x0 Kafka运维命令</h1><h2 id="1-连接zk"><a href="#1-连接zk" class="headerlink" title="1.连接zk"></a>1.连接zk</h2><p>由于kafka的各种元数据都存储在zk，要连接kafka集群也要通过zk获取各个broker的ip端口然后连接broker。因此，大多数kafka自带的运维命令都要指定zk的地址，比如用kafka-topics列出所有topics：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">kafka-topics --zookeeper localhost:2181&#x2F;kafka --list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">kafka-topics --zookeeper localhost:2181/kafka --list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><code>--zookeeper</code>参数是必须指定的。另外，如果kafka集群启动的时候在配置文件中指定了namespace，记得要在zk的地址后面也要加上kafka所属的namespace。否则kafka就找不到kafka集群的相关元数据了。</p>
 <p>由于kafka的元数据都存储在zk，因此掌握好如何查看zk的数据也是运维kafka集群的一个关键。</p>
 <h3 id="zkCli-命令"><a href="#zkCli-命令" class="headerlink" title="zkCli 命令"></a>zkCli 命令</h3><p>zookeeper安装包一般都会提供zkCli命令来让用户连接zookeeper集群。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">.&#x2F;zkCli.sh -timeout 5000 -r -server ip:port<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">./zkCli.sh -timeout <span class="token number">5000</span> -r -server ip:port<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>之后进入zk的交互界面，就可以输出相关命令查看zk的数据了。</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"># 查看kafka集群下所有的brokers id列表
-ls &#x2F;brokers&#x2F;ids
-# 查看 1003 broker的信息
-get &#x2F;brokers&#x2F;ids&#x2F;1003<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment"># 查看kafka集群下所有的brokers id列表</span>
+<span class="token function">ls</span> /brokers/ids
+<span class="token comment"># 查看 1003 broker的信息</span>
+get /brokers/ids/1003<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>其他zk交互界面的命令这里不多做介绍，zkCli的帮助文档已经写的很清楚了。</p>
 <h2 id="2-topic-相关"><a href="#2-topic-相关" class="headerlink" title="2.topic 相关"></a>2.topic 相关</h2><p>kafka-topics可以进行和topics相关的一些操作。下面介绍一下如何运用该命令来操作kafka topics。</p>
 <p>该命令最终是调用kafka源码中的TopicCommand类来实现的。</p>
@@ -1480,7 +1480,7 @@ kafka_inter_broker_listener_name: &quot;INSIDE&quot;<span aria-hidden="true" cla
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">219.3k</span>&nbsp;字
+                class="white-color">214.8k</span>&nbsp;字
             
             
             

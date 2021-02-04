@@ -465,7 +465,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    3k
+                    2.6k
                 </div>
                 
 
@@ -493,503 +493,503 @@
                 <h1 id="SparkStreaming-Case-总结"><a href="#SparkStreaming-Case-总结" class="headerlink" title="SparkStreaming_Case_总结"></a>SparkStreaming_Case_总结</h1><p>工具类是必须要学习记忆的</p>
 <p>同时要按照工业化流程写程序</p>
 <p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E4%BC%81%E4%B8%9A%E7%BA%A7%E6%96%87%E4%BB%B6%E5%BB%BA%E6%A1%A3.png" alt="企业化程序思路"></p>
-<h2 id="1-配置文件"><a href="#1-配置文件" class="headerlink" title="1.配置文件"></a>1.配置文件</h2><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties">#JDBC配置
-jdbc.datasource.size&#x3D;10
-jdbc.url&#x3D;jdbc:mysql:&#x2F;&#x2F;hadoop102:3306&#x2F;spark_2020?useUnicode&#x3D;true&amp;characterEncoding&#x3D;utf8&amp;rewriteBatchedStatements&#x3D;true
-jdbc.user&#x3D;root
-jdbc.password&#x3D;123456
+<h2 id="1-配置文件"><a href="#1-配置文件" class="headerlink" title="1.配置文件"></a>1.配置文件</h2><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token comment">#JDBC配置</span>
+<span class="token attr-name">jdbc.datasource.size</span><span class="token punctuation">=</span><span class="token attr-value">10</span>
+<span class="token attr-name">jdbc.url</span><span class="token punctuation">=</span><span class="token attr-value">jdbc:mysql://hadoop102:3306/spark_2020?useUnicode=true&amp;characterEncoding=utf8&amp;rewriteBatchedStatements=true</span>
+<span class="token attr-name">jdbc.user</span><span class="token punctuation">=</span><span class="token attr-value">root</span>
+<span class="token attr-name">jdbc.password</span><span class="token punctuation">=</span><span class="token attr-value">123456</span>
 
-# Kafka配置
-kafka.broker.list&#x3D;hadoop102:9092,hadoop103:9092,hadoop104:9092
-kafka.topic&#x3D;testTopic<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="2-工具类"><a href="#2-工具类" class="headerlink" title="2.工具类"></a>2.工具类</h2><h3 id="2-1JDBC工具类"><a href="#2-1JDBC工具类" class="headerlink" title="2.1JDBC工具类"></a>2.1JDBC工具类</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.utils
+<span class="token comment"># Kafka配置</span>
+<span class="token attr-name">kafka.broker.list</span><span class="token punctuation">=</span><span class="token attr-value">hadoop102:9092,hadoop103:9092,hadoop104:9092</span>
+<span class="token attr-name">kafka.topic</span><span class="token punctuation">=</span><span class="token attr-value">testTopic</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="2-工具类"><a href="#2-工具类" class="headerlink" title="2.工具类"></a>2.工具类</h2><h3 id="2-1JDBC工具类"><a href="#2-1JDBC工具类" class="headerlink" title="2.1JDBC工具类"></a>2.1JDBC工具类</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>utils</span>
 
-import java.sql.&#123;Connection, PreparedStatement, ResultSet&#125;
-import java.util.Properties
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>sql<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>Connection<span class="token punctuation">,</span> PreparedStatement<span class="token punctuation">,</span> ResultSet<span class="token punctuation">&#125;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>Properties
 
-import com.alibaba.druid.pool.DruidDataSourceFactory
-import javax.sql.DataSource
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>alibaba<span class="token punctuation">.</span>druid<span class="token punctuation">.</span>pool<span class="token punctuation">.</span></span>DruidDataSourceFactory
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>sql<span class="token punctuation">.</span></span>DataSource
 
-&#x2F;**
+<span class="token comment">/**
  * @author Jinxin Li
  * @create 2020-11-25 19:49
- *&#x2F;
-object JDBCUtil &#123;
-  &#x2F;&#x2F;初始化连接池
-  val dataSource: DataSource &#x3D; init()
+ */</span>
+<span class="token keyword">object</span> JDBCUtil <span class="token punctuation">&#123;</span>
+  <span class="token comment">//初始化连接池</span>
+  <span class="token keyword">val</span> dataSource<span class="token operator">:</span> DataSource <span class="token operator">=</span> init<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-  &#x2F;&#x2F;初始化连接池方法
-  def init() &#x3D; &#123;
-    val properties &#x3D; new Properties()
-    val config: Properties &#x3D; PropertiesUtil.load(&quot;config.properties&quot;)
-    properties.setProperty(&quot;driverClassName&quot;, &quot;com.mysql.jdbc.Driver&quot;)
-    properties.setProperty(&quot;url&quot;, config.getProperty(&quot;jdbc.url&quot;))
-    properties.setProperty(&quot;username&quot;, config.getProperty(&quot;jdbc.user&quot;))
-    properties.setProperty(&quot;password&quot;, config.getProperty(&quot;jdbc.password&quot;))
-    properties.setProperty(&quot;maxActive&quot;, config.getProperty(&quot;jdbc.datasource.size&quot;))
-    &#x2F;&#x2F;使用Druid创建数据库连接池
-    val source: DataSource &#x3D; DruidDataSourceFactory.createDataSource(properties)
+  <span class="token comment">//初始化连接池方法</span>
+  <span class="token keyword">def</span> init<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> properties <span class="token operator">=</span> <span class="token keyword">new</span> Properties<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> config<span class="token operator">:</span> Properties <span class="token operator">=</span> PropertiesUtil<span class="token punctuation">.</span>load<span class="token punctuation">(</span><span class="token string">"config.properties"</span><span class="token punctuation">)</span>
+    properties<span class="token punctuation">.</span>setProperty<span class="token punctuation">(</span><span class="token string">"driverClassName"</span><span class="token punctuation">,</span> <span class="token string">"com.mysql.jdbc.Driver"</span><span class="token punctuation">)</span>
+    properties<span class="token punctuation">.</span>setProperty<span class="token punctuation">(</span><span class="token string">"url"</span><span class="token punctuation">,</span> config<span class="token punctuation">.</span>getProperty<span class="token punctuation">(</span><span class="token string">"jdbc.url"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    properties<span class="token punctuation">.</span>setProperty<span class="token punctuation">(</span><span class="token string">"username"</span><span class="token punctuation">,</span> config<span class="token punctuation">.</span>getProperty<span class="token punctuation">(</span><span class="token string">"jdbc.user"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    properties<span class="token punctuation">.</span>setProperty<span class="token punctuation">(</span><span class="token string">"password"</span><span class="token punctuation">,</span> config<span class="token punctuation">.</span>getProperty<span class="token punctuation">(</span><span class="token string">"jdbc.password"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    properties<span class="token punctuation">.</span>setProperty<span class="token punctuation">(</span><span class="token string">"maxActive"</span><span class="token punctuation">,</span> config<span class="token punctuation">.</span>getProperty<span class="token punctuation">(</span><span class="token string">"jdbc.datasource.size"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//使用Druid创建数据库连接池</span>
+    <span class="token keyword">val</span> source<span class="token operator">:</span> DataSource <span class="token operator">=</span> DruidDataSourceFactory<span class="token punctuation">.</span>createDataSource<span class="token punctuation">(</span>properties<span class="token punctuation">)</span>
     source
-  &#125;
+  <span class="token punctuation">&#125;</span>
 
-  &#x2F;&#x2F;获取MySQL连接
-  def getConnection: Connection &#x3D; &#123;
-    dataSource.getConnection
-  &#125;
+  <span class="token comment">//获取MySQL连接</span>
+  <span class="token keyword">def</span> getConnection<span class="token operator">:</span> Connection <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    dataSource<span class="token punctuation">.</span>getConnection
+  <span class="token punctuation">&#125;</span>
 
-  &#x2F;&#x2F;执行SQL语句,单条数据插入
-  def executeUpdate(connection: Connection, sql: String, params: Array[Any]): Int &#x3D; &#123;
+  <span class="token comment">//执行SQL语句,单条数据插入</span>
+  <span class="token keyword">def</span> executeUpdate<span class="token punctuation">(</span>connection<span class="token operator">:</span> Connection<span class="token punctuation">,</span> sql<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">,</span> params<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">Any</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Int</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
 
-    var rtn &#x3D; 0
-    var pstmt: PreparedStatement &#x3D; null
+    <span class="token keyword">var</span> rtn <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">var</span> pstmt<span class="token operator">:</span> PreparedStatement <span class="token operator">=</span> <span class="token keyword">null</span>
 
-    try &#123;
-      connection.setAutoCommit(false)
-      pstmt &#x3D; connection.prepareStatement(sql)
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+      connection<span class="token punctuation">.</span>setAutoCommit<span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span>
+      pstmt <span class="token operator">=</span> connection<span class="token punctuation">.</span>prepareStatement<span class="token punctuation">(</span>sql<span class="token punctuation">)</span>
 
-      if (params !&#x3D; null &amp;&amp; params.length &gt; 0) &#123;
-        for (i &lt;- params.indices) &#123;
-          pstmt.setObject(i + 1, params(i))
-        &#125;
-      &#125;
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>params <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> params<span class="token punctuation">.</span>length <span class="token operator">></span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token keyword">&lt;-</span> params<span class="token punctuation">.</span>indices<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+          pstmt<span class="token punctuation">.</span>setObject<span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> params<span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
 
-      rtn &#x3D; pstmt.executeUpdate()
+      rtn <span class="token operator">=</span> pstmt<span class="token punctuation">.</span>executeUpdate<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-      connection.commit()
-      pstmt.close()
-    &#125; catch &#123;
-      case e: Exception &#x3D;&gt; e.printStackTrace()
-    &#125;
+      connection<span class="token punctuation">.</span>commit<span class="token punctuation">(</span><span class="token punctuation">)</span>
+      pstmt<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">case</span> e<span class="token operator">:</span> Exception <span class="token keyword">=></span> e<span class="token punctuation">.</span>printStackTrace<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
 
     rtn
-  &#125;
+  <span class="token punctuation">&#125;</span>
 
-  &#x2F;&#x2F;判断一条数据是否存在
-  def isExist(connection: Connection, sql: String, params: Array[Any]): Boolean &#x3D; &#123;
+  <span class="token comment">//判断一条数据是否存在</span>
+  <span class="token keyword">def</span> isExist<span class="token punctuation">(</span>connection<span class="token operator">:</span> Connection<span class="token punctuation">,</span> sql<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">,</span> params<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">Any</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Boolean</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
 
-    var flag: Boolean &#x3D; false
-    var pstmt: PreparedStatement &#x3D; null
+    <span class="token keyword">var</span> flag<span class="token operator">:</span> <span class="token builtin">Boolean</span> <span class="token operator">=</span> <span class="token boolean">false</span>
+    <span class="token keyword">var</span> pstmt<span class="token operator">:</span> PreparedStatement <span class="token operator">=</span> <span class="token keyword">null</span>
 
-    try &#123;
-      pstmt &#x3D; connection.prepareStatement(sql)
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+      pstmt <span class="token operator">=</span> connection<span class="token punctuation">.</span>prepareStatement<span class="token punctuation">(</span>sql<span class="token punctuation">)</span>
 
-      for (i &lt;- params.indices) &#123;
-        pstmt.setObject(i + 1, params(i))
-      &#125;
+      <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token keyword">&lt;-</span> params<span class="token punctuation">.</span>indices<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        pstmt<span class="token punctuation">.</span>setObject<span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> params<span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span>
 
-      flag &#x3D; pstmt.executeQuery().next()
-      pstmt.close()
-    &#125; catch &#123;
-      case e: Exception &#x3D;&gt; e.printStackTrace()
-    &#125;
+      flag <span class="token operator">=</span> pstmt<span class="token punctuation">.</span>executeQuery<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>next<span class="token punctuation">(</span><span class="token punctuation">)</span>
+      pstmt<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">case</span> e<span class="token operator">:</span> Exception <span class="token keyword">=></span> e<span class="token punctuation">.</span>printStackTrace<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
 
     flag
-  &#125;
+  <span class="token punctuation">&#125;</span>
 
-  &#x2F;&#x2F;获取MySQL的一条数据
-  def getDataFromMysql(connection: Connection, sql: String, params: Array[Any]): Long &#x3D; &#123;
+  <span class="token comment">//获取MySQL的一条数据</span>
+  <span class="token keyword">def</span> getDataFromMysql<span class="token punctuation">(</span>connection<span class="token operator">:</span> Connection<span class="token punctuation">,</span> sql<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">,</span> params<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">Any</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Long</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
 
-    var result: Long &#x3D; 0L
-    var pstmt: PreparedStatement &#x3D; null
+    <span class="token keyword">var</span> result<span class="token operator">:</span> <span class="token builtin">Long</span> <span class="token operator">=</span> <span class="token number">0L</span>
+    <span class="token keyword">var</span> pstmt<span class="token operator">:</span> PreparedStatement <span class="token operator">=</span> <span class="token keyword">null</span>
 
-    try &#123;
-      pstmt &#x3D; connection.prepareStatement(sql)
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+      pstmt <span class="token operator">=</span> connection<span class="token punctuation">.</span>prepareStatement<span class="token punctuation">(</span>sql<span class="token punctuation">)</span>
 
-      for (i &lt;- params.indices) &#123;
-        pstmt.setObject(i + 1, params(i))
-      &#125;
+      <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token keyword">&lt;-</span> params<span class="token punctuation">.</span>indices<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        pstmt<span class="token punctuation">.</span>setObject<span class="token punctuation">(</span>i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> params<span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span>
 
-      val resultSet: ResultSet &#x3D; pstmt.executeQuery()
+      <span class="token keyword">val</span> resultSet<span class="token operator">:</span> ResultSet <span class="token operator">=</span> pstmt<span class="token punctuation">.</span>executeQuery<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-      while (resultSet.next()) &#123;
-        result &#x3D; resultSet.getLong(1)
-      &#125;
+      <span class="token keyword">while</span> <span class="token punctuation">(</span>resultSet<span class="token punctuation">.</span>next<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        result <span class="token operator">=</span> resultSet<span class="token punctuation">.</span>getLong<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span>
 
-      resultSet.close()
-      pstmt.close()
-    &#125; catch &#123;
-      case e: Exception &#x3D;&gt; e.printStackTrace()
-    &#125;
+      resultSet<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+      pstmt<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">case</span> e<span class="token operator">:</span> Exception <span class="token keyword">=></span> e<span class="token punctuation">.</span>printStackTrace<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
 
     result
-  &#125;
+  <span class="token punctuation">&#125;</span>
 
-  &#x2F;&#x2F;主方法,用于测试上述方法
-  def main(args: Array[String]): Unit &#x3D; &#123;
+  <span class="token comment">//主方法,用于测试上述方法</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
 
-    &#x2F;&#x2F;1 获取连接
-    val connection: Connection &#x3D; getConnection
+    <span class="token comment">//1 获取连接</span>
+    <span class="token keyword">val</span> connection<span class="token operator">:</span> Connection <span class="token operator">=</span> getConnection
 
-    &#x2F;&#x2F;2 预编译SQL
-    val statement: PreparedStatement &#x3D; connection.prepareStatement(&quot;select * from user_ad_count where userid &#x3D; ?&quot;)
+    <span class="token comment">//2 预编译SQL</span>
+    <span class="token keyword">val</span> statement<span class="token operator">:</span> PreparedStatement <span class="token operator">=</span> connection<span class="token punctuation">.</span>prepareStatement<span class="token punctuation">(</span><span class="token string">"select * from user_ad_count where userid = ?"</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;3 传输参数
-    statement.setObject(1, &quot;a&quot;)
+    <span class="token comment">//3 传输参数</span>
+    statement<span class="token punctuation">.</span>setObject<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"a"</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;4 执行sql
-    val resultSet: ResultSet &#x3D; statement.executeQuery()
+    <span class="token comment">//4 执行sql</span>
+    <span class="token keyword">val</span> resultSet<span class="token operator">:</span> ResultSet <span class="token operator">=</span> statement<span class="token punctuation">.</span>executeQuery<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;5 获取数据
-    while (resultSet.next()) &#123;
-      println(&quot;111:&quot; + resultSet.getString(1))
-    &#125;
+    <span class="token comment">//5 获取数据</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span>resultSet<span class="token punctuation">.</span>next<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      println<span class="token punctuation">(</span><span class="token string">"111:"</span> <span class="token operator">+</span> resultSet<span class="token punctuation">.</span>getString<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
 
-    &#x2F;&#x2F;6 关闭资源
-    resultSet.close()
-    statement.close()
-    connection.close()
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="2-2Kafka工具类"><a href="#2-2Kafka工具类" class="headerlink" title="2.2Kafka工具类"></a>2.2Kafka工具类</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.utils
+    <span class="token comment">//6 关闭资源</span>
+    resultSet<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    statement<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    connection<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-2Kafka工具类"><a href="#2-2Kafka工具类" class="headerlink" title="2.2Kafka工具类"></a>2.2Kafka工具类</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>utils</span>
 
-import org.apache.kafka.clients.consumer.ConsumerRecord
-import org.apache.kafka.common.serialization.StringDeserializer
-import org.apache.spark.streaming.StreamingContext
-import org.apache.spark.streaming.dstream.InputDStream
-import org.apache.spark.streaming.kafka010.&#123;ConsumerStrategies, KafkaUtils, LocationStrategies&#125;
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>kafka<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>consumer<span class="token punctuation">.</span></span>ConsumerRecord
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>kafka<span class="token punctuation">.</span>common<span class="token punctuation">.</span>serialization<span class="token punctuation">.</span></span>StringDeserializer
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>streaming<span class="token punctuation">.</span></span>StreamingContext
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>streaming<span class="token punctuation">.</span>dstream<span class="token punctuation">.</span></span>InputDStream
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>streaming<span class="token punctuation">.</span>kafka010<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>ConsumerStrategies<span class="token punctuation">,</span> KafkaUtils<span class="token punctuation">,</span> LocationStrategies<span class="token punctuation">&#125;</span>
 
-&#x2F;**
+<span class="token comment">/**
  * @author Jinxin Li
  * @create 2020-11-25 19:28
- *&#x2F;
-object MyKafkaUtil &#123;
+ */</span>
+<span class="token keyword">object</span> MyKafkaUtil <span class="token punctuation">&#123;</span>
 
-  &#x2F;&#x2F;创建配置对象]
-  private val properties &#x3D; PropertiesUtil.load(&quot;config.properties&quot;)
-  &#x2F;&#x2F;用于初始化链接到集群的地址
-  private val brokers: String &#x3D; properties.getProperty(&quot;kafka.broker.list&quot;) &#x2F;&#x2F;用于后面设置brokers使用
+  <span class="token comment">//创建配置对象]</span>
+  <span class="token keyword">private</span> <span class="token keyword">val</span> properties <span class="token operator">=</span> PropertiesUtil<span class="token punctuation">.</span>load<span class="token punctuation">(</span><span class="token string">"config.properties"</span><span class="token punctuation">)</span>
+  <span class="token comment">//用于初始化链接到集群的地址</span>
+  <span class="token keyword">private</span> <span class="token keyword">val</span> brokers<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> properties<span class="token punctuation">.</span>getProperty<span class="token punctuation">(</span><span class="token string">"kafka.broker.list"</span><span class="token punctuation">)</span> <span class="token comment">//用于后面设置brokers使用</span>
 
 
-  &#x2F;&#x2F;创建DStream,返回接受的数
-  def getKafkaStream(topic: String, ssc: StreamingContext) &#x3D; &#123;
-    val kafkaPara &#x3D; Map(
-&#x2F;&#x2F;      &quot;bootstrap.servers&quot; -&gt; brokers,
-&#x2F;&#x2F;      &quot;key.deserializer&quot; -&gt; classOf[StringDeserializer],
-&#x2F;&#x2F;      &quot;value.deserializer&quot; -&gt; classOf[StringDeserializer],
-&#x2F;&#x2F;      &quot;group.id&quot; -&gt; &quot;commerce-consumer-group&quot; &#x2F;&#x2F;定义消费者组
-      &quot;bootstrap.servers&quot; -&gt; brokers,
-      &quot;key.deserializer&quot; -&gt; classOf[StringDeserializer],
-      &quot;value.deserializer&quot; -&gt; classOf[StringDeserializer],
-      &quot;group.id&quot; -&gt; &quot;commerce-consumer-group&quot; &#x2F;&#x2F;消费者组
-    )
-    val kafkaDStream: InputDStream[ConsumerRecord[String, String]] &#x3D; KafkaUtils.createDirectStream[String, String](
-      ssc,
-      LocationStrategies.PreferConsistent,
-      ConsumerStrategies.Subscribe[String,String](Array(topic), kafkaPara))
+  <span class="token comment">//创建DStream,返回接受的数</span>
+  <span class="token keyword">def</span> getKafkaStream<span class="token punctuation">(</span>topic<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">,</span> ssc<span class="token operator">:</span> StreamingContext<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> kafkaPara <span class="token operator">=</span> Map<span class="token punctuation">(</span>
+<span class="token comment">//      "bootstrap.servers" -> brokers,</span>
+<span class="token comment">//      "key.deserializer" -> classOf[StringDeserializer],</span>
+<span class="token comment">//      "value.deserializer" -> classOf[StringDeserializer],</span>
+<span class="token comment">//      "group.id" -> "commerce-consumer-group" //定义消费者组</span>
+      <span class="token string">"bootstrap.servers"</span> <span class="token operator">-></span> brokers<span class="token punctuation">,</span>
+      <span class="token string">"key.deserializer"</span> <span class="token operator">-></span> classOf<span class="token punctuation">[</span>StringDeserializer<span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token string">"value.deserializer"</span> <span class="token operator">-></span> classOf<span class="token punctuation">[</span>StringDeserializer<span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token string">"group.id"</span> <span class="token operator">-></span> <span class="token string">"commerce-consumer-group"</span> <span class="token comment">//消费者组</span>
+    <span class="token punctuation">)</span>
+    <span class="token keyword">val</span> kafkaDStream<span class="token operator">:</span> InputDStream<span class="token punctuation">[</span>ConsumerRecord<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> KafkaUtils<span class="token punctuation">.</span>createDirectStream<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">(</span>
+      ssc<span class="token punctuation">,</span>
+      LocationStrategies<span class="token punctuation">.</span>PreferConsistent<span class="token punctuation">,</span>
+      ConsumerStrategies<span class="token punctuation">.</span>Subscribe<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">(</span>Array<span class="token punctuation">(</span>topic<span class="token punctuation">)</span><span class="token punctuation">,</span> kafkaPara<span class="token punctuation">)</span><span class="token punctuation">)</span>
     kafkaDStream
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="2-3配置文件工具类"><a href="#2-3配置文件工具类" class="headerlink" title="2.3配置文件工具类"></a>2.3配置文件工具类</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.utils
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-3配置文件工具类"><a href="#2-3配置文件工具类" class="headerlink" title="2.3配置文件工具类"></a>2.3配置文件工具类</h3><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>utils</span>
 
-import java.io.InputStreamReader
-import java.util.Properties
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span>InputStreamReader
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>Properties
 
-&#x2F;**
+<span class="token comment">/**
  * @author Jinxin Li
  * @create 2020-11-25 19:15
- *&#x2F;
-object PropertiesUtil &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
+ */</span>
+<span class="token keyword">object</span> PropertiesUtil <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
 
-  &#125;
-  def load(name:String)&#x3D;&#123;
-    val properties &#x3D; new Properties()
-    properties.load(new InputStreamReader(Thread.currentThread().getContextClassLoader.getResourceAsStream(name)))
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">def</span> load<span class="token punctuation">(</span>name<span class="token operator">:</span><span class="token builtin">String</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> properties <span class="token operator">=</span> <span class="token keyword">new</span> Properties<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    properties<span class="token punctuation">.</span>load<span class="token punctuation">(</span><span class="token keyword">new</span> InputStreamReader<span class="token punctuation">(</span>Thread<span class="token punctuation">.</span>currentThread<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>getContextClassLoader<span class="token punctuation">.</span>getResourceAsStream<span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
     properties
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="3-日志生成与按比重随机数"><a href="#3-日志生成与按比重随机数" class="headerlink" title="3.日志生成与按比重随机数"></a>3.日志生成与按比重随机数</h2><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.dataproduction
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="3-日志生成与按比重随机数"><a href="#3-日志生成与按比重随机数" class="headerlink" title="3.日志生成与按比重随机数"></a>3.日志生成与按比重随机数</h2><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>dataproduction</span>
 
-import java.util.Properties
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>Properties
 
-import com.atguigu.utils.PropertiesUtil
-import org.apache.kafka.clients.producer.&#123;KafkaProducer, ProducerConfig, ProducerRecord&#125;
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>utils<span class="token punctuation">.</span></span>PropertiesUtil
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>kafka<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>producer<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>KafkaProducer<span class="token punctuation">,</span> ProducerConfig<span class="token punctuation">,</span> ProducerRecord<span class="token punctuation">&#125;</span>
 
-import scala.collection.mutable.ArrayBuffer
-import scala.util.Random
+<span class="token keyword">import</span> <span class="token namespace">scala<span class="token punctuation">.</span>collection<span class="token punctuation">.</span>mutable<span class="token punctuation">.</span></span>ArrayBuffer
+<span class="token keyword">import</span> <span class="token namespace">scala<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>Random
 
-&#x2F;**
+<span class="token comment">/**
  * @author Jinxin Li
  * @create 2020-11-25 19:24
- *&#x2F;
-&#x2F;&#x2F;作用两秒往kafka里创建一个数据
+ */</span>
+<span class="token comment">//作用两秒往kafka里创建一个数据</span>
 
-&#x2F;&#x2F;城市信息表： city_id :城市id  city_name：城市名称   area：城市所在大区
-case class CityInfo(city_id: Long, city_name: String, area: String)
+<span class="token comment">//城市信息表： city_id :城市id  city_name：城市名称   area：城市所在大区</span>
+<span class="token keyword">case</span> <span class="token keyword">class</span> CityInfo<span class="token punctuation">(</span>city_id<span class="token operator">:</span> <span class="token builtin">Long</span><span class="token punctuation">,</span> city_name<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">,</span> area<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">)</span>
 
-object MockerRealTime &#123;
-  &#x2F;**
+<span class="token keyword">object</span> MockerRealTime <span class="token punctuation">&#123;</span>
+  <span class="token comment">/**
    * 模拟的数据
    * 格式 ：timestamp area city userid adid
    * 某个时间点 某个地区 某个城市 某个用户 某个广告
    * 1604229363531 华北 北京 3 3
-   *&#x2F;
-  def generateMockData(): Array[String] &#x3D; &#123;
+   */</span>
+  <span class="token keyword">def</span> generateMockData<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
 
-    val array: ArrayBuffer[String] &#x3D; ArrayBuffer[String]()
+    <span class="token keyword">val</span> array<span class="token operator">:</span> ArrayBuffer<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> ArrayBuffer<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    val CityRandomOpt &#x3D; RandomOptions(
-      RanOpt(CityInfo(1, &quot;北京&quot;, &quot;华北&quot;), 30),
-      RanOpt(CityInfo(2, &quot;上海&quot;, &quot;华东&quot;), 30),
-      RanOpt(CityInfo(3, &quot;广州&quot;, &quot;华南&quot;), 10),
-      RanOpt(CityInfo(4, &quot;深圳&quot;, &quot;华南&quot;), 20),
-      RanOpt(CityInfo(5, &quot;天津&quot;, &quot;华北&quot;), 10)
-    )
+    <span class="token keyword">val</span> CityRandomOpt <span class="token operator">=</span> RandomOptions<span class="token punctuation">(</span>
+      RanOpt<span class="token punctuation">(</span>CityInfo<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"北京"</span><span class="token punctuation">,</span> <span class="token string">"华北"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      RanOpt<span class="token punctuation">(</span>CityInfo<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"上海"</span><span class="token punctuation">,</span> <span class="token string">"华东"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      RanOpt<span class="token punctuation">(</span>CityInfo<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token string">"广州"</span><span class="token punctuation">,</span> <span class="token string">"华南"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      RanOpt<span class="token punctuation">(</span>CityInfo<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">"深圳"</span><span class="token punctuation">,</span> <span class="token string">"华南"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      RanOpt<span class="token punctuation">(</span>CityInfo<span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token string">"天津"</span><span class="token punctuation">,</span> <span class="token string">"华北"</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span>
 
-    val random &#x3D; new Random()
+    <span class="token keyword">val</span> random <span class="token operator">=</span> <span class="token keyword">new</span> Random<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F; 模拟实时数据：
-    &#x2F;&#x2F; timestamp province city userid adid
-    for (i &lt;- 0 to 50) &#123;
+    <span class="token comment">// 模拟实时数据：</span>
+    <span class="token comment">// timestamp province city userid adid</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token keyword">&lt;-</span> <span class="token number">0</span> to <span class="token number">50</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 
-      val timestamp: Long &#x3D; System.currentTimeMillis()
-      val cityInfo: CityInfo &#x3D; CityRandomOpt.getRandomOpt
-      val city: String &#x3D; cityInfo.city_name
-      val area: String &#x3D; cityInfo.area
-      val adid: Int &#x3D; 1 + random.nextInt(6)
-      val userid: Int &#x3D; 1 + random.nextInt(6)
+      <span class="token keyword">val</span> timestamp<span class="token operator">:</span> <span class="token builtin">Long</span> <span class="token operator">=</span> System<span class="token punctuation">.</span>currentTimeMillis<span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token keyword">val</span> cityInfo<span class="token operator">:</span> CityInfo <span class="token operator">=</span> CityRandomOpt<span class="token punctuation">.</span>getRandomOpt
+      <span class="token keyword">val</span> city<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> cityInfo<span class="token punctuation">.</span>city_name
+      <span class="token keyword">val</span> area<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> cityInfo<span class="token punctuation">.</span>area
+      <span class="token keyword">val</span> adid<span class="token operator">:</span> <span class="token builtin">Int</span> <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">+</span> random<span class="token punctuation">.</span>nextInt<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span>
+      <span class="token keyword">val</span> userid<span class="token operator">:</span> <span class="token builtin">Int</span> <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">+</span> random<span class="token punctuation">.</span>nextInt<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span>
 
-      &#x2F;&#x2F; 拼接实时数据: 某个时间点 某个地区 某个城市 某个用户 某个广告
-      array +&#x3D; timestamp + &quot; &quot; + area + &quot; &quot; + city + &quot; &quot; + userid + &quot; &quot; + adid
-    &#125;
+      <span class="token comment">// 拼接实时数据: 某个时间点 某个地区 某个城市 某个用户 某个广告</span>
+      array <span class="token operator">+=</span> timestamp <span class="token operator">+</span> <span class="token string">" "</span> <span class="token operator">+</span> area <span class="token operator">+</span> <span class="token string">" "</span> <span class="token operator">+</span> city <span class="token operator">+</span> <span class="token string">" "</span> <span class="token operator">+</span> userid <span class="token operator">+</span> <span class="token string">" "</span> <span class="token operator">+</span> adid
+    <span class="token punctuation">&#125;</span>
 
-    array.toArray
-  &#125;
+    array<span class="token punctuation">.</span>toArray
+  <span class="token punctuation">&#125;</span>
 
-  def main(args: Array[String]): Unit &#x3D; &#123;
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
 
-    &#x2F;&#x2F; 获取配置文件config.properties中的Kafka配置参数
-    val config: Properties &#x3D; PropertiesUtil.load(&quot;config.properties&quot;)
-    val brokers: String &#x3D; config.getProperty(&quot;kafka.broker.list&quot;)
-    val topic: String &#x3D; config.getProperty(&quot;kafka.topic&quot;)
+    <span class="token comment">// 获取配置文件config.properties中的Kafka配置参数</span>
+    <span class="token keyword">val</span> config<span class="token operator">:</span> Properties <span class="token operator">=</span> PropertiesUtil<span class="token punctuation">.</span>load<span class="token punctuation">(</span><span class="token string">"config.properties"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> brokers<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> config<span class="token punctuation">.</span>getProperty<span class="token punctuation">(</span><span class="token string">"kafka.broker.list"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> topic<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> config<span class="token punctuation">.</span>getProperty<span class="token punctuation">(</span><span class="token string">"kafka.topic"</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F; 创建配置对象
-    val prop &#x3D; new Properties()
+    <span class="token comment">// 创建配置对象</span>
+    <span class="token keyword">val</span> prop <span class="token operator">=</span> <span class="token keyword">new</span> Properties<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F; 添加配置
-    prop.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, brokers)
-    prop.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, &quot;org.apache.kafka.common.serialization.StringSerializer&quot;)
-    prop.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, &quot;org.apache.kafka.common.serialization.StringSerializer&quot;)
+    <span class="token comment">// 添加配置</span>
+    prop<span class="token punctuation">.</span>put<span class="token punctuation">(</span>ProducerConfig<span class="token punctuation">.</span>BOOTSTRAP_SERVERS_CONFIG<span class="token punctuation">,</span> brokers<span class="token punctuation">)</span>
+    prop<span class="token punctuation">.</span>put<span class="token punctuation">(</span>ProducerConfig<span class="token punctuation">.</span>KEY_SERIALIZER_CLASS_CONFIG<span class="token punctuation">,</span> <span class="token string">"org.apache.kafka.common.serialization.StringSerializer"</span><span class="token punctuation">)</span>
+    prop<span class="token punctuation">.</span>put<span class="token punctuation">(</span>ProducerConfig<span class="token punctuation">.</span>VALUE_SERIALIZER_CLASS_CONFIG<span class="token punctuation">,</span> <span class="token string">"org.apache.kafka.common.serialization.StringSerializer"</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F; 根据配置创建Kafka生产者
-    val kafkaProducer: KafkaProducer[String, String] &#x3D; new KafkaProducer[String, String](prop)
+    <span class="token comment">// 根据配置创建Kafka生产者</span>
+    <span class="token keyword">val</span> kafkaProducer<span class="token operator">:</span> KafkaProducer<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> KafkaProducer<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">(</span>prop<span class="token punctuation">)</span>
 
-    while (true) &#123;
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 
-      &#x2F;&#x2F; 随机产生实时数据并通过Kafka生产者发送到Kafka集群中
-      for (line &lt;- generateMockData()) &#123;
-        kafkaProducer.send(new ProducerRecord[String, String](topic, line))
-        println(line)
-      &#125;
+      <span class="token comment">// 随机产生实时数据并通过Kafka生产者发送到Kafka集群中</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span>line <span class="token keyword">&lt;-</span> generateMockData<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        kafkaProducer<span class="token punctuation">.</span>send<span class="token punctuation">(</span><span class="token keyword">new</span> ProducerRecord<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">(</span>topic<span class="token punctuation">,</span> line<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        println<span class="token punctuation">(</span>line<span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span>
 
-      Thread.sleep(2000)
-    &#125;
-  &#125;
-&#125;
+      Thread<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.dataproduction
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>dataproduction</span>
 
-import scala.collection.mutable.ListBuffer
-import scala.util.Random
+<span class="token keyword">import</span> <span class="token namespace">scala<span class="token punctuation">.</span>collection<span class="token punctuation">.</span>mutable<span class="token punctuation">.</span></span>ListBuffer
+<span class="token keyword">import</span> <span class="token namespace">scala<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>Random
 
-&#x2F;**
+<span class="token comment">/**
  * @author Jinxin Li
  * @create 2020-11-25 19:23
- *&#x2F;
-&#x2F;&#x2F; value值出现的比例，例如：(男，8) (女:2)
-case class RanOpt[T](value: T, weight: Int)
+ */</span>
+<span class="token comment">// value值出现的比例，例如：(男，8) (女:2)</span>
+<span class="token keyword">case</span> <span class="token keyword">class</span> RanOpt<span class="token punctuation">[</span>T<span class="token punctuation">]</span><span class="token punctuation">(</span>value<span class="token operator">:</span> T<span class="token punctuation">,</span> weight<span class="token operator">:</span> <span class="token builtin">Int</span><span class="token punctuation">)</span>
 
-object RandomOptions &#123;
+<span class="token keyword">object</span> RandomOptions <span class="token punctuation">&#123;</span>
 
-  def apply[T](opts: RanOpt[T]*): RandomOptions[T] &#x3D; &#123;
+  <span class="token keyword">def</span> apply<span class="token punctuation">[</span>T<span class="token punctuation">]</span><span class="token punctuation">(</span>opts<span class="token operator">:</span> RanOpt<span class="token punctuation">[</span>T<span class="token punctuation">]</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token operator">:</span> RandomOptions<span class="token punctuation">[</span>T<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
 
-    val randomOptions &#x3D; new RandomOptions[T]()
+    <span class="token keyword">val</span> randomOptions <span class="token operator">=</span> <span class="token keyword">new</span> RandomOptions<span class="token punctuation">[</span>T<span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    for (opt &lt;- opts) &#123;
-      &#x2F;&#x2F; 累积总的权重： 8 + 2
-      randomOptions.totalWeight +&#x3D; opt.weight
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>opt <span class="token keyword">&lt;-</span> opts<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token comment">// 累积总的权重： 8 + 2</span>
+      randomOptions<span class="token punctuation">.</span>totalWeight <span class="token operator">+=</span> opt<span class="token punctuation">.</span>weight
 
-      &#x2F;&#x2F; 根据每个元素的自己的权重，向buffer中存储数据。权重越多存储的越多
-      for (i &lt;- 1 to opt.weight) &#123;
-        &#x2F;&#x2F; 男 男 男 男 男 男 男 男 女 女
-        randomOptions.optsBuffer +&#x3D; opt.value
-      &#125;
-    &#125;
+      <span class="token comment">// 根据每个元素的自己的权重，向buffer中存储数据。权重越多存储的越多</span>
+      <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token keyword">&lt;-</span> <span class="token number">1</span> to <span class="token namespace">opt<span class="token punctuation">.</span>weight</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 男 男 男 男 男 男 男 男 女 女</span>
+        randomOptions<span class="token punctuation">.</span>optsBuffer <span class="token operator">+=</span> opt<span class="token punctuation">.</span>value
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
 
     randomOptions
-  &#125;
+  <span class="token punctuation">&#125;</span>
 
-  def main(args: Array[String]): Unit &#x3D; &#123;
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
 
-    for (i &lt;- 1 to 10) &#123;
-      println(RandomOptions(RanOpt(&quot;男&quot;, 8), RanOpt(&quot;女&quot;, 2)).getRandomOpt)
-    &#125;
-  &#125;
-&#125;
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token keyword">&lt;-</span> <span class="token number">1</span> to <span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      println<span class="token punctuation">(</span>RandomOptions<span class="token punctuation">(</span>RanOpt<span class="token punctuation">(</span><span class="token string">"男"</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">,</span> RanOpt<span class="token punctuation">(</span><span class="token string">"女"</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>getRandomOpt<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 
-class RandomOptions[T](opts: RanOpt[T]*) &#123;
+<span class="token keyword">class</span> RandomOptions<span class="token punctuation">[</span>T<span class="token punctuation">]</span><span class="token punctuation">(</span>opts<span class="token operator">:</span> RanOpt<span class="token punctuation">[</span>T<span class="token punctuation">]</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
 
-  var totalWeight &#x3D; 0
-  var optsBuffer &#x3D; new ListBuffer[T]
+  <span class="token keyword">var</span> totalWeight <span class="token operator">=</span> <span class="token number">0</span>
+  <span class="token keyword">var</span> optsBuffer <span class="token operator">=</span> <span class="token keyword">new</span> ListBuffer<span class="token punctuation">[</span>T<span class="token punctuation">]</span>
 
-  def getRandomOpt: T &#x3D; &#123;
-    &#x2F;&#x2F; 随机选择：0-9
-    val randomNum: Int &#x3D; new Random().nextInt(totalWeight)
-    &#x2F;&#x2F; 根据随机数，作为角标取数
-    optsBuffer(randomNum)
-  &#125;
-&#125;
+  <span class="token keyword">def</span> getRandomOpt<span class="token operator">:</span> T <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 随机选择：0-9</span>
+    <span class="token keyword">val</span> randomNum<span class="token operator">:</span> <span class="token builtin">Int</span> <span class="token operator">=</span> <span class="token keyword">new</span> Random<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>nextInt<span class="token punctuation">(</span>totalWeight<span class="token punctuation">)</span>
+    <span class="token comment">// 根据随机数，作为角标取数</span>
+    optsBuffer<span class="token punctuation">(</span>randomNum<span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="4-黑名单业务"><a href="#4-黑名单业务" class="headerlink" title="4.黑名单业务"></a>4.黑名单业务</h2><p>实现实时的动态黑名单机制：将每天对某个广告点击超过30次的用户拉黑。</p>
 <p>注：黑名单保存到MySQL中。</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.app
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>app</span>
 
-import java.util.Properties
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>Properties
 
-import com.atguigu.handler.BlackListHandler
-import com.atguigu.utils.&#123;MyKafkaUtil, PropertiesUtil&#125;
-import org.apache.kafka.clients.consumer.ConsumerRecord
-import org.apache.spark.SparkConf
-import org.apache.spark.streaming.dstream.&#123;DStream, InputDStream&#125;
-import org.apache.spark.streaming.&#123;Seconds, StreamingContext&#125;
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>handler<span class="token punctuation">.</span></span>BlackListHandler
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>utils<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>MyKafkaUtil<span class="token punctuation">,</span> PropertiesUtil<span class="token punctuation">&#125;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>kafka<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>consumer<span class="token punctuation">.</span></span>ConsumerRecord
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span></span>SparkConf
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>streaming<span class="token punctuation">.</span>dstream<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>DStream<span class="token punctuation">,</span> InputDStream<span class="token punctuation">&#125;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>streaming<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>Seconds<span class="token punctuation">,</span> StreamingContext<span class="token punctuation">&#125;</span>
 
 
-&#x2F;**
+<span class="token comment">/**
  * @author Jinxin Li
  * @create 2020-11-25 20:42
- *&#x2F;
-object RealTimeApp &#123;
+ */</span>
+<span class="token keyword">object</span> RealTimeApp <span class="token punctuation">&#123;</span>
 
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    val sparkConf: SparkConf &#x3D; new SparkConf().setAppName(&quot;RealTimeApp &quot;).setMaster(&quot;local[*]&quot;)
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"RealTimeApp "</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;2.创建StreamingContext
-    val ssc &#x3D; new StreamingContext(sparkConf, Seconds(3))
+    <span class="token comment">//2.创建StreamingContext</span>
+    <span class="token keyword">val</span> ssc <span class="token operator">=</span> <span class="token keyword">new</span> StreamingContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">,</span> Seconds<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-&#x2F;&#x2F;    val topic &#x3D; PropertiesUtil.load(&quot;config.perproties&quot;).getProperty(&quot;kafka.topic&quot;)
-    val properties: Properties &#x3D; PropertiesUtil.load(&quot;config.properties&quot;)
-    val topic: String &#x3D; properties.getProperty(&quot;kafka.topic&quot;)
+<span class="token comment">//    val topic = PropertiesUtil.load("config.perproties").getProperty("kafka.topic")</span>
+    <span class="token keyword">val</span> properties<span class="token operator">:</span> Properties <span class="token operator">=</span> PropertiesUtil<span class="token punctuation">.</span>load<span class="token punctuation">(</span><span class="token string">"config.properties"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> topic<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> properties<span class="token punctuation">.</span>getProperty<span class="token punctuation">(</span><span class="token string">"kafka.topic"</span><span class="token punctuation">)</span>
 
 
-    &#x2F;&#x2F;从kafka中读取数据
-    val kafkaDStream: InputDStream[ConsumerRecord[String, String]] &#x3D; MyKafkaUtil.getKafkaStream(topic, ssc)
+    <span class="token comment">//从kafka中读取数据</span>
+    <span class="token keyword">val</span> kafkaDStream<span class="token operator">:</span> InputDStream<span class="token punctuation">[</span>ConsumerRecord<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> MyKafkaUtil<span class="token punctuation">.</span>getKafkaStream<span class="token punctuation">(</span>topic<span class="token punctuation">,</span> ssc<span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;将从kafka独处的数据转换为样例类对象
-    val adsLogDStream: DStream[Ads_log] &#x3D; kafkaDStream.map(
-      record &#x3D;&gt; &#123;
-        &#x2F;&#x2F;kafka得到的是kv值,注意先取出v值
-        val line: String &#x3D; record.value()
-        &#x2F;&#x2F;拿出字段信息
-        val info: Array[String] &#x3D; line.split(&quot; &quot;)
-        &#x2F;&#x2F;使用伴生对象的apply方法直接包装对象并返回
-        Ads_log(info(0).toLong, info(1), info(2), info(3), info(4))
-      &#125;
-    )
-    &#x2F;&#x2F;-----------------------------------------------------------
-    &#x2F;&#x2F;现在已经万事具备,开始处理需求
-    &#x2F;&#x2F;需求1 BlackListHandler广告黑名单业务,
-    &#x2F;&#x2F; 将实现实时的动态黑名单机制：将每天对某个广告点击超过30次的用户拉黑。
-    val filterAdsLogDStream: DStream[Ads_log] &#x3D; BlackListHandler.filterByBlackList(adsLogDStream)
-    BlackListHandler.addBlackList(filterAdsLogDStream)
+    <span class="token comment">//将从kafka独处的数据转换为样例类对象</span>
+    <span class="token keyword">val</span> adsLogDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span> <span class="token operator">=</span> kafkaDStream<span class="token punctuation">.</span>map<span class="token punctuation">(</span>
+      record <span class="token keyword">=></span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">//kafka得到的是kv值,注意先取出v值</span>
+        <span class="token keyword">val</span> line<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> record<span class="token punctuation">.</span>value<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment">//拿出字段信息</span>
+        <span class="token keyword">val</span> info<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> line<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span>
+        <span class="token comment">//使用伴生对象的apply方法直接包装对象并返回</span>
+        Ads_log<span class="token punctuation">(</span>info<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span>toLong<span class="token punctuation">,</span> info<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> info<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> info<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> info<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">)</span>
+    <span class="token comment">//-----------------------------------------------------------</span>
+    <span class="token comment">//现在已经万事具备,开始处理需求</span>
+    <span class="token comment">//需求1 BlackListHandler广告黑名单业务,</span>
+    <span class="token comment">// 将实现实时的动态黑名单机制：将每天对某个广告点击超过30次的用户拉黑。</span>
+    <span class="token keyword">val</span> filterAdsLogDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span> <span class="token operator">=</span> BlackListHandler<span class="token punctuation">.</span>filterByBlackList<span class="token punctuation">(</span>adsLogDStream<span class="token punctuation">)</span>
+    BlackListHandler<span class="token punctuation">.</span>addBlackList<span class="token punctuation">(</span>filterAdsLogDStream<span class="token punctuation">)</span>
 
-    filterAdsLogDStream.cache()
-    filterAdsLogDStream.count().print()
+    filterAdsLogDStream<span class="token punctuation">.</span>cache<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    filterAdsLogDStream<span class="token punctuation">.</span>count<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>print<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;启动任务
-    ssc.start()
-    ssc.awaitTermination()
-  &#125;
-&#125;
-&#x2F;&#x2F; 创建数据的样例类对象
-&#x2F;&#x2F; 时间 地区 城市 用户id 广告id
-case class Ads_log(timestamp: Long, area: String, city: String, userid: String, adid: String)
+    <span class="token comment">//启动任务</span>
+    ssc<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    ssc<span class="token punctuation">.</span>awaitTermination<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">// 创建数据的样例类对象</span>
+<span class="token comment">// 时间 地区 城市 用户id 广告id</span>
+<span class="token keyword">case</span> <span class="token keyword">class</span> Ads_log<span class="token punctuation">(</span>timestamp<span class="token operator">:</span> <span class="token builtin">Long</span><span class="token punctuation">,</span> area<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">,</span> city<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">,</span> userid<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">,</span> adid<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">)</span>
 
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.handler
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>handler</span>
 
-import java.sql.Connection
-import java.text.SimpleDateFormat
-import java.util.Date
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>sql<span class="token punctuation">.</span></span>Connection
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>text<span class="token punctuation">.</span></span>SimpleDateFormat
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>Date
 
-import com.atguigu.app.Ads_log
-import com.atguigu.utils.JDBCUtil
-import org.apache.spark.streaming.dstream.DStream
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>app<span class="token punctuation">.</span></span>Ads_log
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>utils<span class="token punctuation">.</span></span>JDBCUtil
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>streaming<span class="token punctuation">.</span>dstream<span class="token punctuation">.</span></span>DStream
 
-&#x2F;**
+<span class="token comment">/**
  * @author Jinxin Li
  * @create 2020-11-25 20:39
- *&#x2F;
-object BlackListHandler &#123;
-  &#x2F;&#x2F;实现实时的动态黑名单机制：将每天对某个广告点击超过30次的用户拉黑。
-  &#x2F;&#x2F;注：黑名单保存到MySQL中。
-  private val sdf &#x3D; new SimpleDateFormat(&quot;yyyy-MM-dd&quot;)
+ */</span>
+<span class="token keyword">object</span> BlackListHandler <span class="token punctuation">&#123;</span>
+  <span class="token comment">//实现实时的动态黑名单机制：将每天对某个广告点击超过30次的用户拉黑。</span>
+  <span class="token comment">//注：黑名单保存到MySQL中。</span>
+  <span class="token keyword">private</span> <span class="token keyword">val</span> sdf <span class="token operator">=</span> <span class="token keyword">new</span> SimpleDateFormat<span class="token punctuation">(</span><span class="token string">"yyyy-MM-dd"</span><span class="token punctuation">)</span>
 
-  def addBlackList(filterAdsLogDStream: DStream[Ads_log]) &#x3D; &#123;
-    val dtAreaCityUserAdDStream: DStream[((String, String, String), Long)] &#x3D; filterAdsLogDStream.map &#123;
-      case adsLog &#x3D;&gt; &#123;
-        val dt: String &#x3D; sdf.format(new Date(adsLog.timestamp))
-        ((dt, adsLog.userid, adsLog.adid), 1L)
-      &#125;
-    &#125;.reduceByKey(_ + _)
+  <span class="token keyword">def</span> addBlackList<span class="token punctuation">(</span>filterAdsLogDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> dtAreaCityUserAdDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">Long</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> filterAdsLogDStream<span class="token punctuation">.</span>map <span class="token punctuation">&#123;</span>
+      <span class="token keyword">case</span> adsLog <span class="token keyword">=></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">val</span> dt<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> sdf<span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token keyword">new</span> Date<span class="token punctuation">(</span>adsLog<span class="token punctuation">.</span>timestamp<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">(</span><span class="token punctuation">(</span>dt<span class="token punctuation">,</span> adsLog<span class="token punctuation">.</span>userid<span class="token punctuation">,</span> adsLog<span class="token punctuation">.</span>adid<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1L</span><span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">.</span>reduceByKey<span class="token punctuation">(</span>_ <span class="token operator">+</span> _<span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;写出
-    dtAreaCityUserAdDStream.foreachRDD(
-      &#x2F;&#x2F;先把流中的foreachRDD写出,然后分流写出
-      rdd&#x3D;&gt;rdd.foreachPartition(
-        iter&#x3D;&gt;&#123;
-          val connection: Connection &#x3D; JDBCUtil.getConnection
-          iter.foreach&#123;
-            case ((dt,userid,adid),count)&#x3D;&gt;
-              JDBCUtil.executeUpdate(
-                connection,
-                &quot;&quot;&quot;
+    <span class="token comment">//写出</span>
+    dtAreaCityUserAdDStream<span class="token punctuation">.</span>foreachRDD<span class="token punctuation">(</span>
+      <span class="token comment">//先把流中的foreachRDD写出,然后分流写出</span>
+      rdd<span class="token keyword">=></span>rdd<span class="token punctuation">.</span>foreachPartition<span class="token punctuation">(</span>
+        iter<span class="token keyword">=></span><span class="token punctuation">&#123;</span>
+          <span class="token keyword">val</span> connection<span class="token operator">:</span> Connection <span class="token operator">=</span> JDBCUtil<span class="token punctuation">.</span>getConnection
+          iter<span class="token punctuation">.</span>foreach<span class="token punctuation">&#123;</span>
+            <span class="token keyword">case</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>dt<span class="token punctuation">,</span>userid<span class="token punctuation">,</span>adid<span class="token punctuation">)</span><span class="token punctuation">,</span>count<span class="token punctuation">)</span><span class="token keyword">=></span>
+              JDBCUtil<span class="token punctuation">.</span>executeUpdate<span class="token punctuation">(</span>
+                connection<span class="token punctuation">,</span>
+                <span class="token triple-quoted-string string">"""
                   |insert into user_ad_count (dt,userid,adid,count)
                   |values (?,?,?,?)
                   |on duplicate key
-                  |update count &#x3D; count + ?
-                  |&quot;&quot;&quot;.stripMargin,Array(dt,userid,adid,count,count)
-              )
-              val ct: Long &#x3D; JDBCUtil.getDataFromMysql(
-                connection,
-                &quot;&quot;&quot;
-                  |select count from user_ad_count where dt&#x3D;? and userid&#x3D;? and adid&#x3D;?
-                  |&quot;&quot;&quot;.stripMargin,Array(dt,userid,adid)
-              )
-              &#x2F;&#x2F;如果大于30就加入黑名单
-              if (ct&gt;&#x3D;30)&#123;
-                JDBCUtil.executeUpdate(
-                  connection,
-                  &quot;&quot;&quot;
+                  |update count = count + ?
+                  |"""</span><span class="token punctuation">.</span>stripMargin<span class="token punctuation">,</span>Array<span class="token punctuation">(</span>dt<span class="token punctuation">,</span>userid<span class="token punctuation">,</span>adid<span class="token punctuation">,</span>count<span class="token punctuation">,</span>count<span class="token punctuation">)</span>
+              <span class="token punctuation">)</span>
+              <span class="token keyword">val</span> ct<span class="token operator">:</span> <span class="token builtin">Long</span> <span class="token operator">=</span> JDBCUtil<span class="token punctuation">.</span>getDataFromMysql<span class="token punctuation">(</span>
+                connection<span class="token punctuation">,</span>
+                <span class="token triple-quoted-string string">"""
+                  |select count from user_ad_count where dt=? and userid=? and adid=?
+                  |"""</span><span class="token punctuation">.</span>stripMargin<span class="token punctuation">,</span>Array<span class="token punctuation">(</span>dt<span class="token punctuation">,</span>userid<span class="token punctuation">,</span>adid<span class="token punctuation">)</span>
+              <span class="token punctuation">)</span>
+              <span class="token comment">//如果大于30就加入黑名单</span>
+              <span class="token keyword">if</span> <span class="token punctuation">(</span>ct<span class="token operator">>=</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                JDBCUtil<span class="token punctuation">.</span>executeUpdate<span class="token punctuation">(</span>
+                  connection<span class="token punctuation">,</span>
+                  <span class="token triple-quoted-string string">"""
                     |insert into black_list (userid)
                     |values (?)
                     |on duplicate key
-                    |update userid&#x3D;?
-                    |&quot;&quot;&quot;.stripMargin,Array(userid,userid)
-                )
-              &#125;
-          &#125;
-          connection.close()
-        &#125;
-      )
-    )
-  &#125;
-  def filterByBlackList(adsLogDStream: DStream[Ads_log]): DStream[Ads_log] &#x3D; &#123;
-    adsLogDStream.filter(
-      adsLog&#x3D;&gt;&#123;
-        &#x2F;&#x2F;获取连接
-        val connection: Connection &#x3D; JDBCUtil.getConnection
-        val bool: Boolean &#x3D; JDBCUtil.isExist(
-          connection,
-          &quot;&quot;&quot;
-            |select * from black_list where userid&#x3D;?
-            |&quot;&quot;&quot;.stripMargin, Array(adsLog.userid)
-        )
-        connection.close()
-        !bool
-      &#125;
-    )
-  &#125;
-&#125;
+                    |update userid=?
+                    |"""</span><span class="token punctuation">.</span>stripMargin<span class="token punctuation">,</span>Array<span class="token punctuation">(</span>userid<span class="token punctuation">,</span>userid<span class="token punctuation">)</span>
+                <span class="token punctuation">)</span>
+              <span class="token punctuation">&#125;</span>
+          <span class="token punctuation">&#125;</span>
+          connection<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">)</span>
+    <span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">def</span> filterByBlackList<span class="token punctuation">(</span>adsLogDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    adsLogDStream<span class="token punctuation">.</span>filter<span class="token punctuation">(</span>
+      adsLog<span class="token keyword">=></span><span class="token punctuation">&#123;</span>
+        <span class="token comment">//获取连接</span>
+        <span class="token keyword">val</span> connection<span class="token operator">:</span> Connection <span class="token operator">=</span> JDBCUtil<span class="token punctuation">.</span>getConnection
+        <span class="token keyword">val</span> bool<span class="token operator">:</span> <span class="token builtin">Boolean</span> <span class="token operator">=</span> JDBCUtil<span class="token punctuation">.</span>isExist<span class="token punctuation">(</span>
+          connection<span class="token punctuation">,</span>
+          <span class="token triple-quoted-string string">"""
+            |select * from black_list where userid=?
+            |"""</span><span class="token punctuation">.</span>stripMargin<span class="token punctuation">,</span> Array<span class="token punctuation">(</span>adsLog<span class="token punctuation">.</span>userid<span class="token punctuation">)</span>
+        <span class="token punctuation">)</span>
+        connection<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token operator">!</span>bool
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="5-统计点击总流量"><a href="#5-统计点击总流量" class="headerlink" title="5.统计点击总流量"></a>5.统计点击总流量</h2><p>描述：实时统计每天各地区各城市各广告的点击总流量，并将其存入MySQL。</p>
 <p>注意connection与connection.close要同时写</p>
@@ -998,97 +998,97 @@ object BlackListHandler &#123;
 <p><img src="SparkStreaming_Case_%E6%80%BB%E7%BB%93.assets/1606325292658.png" alt="1606325292658"></p>
 <p><img src="SparkStreaming_Case_%E6%80%BB%E7%BB%93.assets/1606325343070.png" alt="1606325343070"></p>
 <p>功能:DateAreaCityAdCountHandler</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package com.atguigu.handler
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>handler</span>
 
-import java.sql.Connection
-import java.text.SimpleDateFormat
-import java.util.Date
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>sql<span class="token punctuation">.</span></span>Connection
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>text<span class="token punctuation">.</span></span>SimpleDateFormat
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>Date
 
-import com.atguigu.app.Ads_log
-import com.atguigu.utils.JDBCUtil
-import org.apache.spark.streaming.dstream.DStream
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>app<span class="token punctuation">.</span></span>Ads_log
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>utils<span class="token punctuation">.</span></span>JDBCUtil
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>streaming<span class="token punctuation">.</span>dstream<span class="token punctuation">.</span></span>DStream
 
-&#x2F;**
+<span class="token comment">/**
  * @author Jinxin Li
  * @create 2020-11-25 23:58
  * 统计每天各大区各个城市广告点击总数并保存至MySQL中
- *&#x2F;
-object DateAreaCityAdCountHandler &#123;
-  private val sdf &#x3D; new SimpleDateFormat(&quot;yyyy-MM-dd&quot;)
-  def saveDateAreaCityAdCountToMysql(filterAdsLogDStream: DStream[Ads_log]) &#x3D; &#123;
-    val dateAreaCityAdToCount&#x3D; filterAdsLogDStream.map(ads_log &#x3D;&gt; &#123;
-      &#x2F;&#x2F;a.格式化为日期字符串
-      val dt: String &#x3D; sdf.format(new Date(ads_log.timestamp))
-      &#x2F;&#x2F;b.组合,返回
-      ((dt, ads_log.area, ads_log.city, ads_log.adid), 1L)
-    &#125;).reduceByKey(_ + _)
-    dateAreaCityAdToCount.foreachRDD(
-      &#x2F;&#x2F;分配处理,是指遥控在executor进行执行
-      rdd&#x3D;&gt;&#123;
-        rdd.foreachPartition(
-          iter&#x3D;&gt;&#123;
-            val connection: Connection &#x3D; JDBCUtil.getConnection
-            iter.foreach &#123;
-              case ((dt, area, city, adid), ct) &#x3D;&gt;
-                JDBCUtil.executeUpdate(
-                  connection,
-                  &quot;&quot;&quot;
+ */</span>
+<span class="token keyword">object</span> DateAreaCityAdCountHandler <span class="token punctuation">&#123;</span>
+  <span class="token keyword">private</span> <span class="token keyword">val</span> sdf <span class="token operator">=</span> <span class="token keyword">new</span> SimpleDateFormat<span class="token punctuation">(</span><span class="token string">"yyyy-MM-dd"</span><span class="token punctuation">)</span>
+  <span class="token keyword">def</span> saveDateAreaCityAdCountToMysql<span class="token punctuation">(</span>filterAdsLogDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> dateAreaCityAdToCount<span class="token operator">=</span> filterAdsLogDStream<span class="token punctuation">.</span>map<span class="token punctuation">(</span>ads_log <span class="token keyword">=></span> <span class="token punctuation">&#123;</span>
+      <span class="token comment">//a.格式化为日期字符串</span>
+      <span class="token keyword">val</span> dt<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> sdf<span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token keyword">new</span> Date<span class="token punctuation">(</span>ads_log<span class="token punctuation">.</span>timestamp<span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token comment">//b.组合,返回</span>
+      <span class="token punctuation">(</span><span class="token punctuation">(</span>dt<span class="token punctuation">,</span> ads_log<span class="token punctuation">.</span>area<span class="token punctuation">,</span> ads_log<span class="token punctuation">.</span>city<span class="token punctuation">,</span> ads_log<span class="token punctuation">.</span>adid<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1L</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span>reduceByKey<span class="token punctuation">(</span>_ <span class="token operator">+</span> _<span class="token punctuation">)</span>
+    dateAreaCityAdToCount<span class="token punctuation">.</span>foreachRDD<span class="token punctuation">(</span>
+      <span class="token comment">//分配处理,是指遥控在executor进行执行</span>
+      rdd<span class="token keyword">=></span><span class="token punctuation">&#123;</span>
+        rdd<span class="token punctuation">.</span>foreachPartition<span class="token punctuation">(</span>
+          iter<span class="token keyword">=></span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">val</span> connection<span class="token operator">:</span> Connection <span class="token operator">=</span> JDBCUtil<span class="token punctuation">.</span>getConnection
+            iter<span class="token punctuation">.</span>foreach <span class="token punctuation">&#123;</span>
+              <span class="token keyword">case</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>dt<span class="token punctuation">,</span> area<span class="token punctuation">,</span> city<span class="token punctuation">,</span> adid<span class="token punctuation">)</span><span class="token punctuation">,</span> ct<span class="token punctuation">)</span> <span class="token keyword">=></span>
+                JDBCUtil<span class="token punctuation">.</span>executeUpdate<span class="token punctuation">(</span>
+                  connection<span class="token punctuation">,</span>
+                  <span class="token triple-quoted-string string">"""
                     |INSERT INTO area_city_ad_count (dt)
                     |VALUES(?)
-                    &quot;&quot;&quot;.stripMargin,
-                  Array(dt)
-                )
-            &#125;
-            connection.close()
-          &#125;)
-      &#125;)
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+                    """</span><span class="token punctuation">.</span>stripMargin<span class="token punctuation">,</span>
+                  Array<span class="token punctuation">(</span>dt<span class="token punctuation">)</span>
+                <span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span>
+            connection<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+          <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="6-统计两分钟内广告点击量"><a href="#6-统计两分钟内广告点击量" class="headerlink" title="6.统计两分钟内广告点击量"></a>6.统计两分钟内广告点击量</h2><p>LastHourAdCountHandler</p>
 <p>说明：实际测试时，为了节省时间，统计的是2分钟内广告点击量</p>
 <pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">
-package com.atguigu.handler
+<span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>handler</span>
 
-import java.text.SimpleDateFormat
-import java.util.Date
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>text<span class="token punctuation">.</span></span>SimpleDateFormat
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>Date
 
-import com.atguigu.app.Ads_log
-import org.apache.spark.streaming.Minutes
-import org.apache.spark.streaming.dstream.DStream
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>app<span class="token punctuation">.</span></span>Ads_log
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>streaming<span class="token punctuation">.</span></span>Minutes
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>streaming<span class="token punctuation">.</span>dstream<span class="token punctuation">.</span></span>DStream
 
-object LastHourAdCountHandler &#123;
+<span class="token keyword">object</span> LastHourAdCountHandler <span class="token punctuation">&#123;</span>
 
-  &#x2F;&#x2F;时间格式化对象
-  private val sdf: SimpleDateFormat &#x3D; new SimpleDateFormat(&quot;HH:mm&quot;)
+  <span class="token comment">//时间格式化对象</span>
+  <span class="token keyword">private</span> <span class="token keyword">val</span> sdf<span class="token operator">:</span> SimpleDateFormat <span class="token operator">=</span> <span class="token keyword">new</span> SimpleDateFormat<span class="token punctuation">(</span><span class="token string">"HH:mm"</span><span class="token punctuation">)</span>
 
-  &#x2F;&#x2F; 过滤后的数据集，统计最近一小时(2分钟)广告分时点击总数
-  def getAdHourMintToCount(filterAdsLogDStream: DStream[Ads_log]): DStream[(String, List[(String, Long)])] &#x3D; &#123;
+  <span class="token comment">// 过滤后的数据集，统计最近一小时(2分钟)广告分时点击总数</span>
+  <span class="token keyword">def</span> getAdHourMintToCount<span class="token punctuation">(</span>filterAdsLogDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> List<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Long</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
 
-    &#x2F;&#x2F;1.开窗 &#x3D;&gt; 时间间隔为1个小时 window()
-    val windowAdsLogDStream: DStream[Ads_log] &#x3D; filterAdsLogDStream.window(Minutes(2))
+    <span class="token comment">//1.开窗 => 时间间隔为1个小时 window()</span>
+    <span class="token keyword">val</span> windowAdsLogDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span> <span class="token operator">=</span> filterAdsLogDStream<span class="token punctuation">.</span>window<span class="token punctuation">(</span>Minutes<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;2.转换数据结构 ads_log &#x3D;&gt;((adid,hm),1L) map()
-    val adHmToOneDStream: DStream[((String, String), Long)] &#x3D; windowAdsLogDStream.map(adsLog &#x3D;&gt; &#123;
+    <span class="token comment">//2.转换数据结构 ads_log =>((adid,hm),1L) map()</span>
+    <span class="token keyword">val</span> adHmToOneDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">Long</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> windowAdsLogDStream<span class="token punctuation">.</span>map<span class="token punctuation">(</span>adsLog <span class="token keyword">=></span> <span class="token punctuation">&#123;</span>
 
-      val hm: String &#x3D; sdf.format(new Date(adsLog.timestamp))
+      <span class="token keyword">val</span> hm<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> sdf<span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token keyword">new</span> Date<span class="token punctuation">(</span>adsLog<span class="token punctuation">.</span>timestamp<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-      ((adsLog.adid, hm), 1L)
-    &#125;)
+      <span class="token punctuation">(</span><span class="token punctuation">(</span>adsLog<span class="token punctuation">.</span>adid<span class="token punctuation">,</span> hm<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1L</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;3.统计总数 ((adid,hm),1L)&#x3D;&gt;((adid,hm),sum) reduceBykey(_+_)
-    val adHmToCountDStream: DStream[((String, String), Long)] &#x3D; adHmToOneDStream.reduceByKey(_ + _)
+    <span class="token comment">//3.统计总数 ((adid,hm),1L)=>((adid,hm),sum) reduceBykey(_+_)</span>
+    <span class="token keyword">val</span> adHmToCountDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">Long</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> adHmToOneDStream<span class="token punctuation">.</span>reduceByKey<span class="token punctuation">(</span>_ <span class="token operator">+</span> _<span class="token punctuation">)</span>
 
-    &#x2F;&#x2F;4.转换数据结构 ((adid,hm),sum)&#x3D;&gt;(adid,(hm,sum)) map()
-    val adToHmCountDStream: DStream[(String, (String, Long))] &#x3D; adHmToCountDStream.map &#123; case ((adid, hm), count) &#x3D;&gt;
-      (adid, (hm, count))
-    &#125;
+    <span class="token comment">//4.转换数据结构 ((adid,hm),sum)=>(adid,(hm,sum)) map()</span>
+    <span class="token keyword">val</span> adToHmCountDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Long</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> adHmToCountDStream<span class="token punctuation">.</span>map <span class="token punctuation">&#123;</span> <span class="token keyword">case</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>adid<span class="token punctuation">,</span> hm<span class="token punctuation">)</span><span class="token punctuation">,</span> count<span class="token punctuation">)</span> <span class="token keyword">=></span>
+      <span class="token punctuation">(</span>adid<span class="token punctuation">,</span> <span class="token punctuation">(</span>hm<span class="token punctuation">,</span> count<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
 
-    &#x2F;&#x2F;5.按照adid分组 (adid,(hm,sum))&#x3D;&gt;(adid,Iter[(hm,sum),...]) groupByKey
+    <span class="token comment">//5.按照adid分组 (adid,(hm,sum))=>(adid,Iter[(hm,sum),...]) groupByKey</span>
     adToHmCountDStream
-      .groupByKey()
-      .mapValues(iter &#x3D;&gt; iter.toList.sortWith(_._1 &lt; _._1))
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      <span class="token punctuation">.</span>groupByKey<span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span>mapValues<span class="token punctuation">(</span>iter <span class="token keyword">=></span> iter<span class="token punctuation">.</span>toList<span class="token punctuation">.</span>sortWith<span class="token punctuation">(</span>_<span class="token punctuation">.</span>_1 <span class="token operator">&lt;</span> _<span class="token punctuation">.</span>_1<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1637,7 +1637,7 @@ object LastHourAdCountHandler &#123;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">219.3k</span>&nbsp;字
+                class="white-color">214.8k</span>&nbsp;字
             
             
             

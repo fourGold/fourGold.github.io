@@ -465,7 +465,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.6k
+                    1.3k
                 </div>
                 
 
@@ -494,18 +494,18 @@
 <h2 id="1-任务的提交"><a href="#1-任务的提交" class="headerlink" title="1.任务的提交"></a>1.任务的提交</h2><p>==程序起点==</p>
 <p>spark-submit.cmd</p>
 <p>==脚本启动==</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">bin&#x2F;spark-submit
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">bin/spark-submit
 --class WordCount
---master yarn
+--master <span class="token function">yarn</span>
 --deploy-mode cluster
-.&#x2F;wordCount.jar
-.&#x2F;input .&#x2F;output<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="2-SparkSubmit"><a href="#2-SparkSubmit" class="headerlink" title="2.SparkSubmit"></a>2.SparkSubmit</h2><h4 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">spark-submit --class org.apache.spark.examples.SparkPi --master local[2] ..&#x2F;examples&#x2F;jars&#x2F;spark-examples_2.12-3.0.0.jar 10<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<h4 id="java-p"><a href="#java-p" class="headerlink" title="java -p"></a>java -p</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">&quot;Java\jdk1.8.0_131\bin\java&quot; -cp &quot;C:\spark-3.0.0-bin-hadoop3.2\bin\..\conf\;
-\spark-3.0.0-bin-hadoop3.2\bin\..\jars\*&quot; 
+./wordCount.jar
+./input ./output<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="2-SparkSubmit"><a href="#2-SparkSubmit" class="headerlink" title="2.SparkSubmit"></a>2.SparkSubmit</h2><h4 id="shell"><a href="#shell" class="headerlink" title="shell"></a>shell</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">spark-submit --class org.apache.spark.examples.SparkPi --master local<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token punctuation">..</span>/examples/jars/spark-examples_2.12-3.0.0.jar <span class="token number">10</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h4 id="java-p"><a href="#java-p" class="headerlink" title="java -p"></a>java -p</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token string">"Java\jdk1.8.0_131<span class="token entity" title="\b">\b</span>in\java"</span> -cp <span class="token string">"C:\spark-3.0.0-bin-hadoop3.2<span class="token entity" title="\b">\b</span>in\..<span class="token entity" title="\c">\c</span>onf\;
+\spark-3.0.0-bin-hadoop3.2<span class="token entity" title="\b">\b</span>in\..\jars\*"</span> 
 -Xmx1g org.apache.spark.deploy.SparkSubmit 
---master local[2] 
---class org.apache.spark.examples.SparkPi ..&#x2F;examples&#x2F;jars&#x2F;spark-examples_2.12-3.0.0.jar 10<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+--master local<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> 
+--class org.apache.spark.examples.SparkPi <span class="token punctuation">..</span>/examples/jars/spark-examples_2.12-3.0.0.jar <span class="token number">10</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>java -cp 等同于classpath</p>
 <p>启动submit的main方法</p>
 <ol>
@@ -516,113 +516,113 @@
 </ol>
 <p>org.apache.spark.deploy.SparkSubmit，找到SparkSubmit的伴生对象，并找到main方法</p>
 <h4 id="main"><a href="#main" class="headerlink" title="main"></a>main</h4><p><em>org/apache/spark/deploy/SparkSubmit.scala</em></p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">override def main(args: Array[String]): Unit &#x3D; &#123;
-    val submit &#x3D; new SparkSubmit() &#123;
-      self &#x3D;&gt;
-      override protected def parseArguments(args: Array[String]): SparkSubmitArguments &#x3D; &#123;new SparkSubmitArguments(args) &#123;...&#125;&#125;&#x2F;&#x2F;在主程序中new一个用于解析参数方法的的对象
-        ...&#x2F;&#x2F;日志方法
-    submit.doSubmit(args)&#x2F;&#x2F;调用doSubmit方法
-  &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">override</span> <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> submit <span class="token operator">=</span> <span class="token keyword">new</span> SparkSubmit<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">self</span> <span class="token keyword">=></span>
+      <span class="token keyword">override</span> <span class="token keyword">protected</span> <span class="token keyword">def</span> parseArguments<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> SparkSubmitArguments <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token keyword">new</span> SparkSubmitArguments<span class="token punctuation">(</span>args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span><span class="token comment">//在主程序中new一个用于解析参数方法的的对象</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token comment">//日志方法</span>
+    submit<span class="token punctuation">.</span>doSubmit<span class="token punctuation">(</span>args<span class="token punctuation">)</span><span class="token comment">//调用doSubmit方法</span>
+  <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h4 id="doSubmit"><a href="#doSubmit" class="headerlink" title="doSubmit"></a>doSubmit</h4><p><em>org/apache/spark/deploy/SparkSubmit.scala</em></p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">def doSubmit(args: Array[String]): Unit &#x3D; &#123;
-    &#x2F;&#x2F; Initialize logging if it hasn&#39;t been done yet. Keep track of whether logging needs to
-    &#x2F;&#x2F; be reset before the application starts.
-    ...
-    val appArgs &#x3D; parseArguments(args)&#x2F;&#x2F;在doSubmit中调用解析参数方法-----------------&gt;parseArguments, appArgs为被解析出来的封装的参数
-   	...
-    appArgs.action match &#123;&#x2F;&#x2F;使用解析出来的参数appArgs判断参数信息的action字段
-      case SparkSubmitAction.SUBMIT &#x3D;&gt; submit(appArgs, uninitLog)&#x2F;&#x2F;----------------&gt;submit
-      case SparkSubmitAction.KILL &#x3D;&gt; kill(appArgs)
-      case SparkSubmitAction.REQUEST_STATUS &#x3D;&gt; requestStatus(appArgs)
-      case SparkSubmitAction.PRINT_VERSION &#x3D;&gt; printVersion()
-    &#125;
-  &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">def</span> doSubmit<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// Initialize logging if it hasn't been done yet. Keep track of whether logging needs to</span>
+    <span class="token comment">// be reset before the application starts.</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token keyword">val</span> appArgs <span class="token operator">=</span> parseArguments<span class="token punctuation">(</span>args<span class="token punctuation">)</span><span class="token comment">//在doSubmit中调用解析参数方法----------------->parseArguments, appArgs为被解析出来的封装的参数</span>
+   	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    appArgs<span class="token punctuation">.</span>action <span class="token keyword">match</span> <span class="token punctuation">&#123;</span><span class="token comment">//使用解析出来的参数appArgs判断参数信息的action字段</span>
+      <span class="token keyword">case</span> SparkSubmitAction<span class="token punctuation">.</span>SUBMIT <span class="token keyword">=></span> submit<span class="token punctuation">(</span>appArgs<span class="token punctuation">,</span> uninitLog<span class="token punctuation">)</span><span class="token comment">//---------------->submit</span>
+      <span class="token keyword">case</span> SparkSubmitAction<span class="token punctuation">.</span>KILL <span class="token keyword">=></span> kill<span class="token punctuation">(</span>appArgs<span class="token punctuation">)</span>
+      <span class="token keyword">case</span> SparkSubmitAction<span class="token punctuation">.</span>REQUEST_STATUS <span class="token keyword">=></span> requestStatus<span class="token punctuation">(</span>appArgs<span class="token punctuation">)</span>
+      <span class="token keyword">case</span> SparkSubmitAction<span class="token punctuation">.</span>PRINT_VERSION <span class="token keyword">=></span> printVersion<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="doSubmit-parseArguments"><a href="#doSubmit-parseArguments" class="headerlink" title="doSubmit/parseArguments"></a>doSubmit/parseArguments</h3><p><em>org/apache/spark/deploy/SparkSubmit.scala</em> </p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">protected def parseArguments(args: Array[String]): SparkSubmitArguments &#x3D; &#123;
-    new SparkSubmitArguments(args)
-  &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">protected</span> <span class="token keyword">def</span> parseArguments<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> SparkSubmitArguments <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">new</span> SparkSubmitArguments<span class="token punctuation">(</span>args<span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <h3 id="doSubmit-parseArguments-SparkSubmitArguments"><a href="#doSubmit-parseArguments-SparkSubmitArguments" class="headerlink" title="doSubmit/parseArguments/SparkSubmitArguments"></a>doSubmit/parseArguments/SparkSubmitArguments</h3><p><em>org/apache/spark/deploy/SparkSubmitArguments.scala</em></p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">private[deploy] class SparkSubmitArguments(args: Seq[String], env: Map[String, String] &#x3D; sys.env)
-  extends SparkSubmitArgumentsParser with Logging &#123;
-  var master: String &#x3D; null
-  var deployMode: String &#x3D; null
-  var executorMemory: String &#x3D; null
-  var executorCores: String &#x3D; null
-  ...&#x2F;&#x2F;各种参数
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">private</span><span class="token punctuation">[</span>deploy<span class="token punctuation">]</span> <span class="token keyword">class</span> SparkSubmitArguments<span class="token punctuation">(</span>args<span class="token operator">:</span> Seq<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">,</span> env<span class="token operator">:</span> Map<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> sys<span class="token punctuation">.</span>env<span class="token punctuation">)</span>
+  <span class="token keyword">extends</span> SparkSubmitArgumentsParser <span class="token keyword">with</span> Logging <span class="token punctuation">&#123;</span>
+  <span class="token keyword">var</span> master<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> <span class="token keyword">null</span>
+  <span class="token keyword">var</span> deployMode<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> <span class="token keyword">null</span>
+  <span class="token keyword">var</span> executorMemory<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> <span class="token keyword">null</span>
+  <span class="token keyword">var</span> executorCores<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> <span class="token keyword">null</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token comment">//各种参数</span>
 
-  &#x2F;** Default properties present in the currently defined defaults file. *&#x2F;
-  lazy val defaultSparkProperties: HashMap[String, String] &#x3D; &#123;
-    val defaultProperties &#x3D; new HashMap[String, String]()
-    ...
-    &#125;
-    defaultProperties&#x2F;&#x2F;使用HashMap存储配置参数
-  &#125;
-&#x2F;&#x2F; Set parameters from command line arguments
-  parse(args.asJava)&#x2F;&#x2F;解析参数----------------------------&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  <span class="token comment">/** Default properties present in the currently defined defaults file. */</span>
+  <span class="token keyword">lazy</span> <span class="token keyword">val</span> defaultSparkProperties<span class="token operator">:</span> HashMap<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> defaultProperties <span class="token operator">=</span> <span class="token keyword">new</span> HashMap<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token punctuation">&#125;</span>
+    defaultProperties<span class="token comment">//使用HashMap存储配置参数</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token comment">// Set parameters from command line arguments</span>
+  parse<span class="token punctuation">(</span>args<span class="token punctuation">.</span>asJava<span class="token punctuation">)</span><span class="token comment">//解析参数----------------------------></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="doSubmit-parseArguments-SparkSubmitArguments-parse"><a href="#doSubmit-parseArguments-SparkSubmitArguments-parse" class="headerlink" title="doSubmit/parseArguments/SparkSubmitArguments/parse"></a>doSubmit/parseArguments/SparkSubmitArguments/parse</h3><p><em>org\apache\spark\launcher\SparkSubmitOptionParser.class</em></p>
 <p>==疑问==</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java">protected final void parse(List&lt;String&gt; args) &#123;&#x2F;&#x2F;传入配置String
-        Pattern eqSeparatedOpt &#x3D; Pattern.compile(&quot;(--[^&#x3D;]+)&#x3D;(.+)&quot;);
-        int idx &#x3D; false;
-        int idx;
-        for(idx &#x3D; 0; idx &lt; args.size(); ++idx) &#123;
-            String arg &#x3D; (String)args.get(idx);
-            String value &#x3D; null;
-            Matcher m &#x3D; eqSeparatedOpt.matcher(arg);
-            ...
-                    value &#x3D; (String)args.get(idx);&#125;
-                if (!this.handle(name, value)) &#123;break;&#125;&#x2F;&#x2F;----------------------&gt;
-            &#125; else &#123;...&#125;
-        &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">protected</span> <span class="token keyword">final</span> <span class="token keyword">void</span> <span class="token function">parse</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">//传入配置String</span>
+        <span class="token class-name">Pattern</span> eqSeparatedOpt <span class="token operator">=</span> <span class="token class-name">Pattern</span><span class="token punctuation">.</span><span class="token function">compile</span><span class="token punctuation">(</span><span class="token string">"(--[^=]+)=(.+)"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> idx <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> idx<span class="token punctuation">;</span>
+        <span class="token keyword">for</span><span class="token punctuation">(</span>idx <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> idx <span class="token operator">&lt;</span> args<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token operator">++</span>idx<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">String</span> arg <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span>args<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>idx<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">String</span> value <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+            <span class="token class-name">Matcher</span> m <span class="token operator">=</span> eqSeparatedOpt<span class="token punctuation">.</span><span class="token function">matcher</span><span class="token punctuation">(</span>arg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+                    value <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span>args<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>idx<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">handle</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token keyword">break</span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span><span class="token comment">//----------------------></span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="doSubmit-parseArguments-SparkSubmitArguments-parse-handle"><a href="#doSubmit-parseArguments-SparkSubmitArguments-parse-handle" class="headerlink" title="doSubmit/parseArguments/SparkSubmitArguments/parse/handle"></a>doSubmit/parseArguments/SparkSubmitArguments/parse/handle</h3><p><em>org/apache/spark/deploy/SparkSubmitArguments.scala</em></p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">override protected def handle(opt: String, value: String): Boolean &#x3D; &#123;
-    opt match &#123;
-      case NAME &#x3D;&gt;
-        name &#x3D; value
-      case MASTER &#x3D;&gt;
-        master &#x3D; value
-     ...
-      case DEPLOY_MODE &#x3D;&gt;
-        if (value !&#x3D; &quot;client&quot; &amp;&amp; value !&#x3D; &quot;cluster&quot;) &#123;
-          error(&quot;--deploy-mode must be either \&quot;client\&quot; or \&quot;cluster\&quot;&quot;)
-        &#125;
-        deployMode &#x3D; value
-      case NUM_EXECUTORS &#x3D;&gt;
-        numExecutors &#x3D; value
-      case TOTAL_EXECUTOR_CORES &#x3D;&gt;
-        totalExecutorCores &#x3D; value
-      case EXECUTOR_CORES &#x3D;&gt;
-        executorCores &#x3D; value
-      case EXECUTOR_MEMORY &#x3D;&gt;
-        executorMemory &#x3D; value
-      case DRIVER_MEMORY &#x3D;&gt;
-        driverMemory &#x3D; value
-      case DRIVER_CORES &#x3D;&gt;
-        driverCores &#x3D; value
-      ...
-    &#125;&#x2F;&#x2F;各种配置信息判断
-    action !&#x3D; SparkSubmitAction.PRINT_VERSION
-  &#125;
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">override</span> <span class="token keyword">protected</span> <span class="token keyword">def</span> handle<span class="token punctuation">(</span>opt<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">,</span> value<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Boolean</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    opt <span class="token keyword">match</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">case</span> NAME <span class="token keyword">=></span>
+        name <span class="token operator">=</span> value
+      <span class="token keyword">case</span> MASTER <span class="token keyword">=></span>
+        master <span class="token operator">=</span> value
+     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+      <span class="token keyword">case</span> DEPLOY_MODE <span class="token keyword">=></span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>value <span class="token operator">!=</span> <span class="token string">"client"</span> <span class="token operator">&amp;&amp;</span> value <span class="token operator">!=</span> <span class="token string">"cluster"</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+          error<span class="token punctuation">(</span><span class="token string">"--deploy-mode must be either \"client\" or \"cluster\""</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+        deployMode <span class="token operator">=</span> value
+      <span class="token keyword">case</span> NUM_EXECUTORS <span class="token keyword">=></span>
+        numExecutors <span class="token operator">=</span> value
+      <span class="token keyword">case</span> TOTAL_EXECUTOR_CORES <span class="token keyword">=></span>
+        totalExecutorCores <span class="token operator">=</span> value
+      <span class="token keyword">case</span> EXECUTOR_CORES <span class="token keyword">=></span>
+        executorCores <span class="token operator">=</span> value
+      <span class="token keyword">case</span> EXECUTOR_MEMORY <span class="token keyword">=></span>
+        executorMemory <span class="token operator">=</span> value
+      <span class="token keyword">case</span> DRIVER_MEMORY <span class="token keyword">=></span>
+        driverMemory <span class="token operator">=</span> value
+      <span class="token keyword">case</span> DRIVER_CORES <span class="token keyword">=></span>
+        driverCores <span class="token operator">=</span> value
+      <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token punctuation">&#125;</span><span class="token comment">//各种配置信息判断</span>
+    action <span class="token operator">!=</span> SparkSubmitAction<span class="token punctuation">.</span>PRINT_VERSION
+  <span class="token punctuation">&#125;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="doSubmit-submit"><a href="#doSubmit-submit" class="headerlink" title="doSubmit/submit"></a>doSubmit/submit</h3><p><em>org/apache/spark/deploy/SparkSubmit.scala</em></p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">private def submit(args: SparkSubmitArguments, uninitLog: Boolean): Unit &#x3D; &#123;
-    def doRunMain(): Unit &#x3D; &#123;
-      if (args.proxyUser !&#x3D; null) &#123;
-        val proxyUser &#x3D; UserGroupInformation.createProxyUser(args.proxyUser,
-          UserGroupInformation.getCurrentUser())
-        try &#123;
-          proxyUser.doAs(new PrivilegedExceptionAction[Unit]() &#123;
-            override def run(): Unit &#x3D; &#123;
-              runMain(args, uninitLog)&#x2F;&#x2F;-------------------------------&gt;
-            &#125;
-          &#125;)
-        &#125; catch &#123;...&#125;
-      &#125; else &#123;
-        runMain(args, uninitLog)&#x2F;&#x2F;---------------------------------&gt;
-      &#125;
-    &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">private</span> <span class="token keyword">def</span> submit<span class="token punctuation">(</span>args<span class="token operator">:</span> SparkSubmitArguments<span class="token punctuation">,</span> uninitLog<span class="token operator">:</span> <span class="token builtin">Boolean</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">def</span> doRunMain<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>args<span class="token punctuation">.</span>proxyUser <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">val</span> proxyUser <span class="token operator">=</span> UserGroupInformation<span class="token punctuation">.</span>createProxyUser<span class="token punctuation">(</span>args<span class="token punctuation">.</span>proxyUser<span class="token punctuation">,</span>
+          UserGroupInformation<span class="token punctuation">.</span>getCurrentUser<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+          proxyUser<span class="token punctuation">.</span>doAs<span class="token punctuation">(</span><span class="token keyword">new</span> PrivilegedExceptionAction<span class="token punctuation">[</span><span class="token builtin">Unit</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">override</span> <span class="token keyword">def</span> run<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+              runMain<span class="token punctuation">(</span>args<span class="token punctuation">,</span> uninitLog<span class="token punctuation">)</span><span class="token comment">//-------------------------------></span>
+            <span class="token punctuation">&#125;</span>
+          <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        runMain<span class="token punctuation">(</span>args<span class="token punctuation">,</span> uninitLog<span class="token punctuation">)</span><span class="token comment">//---------------------------------></span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="doSubmit-submit-doRunMain-runMain"><a href="#doSubmit-submit-doRunMain-runMain" class="headerlink" title="doSubmit/submit/doRunMain/runMain"></a>doSubmit/submit/doRunMain/runMain</h3><p><em>org/apache/spark/deploy/SparkSubmit.scala</em></p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">&#x2F;**
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token comment">/**
    * Run the main method of the child class using the submit arguments.
    * 启动main程序的启动子类
    * This runs in two steps. First, we prepare the launch environment by setting up
@@ -631,119 +631,119 @@
    * Second, we use this launch environment to invoke the main method of the child
    * main class.
    * 激活启动子类
-   * Note that this main class will not be the one provided by the user if we&#39;re
+   * Note that this main class will not be the one provided by the user if we're
    * running cluster deploy mode or python applications.
-   *&#x2F;
-  private def runMain(args: SparkSubmitArguments, uninitLog: Boolean): Unit &#x3D; &#123;
-    val (childArgs, childClasspath, sparkConf, childMainClass) &#x3D; prepareSubmitEnvironment(args)&#x2F;&#x2F;------------------------------&gt;准备环境
-    ...&#x2F;&#x2F;日志相关
-    val loader &#x3D; getSubmitClassLoader(sparkConf)
-    for (jar &lt;- childClasspath) &#123;
-      addJarToClasspath(jar, loader)
-    &#125;
-    var mainClass: Class[_] &#x3D; null
-    try &#123;
-      mainClass &#x3D; Utils.classForName(childMainClass)&#x2F;&#x2F;使用反射将子启动类变为主启动类
-    &#125; catch &#123;...&#125;
+   */</span>
+  <span class="token keyword">private</span> <span class="token keyword">def</span> runMain<span class="token punctuation">(</span>args<span class="token operator">:</span> SparkSubmitArguments<span class="token punctuation">,</span> uninitLog<span class="token operator">:</span> <span class="token builtin">Boolean</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> <span class="token punctuation">(</span>childArgs<span class="token punctuation">,</span> childClasspath<span class="token punctuation">,</span> sparkConf<span class="token punctuation">,</span> childMainClass<span class="token punctuation">)</span> <span class="token operator">=</span> prepareSubmitEnvironment<span class="token punctuation">(</span>args<span class="token punctuation">)</span><span class="token comment">//------------------------------>准备环境</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token comment">//日志相关</span>
+    <span class="token keyword">val</span> loader <span class="token operator">=</span> getSubmitClassLoader<span class="token punctuation">(</span>sparkConf<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>jar <span class="token keyword">&lt;-</span> childClasspath<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      addJarToClasspath<span class="token punctuation">(</span>jar<span class="token punctuation">,</span> loader<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">var</span> mainClass<span class="token operator">:</span> Class<span class="token punctuation">[</span>_<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">null</span>
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+      mainClass <span class="token operator">=</span> Utils<span class="token punctuation">.</span>classForName<span class="token punctuation">(</span>childMainClass<span class="token punctuation">)</span><span class="token comment">//使用反射将子启动类变为主启动类</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
 
-    val app: SparkApplication &#x3D; if (classOf[SparkApplication].isAssignableFrom(mainClass)) &#123;
-      mainClass.getConstructor().newInstance().asInstanceOf[SparkApplication]
-    &#125; else &#123;&#x2F;&#x2F;使用反射创建
-      new JavaMainApplication(mainClass)&#x2F;&#x2F;创建YarnClusterApplication
-    &#125;
-    @tailrec
-    def findCause(t: Throwable): Throwable &#x3D; t match &#123;
-      case e: UndeclaredThrowableException &#x3D;&gt;
-        if (e.getCause() !&#x3D; null) findCause(e.getCause()) else e
-      case e: InvocationTargetException &#x3D;&gt;
-        if (e.getCause() !&#x3D; null) findCause(e.getCause()) else e
-      case e: Throwable &#x3D;&gt;
+    <span class="token keyword">val</span> app<span class="token operator">:</span> SparkApplication <span class="token operator">=</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>classOf<span class="token punctuation">[</span>SparkApplication<span class="token punctuation">]</span><span class="token punctuation">.</span>isAssignableFrom<span class="token punctuation">(</span>mainClass<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      mainClass<span class="token punctuation">.</span>getConstructor<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>newInstance<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>asInstanceOf<span class="token punctuation">[</span>SparkApplication<span class="token punctuation">]</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span><span class="token comment">//使用反射创建</span>
+      <span class="token keyword">new</span> JavaMainApplication<span class="token punctuation">(</span>mainClass<span class="token punctuation">)</span><span class="token comment">//创建YarnClusterApplication</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token annotation punctuation">@tailrec</span>
+    <span class="token keyword">def</span> findCause<span class="token punctuation">(</span>t<span class="token operator">:</span> Throwable<span class="token punctuation">)</span><span class="token operator">:</span> Throwable <span class="token operator">=</span> t <span class="token keyword">match</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">case</span> e<span class="token operator">:</span> UndeclaredThrowableException <span class="token keyword">=></span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>e<span class="token punctuation">.</span>getCause<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> findCause<span class="token punctuation">(</span>e<span class="token punctuation">.</span>getCause<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">else</span> e
+      <span class="token keyword">case</span> e<span class="token operator">:</span> InvocationTargetException <span class="token keyword">=></span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>e<span class="token punctuation">.</span>getCause<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> findCause<span class="token punctuation">(</span>e<span class="token punctuation">.</span>getCause<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">else</span> e
+      <span class="token keyword">case</span> e<span class="token operator">:</span> Throwable <span class="token keyword">=></span>
         e
-    &#125;
-    try &#123;
-      app.start(childArgs.toArray, sparkConf)&#x2F;&#x2F;启动YarnClusterApplication
-        &#x2F;&#x2F;----------------------------------&gt;
-    &#125; catch &#123;...&#125;
-  &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+      app<span class="token punctuation">.</span>start<span class="token punctuation">(</span>childArgs<span class="token punctuation">.</span>toArray<span class="token punctuation">,</span> sparkConf<span class="token punctuation">)</span><span class="token comment">//启动YarnClusterApplication</span>
+        <span class="token comment">//----------------------------------></span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">&#123;</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="doSubmit-submit-doRunMain-runMain-prepareSubmitEnvironment"><a href="#doSubmit-submit-doRunMain-runMain-prepareSubmitEnvironment" class="headerlink" title="doSubmit/submit/doRunMain/runMain/prepareSubmitEnvironment"></a>doSubmit/submit/doRunMain/runMain/prepareSubmitEnvironment</h3><p><em>org/apache/spark/deploy/SparkSubmit.scala</em></p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">private[deploy] def prepareSubmitEnvironment(
-      args: SparkSubmitArguments,
-      conf: Option[HadoopConfiguration] &#x3D; None)
-      : (Seq[String], Seq[String], SparkConf, String) &#x3D; &#123;
-    &#x2F;&#x2F; Return values
-    val childArgs &#x3D; new ArrayBuffer[String]()
-    val childClasspath &#x3D; new ArrayBuffer[String]()
-    val sparkConf &#x3D; args.toSparkConf()
-    var childMainClass &#x3D; &quot;&quot;
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">private</span><span class="token punctuation">[</span>deploy<span class="token punctuation">]</span> <span class="token keyword">def</span> prepareSubmitEnvironment<span class="token punctuation">(</span>
+      args<span class="token operator">:</span> SparkSubmitArguments<span class="token punctuation">,</span>
+      conf<span class="token operator">:</span> Option<span class="token punctuation">[</span>HadoopConfiguration<span class="token punctuation">]</span> <span class="token operator">=</span> None<span class="token punctuation">)</span>
+      <span class="token operator">:</span> <span class="token punctuation">(</span>Seq<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">,</span> Seq<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">,</span> SparkConf<span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// Return values</span>
+    <span class="token keyword">val</span> childArgs <span class="token operator">=</span> <span class="token keyword">new</span> ArrayBuffer<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> childClasspath <span class="token operator">=</span> <span class="token keyword">new</span> ArrayBuffer<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> sparkConf <span class="token operator">=</span> args<span class="token punctuation">.</span>toSparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">var</span> childMainClass <span class="token operator">=</span> <span class="token string">""</span>
 
-    &#x2F;&#x2F; Set the cluster manager
-    val clusterManager: Int &#x3D; args.master match &#123;
-      case &quot;yarn&quot; &#x3D;&gt; YARN&#x2F;&#x2F;判断环境为yarn环境------------------------&gt;
-      case m if m.startsWith(&quot;spark&quot;) &#x3D;&gt; STANDALONE
-      case m if m.startsWith(&quot;mesos&quot;) &#x3D;&gt; MESOS
-      case m if m.startsWith(&quot;k8s&quot;) &#x3D;&gt; KUBERNETES
-      case m if m.startsWith(&quot;local&quot;) &#x3D;&gt; LOCAL
-      case _ &#x3D;&gt;
-        error(&quot;Master must either be yarn or start with spark, mesos, k8s, or local&quot;)
-        -1
-    &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token comment">// Set the cluster manager</span>
+    <span class="token keyword">val</span> clusterManager<span class="token operator">:</span> <span class="token builtin">Int</span> <span class="token operator">=</span> args<span class="token punctuation">.</span>master <span class="token keyword">match</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">case</span> <span class="token string">"yarn"</span> <span class="token keyword">=></span> YARN<span class="token comment">//判断环境为yarn环境------------------------></span>
+      <span class="token keyword">case</span> m <span class="token keyword">if</span> m<span class="token punctuation">.</span>startsWith<span class="token punctuation">(</span><span class="token string">"spark"</span><span class="token punctuation">)</span> <span class="token keyword">=></span> STANDALONE
+      <span class="token keyword">case</span> m <span class="token keyword">if</span> m<span class="token punctuation">.</span>startsWith<span class="token punctuation">(</span><span class="token string">"mesos"</span><span class="token punctuation">)</span> <span class="token keyword">=></span> MESOS
+      <span class="token keyword">case</span> m <span class="token keyword">if</span> m<span class="token punctuation">.</span>startsWith<span class="token punctuation">(</span><span class="token string">"k8s"</span><span class="token punctuation">)</span> <span class="token keyword">=></span> KUBERNETES
+      <span class="token keyword">case</span> m <span class="token keyword">if</span> m<span class="token punctuation">.</span>startsWith<span class="token punctuation">(</span><span class="token string">"local"</span><span class="token punctuation">)</span> <span class="token keyword">=></span> LOCAL
+      <span class="token keyword">case</span> _ <span class="token keyword">=></span>
+        error<span class="token punctuation">(</span><span class="token string">"Master must either be yarn or start with spark, mesos, k8s, or local"</span><span class="token punctuation">)</span>
+        <span class="token operator">-</span><span class="token number">1</span>
+    <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="doSubmit-submit-doRunMain-runMain-start"><a href="#doSubmit-submit-doRunMain-runMain-start" class="headerlink" title="doSubmit/submit/doRunMain/runMain/start"></a>doSubmit/submit/doRunMain/runMain/start</h3><p>org/apache/spark/deploy/SparkApplication.scala</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">private[spark] trait SparkApplication &#123;
-  def start(args: Array[String], conf: SparkConf): Unit
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">private</span><span class="token punctuation">[</span>spark<span class="token punctuation">]</span> <span class="token keyword">trait</span> SparkApplication <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> start<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">,</span> conf<span class="token operator">:</span> SparkConf<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>启动CtrL+H查看继承树</p>
 <p><img src="Spark%E5%86%85%E6%A0%B8_%E6%80%BB%E7%BB%93.assets/1606639008096.png" alt="继承树"></p>
 <p>Yarn源码文件结构</p>
 <p><img src="Spark%E5%86%85%E6%A0%B8_%E6%80%BB%E7%BB%93.assets/1606638669349.png" alt="Yarn"></p>
 <h3 id="Client-start"><a href="#Client-start" class="headerlink" title="Client/start"></a>Client/start</h3><p><em>org/apache/spark/deploy/yarn/Client.scala</em></p>
 <p><em>org.apache.spark.deploy.yarn.YarnClusterApplication</em></p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">private[spark] class YarnClusterApplication extends SparkApplication &#123;
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">private</span><span class="token punctuation">[</span>spark<span class="token punctuation">]</span> <span class="token keyword">class</span> YarnClusterApplication <span class="token keyword">extends</span> SparkApplication <span class="token punctuation">&#123;</span>
 
-  override def start(args: Array[String], conf: SparkConf): Unit &#x3D; &#123;
-    &#x2F;&#x2F; SparkSubmit would use yarn cache to distribute files &amp; jars in yarn mode,
-    &#x2F;&#x2F; so remove them from sparkConf here for yarn mode.
-    conf.remove(JARS)
-    conf.remove(FILES)
+  <span class="token keyword">override</span> <span class="token keyword">def</span> start<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">,</span> conf<span class="token operator">:</span> SparkConf<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// SparkSubmit would use yarn cache to distribute files &amp; jars in yarn mode,</span>
+    <span class="token comment">// so remove them from sparkConf here for yarn mode.</span>
+    conf<span class="token punctuation">.</span>remove<span class="token punctuation">(</span>JARS<span class="token punctuation">)</span>
+    conf<span class="token punctuation">.</span>remove<span class="token punctuation">(</span>FILES<span class="token punctuation">)</span>
 
-    new Client(new ClientArguments(args), conf, null).run()&#x2F;&#x2F;---------------------------&gt;
-  &#125;&#x2F;&#x2F;---------------&gt;Client
-    &#x2F;&#x2F;--------------&gt;ClientArguments
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    <span class="token keyword">new</span> Client<span class="token punctuation">(</span><span class="token keyword">new</span> ClientArguments<span class="token punctuation">(</span>args<span class="token punctuation">)</span><span class="token punctuation">,</span> conf<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">.</span>run<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment">//---------------------------></span>
+  <span class="token punctuation">&#125;</span><span class="token comment">//--------------->Client</span>
+    <span class="token comment">//-------------->ClientArguments</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="Client-ClientArguments"><a href="#Client-ClientArguments" class="headerlink" title="Client/ClientArguments"></a>Client/ClientArguments</h3><p>org/apache/spark/deploy/yarn/ClientArguments.scala</p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">private[spark] class ClientArguments(args: Array[String]) &#123;
-  var userJar: String &#x3D; null
-  var userClass: String &#x3D; null
-  var primaryPyFile: String &#x3D; null
-  var primaryRFile: String &#x3D; null
-  var userArgs: ArrayBuffer[String] &#x3D; new ArrayBuffer[String]()
-  parseArgs(args.toList)&#x2F;&#x2F;-----------------------&gt;
-  private def parseArgs(inputArgs: List[String]): Unit &#x3D; &#123;&#x2F;&#x2F;&lt;---------------------
-    var args &#x3D; inputArgs
-    while (!args.isEmpty) &#123;
-      args match &#123;
-        case (&quot;--jar&quot;) :: value :: tail &#x3D;&gt;
-          userJar &#x3D; value
-          args &#x3D; tail
-        case (&quot;--class&quot;) :: value :: tail &#x3D;&gt;
-          userClass &#x3D; value
-          args &#x3D; tail
-        ....
-      &#125;
-    &#125;
-   ...
-  &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">private</span><span class="token punctuation">[</span>spark<span class="token punctuation">]</span> <span class="token keyword">class</span> ClientArguments<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">var</span> userJar<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> <span class="token keyword">null</span>
+  <span class="token keyword">var</span> userClass<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> <span class="token keyword">null</span>
+  <span class="token keyword">var</span> primaryPyFile<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> <span class="token keyword">null</span>
+  <span class="token keyword">var</span> primaryRFile<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> <span class="token keyword">null</span>
+  <span class="token keyword">var</span> userArgs<span class="token operator">:</span> ArrayBuffer<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> ArrayBuffer<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  parseArgs<span class="token punctuation">(</span>args<span class="token punctuation">.</span>toList<span class="token punctuation">)</span><span class="token comment">//-----------------------></span>
+  <span class="token keyword">private</span> <span class="token keyword">def</span> parseArgs<span class="token punctuation">(</span>inputArgs<span class="token operator">:</span> List<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token comment">//&lt;---------------------</span>
+    <span class="token keyword">var</span> args <span class="token operator">=</span> inputArgs
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span>args<span class="token punctuation">.</span>isEmpty<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      args <span class="token keyword">match</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">case</span> <span class="token punctuation">(</span><span class="token string">"--jar"</span><span class="token punctuation">)</span> <span class="token operator">::</span> value <span class="token operator">::</span> tail <span class="token keyword">=></span>
+          userJar <span class="token operator">=</span> value
+          args <span class="token operator">=</span> tail
+        <span class="token keyword">case</span> <span class="token punctuation">(</span><span class="token string">"--class"</span><span class="token punctuation">)</span> <span class="token operator">::</span> value <span class="token operator">::</span> tail <span class="token keyword">=></span>
+          userClass <span class="token operator">=</span> value
+          args <span class="token operator">=</span> tail
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h3 id="YarnClient-createYarnClient"><a href="#YarnClient-createYarnClient" class="headerlink" title="YarnClient.createYarnClient"></a>YarnClient.createYarnClient</h3><p><em>org/apache/spark/deploy/yarn/Client.scala/YarnClient.createYarnClient</em></p>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">private[spark] class Client(
-    val args: ClientArguments,
-    val sparkConf: SparkConf,
-    val rpcEnv: RpcEnv)
-  extends Logging &#123;
-  import Client._
-  import YarnSparkHadoopUtil._
-      &#x2F;&#x2F;创建YARN客户端
-  private val yarnClient &#x3D; YarnClient.createYarnClient&#x2F;&#x2F;-----------------&gt;YarnClient
-      ....
-  &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">private</span><span class="token punctuation">[</span>spark<span class="token punctuation">]</span> <span class="token keyword">class</span> Client<span class="token punctuation">(</span>
+    <span class="token keyword">val</span> args<span class="token operator">:</span> ClientArguments<span class="token punctuation">,</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf<span class="token punctuation">,</span>
+    <span class="token keyword">val</span> rpcEnv<span class="token operator">:</span> RpcEnv<span class="token punctuation">)</span>
+  <span class="token keyword">extends</span> Logging <span class="token punctuation">&#123;</span>
+  <span class="token keyword">import</span> Client<span class="token punctuation">.</span>_
+  <span class="token keyword">import</span> YarnSparkHadoopUtil<span class="token punctuation">.</span>_
+      <span class="token comment">//创建YARN客户端</span>
+  <span class="token keyword">private</span> <span class="token keyword">val</span> yarnClient <span class="token operator">=</span> YarnClient<span class="token punctuation">.</span>createYarnClient<span class="token comment">//----------------->YarnClient</span>
+      <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="2-ApplicationMaster任务"><a href="#2-ApplicationMaster任务" class="headerlink" title="2.ApplicationMaster任务"></a>2.ApplicationMaster任务</h2><h3 id="ApplicationMaster-main"><a href="#ApplicationMaster-main" class="headerlink" title="ApplicationMaster/main"></a>ApplicationMaster/main</h3><p><em>org.apache.spark.deploy.yarn.ApplicationMaster</em></p>
 <h1 id="2-Spark提交流程"><a href="#2-Spark提交流程" class="headerlink" title="2.Spark提交流程"></a>2.Spark提交流程</h1>
                 
@@ -1293,7 +1293,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">219.3k</span>&nbsp;字
+                class="white-color">214.8k</span>&nbsp;字
             
             
             

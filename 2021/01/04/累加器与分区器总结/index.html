@@ -465,7 +465,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    898
+                    725
                 </div>
                 
 
@@ -490,118 +490,118 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="0x1-Long累加器的使用"><a href="#0x1-Long累加器的使用" class="headerlink" title="0x1 Long累加器的使用"></a>0x1 Long累加器的使用</h1><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object selfAccumulator &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    val sc &#x3D; new SparkContext(new SparkConf().setMaster(&quot;local[2]&quot;).setAppName(&quot;accumulator&quot;))
-    val word: RDD[String] &#x3D; sc.textFile(&quot;Day06&#x2F;input&#x2F;word.txt&quot;)
-    val words &#x3D; word.flatMap(_.split(&quot; &quot;))
-    val accumulator: LongAccumulator &#x3D; sc.longAccumulator&#x2F;&#x2F;定义数字累加器
-    words.foreach&#123;
-      case &quot;hello&quot; &#x3D;&gt; accumulator.add(1)
-      case _ &#x3D;&gt;
-    &#125;
-    println(&quot;hello:&quot;+accumulator.value)&#x2F;&#x2F;注意输出为accumulator的值
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="0x2-自定义分区器"><a href="#0x2-自定义分区器" class="headerlink" title="0x2 自定义分区器"></a>0x2 自定义分区器</h1><h2 id="1-HashPartitioner"><a href="#1-HashPartitioner" class="headerlink" title="1.HashPartitioner"></a>1.HashPartitioner</h2><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object PartitionBy &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local[2]&quot;).setAppName(&quot;Main&quot;)
-    val sc: SparkContext &#x3D; new SparkContext(sparkConf)
-    val rdd1: RDD[(String, Int)] &#x3D; sc.textFile(&quot;Day06&#x2F;input&#x2F;number&quot;).map((_, 1))
-    &#x2F;&#x2F;只有k-v值才有分区器
-    rdd1.saveAsTextFile(&quot;.&#x2F;output&quot;)
-    &#x2F;&#x2F;使用hash分区器
-    val rdd2: RDD[(String, Int)] &#x3D; rdd1.partitionBy(new HashPartitioner(3))
-    rdd2.saveAsTextFile(&quot;.&#x2F;output2&quot;)
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="2-RangePartitioner"><a href="#2-RangePartitioner" class="headerlink" title="2.RangePartitioner"></a>2.RangePartitioner</h2><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object PartitionBy &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local[2]&quot;).setAppName(&quot;Main&quot;)
-    val sc: SparkContext &#x3D; new SparkContext(sparkConf)
-    val rdd1&#x3D; sc.textFile(&quot;Day06&#x2F;input&#x2F;number&quot;).map((_, 1))
-    &#x2F;&#x2F;只有k-v值才有分区器
-    rdd1.saveAsTextFile(&quot;.&#x2F;output&quot;)
-    &#x2F;&#x2F;使用rangePartitioner
-    val value &#x3D; new RangePartitioner[String, Int](2, rdd1.sample(false, 0.5))
-    &#x2F;&#x2F;range分区器的使用,要定义泛型,传递分区,传递sample
-    &#x2F;&#x2F;首先要传递一个分区,传递一个
-    rdd1.partitionBy(value)
-    rdd1.saveAsTextFile(&quot;.&#x2F;output2&quot;)
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h2 id="3-自定义分区"><a href="#3-自定义分区" class="headerlink" title="3.自定义分区"></a>3.自定义分区</h2><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">case class MyPartitioner(numPartition:Int) extends Partitioner &#123;
-    override def numPartitions: Int &#x3D; numPartition
-    override def getPartition(key: Any): Int &#x3D; (math.random() * numPartition).toInt
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">object PartitionBy &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    val sparkConf: SparkConf &#x3D; new SparkConf().setMaster(&quot;local[2]&quot;).setAppName(&quot;Main&quot;)
-    val sc: SparkContext &#x3D; new SparkContext(sparkConf)
-    val rdd1&#x3D; sc.textFile(&quot;Day06&#x2F;input&#x2F;number&quot;).map((_, 1))
-    &#x2F;&#x2F;只有k-v值才有分区器
-    rdd1.saveAsTextFile(&quot;.&#x2F;output&quot;)
-    &#x2F;&#x2F;使用rangePartitioner
-    val value &#x3D; new RangePartitioner[String, Int](2, rdd1.sample(false, 0.5))
-    &#x2F;&#x2F;range分区器的使用,要定义泛型,传递分区,传递sample
-    &#x2F;&#x2F;首先要传递一个分区,传递一个
-    val value1: RDD[(String, Int)] &#x3D; rdd1.partitionBy(MyPartitioner(2))
-    value1.saveAsTextFile(&quot;.&#x2F;output2&quot;)
-  &#125;
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="0x3-自定义累加器"><a href="#0x3-自定义累加器" class="headerlink" title="0x3 自定义累加器"></a>0x3 自定义累加器</h1><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">package test.longAccumulator
+                <h1 id="0x1-Long累加器的使用"><a href="#0x1-Long累加器的使用" class="headerlink" title="0x1 Long累加器的使用"></a>0x1 Long累加器的使用</h1><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> selfAccumulator <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> sc <span class="token operator">=</span> <span class="token keyword">new</span> SparkContext<span class="token punctuation">(</span><span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[2]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"accumulator"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> word<span class="token operator">:</span> RDD<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> sc<span class="token punctuation">.</span>textFile<span class="token punctuation">(</span><span class="token string">"Day06/input/word.txt"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> words <span class="token operator">=</span> word<span class="token punctuation">.</span>flatMap<span class="token punctuation">(</span>_<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> accumulator<span class="token operator">:</span> LongAccumulator <span class="token operator">=</span> sc<span class="token punctuation">.</span>longAccumulator<span class="token comment">//定义数字累加器</span>
+    words<span class="token punctuation">.</span>foreach<span class="token punctuation">&#123;</span>
+      <span class="token keyword">case</span> <span class="token string">"hello"</span> <span class="token keyword">=></span> accumulator<span class="token punctuation">.</span>add<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+      <span class="token keyword">case</span> _ <span class="token keyword">=></span>
+    <span class="token punctuation">&#125;</span>
+    println<span class="token punctuation">(</span><span class="token string">"hello:"</span><span class="token operator">+</span>accumulator<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token comment">//注意输出为accumulator的值</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="0x2-自定义分区器"><a href="#0x2-自定义分区器" class="headerlink" title="0x2 自定义分区器"></a>0x2 自定义分区器</h1><h2 id="1-HashPartitioner"><a href="#1-HashPartitioner" class="headerlink" title="1.HashPartitioner"></a>1.HashPartitioner</h2><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> PartitionBy <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[2]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"Main"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> sc<span class="token operator">:</span> SparkContext <span class="token operator">=</span> <span class="token keyword">new</span> SparkContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">)</span>
+    <span class="token keyword">val</span> rdd1<span class="token operator">:</span> RDD<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> sc<span class="token punctuation">.</span>textFile<span class="token punctuation">(</span><span class="token string">"Day06/input/number"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//只有k-v值才有分区器</span>
+    rdd1<span class="token punctuation">.</span>saveAsTextFile<span class="token punctuation">(</span><span class="token string">"./output"</span><span class="token punctuation">)</span>
+    <span class="token comment">//使用hash分区器</span>
+    <span class="token keyword">val</span> rdd2<span class="token operator">:</span> RDD<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> rdd1<span class="token punctuation">.</span>partitionBy<span class="token punctuation">(</span><span class="token keyword">new</span> HashPartitioner<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    rdd2<span class="token punctuation">.</span>saveAsTextFile<span class="token punctuation">(</span><span class="token string">"./output2"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="2-RangePartitioner"><a href="#2-RangePartitioner" class="headerlink" title="2.RangePartitioner"></a>2.RangePartitioner</h2><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> PartitionBy <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[2]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"Main"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> sc<span class="token operator">:</span> SparkContext <span class="token operator">=</span> <span class="token keyword">new</span> SparkContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">)</span>
+    <span class="token keyword">val</span> rdd1<span class="token operator">=</span> sc<span class="token punctuation">.</span>textFile<span class="token punctuation">(</span><span class="token string">"Day06/input/number"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//只有k-v值才有分区器</span>
+    rdd1<span class="token punctuation">.</span>saveAsTextFile<span class="token punctuation">(</span><span class="token string">"./output"</span><span class="token punctuation">)</span>
+    <span class="token comment">//使用rangePartitioner</span>
+    <span class="token keyword">val</span> value <span class="token operator">=</span> <span class="token keyword">new</span> RangePartitioner<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> rdd1<span class="token punctuation">.</span>sample<span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//range分区器的使用,要定义泛型,传递分区,传递sample</span>
+    <span class="token comment">//首先要传递一个分区,传递一个</span>
+    rdd1<span class="token punctuation">.</span>partitionBy<span class="token punctuation">(</span>value<span class="token punctuation">)</span>
+    rdd1<span class="token punctuation">.</span>saveAsTextFile<span class="token punctuation">(</span><span class="token string">"./output2"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="3-自定义分区"><a href="#3-自定义分区" class="headerlink" title="3.自定义分区"></a>3.自定义分区</h2><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">case</span> <span class="token keyword">class</span> MyPartitioner<span class="token punctuation">(</span>numPartition<span class="token operator">:</span><span class="token builtin">Int</span><span class="token punctuation">)</span> <span class="token keyword">extends</span> Partitioner <span class="token punctuation">&#123;</span>
+    <span class="token keyword">override</span> <span class="token keyword">def</span> numPartitions<span class="token operator">:</span> <span class="token builtin">Int</span> <span class="token operator">=</span> numPartition
+    <span class="token keyword">override</span> <span class="token keyword">def</span> getPartition<span class="token punctuation">(</span>key<span class="token operator">:</span> <span class="token builtin">Any</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Int</span> <span class="token operator">=</span> <span class="token punctuation">(</span>math<span class="token punctuation">.</span>random<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> numPartition<span class="token punctuation">)</span><span class="token punctuation">.</span>toInt
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">object</span> PartitionBy <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[2]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"Main"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> sc<span class="token operator">:</span> SparkContext <span class="token operator">=</span> <span class="token keyword">new</span> SparkContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">)</span>
+    <span class="token keyword">val</span> rdd1<span class="token operator">=</span> sc<span class="token punctuation">.</span>textFile<span class="token punctuation">(</span><span class="token string">"Day06/input/number"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>map<span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//只有k-v值才有分区器</span>
+    rdd1<span class="token punctuation">.</span>saveAsTextFile<span class="token punctuation">(</span><span class="token string">"./output"</span><span class="token punctuation">)</span>
+    <span class="token comment">//使用rangePartitioner</span>
+    <span class="token keyword">val</span> value <span class="token operator">=</span> <span class="token keyword">new</span> RangePartitioner<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> rdd1<span class="token punctuation">.</span>sample<span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//range分区器的使用,要定义泛型,传递分区,传递sample</span>
+    <span class="token comment">//首先要传递一个分区,传递一个</span>
+    <span class="token keyword">val</span> value1<span class="token operator">:</span> RDD<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> rdd1<span class="token punctuation">.</span>partitionBy<span class="token punctuation">(</span>MyPartitioner<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    value1<span class="token punctuation">.</span>saveAsTextFile<span class="token punctuation">(</span><span class="token string">"./output2"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="0x3-自定义累加器"><a href="#0x3-自定义累加器" class="headerlink" title="0x3 自定义累加器"></a>0x3 自定义累加器</h1><pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">package</span> <span class="token namespace">test<span class="token punctuation">.</span>longAccumulator</span>
 
-import org.apache.spark.rdd.RDD
-import org.apache.spark.util.&#123;AccumulatorV2, LongAccumulator&#125;
-import org.apache.spark.&#123;SparkConf, SparkContext&#125;
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>rdd<span class="token punctuation">.</span></span>RDD
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>AccumulatorV2<span class="token punctuation">,</span> LongAccumulator<span class="token punctuation">&#125;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>SparkConf<span class="token punctuation">,</span> SparkContext<span class="token punctuation">&#125;</span>
 
-import scala.collection.mutable
+<span class="token keyword">import</span> <span class="token namespace">scala<span class="token punctuation">.</span>collection<span class="token punctuation">.</span>mutable</span>
 
-&#x2F;**
+<span class="token comment">/**
  * @create 2020-10-31 11:21
- *&#x2F;
-object selfAccumulator &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    val sc &#x3D; new SparkContext(new SparkConf().setMaster(&quot;local[2]&quot;).setAppName(&quot;accumulator&quot;))
-    val word: RDD[String] &#x3D; sc.textFile(&quot;Day06&#x2F;input&#x2F;word.txt&quot;)
-    val words &#x3D; word.flatMap(_.split(&quot; &quot;))
-    val accumulator: LongAccumulator &#x3D; sc.longAccumulator&#x2F;&#x2F;定义数字累加器
-    words.foreach&#123;
-      case &quot;hello&quot; &#x3D;&gt; accumulator.add(1)
-      case _ &#x3D;&gt;
-    &#125;
-    println(&quot;hello:&quot;+accumulator.value)&#x2F;&#x2F;注意输出为accumulator的值
-    println(&quot;--------------------------------------------------&quot;)
-  &#125;
-&#125;
-&#x2F;&#x2F;自定义累加器
-&#x2F;&#x2F;1.要继承的类为AccumulatorV2
-&#x2F;&#x2F;2.要注意描写泛型
-&#x2F;&#x2F;3.注意使用一种集合来累加
-class WCAccumulator extends AccumulatorV2[String,mutable.Map[String,Int]] &#123;
-  private val map &#x3D; mutable.Map.empty[String, Int]
-  &#x2F;&#x2F;如何理解Map.empty的创建map的方法&#x2F;&#x2F;创建空集合
+ */</span>
+<span class="token keyword">object</span> selfAccumulator <span class="token punctuation">&#123;</span>
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> sc <span class="token operator">=</span> <span class="token keyword">new</span> SparkContext<span class="token punctuation">(</span><span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[2]"</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"accumulator"</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> word<span class="token operator">:</span> RDD<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> sc<span class="token punctuation">.</span>textFile<span class="token punctuation">(</span><span class="token string">"Day06/input/word.txt"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> words <span class="token operator">=</span> word<span class="token punctuation">.</span>flatMap<span class="token punctuation">(</span>_<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> accumulator<span class="token operator">:</span> LongAccumulator <span class="token operator">=</span> sc<span class="token punctuation">.</span>longAccumulator<span class="token comment">//定义数字累加器</span>
+    words<span class="token punctuation">.</span>foreach<span class="token punctuation">&#123;</span>
+      <span class="token keyword">case</span> <span class="token string">"hello"</span> <span class="token keyword">=></span> accumulator<span class="token punctuation">.</span>add<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+      <span class="token keyword">case</span> _ <span class="token keyword">=></span>
+    <span class="token punctuation">&#125;</span>
+    println<span class="token punctuation">(</span><span class="token string">"hello:"</span><span class="token operator">+</span>accumulator<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token comment">//注意输出为accumulator的值</span>
+    println<span class="token punctuation">(</span><span class="token string">"--------------------------------------------------"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">//自定义累加器</span>
+<span class="token comment">//1.要继承的类为AccumulatorV2</span>
+<span class="token comment">//2.要注意描写泛型</span>
+<span class="token comment">//3.注意使用一种集合来累加</span>
+<span class="token keyword">class</span> WCAccumulator <span class="token keyword">extends</span> AccumulatorV2<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span>mutable<span class="token punctuation">.</span>Map<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span><span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">private</span> <span class="token keyword">val</span> map <span class="token operator">=</span> mutable<span class="token punctuation">.</span>Map<span class="token punctuation">.</span>empty<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">]</span>
+  <span class="token comment">//如何理解Map.empty的创建map的方法//创建空集合</span>
 
-  &#x2F;&#x2F;传递一个你决定为空的方法
-  override def isZero: Boolean &#x3D; map.isEmpty
-  &#x2F;&#x2F;传递一个复制的方法
-  override def copy(): AccumulatorV2[String, mutable.Map[String, Int]] &#x3D; &#123;
-    val accumulator:WCAccumulator &#x3D; new WCAccumulator
-    accumulator.map ++&#x3D; this.map&#x2F;&#x2F;如何理解this?
-    accumulator&#x2F;&#x2F;传递回
-  &#125;
+  <span class="token comment">//传递一个你决定为空的方法</span>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> isZero<span class="token operator">:</span> <span class="token builtin">Boolean</span> <span class="token operator">=</span> map<span class="token punctuation">.</span>isEmpty
+  <span class="token comment">//传递一个复制的方法</span>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> copy<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> AccumulatorV2<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> mutable<span class="token punctuation">.</span>Map<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> accumulator<span class="token operator">:</span>WCAccumulator <span class="token operator">=</span> <span class="token keyword">new</span> WCAccumulator
+    accumulator<span class="token punctuation">.</span>map <span class="token operator">++</span><span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>map<span class="token comment">//如何理解this?</span>
+    accumulator<span class="token comment">//传递回</span>
+  <span class="token punctuation">&#125;</span>
 
-  override def reset(): Unit &#x3D; map.clear()
+  <span class="token keyword">override</span> <span class="token keyword">def</span> reset<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> map<span class="token punctuation">.</span>clear<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-  override def add(v: String): Unit &#x3D; map.update(v,map.getOrElse(v,0)+1)
+  <span class="token keyword">override</span> <span class="token keyword">def</span> add<span class="token punctuation">(</span>v<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> map<span class="token punctuation">.</span>update<span class="token punctuation">(</span>v<span class="token punctuation">,</span>map<span class="token punctuation">.</span>getOrElse<span class="token punctuation">(</span>v<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-  override def merge(other: AccumulatorV2[String, mutable.Map[String, Int]]): Unit &#x3D;
-    other.value.foreach&#123;&#x2F;&#x2F;传入的是每个key的值得键值对
-      case (word,count) &#x3D;&gt;
-        map.update(word,map.getOrElse(word,0)+count)&#x2F;&#x2F;累加器核心2
-    &#125;
-  override def value: mutable.Map[String, Int] &#x3D; map
-&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> merge<span class="token punctuation">(</span>other<span class="token operator">:</span> AccumulatorV2<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> mutable<span class="token punctuation">.</span>Map<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span>
+    other<span class="token punctuation">.</span>value<span class="token punctuation">.</span>foreach<span class="token punctuation">&#123;</span><span class="token comment">//传入的是每个key的值得键值对</span>
+      <span class="token keyword">case</span> <span class="token punctuation">(</span>word<span class="token punctuation">,</span>count<span class="token punctuation">)</span> <span class="token keyword">=></span>
+        map<span class="token punctuation">.</span>update<span class="token punctuation">(</span>word<span class="token punctuation">,</span>map<span class="token punctuation">.</span>getOrElse<span class="token punctuation">(</span>word<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token operator">+</span>count<span class="token punctuation">)</span><span class="token comment">//累加器核心2</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token keyword">override</span> <span class="token keyword">def</span> value<span class="token operator">:</span> mutable<span class="token punctuation">.</span>Map<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Int</span><span class="token punctuation">]</span> <span class="token operator">=</span> map
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1150,7 +1150,7 @@ class WCAccumulator extends AccumulatorV2[String,mutable.Map[String,Int]] &#123;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">219.3k</span>&nbsp;字
+                class="white-color">214.8k</span>&nbsp;字
             
             
             

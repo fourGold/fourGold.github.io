@@ -351,10 +351,28 @@
                 
                 
                 
+                <a href="/categories/flink/" title="flink: 5">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            style="background-color: #F9EBEA;">flink
+                        <span class="tag-length">5</span>
+                    </span>
+                </a>
+                
+                
+                <a href="/categories/git/" title="git: 1">
+                    <span class="chip center-align waves-effect waves-light
+                             chip-default "
+                            style="background-color: #F5EEF8;">git
+                        <span class="tag-length">1</span>
+                    </span>
+                </a>
+                
+                
                 <a href="/categories/tips/" title="tips: 1">
                     <span class="chip center-align waves-effect waves-light
                              chip-default "
-                            style="background-color: #F9EBEA;">tips
+                            style="background-color: #D5F5E3;">tips
                         <span class="tag-length">1</span>
                     </span>
                 </a>
@@ -363,26 +381,8 @@
                 <a href="/categories/spark/" title="spark: 9">
                     <span class="chip center-align waves-effect waves-light
                              chip-active "
-                            style="background-color: #F5EEF8;">spark
+                            style="background-color: #E8F8F5;">spark
                         <span class="tag-length">9</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/git/" title="git: 1">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            style="background-color: #D5F5E3;">git
-                        <span class="tag-length">1</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/categories/flink/" title="flink: 5">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            style="background-color: #E8F8F5;">flink
-                        <span class="tag-length">5</span>
                     </span>
                 </a>
                 
@@ -461,8 +461,8 @@ MR中的场景 (I/O,网络数据传输,Shuffle,Merge)
                         <div class="summary block-with-text">
                             
                                 0x1 Long累加器的使用object selfAccumulator &#123;
-  def main(args: Array[String]): Unit &#x3D; &#123;
-    val sc &#x3D; new Sp
+  def main(args: Array[String]): Unit = &#123;
+    val sc = new SparkContext
                             
                         </div>
                         <div class="publish-info">
@@ -512,9 +512,10 @@ MR中的场景 (I/O,网络数据传输,Shuffle,Merge)
 1.任务的提交==程序起点==
 spark-submit.cmd
 ==脚本启动==
-bin&#x2F;spark-submit
+bin/spark-submit
 --class WordCount
---master y
+--master yarn
+-
                             
                         </div>
                         <div class="publish-info">
@@ -564,8 +565,8 @@ bin&#x2F;spark-submit
 同时要按照工业化流程写程序
 
 1.配置文件#JDBC配置
-jdbc.datasource.size&#x3D;10
-jdbc.url&#x3D;jdbc:mysql:&#
+jdbc.datasource.size=10
+jdbc.url=jdbc:mysql://hadoop102:
                             
                         </div>
                         <div class="publish-info">
@@ -611,7 +612,7 @@ jdbc.url&#x3D;jdbc:mysql:&#
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                云盘：&#109;&#x69;&#97;&#111;&#x63;&#x68;&#117;&#x61;&#x6e;&#104;&#97;&#x69;&#x40;&#49;&#54;&#x33;&#x2e;&#x63;&#111;&#109;暗
+                                云盘：&#109;&#105;&#x61;&#x6f;&#x63;&#x68;&#x75;&#97;&#x6e;&#104;&#97;&#105;&#64;&#x31;&#54;&#51;&#x2e;&#x63;&#x6f;&#x6d;暗号
                             
                         </div>
                         <div class="publish-info">
@@ -793,7 +794,7 @@ Hadoop
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">219.3k</span>&nbsp;字
+                class="white-color">214.8k</span>&nbsp;字
             
             
             
