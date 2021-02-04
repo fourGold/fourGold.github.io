@@ -774,4 +774,899 @@ sparkSQL是在spark的基础上进行延伸，属于功能的扩展，使用隐�
         |"""</span><span class="token punctuation">.</span>stripMargin<span class="token punctuation">)</span><span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
 
     <span class="token comment">//使用udaf-aggregator函数</span>
-    <span class="token keyword">val</span> myAvg <span class="token operator">=</
+    <span class="token keyword">val</span> myAvg <span class="token operator">=</span> <span class="token keyword">new</span> MyAvg<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    sparkSession<span class="token punctuation">.</span>udf<span class="token punctuation">.</span>register<span class="token punctuation">(</span><span class="token string">"myAvg"</span><span class="token punctuation">,</span>functions<span class="token punctuation">.</span>udaf<span class="token punctuation">(</span><span class="token keyword">new</span> MyAvgAgg<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    sparkSession<span class="token punctuation">.</span>sql<span class="token punctuation">(</span>
+      <span class="token triple-quoted-string string">"""
+        |select myAvg(age) as avgAge from user
+        |"""</span><span class="token punctuation">.</span>stripMargin<span class="token punctuation">)</span><span class="token punctuation">.</span>show<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment">//关闭环境</span>
+    sparkSession<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h1 id="SparkSQL-Data"><a href="#SparkSQL-Data" class="headerlink" title="SparkSQL_Data"></a>SparkSQL_Data</h1><h2 id="加载数据"><a href="#加载数据" class="headerlink" title="加载数据"></a>加载数据</h2><p>如果不指定加载类型,默认的保存与加载类型是parquet</p>
+<p>spark.read.load 是加载数据的通用方法</p>
+<p>如果读取不同格式的数据，可以对不同的数据格式进行设定</p>
+<p>我们前面都是使用 read API 先把文件加载到 DataFrame 然后再查询，其实，我们也可以直接在文件上查询</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">scala<span class="token operator">></span> spark.read. 
+scala<span class="token operator">></span> spark.read.format<span class="token punctuation">(</span><span class="token string">"…"</span><span class="token punctuation">)</span><span class="token punctuation">[</span>.option<span class="token punctuation">(</span><span class="token string">"…"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>.load<span class="token punctuation">(</span><span class="token string">"…"</span><span class="token punctuation">)</span> 
+	<span class="token comment">#format("…")：指定加载的数据类型，包括"csv"、"jdbc"、"json"、"orc"、"parquet"和"textFile"。</span>
+	<span class="token comment">#load("…")：在"csv"、"jdbc"、"json"、"orc"、"parquet"和"textFile"格式下需要传入加载数据的路径。 </span>
+	<span class="token comment">#option("…")：在"jdbc"格式下需要传入 JDBC 相应参数，url、user、password 和 dbtable </span>
+
+<span class="token comment">#直接在文件上进行查询:  文件格式.`文件路径` </span>
+scala<span class="token operator">></span> spark.sql<span class="token punctuation">(</span><span class="token string">"select * from json.<span class="token variable"><span class="token variable">`</span>/opt/module/data/user.json<span class="token variable">`</span></span>"</span><span class="token punctuation">)</span>.show <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>实战</strong>:JSON与Parquet文件的读取与保存</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">spark.read.load<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token comment">#默认情况下读取的格式是parquet文件</span>
+val <span class="token function">df</span> <span class="token operator">=</span> spark.read.load<span class="token punctuation">(</span><span class="token string">"/opt/module/spark/examples/src/main/resources/users.parquet"</span><span class="token punctuation">)</span>
+
+<span class="token comment">#格式,例子的地方</span>
+<span class="token comment">#/opt/module/spark/examples/src/main/resources</span>
+<span class="token comment">#保存数据 SparkSQL默认读取或者保存的文件格式parquet</span>
+df.write.save<span class="token punctuation">(</span><span class="token string">"output"</span><span class="token punctuation">)</span>
+
+<span class="token comment">#就想读json文件</span>
+val <span class="token function">df</span> <span class="token operator">=</span> spark.read.format<span class="token punctuation">(</span><span class="token string">"json"</span><span class="token punctuation">)</span>.load<span class="token punctuation">(</span><span class="token string">"data/user.json"</span><span class="token punctuation">)</span>
+
+<span class="token comment">#比较简单的json文件</span>
+spark.read.json<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">#保存json文件</span>
+df.write.format<span class="token punctuation">(</span><span class="token string">"json"</span><span class="token punctuation">)</span>.save<span class="token punctuation">(</span><span class="token string">"output1"</span><span class="token punctuation">)</span>
+
+<span class="token comment">#选择表 转换过程由spark自己完成 注意使用飘号</span>
+spark.sql<span class="token punctuation">(</span><span class="token string">"select * from json.<span class="token variable"><span class="token variable">`</span>data/user.json<span class="token variable">`</span></span>"</span><span class="token punctuation">)</span>.show<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="保存数据"><a href="#保存数据" class="headerlink" title="保存数据"></a>保存数据</h2><p>df.write.save 是保存数据的通用方法 </p>
+<p>scala&gt;df.write. csv  jdbc   json  orc   parquet textFile… … 如果保存不同格式的数据，可以对不同的数据格式进行设定 </p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">scala<span class="token operator">></span>df.write. 
+csv  jdbc   json  orc   parquet textFile… … <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/SparkSQL%E6%95%B0%E6%8D%AE%E4%BF%9D%E5%AD%98%E6%A0%BC%E5%BC%8F.png" alt="SparkSQL数据的保存"></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">scala<span class="token operator">></span>df.write.format<span class="token punctuation">(</span><span class="token string">"…"</span><span class="token punctuation">)</span><span class="token punctuation">[</span>.option<span class="token punctuation">(</span><span class="token string">"…"</span><span class="token punctuation">)</span><span class="token punctuation">]</span>.save<span class="token punctuation">(</span><span class="token string">"…"</span><span class="token punctuation">)</span> 
+<span class="token comment"># format("…")：指定保存的数据类型，包括"csv"、"jdbc"、"json"、"orc"、"parquet"和"textFile"。 </span>
+<span class="token comment"># save ("…")：在"csv"、"orc"、"parquet"和"textFile"格式下需要传入保存数据的路径。 </span>
+<span class="token comment"># option("…")：在"jdbc"格式下需要传入 JDBC 相应参数，url、user、password 和 dbtable </span>
+<span class="token comment"># 保存操作可以使用 SaveMode, 用来指明如何处理数据，使用 mode()方法来设置。 有一点很重要: 这些 SaveMode 都是没有加锁的, 也不是原子操作。 </span>
+<span class="token comment">#SaveMode 是一个枚举类，其中的常量包括： </span>
+<span class="token comment">#SaveMode.ErrorIfExists(default) "error"(default) 如果文件已经存在则抛出异常 </span>
+<span class="token comment">#SaveMode.Append "append" 如果文件已经存在则追加 #SaveMode.Overwrite "overwrite" 如果文件已经存在则覆盖 #SaveMode.Ignore "ignore" 如果文件已经存在则忽略 </span>
+df.write.mode<span class="token punctuation">(</span><span class="token string">"append"</span><span class="token punctuation">)</span>.json<span class="token punctuation">(</span><span class="token string">"/opt/module/data/output"</span><span class="token punctuation">)</span> .save<span class="token punctuation">(</span><span class="token string">"output"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="JSON-Parquet-CSV"><a href="#JSON-Parquet-CSV" class="headerlink" title="JSON/Parquet/CSV"></a>JSON/Parquet/CSV</h2><h3 id="Parquet"><a href="#Parquet" class="headerlink" title="Parquet"></a>Parquet</h3><p>Spark SQL 的默认数据源为 Parquet 格式。Parquet 是一种能够有效存储嵌套数据的列式存储格式。<br>数据源为 Parquet 文件时，Spark SQL 可以方便的执行所有的操作，不需要使用 format。<br>修改配置项 spark.sql.sources.default，可修改默认数据源格式。 </p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">scala<span class="token operator">></span> val <span class="token function">df</span> <span class="token operator">=</span> spark.read.load<span class="token punctuation">(</span><span class="token string">"examples/src/main/resources/users.parquet"</span><span class="token punctuation">)</span> 
+scala<span class="token operator">></span> df.show
+scala<span class="token operator">></span> var <span class="token function">df</span> <span class="token operator">=</span> spark.read.json<span class="token punctuation">(</span><span class="token string">"/opt/module/data/input/people.json"</span><span class="token punctuation">)</span> 
+<span class="token comment">#保存为 parquet 格式 </span>
+scala<span class="token operator">></span> df.write.mode<span class="token punctuation">(</span><span class="token string">"append"</span><span class="token punctuation">)</span>.save<span class="token punctuation">(</span><span class="token string">"/opt/module/data/output"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a>JSON</h3><p>Spark SQL 能够自动推测 JSON 数据集的结构，并将它加载为一个 Dataset[Row]. 可以通过 SparkSession.read.json()去加载 JSON 文件。 </p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#将读取的文件保存</span>
+val <span class="token function">df</span> <span class="token operator">=</span> spark.read.json<span class="token punctuation">(</span><span class="token string">"data/user.json"</span><span class="token punctuation">)</span>
+<span class="token comment">#保存 因为保存模式的原因,再次保存会报错</span>
+df.write.format<span class="token punctuation">(</span><span class="token string">"json"</span><span class="token punctuation">)</span>.save<span class="token punctuation">(</span><span class="token string">"output"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意：Spark 读取的 JSON 文件不是传统的 JSON 文件，每一行都应该是一个 JSON 串。格式如下： </p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span><span class="token property">"name"</span><span class="token operator">:</span><span class="token string">"Michael"</span><span class="token punctuation">&#125;</span> 
+<span class="token punctuation">&#123;</span><span class="token property">"name"</span><span class="token operator">:</span><span class="token string">"Andy"</span>， <span class="token property">"age"</span><span class="token operator">:</span><span class="token number">30</span><span class="token punctuation">&#125;</span> 
+<span class="token punctuation">[</span><span class="token punctuation">&#123;</span><span class="token property">"name"</span><span class="token operator">:</span><span class="token string">"Justin"</span>， <span class="token property">"age"</span><span class="token operator">:</span><span class="token number">19</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span><span class="token punctuation">&#123;</span><span class="token property">"name"</span><span class="token operator">:</span><span class="token string">"Justin"</span>， <span class="token property">"age"</span><span class="token operator">:</span><span class="token number">19</span><span class="token punctuation">&#125;</span><span class="token punctuation">]</span> 
+#因为Spark读取是一行一行读的<span class="token punctuation">,</span>所以一行应该是一个标准的json文件<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="CSV"><a href="#CSV" class="headerlink" title="CSV"></a>CSV</h3><p>Spark SQL 可以配置 CSV 文件的列表信息，读取 CSV 文件,CSV 文件的第一行设置为数据列 spark</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#option例子是分号 optipn-分隔符 header-表头 inferSchema-??</span>
+spark.read.format<span class="token punctuation">(</span><span class="token string">"csv"</span><span class="token punctuation">)</span>.option<span class="token punctuation">(</span><span class="token string">"sep"</span>, <span class="token string">";"</span><span class="token punctuation">)</span>.option<span class="token punctuation">(</span><span class="token string">"inferSchema"</span>, <span class="token string">"true"</span><span class="token punctuation">)</span>.option<span class="token punctuation">(</span><span class="token string">"header"</span>, <span class="token string">"true"</span><span class="token punctuation">)</span>.load<span class="token punctuation">(</span><span class="token string">"data/user.csv"</span><span class="token punctuation">)</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="HIVE"><a href="#HIVE" class="headerlink" title="HIVE"></a>HIVE</h2><p>Apache Hive 是 Hadoop 上的 SQL 引擎，Spark SQL 编译时可以包含 Hive 支持，也可以不包含。</p>
+<p>包含 Hive 支持的 Spark SQL 可以支持 Hive 表访问、UDF (用户自定义函数)以及 Hive 查询语言(HiveQL/HQL)等。</p>
+<p>SparkSQL想连接HIVE有两种连接方式</p>
+<h3 id="内置Hive"><a href="#内置Hive" class="headerlink" title="内置Hive"></a>内置Hive</h3><p>SparkSQL本身也具有元数据,数据仓库,全部都有,通过内置Hive实现</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#显示全部表</span>
+spark.sql<span class="token punctuation">(</span><span class="token string">"show tables"</span><span class="token punctuation">)</span>.show<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>发现内部文件系统自动生成了metadb</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/Spark%E5%86%85%E9%83%A8%E6%96%87%E4%BB%B6.png" alt="Spark内置文件系统"></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 导入数据</span>
+val <span class="token function">df</span> <span class="token operator">=</span> spark.read.json<span class="token punctuation">(</span><span class="token string">"data/user.json"</span><span class="token punctuation">)</span>
+<span class="token comment"># 创建表</span>
+spark.sql<span class="token punctuation">(</span><span class="token string">"create table test(age int)"</span><span class="token punctuation">)</span>
+<span class="token comment">#查看表</span>
+spark.sql<span class="token punctuation">(</span><span class="token string">"show tables"</span><span class="token punctuation">)</span>.show
+<span class="token comment">#加载数据</span>
+spark.sql<span class="token punctuation">(</span><span class="token string">"load data local inpath 'data/user.text' into table test"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/spark%E5%86%85%E7%BD%AEhive%E7%9A%84warehouse.png" alt="spark-sql数据仓库"></p>
+<h3 id="外置Hive"><a href="#外置Hive" class="headerlink" title="外置Hive"></a>外置Hive</h3><p>一般使用外置Hive如果想连接外部已经部署好的 Hive，需要通过以下几个步骤： </p>
+<ol>
+<li> Spark 要接管 Hive 需要把 hive-site.xml 拷贝到 conf/目录下 </li>
+<li> 把 Mysql 的驱动 copy 到 jars/目录下 </li>
+<li> 如果访问不到 hdfs，则需要把 core-site.xml 和 hdfs-site.xml 拷贝到 conf/目录下 </li>
+<li> 重启 spark-shell </li>
+</ol>
+<p>然后查看一下数据库</p>
+<p>已经连接到Hive了</p>
+<h3 id="Beeline"><a href="#Beeline" class="headerlink" title="Beeline"></a>Beeline</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">bin/spark-sql
+<span class="token comment">#为什么带有(default)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/spark-sql.png" alt="spark-sql显示bug"></p>
+<p>Spark Thrift Server 是 Spark 社区基于 HiveServer2 实现的一个 Thrift 服务。旨在无缝兼容HiveServer2。</p>
+<p>因为 Spark Thrift Server 的接口和协议都和 HiveServer2 完全一致，因此我们部署好 Spark Thrift Server 后，可以直接使用 hive 的 beeline 访问 Spark Thrift Server 执行相关语句。</p>
+<p>Spark Thrift Server 的目的也只是取代 HiveServer2，因此它依旧可以和 Hive Metastore进行交互，获取到 hive 的元数据。 </p>
+<p>如果想连接 Thrift Server，需要通过以下几个步骤： </p>
+<ol>
+<li><p>Spark 要接管 Hive 需要把 hive-site.xml 拷贝到 conf/目录下  </p>
+</li>
+<li><p> 把 Mysql 的驱动 copy 到 jars/目录下 </p>
+</li>
+<li><p>如果访问不到 hdfs，则需要把 core-site.xml 和 hdfs-site.xml 拷贝到 conf/目录下 </p>
+</li>
+<li><p>启动 Thrift Server</p>
+</li>
+</ol>
+<p><strong>beeline客户端连接</strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">sbin/start-thriftserver.sh 
+<span class="token comment"># 使用 beeline 连接 Thrift Server </span>
+bin/beeline -u jdbc:hive2://linux1:10000 -n root <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>代码操作</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#注意：在开发工具中创建数据库默认是在本地仓库，通过参数修改数据库仓库的地址: </span>
+config<span class="token punctuation">(</span><span class="token string">"spark.sql.warehouse.dir"</span>, <span class="token string">"hdfs://linux1:8020/user/hive/warehouse"</span><span class="token punctuation">)</span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>权限问题</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">setProperty</span><span class="token punctuation">(</span><span class="token string">"HADOOP_USER_NAME"</span><span class="token punctuation">,</span> <span class="token string">"root"</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Jinxin Li</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://fourgold.github.io/2021/01/03/08Spark_SparkSQL/">http://fourgold.github.io/2021/01/03/08Spark_SparkSQL/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Jinxin Li</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/sparkSQL/">
+                                    <span class="chip bg-color">sparkSQL</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/01/03/08Spark_SparkCore/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="Spark_SparkCore">
+                        
+                        <span class="card-title">Spark_SparkCore</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-03
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spark/" class="post-category">
+                                    spark
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/spark/">
+                        <span class="chip bg-color">spark</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/01/03/08Spark_HiveOnSpark/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Spark中的hive任务的stage溯源">
+                        
+                        <span class="card-title">Spark中的hive任务的stage溯源</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            关于一个sql,join几张表能有几个stage的问题,我使用spark on hive做了一些尝试,网上内容也不靠谱,其中也抛出了一些问题,可以思考给出建议,我也给出了源码,提供直接粘贴测试
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-03
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Jinxin Li
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/interview/">
+                        <span class="chip bg-color">interview</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('1'),
+            headingSelector: 'h1,h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1,h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">Jinxin Li</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">232.3k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/fourgold" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:799392914@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=799392914" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 799392914" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

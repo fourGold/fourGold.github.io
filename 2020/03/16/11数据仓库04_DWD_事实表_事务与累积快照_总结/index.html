@@ -908,4 +908,888 @@ nvl<span class="token punctuation">(</span>old<span class="token punctuation">,<
        oa<span class="token punctuation">.</span>dt
 <span class="token keyword">from</span> <span class="token punctuation">(</span><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> ods_order_info <span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span><span class="token punctuation">)</span> oi <span class="token comment">--ods_order_info</span>
         <span class="token keyword">left</span> <span class="token keyword">outer</span> <span class="token keyword">join</span>
-     <span class="token punctuation">(</span><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> ods_activity_order oa <
+     <span class="token punctuation">(</span><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> ods_activity_order oa <span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span><span class="token punctuation">)</span> oa <span class="token comment">--ods_activity_order</span>
+        <span class="token keyword">on</span> oi<span class="token punctuation">.</span>id <span class="token operator">=</span> oa<span class="token punctuation">.</span>order_id
+<span class="token keyword">join</span><span class="token punctuation">(</span><span class="token keyword">select</span>
+        order_id<span class="token punctuation">,</span><span class="token comment">--用于join</span>
+        tmp<span class="token punctuation">.</span>strmap<span class="token punctuation">[</span><span class="token string">'1001'</span><span class="token punctuation">]</span> create_time<span class="token punctuation">,</span>
+        tmp<span class="token punctuation">.</span>strmap<span class="token punctuation">[</span><span class="token string">'1002'</span><span class="token punctuation">]</span> payment_time<span class="token punctuation">,</span>
+        tmp<span class="token punctuation">.</span>strmap<span class="token punctuation">[</span><span class="token string">'1003'</span><span class="token punctuation">]</span> cancel_time<span class="token punctuation">,</span>
+        tmp<span class="token punctuation">.</span>strmap<span class="token punctuation">[</span><span class="token string">'1004'</span><span class="token punctuation">]</span> finish_time<span class="token punctuation">,</span>
+        tmp<span class="token punctuation">.</span>strmap<span class="token punctuation">[</span><span class="token string">'1005'</span><span class="token punctuation">]</span> refund_time<span class="token punctuation">,</span>
+        tmp<span class="token punctuation">.</span>strmap<span class="token punctuation">[</span><span class="token string">'1006'</span><span class="token punctuation">]</span> refund_finish_time
+    <span class="token keyword">from</span> <span class="token punctuation">(</span>
+        <span class="token keyword">select</span>
+            order_id<span class="token punctuation">,</span>
+            str_to_map<span class="token punctuation">(</span>concat_ws<span class="token punctuation">(</span><span class="token string">","</span><span class="token punctuation">,</span> collect_list<span class="token punctuation">(</span>concat<span class="token punctuation">(</span>order_status<span class="token punctuation">,</span> <span class="token string">"="</span><span class="token punctuation">,</span> operate_time<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">","</span><span class="token punctuation">,</span><span class="token string">"="</span><span class="token punctuation">)</span> strmap
+            <span class="token comment">--str_to_map()一共传三个参数,第一个是str,第二个是每个kv之间的分隔符,第三个是k与v之间的分隔断</span>
+        <span class="token keyword">from</span> ods_order_status_log
+        <span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span>
+        <span class="token keyword">group</span> <span class="token keyword">by</span> order_id<span class="token comment">--粒度变粗</span>
+     <span class="token punctuation">)</span> tmp<span class="token punctuation">)</span> os
+<span class="token keyword">on</span> oi<span class="token punctuation">.</span>id <span class="token operator">=</span> os<span class="token punctuation">.</span>order_id<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-2-2-旧表DWD的拉取sql书写"><a href="#3-2-2-旧表DWD的拉取sql书写" class="headerlink" title="3.2.2 旧表DWD的拉取sql书写"></a>3.2.2 旧表DWD的拉取sql书写</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--旧表的拉取其实是相对简单的,根据新表的数据,拿出新表中所有的create_time,此时新表中的create_time应该是旧表拉取数据所寻找分区的重要依据,旧表应该拉取对应分区中的数据,方便对更新的数据进行对应补全</span>
+<span class="token comment">--这里的思路应该是直接使用ods_order_info,也就是重要三表中的主表,他包含了所有订单的create_time,其实我们订单状态的create_time也可以使用这个</span>
+<span class="token comment">--1. ods_order_info(旧表的拉取对应的分区使用这里面的create_time,找到分区数据)</span>
+<span class="token comment">--2. dwd_fact_order_info(找主数据)</span>
+<span class="token keyword">select</span> 
+		id<span class="token punctuation">,</span><span class="token comment">--主数据</span>
+       	order_status<span class="token punctuation">,</span>
+       	user_id<span class="token punctuation">,</span>
+       	out_trade_no<span class="token punctuation">,</span>
+       	create_time<span class="token punctuation">,</span>
+       	payment_time<span class="token punctuation">,</span>
+       	cancel_time<span class="token punctuation">,</span>
+       	finish_time<span class="token punctuation">,</span>
+       	refund_time<span class="token punctuation">,</span>
+       	refund_finish_time<span class="token punctuation">,</span>
+       	province_id<span class="token punctuation">,</span>
+       	activity_id<span class="token punctuation">,</span>
+       	original_total_amount<span class="token punctuation">,</span>
+       	benefit_reduce_amount<span class="token punctuation">,</span>
+       	feight_fee<span class="token punctuation">,</span>
+       	final_total_amount
+<span class="token keyword">from</span> dwd_fact_order_info
+<span class="token keyword">where</span> dt <span class="token operator">in</span><span class="token punctuation">(</span>
+    <span class="token keyword">select</span>
+        date_format<span class="token punctuation">(</span>create_time<span class="token punctuation">,</span><span class="token string">'yyyy-MM-dd'</span><span class="token punctuation">)</span>
+    <span class="token keyword">from</span> ods_order_info
+    <span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span><span class="token comment">--要导入是2020-06-14的数据,分区选择</span>
+    <span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-2-3-新表旧表FULL-JOIN"><a href="#3-2-3-新表旧表FULL-JOIN" class="headerlink" title="3.2.3 新表旧表FULL JOIN"></a>3.2.3 新表旧表FULL JOIN</h3><p>直接合并了,这里要注意insert的理解,指的是把这些数据重新动态插入到新的分区或者是原来的分区,这一步虽然简单,但是底层做的工作也不少</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">set</span> hive<span class="token punctuation">.</span><span class="token keyword">exec</span><span class="token punctuation">.</span>dynamic<span class="token punctuation">.</span><span class="token keyword">partition</span><span class="token punctuation">.</span><span class="token keyword">mode</span><span class="token operator">=</span>nonstrict<span class="token punctuation">;</span>
+<span class="token keyword">set</span> hive<span class="token punctuation">.</span>input<span class="token punctuation">.</span>format<span class="token operator">=</span>org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>hadoop<span class="token punctuation">.</span>hive<span class="token punctuation">.</span>ql<span class="token punctuation">.</span>io<span class="token punctuation">.</span>HiveInputFormat<span class="token punctuation">;</span>
+<span class="token keyword">insert</span> overwrite <span class="token keyword">table</span> dwd_fact_order_info <span class="token keyword">partition</span><span class="token punctuation">(</span>dt<span class="token punctuation">)</span>
+<span class="token keyword">select</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>id<span class="token punctuation">,</span>old<span class="token punctuation">.</span>id<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>order_status<span class="token punctuation">,</span>old<span class="token punctuation">.</span>order_status<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>user_id<span class="token punctuation">,</span>old<span class="token punctuation">.</span>user_id<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>out_trade_no<span class="token punctuation">,</span>old<span class="token punctuation">.</span>out_trade_no<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>create_time<span class="token punctuation">,</span>old<span class="token punctuation">.</span>create_time<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>payment_time<span class="token punctuation">,</span>old<span class="token punctuation">.</span>payment_time<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>cancel_time<span class="token punctuation">,</span>old<span class="token punctuation">.</span>cancel_time<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>finish_time<span class="token punctuation">,</span>old<span class="token punctuation">.</span>finish_time<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>refund_time<span class="token punctuation">,</span>old<span class="token punctuation">.</span>refund_time<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>refund_finish_time<span class="token punctuation">,</span>old<span class="token punctuation">.</span>refund_finish_time<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>province_id<span class="token punctuation">,</span>old<span class="token punctuation">.</span>province_id<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>activity_id<span class="token punctuation">,</span>old<span class="token punctuation">.</span>activity_id<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>original_total_amount<span class="token punctuation">,</span>old<span class="token punctuation">.</span>original_total_amount<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>benefit_reduce_amount<span class="token punctuation">,</span>old<span class="token punctuation">.</span>benefit_reduce_amount<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>feight_fee<span class="token punctuation">,</span>old<span class="token punctuation">.</span>feight_fee<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>final_total_amount<span class="token punctuation">,</span>old<span class="token punctuation">.</span>final_total_amount<span class="token punctuation">)</span><span class="token punctuation">,</span>
+       date_format<span class="token punctuation">(</span>nvl<span class="token punctuation">(</span>new<span class="token punctuation">.</span>create_time<span class="token punctuation">,</span>old<span class="token punctuation">.</span>create_time<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">'yyyy-MM-dd'</span><span class="token punctuation">)</span>
+<span class="token keyword">from</span> <span class="token punctuation">(</span>
+     <span class="token keyword">select</span>
+            oi<span class="token punctuation">.</span>id<span class="token punctuation">,</span>
+            oi<span class="token punctuation">.</span>order_status<span class="token punctuation">,</span>
+            oi<span class="token punctuation">.</span>user_id<span class="token punctuation">,</span>
+            oi<span class="token punctuation">.</span>out_trade_no<span class="token punctuation">,</span>
+            os<span class="token punctuation">.</span>create_time<span class="token punctuation">,</span>
+            os<span class="token punctuation">.</span>payment_time<span class="token punctuation">,</span>
+            os<span class="token punctuation">.</span>cancel_time<span class="token punctuation">,</span>
+            os<span class="token punctuation">.</span>finish_time<span class="token punctuation">,</span>
+            os<span class="token punctuation">.</span>refund_time<span class="token punctuation">,</span>
+            os<span class="token punctuation">.</span>refund_finish_time<span class="token punctuation">,</span>
+            oi<span class="token punctuation">.</span>province_id<span class="token punctuation">,</span>
+            oa<span class="token punctuation">.</span>activity_id<span class="token punctuation">,</span>
+            oi<span class="token punctuation">.</span>original_total_amount<span class="token punctuation">,</span>
+            oi<span class="token punctuation">.</span>benefit_reduce_amount<span class="token punctuation">,</span>
+            oi<span class="token punctuation">.</span>feight_fee<span class="token punctuation">,</span>
+            oi<span class="token punctuation">.</span>final_total_amount<span class="token punctuation">,</span>
+            oa<span class="token punctuation">.</span>dt
+<span class="token keyword">from</span> <span class="token punctuation">(</span><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> ods_order_info <span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span><span class="token punctuation">)</span> oi <span class="token comment">--ods_order_info</span>
+        <span class="token keyword">left</span> <span class="token keyword">outer</span> <span class="token keyword">join</span>
+     <span class="token punctuation">(</span><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> ods_activity_order oa <span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span><span class="token punctuation">)</span> oa <span class="token comment">--ods_activity_order</span>
+        <span class="token keyword">on</span> oi<span class="token punctuation">.</span>id <span class="token operator">=</span> oa<span class="token punctuation">.</span>order_id
+<span class="token keyword">join</span><span class="token punctuation">(</span><span class="token keyword">select</span>
+            order_id<span class="token punctuation">,</span><span class="token comment">--用于join</span>
+            tmp<span class="token punctuation">.</span>strmap<span class="token punctuation">[</span><span class="token string">'1001'</span><span class="token punctuation">]</span> create_time<span class="token punctuation">,</span>
+            tmp<span class="token punctuation">.</span>strmap<span class="token punctuation">[</span><span class="token string">'1002'</span><span class="token punctuation">]</span> payment_time<span class="token punctuation">,</span>
+            tmp<span class="token punctuation">.</span>strmap<span class="token punctuation">[</span><span class="token string">'1003'</span><span class="token punctuation">]</span> cancel_time<span class="token punctuation">,</span>
+            tmp<span class="token punctuation">.</span>strmap<span class="token punctuation">[</span><span class="token string">'1004'</span><span class="token punctuation">]</span> finish_time<span class="token punctuation">,</span>
+            tmp<span class="token punctuation">.</span>strmap<span class="token punctuation">[</span><span class="token string">'1005'</span><span class="token punctuation">]</span> refund_time<span class="token punctuation">,</span>
+            tmp<span class="token punctuation">.</span>strmap<span class="token punctuation">[</span><span class="token string">'1006'</span><span class="token punctuation">]</span> refund_finish_time
+    <span class="token keyword">from</span> <span class="token punctuation">(</span>
+        <span class="token keyword">select</span>
+                order_id<span class="token punctuation">,</span>
+                str_to_map<span class="token punctuation">(</span>concat_ws<span class="token punctuation">(</span><span class="token string">","</span><span class="token punctuation">,</span> collect_list<span class="token punctuation">(</span>concat<span class="token punctuation">(</span>order_status<span class="token punctuation">,</span> <span class="token string">"="</span><span class="token punctuation">,</span> operate_time<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">","</span><span class="token punctuation">,</span><span class="token string">"="</span><span class="token punctuation">)</span> strmap
+                <span class="token comment">--str_to_map()一共传三个参数,第一个是str,第二个是每个kv之间的分隔符,第三个是k与v之间的分隔断</span>
+        <span class="token keyword">from</span>     ods_order_status_log
+        <span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span>
+        <span class="token keyword">group</span> <span class="token keyword">by</span> order_id<span class="token comment">--粒度变粗</span>
+     <span class="token punctuation">)</span> tmp<span class="token punctuation">)</span> os
+<span class="token keyword">on</span> oi<span class="token punctuation">.</span>id <span class="token operator">=</span> os<span class="token punctuation">.</span>order_id
+         <span class="token punctuation">)</span> old <span class="token comment">--将旧表拿出来</span>
+<span class="token keyword">full</span> <span class="token keyword">outer</span> <span class="token keyword">join</span> <span class="token comment">--full join</span>
+    <span class="token punctuation">(</span>
+        <span class="token keyword">select</span>
+                id<span class="token punctuation">,</span>
+                order_status<span class="token punctuation">,</span>
+                user_id<span class="token punctuation">,</span>
+                out_trade_no<span class="token punctuation">,</span>
+                create_time<span class="token punctuation">,</span>
+                payment_time<span class="token punctuation">,</span>
+                cancel_time<span class="token punctuation">,</span>
+                finish_time<span class="token punctuation">,</span>
+                refund_time<span class="token punctuation">,</span>
+                refund_finish_time<span class="token punctuation">,</span>
+                province_id<span class="token punctuation">,</span>
+                activity_id<span class="token punctuation">,</span>
+                original_total_amount<span class="token punctuation">,</span>
+                benefit_reduce_amount<span class="token punctuation">,</span>
+                feight_fee<span class="token punctuation">,</span>
+                final_total_amount
+<span class="token keyword">from</span> dwd_fact_order_info
+<span class="token keyword">where</span> dt <span class="token operator">in</span><span class="token punctuation">(</span>
+    <span class="token keyword">select</span>
+        date_format<span class="token punctuation">(</span>create_time<span class="token punctuation">,</span><span class="token string">'yyyy-MM-dd'</span><span class="token punctuation">)</span>
+    <span class="token keyword">from</span> ods_order_info
+    <span class="token keyword">where</span> dt <span class="token operator">=</span> <span class="token string">'2020-06-14'</span><span class="token comment">--要导入是2020-06-14的数据</span>
+    <span class="token punctuation">)</span>
+        <span class="token punctuation">)</span> new <span class="token comment">--将新表拿出来</span>
+<span class="token keyword">on</span> new<span class="token punctuation">.</span>id <span class="token operator">=</span> old<span class="token punctuation">.</span>id <span class="token comment">--join条件</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Jinxin Li</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://fourgold.github.io/2020/03/16/11%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%9304_DWD_%E4%BA%8B%E5%AE%9E%E8%A1%A8_%E4%BA%8B%E5%8A%A1%E4%B8%8E%E7%B4%AF%E7%A7%AF%E5%BF%AB%E7%85%A7_%E6%80%BB%E7%BB%93/">http://fourgold.github.io/2020/03/16/11%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%9304_DWD_%E4%BA%8B%E5%AE%9E%E8%A1%A8_%E4%BA%8B%E5%8A%A1%E4%B8%8E%E7%B4%AF%E7%A7%AF%E5%BF%AB%E7%85%A7_%E6%80%BB%E7%BB%93/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Jinxin Li</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/03/17/11%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%9305_DWS_%E6%AF%8F%E6%97%A5%E7%BB%9F%E8%AE%A1_DWT_%E7%B4%AF%E7%A7%AF%E7%BB%9F%E8%AE%A1_%E6%80%BB%E7%BB%93/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="数据仓库DWS与DWT">
+                        
+                        <span class="card-title">数据仓库DWS与DWT</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-03-17
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Jinxin Li
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/03/14/11%E6%95%B0%E6%8D%AE%E4%BB%93%E5%BA%9303_DWD_%E6%8B%89%E9%93%BE%E8%A1%A8_%E7%94%A8%E6%88%B7%E7%BB%B4%E5%BA%A6%E8%A1%A8_%E6%80%BB%E7%BB%93/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="数据仓库用户维度表">
+                        
+                        <span class="card-title">数据仓库用户维度表</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-03-14
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Jinxin Li
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('1'),
+            headingSelector: 'h1,h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1,h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">Jinxin Li</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">232.3k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/fourgold" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:799392914@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=799392914" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 799392914" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

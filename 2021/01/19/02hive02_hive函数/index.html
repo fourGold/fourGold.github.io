@@ -818,4 +818,1118 @@ mysql<span class="token operator">></span> <span class="token keyword">select</s
 <span class="token comment">-- A IS NULL	A IS NOT NULL</span>
 <span class="token keyword">select</span> comm <span class="token keyword">from</span> emp <span class="token keyword">where</span> comm <span class="token operator">is</span> <span class="token operator">not</span> <span class="token boolean">null</span><span class="token punctuation">;</span> <span class="token comment">--判断comm不为空</span>
 
-<span c
+<span class="token comment">-- IN(数值1, 数值2)	</span>
+<span class="token keyword">select</span> job <span class="token keyword">from</span>  emp <span class="token keyword">where</span> job <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token string">'CLERK'</span><span class="token punctuation">,</span><span class="token string">'MANAGER'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">--可以用字符串</span>
+<span class="token keyword">select</span> sal <span class="token keyword">from</span> emp <span class="token keyword">where</span> sal <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token number">1600</span><span class="token punctuation">,</span><span class="token number">2000</span><span class="token punctuation">,</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">--选择里面的数据</span>
+<span class="token keyword">select</span> sal <span class="token keyword">from</span> emp <span class="token keyword">where</span> sal <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token keyword">select</span> sal <span class="token keyword">from</span> emp <span class="token keyword">where</span> sal<span class="token operator">></span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">--可以接语句</span>
+
+<span class="token comment">-- A [NOT] LIKE B STRING </span>
+<span class="token comment">-- ‘x%’表示结果必须以字母‘x’开头</span>
+<span class="token keyword">select</span> ename <span class="token keyword">from</span> emp <span class="token keyword">where</span> ename <span class="token operator">like</span> <span class="token string">'A%'</span><span class="token punctuation">;</span><span class="token comment">--ALLEN ADAMS</span>
+<span class="token comment">-- ‘%x’表示结果必须以字母’x’结尾</span>
+<span class="token keyword">select</span> ename <span class="token keyword">from</span> emp <span class="token keyword">where</span> ename <span class="token operator">like</span> <span class="token string">'%N'</span><span class="token punctuation">;</span><span class="token comment">--ALLEN MARTIN</span>
+<span class="token comment">-- 而‘%x%’表示结果包含有字母’x’,可以位于开头，结尾或者字符串中间</span>
+<span class="token keyword">select</span> ename <span class="token keyword">from</span> emp <span class="token keyword">where</span> ename <span class="token operator">like</span> <span class="token string">'%A%'</span><span class="token punctuation">;</span><span class="token comment">--ALLEN WARD ...</span>
+<span class="token comment">-- _表示单个字符</span>
+<span class="token keyword">select</span> ename <span class="token keyword">from</span> emp <span class="token keyword">where</span> ename <span class="token operator">like</span> <span class="token string">'CLAR_'</span><span class="token punctuation">;</span><span class="token comment">--CLARK</span>
+
+<span class="token comment">-- A RLIKE B, A REGEXP B	STRING </span>
+ 后续补充 正则表达式<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">=</span><span class="token operator">=</span><span class="token punctuation">[</span>nvl<span class="token punctuation">(</span>字段，默认值<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+<span class="token comment">--如果字段为null就取默认值返回。</span>
+<span class="token comment">--函数整体会返回一个任意类型值。</span>
+<span class="token keyword">select</span> nvl<span class="token punctuation">(</span>comm<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">from</span> emp<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="limit"><a href="#limit" class="headerlink" title="limit"></a>limit</h3><p>主要用于限制返回的行数</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--返回2行</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span>  emp <span class="token keyword">order</span> <span class="token keyword">by</span> empno <span class="token keyword">desc</span> <span class="token keyword">limit</span> <span class="token number">2</span><span class="token punctuation">;</span>
+<span class="token comment">--返回从第一行开始,返回2行,包含第一行</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span>  emp <span class="token keyword">order</span> <span class="token keyword">by</span> empno <span class="token keyword">desc</span> <span class="token keyword">limit</span> <span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="0x3-hive语法"><a href="#0x3-hive语法" class="headerlink" title="0x3 hive语法"></a>0x3 hive语法</h2><h3 id="hive的别名"><a href="#hive的别名" class="headerlink" title="hive的别名"></a>hive的别名</h3><p>别名的好处</p>
+<p>1.能够简化查询</p>
+<p>2.提高执行效率(减少系统寻字段时间)</p>
+<h3 id="join"><a href="#join" class="headerlink" title="join"></a>join</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--内连接</span>
+<span class="token keyword">select</span>
+    e<span class="token punctuation">.</span>empno<span class="token punctuation">,</span> e<span class="token punctuation">.</span>ename<span class="token punctuation">,</span> d<span class="token punctuation">.</span>deptno
+<span class="token keyword">from</span> emp e
+<span class="token keyword">inner</span> <span class="token keyword">join</span> dept d
+    <span class="token keyword">on</span>
+e<span class="token punctuation">.</span>deptno <span class="token operator">=</span> d<span class="token punctuation">.</span>deptno<span class="token punctuation">;</span>
+<span class="token comment">--左外连接</span>
+<span class="token keyword">select</span> 
+	e<span class="token punctuation">.</span>empno<span class="token punctuation">,</span> e<span class="token punctuation">.</span>ename<span class="token punctuation">,</span> d<span class="token punctuation">.</span>deptno 
+<span class="token keyword">from</span> emp e 
+<span class="token keyword">left</span> <span class="token keyword">join</span> dept d 
+<span class="token keyword">on</span> e<span class="token punctuation">.</span>deptno <span class="token operator">=</span> d<span class="token punctuation">.</span>deptno<span class="token punctuation">;</span>
+<span class="token comment">--右外连接</span>
+<span class="token keyword">select</span> 
+	e<span class="token punctuation">.</span>empno<span class="token punctuation">,</span> e<span class="token punctuation">.</span>ename<span class="token punctuation">,</span> d<span class="token punctuation">.</span>deptno 
+<span class="token keyword">from</span> emp e <span class="token keyword">right</span> <span class="token keyword">join</span> dept d 
+<span class="token keyword">on</span> e<span class="token punctuation">.</span>deptno <span class="token operator">=</span> d<span class="token punctuation">.</span>deptno<span class="token punctuation">;</span>
+<span class="token comment">--全join</span>
+<span class="token keyword">select</span> e<span class="token punctuation">.</span>empno<span class="token punctuation">,</span> e<span class="token punctuation">.</span>ename<span class="token punctuation">,</span> d<span class="token punctuation">.</span>depart <span class="token keyword">from</span> emp e <span class="token keyword">full</span> <span class="token keyword">join</span> dept d <span class="token keyword">on</span> e<span class="token punctuation">.</span>deptno <span class="token operator">=</span> d<span class="token punctuation">.</span>depart<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="where与on的区别"><a href="#where与on的区别" class="headerlink" title="where与on的区别"></a>where与on的区别</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- map join 配置</span>
+<span class="token keyword">set</span> hive<span class="token punctuation">.</span>auto<span class="token punctuation">.</span><span class="token keyword">convert</span><span class="token punctuation">.</span><span class="token keyword">join</span> <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span><span class="token comment">-- 默认为false</span>
+<span class="token comment">--该参数为true时，Hive自动对左边的表统计量，如果是小表就加入内存，即对 小表使用Map join</span>
+<span class="token keyword">set</span> hive<span class="token punctuation">.</span>mapjoin<span class="token punctuation">.</span>smalltable<span class="token punctuation">.</span>filesize<span class="token punctuation">;</span><span class="token comment">--大表小表的阀值：</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">=</span><span class="token operator">=</span><span class="token punctuation">[</span><span class="token keyword">inner</span> <span class="token keyword">join</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+两者效率相同
+<span class="token comment">-- 按照部门进行过滤</span>
+<span class="token keyword">select</span> e<span class="token punctuation">.</span>ename name<span class="token punctuation">,</span>e<span class="token punctuation">.</span>comm comm<span class="token punctuation">,</span>d<span class="token punctuation">.</span>id depart<span class="token punctuation">,</span>e<span class="token punctuation">.</span>deptno<span class="token punctuation">,</span>d<span class="token punctuation">.</span>deptno
+<span class="token keyword">from</span> emp e
+<span class="token keyword">join</span> dept d
+<span class="token keyword">on</span> e<span class="token punctuation">.</span>deptno <span class="token operator">=</span> d<span class="token punctuation">.</span>deptno<span class="token punctuation">;</span><span class="token comment">--14行</span>
+<span class="token comment">-- 按照部门进行过滤</span>
+<span class="token keyword">select</span> e<span class="token punctuation">.</span>ename name<span class="token punctuation">,</span>e<span class="token punctuation">.</span>comm comm<span class="token punctuation">,</span>d<span class="token punctuation">.</span>id depart<span class="token punctuation">,</span>e<span class="token punctuation">.</span>deptno<span class="token punctuation">,</span>d<span class="token punctuation">.</span>deptno
+<span class="token keyword">from</span> emp e
+<span class="token keyword">join</span> dept d
+<span class="token keyword">where</span> e<span class="token punctuation">.</span>deptno <span class="token operator">=</span> d<span class="token punctuation">.</span>deptno<span class="token punctuation">;</span><span class="token comment">--14行</span>
+<span class="token operator">=</span><span class="token operator">=</span><span class="token punctuation">[</span><span class="token keyword">left</span> <span class="token keyword">join</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+<span class="token comment">-- left join</span>
+<span class="token comment">-- 存在on and和on where条件的区别</span>
+<span class="token comment">-- [重][本质] 在进行left join时,on条件是在生成临时表时使用的条件,其本质执行过程不管on中条件是否为真,都会在临时表中生成左表中的全部记录 然后根据on条件过滤右边临时表(即使左边也会有过滤条件)</span>
+<span class="token comment">-- where条件是在临时表生成好后，再对临时表进行过滤的条件。这时已经没有left join的含义(必须返回左边表的记录)了，条件不为真的就全部过滤掉，on后的条件用来生成左右表关联的临时表，where后的条件对临时表中的记录进行过滤。</span>
+<span class="token comment">-- 单过滤条件考虑where中->谓词下推</span>
+<span class="token comment">-- 总结:小表在左,实现mapjoin</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="多表join优化"><a href="#多表join优化" class="headerlink" title="多表join优化"></a>多表join优化</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">select</span>
+<span class="token operator">*</span>
+<span class="token keyword">from</span> emp
+<span class="token keyword">join</span> dept
+    <span class="token keyword">on</span> emp<span class="token punctuation">.</span>deptno <span class="token operator">=</span> dept<span class="token punctuation">.</span>deptno
+<span class="token keyword">join</span> location
+    <span class="token keyword">on</span>  dept<span class="token punctuation">.</span>deptno <span class="token operator">=</span> location<span class="token punctuation">.</span>loc
+<span class="token comment">-- 优化：当对3个或者更多表进行join连接时，如果每个on子句都使用相同的连接键的话，那么只会产生一个MapReduce job。</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E4%B8%A4%E4%B8%AARDD%E8%BF%9B%E8%A1%8Cunion%E6%93%8D%E4%BD%9C.png" alt="多表join优化问题"></p>
+<h3 id="hiving与where的不同点"><a href="#hiving与where的不同点" class="headerlink" title="hiving与where的不同点"></a>hiving与where的不同点</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- where后面不能写分组函数，而having后面可以使用分组函数。</span>
+<span class="token comment">-- having只用于group by分组统计语句。</span>
+<span class="token comment">-- 只能是分区的字段，或者组函数</span>
+<span class="token comment">-- where 过滤条件可用子查询，单值用 = ,多值用in </span>
+<span class="token keyword">select</span> ename<span class="token punctuation">,</span>job 
+<span class="token keyword">from</span> emp 
+<span class="token keyword">where</span> sal <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">select</span> <span class="token function">min</span><span class="token punctuation">(</span>sal<span class="token punctuation">)</span> <span class="token keyword">from</span> emp<span class="token punctuation">)</span><span class="token punctuation">;</span> 或 
+<span class="token operator">in</span><span class="token punctuation">(</span><span class="token keyword">select</span> sal <span class="token keyword">from</span> emp<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token comment">-- 但注意必须()，不能别名</span>
+
+<span class="token keyword">select</span> job<span class="token punctuation">,</span><span class="token function">max</span><span class="token punctuation">(</span>sal<span class="token punctuation">)</span> max_sal <span class="token keyword">from</span> emp <span class="token keyword">group</span> <span class="token keyword">by</span> job <span class="token keyword">having</span> job <span class="token operator">=</span> <span class="token string">'CLERK'</span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> job<span class="token punctuation">,</span><span class="token function">max</span><span class="token punctuation">(</span>sal<span class="token punctuation">)</span> max_sal <span class="token keyword">from</span> emp <span class="token keyword">group</span> <span class="token keyword">by</span> job <span class="token keyword">where</span> job <span class="token operator">=</span> <span class="token string">'CLERK'</span><span class="token punctuation">;</span><span class="token comment">--语法错误</span>
+
+
+<span class="token comment">-- 关于limit索引问题这两个相同</span>
+<span class="token keyword">select</span> sal <span class="token keyword">from</span> emp <span class="token keyword">order</span> <span class="token keyword">by</span> sal <span class="token keyword">limit</span> <span class="token number">1</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> sal <span class="token keyword">from</span> emp <span class="token keyword">order</span> <span class="token keyword">by</span> sal <span class="token keyword">limit</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="排序四个by"><a href="#排序四个by" class="headerlink" title="排序四个by"></a>排序四个by</h3><ul>
+<li>order by</li>
+<li>distribute by</li>
+<li>sort by</li>
+<li>cluster by</li>
+</ul>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">=</span><span class="token operator">=</span><span class="token punctuation">[</span><span class="token keyword">order</span> <span class="token keyword">by</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+<span class="token comment">-- order by 分组字段或分组函数值（其实也相当于新表的字段） </span>
+<span class="token comment">-- asc（默认升序，从小到大）</span>
+<span class="token comment">-- desc (null会自动当做最小值，而且多个null怎么排序不合适)</span>
+<span class="token comment">-- 支持多个字段按前后顺序order by deptno desc,sal asc;</span>
+<span class="token comment">-- 可组合升序降序</span>
+<span class="token comment">-- 全局排序只有一个Reducer,缺点很慢</span>
+<span class="token keyword">select</span> deptno<span class="token punctuation">,</span>sal <span class="token keyword">from</span> emp <span class="token keyword">order</span> <span class="token keyword">by</span> deptno <span class="token keyword">desc</span><span class="token punctuation">,</span>sal <span class="token keyword">asc</span><span class="token punctuation">;</span>
+
+<span class="token operator">=</span><span class="token operator">=</span><span class="token punctuation">[</span>distribute <span class="token keyword">by</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+<span class="token comment">-- 设置reducer数量 注意要在hive客户端里使用,beeline客户端好像不能设置</span>
+<span class="token keyword">set</span> mapreduce<span class="token punctuation">.</span>job<span class="token punctuation">.</span>reduces<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token comment">-- 不用时设置-1 默认值,动态调整</span>
+distribute <span class="token keyword">by</span> <span class="token punctuation">(</span>不同分区进入不同的reducer<span class="token punctuation">)</span>
+<span class="token comment">-- 类似MR中partition(自定义分区)</span>
+<span class="token comment">-- 注意区分这个和分桶的关系</span>
+<span class="token comment">-- [分区规则]使用字段的hash码与reduce的个数进行模除</span>
+<span class="token comment">-- Hive要求DISTRIBUTE BY语句要写在SORT BY语句之前</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> emp distribute <span class="token keyword">by</span> deptno sort <span class="token keyword">by</span> empno <span class="token keyword">desc</span><span class="token punctuation">;</span>
+<span class="token keyword">insert</span> overwrite <span class="token keyword">local</span> directory <span class="token string">'/opt/module/hive/data/distribute-result'</span> 
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> emp distribute <span class="token keyword">by</span> deptno sort <span class="token keyword">by</span> empno <span class="token keyword">desc</span><span class="token punctuation">;</span>
+<span class="token comment">-- 输出存在有三个文件就对应对应三分区</span>
+
+<span class="token operator">=</span><span class="token operator">=</span><span class="token punctuation">[</span>sort <span class="token keyword">by</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+<span class="token comment">-- reducer内排序</span>
+<span class="token comment">-- 也少用</span>
+<span class="token comment">-- 对于大规模的数据集order by的效率非常低。在很多情况下，并不需要全局排序，此时可以使用sort by。</span>
+<span class="token comment">-- 每个Reducer内部进行排序，对全局结果集来说不是排序。</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> emp sort <span class="token keyword">by</span> deptno <span class="token keyword">desc</span><span class="token punctuation">;</span>
+
+<span class="token operator">=</span><span class="token operator">=</span><span class="token punctuation">[</span>cluster <span class="token keyword">by</span><span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+<span class="token comment">-- 前两者所用字段相同时</span>
+<span class="token comment">-- 起到了分区内排序。</span>
+<span class="token comment">-- 只能是默认升序排列</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> emp cluster <span class="token keyword">by</span> deptno<span class="token punctuation">;</span>
+<span class="token comment">-- 其实计算结果跟分桶表有点类似</span>
+<span class="token comment">-- 这个hash分区器比较粗(不能自定义分区器)。不能随意按自己的规则来排序。一个指定分区字段，一个指定排序字段   </span>
+<span class="token comment">-- 有个问题：分区排序的两个字段(必须原封不动)必须出现在select里面。不然报错(order by不会)</span>
+<span class="token comment">-- 不能自定义分区规则</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h3><p>分区 就是分目录（将数据按分区字段存入不同文件夹）</p>
+<p>where时会进入不同分区文件夹，减少查询量 </p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">partitioned <span class="token keyword">by</span> <span class="token punctuation">(</span>dt string<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>分区字段必须建表时指定，并且不是create()括号那些字段</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--需要建表时先分区，才能执行后面的add</span>
+<span class="token keyword">create</span> <span class="token keyword">table</span> student<span class="token punctuation">(</span>
+    id <span class="token keyword">int</span><span class="token punctuation">,</span> 
+    name  string<span class="token punctuation">,</span> 
+   <span class="token punctuation">)</span>
+partitioned <span class="token keyword">by</span> <span class="token punctuation">(</span><span class="token keyword">day</span> string<span class="token punctuation">)</span> 
+<span class="token keyword">row</span> format delimited <span class="token keyword">fields</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">'\t'</span><span class="token punctuation">;</span>
+<span class="token comment">--不能在加载的数据中，只是用于select 后面where 过滤用的，用</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> table_name
+<span class="token comment">-- 会显示这个字段信息(但其实hdfs里数据没有)应该是mysql元数据partitions表给你显示的</span>
+<span class="token comment">-- </span>
+<span class="token keyword">insert</span> <span class="token keyword">into</span> <span class="token keyword">table</span> DemoTable <span class="token keyword">partition</span><span class="token punctuation">(</span><span class="token keyword">day</span><span class="token operator">=</span><span class="token number">20200102</span><span class="token punctuation">,</span><span class="token keyword">hour</span><span class="token operator">=</span><span class="token number">12</span><span class="token punctuation">)</span> <span class="token keyword">values</span> <span class="token punctuation">(</span><span class="token number">1002</span><span class="token punctuation">,</span><span class="token string">'lis5'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">insert</span> <span class="token keyword">into</span> DemoTable <span class="token keyword">values</span><span class="token punctuation">(</span><span class="token number">1001</span><span class="token punctuation">,</span><span class="token string">'lisi'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">--报错</span>
+<span class="token comment">-- 必须指定分区才能插入数据</span>
+<span class="token comment">-- 每次插入数据都会在hdfs上生成不一个新文件,不是追加文件</span>
+<span class="token comment">-- 一般来讲我们会使用下面方法加载数据</span>
+<span class="token keyword">load</span> <span class="token keyword">data</span> inpath <span class="token string">'/input/person.txt'</span> <span class="token keyword">into</span> <span class="token keyword">table</span> person_text <span class="token keyword">partition</span><span class="token punctuation">(</span><span class="token keyword">day</span><span class="token operator">=</span><span class="token string">'20200401'</span><span class="token punctuation">,</span><span class="token keyword">hour</span><span class="token operator">=</span><span class="token string">'12'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>分区数据操作方式</strong></p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">=</span><span class="token operator">=</span><span class="token punctuation">[</span>插入数据<span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+<span class="token comment">-- 分区表两种方式加载数据时，必须指定分区</span>
+<span class="token comment">-- 分区文件夹不需要提前创建(加载后自动生成)、数据内部不需要分区字段。</span>
+<span class="token comment">-- 查询的时候会自动把分区目录名放到最后一列。</span>
+<span class="token keyword">load</span> <span class="token keyword">data</span> <span class="token keyword">local</span> inpath <span class="token string">'/opt/module/hive/datas/dept_20200403.log'</span> <span class="token keyword">into</span> <span class="token keyword">table</span> dept_partition <span class="token keyword">partition</span><span class="token punctuation">(</span><span class="token keyword">day</span><span class="token operator">=</span><span class="token string">'20200403'</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">--(注意字段数量匹配)</span>
+<span class="token keyword">insert</span> overwrite <span class="token keyword">table</span> student <span class="token keyword">partition</span><span class="token punctuation">(</span><span class="token keyword">month</span><span class="token operator">=</span><span class="token string">'201706'</span><span class="token punctuation">)</span> <span class="token keyword">select</span> id<span class="token punctuation">,</span> name <span class="token keyword">from</span> student <span class="token keyword">where</span> <span class="token keyword">month</span><span class="token operator">=</span><span class="token string">'201709'</span><span class="token punctuation">;</span> <span class="token comment">--(注意字段数量匹配)</span>
+<span class="token keyword">insert</span> overwrite <span class="token keyword">table</span> student <span class="token keyword">partition</span> <span class="token punctuation">(</span><span class="token keyword">day</span><span class="token operator">=</span><span class="token string">'20200201'</span><span class="token punctuation">)</span> <span class="token keyword">select</span> empno<span class="token punctuation">,</span>ename <span class="token keyword">from</span> emp<span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> emp<span class="token punctuation">;</span> <span class="token comment">--可以从其他表拿出数据,但是其中的数据类型要对应</span>
+
+
+<span class="token operator">=</span><span class="token operator">=</span><span class="token punctuation">[</span>分区数据日常<span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dept_partition <span class="token keyword">where</span> <span class="token keyword">day</span><span class="token operator">=</span><span class="token string">'20200403'</span><span class="token punctuation">;</span>
+<span class="token comment">-- 查询必须用where过滤分区字段而不是partition</span>
+
+<span class="token comment">-- 创建分区目录并关联数据</span>
+<span class="token number">1.</span>创建分区目录，<span class="token keyword">load</span>数据<span class="token punctuation">(</span>提前创建分区目录多此一举:后面这一步就够了<span class="token punctuation">)</span>
+<span class="token number">2.</span>创建分区目录，直接把文件放入分区目录下，而不用<span class="token keyword">load</span>。会查询不出来。
+<span class="token number">3.</span>需msck repair <span class="token keyword">table</span> 表名<span class="token punctuation">;</span> <span class="token comment">--修复表,关联表</span>
+<span class="token number">4.</span><span class="token keyword">alter</span> <span class="token keyword">table</span> <span class="token keyword">add</span> <span class="token keyword">partition</span><span class="token punctuation">(</span><span class="token keyword">day</span><span class="token operator">=</span><span class="token string">'20200404'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">-- 查看分区数</span>
+<span class="token keyword">show</span> partitions person <span class="token punctuation">;</span>
+<span class="token comment">-- 删除添加分区数</span>
+<span class="token keyword">alter</span> <span class="token keyword">table</span> student <span class="token keyword">add</span> <span class="token keyword">partition</span><span class="token punctuation">(</span><span class="token keyword">day</span><span class="token operator">=</span><span class="token string">'2020-04-05'</span><span class="token punctuation">)</span> <span class="token keyword">partition</span><span class="token punctuation">(</span><span class="token keyword">day</span><span class="token operator">=</span><span class="token string">'2020-04-07'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">alter</span> <span class="token keyword">table</span> student <span class="token keyword">drop</span> <span class="token keyword">partition</span><span class="token punctuation">(</span><span class="token keyword">day</span><span class="token operator">=</span><span class="token string">'2020-04-04'</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token keyword">partition</span><span class="token punctuation">(</span><span class="token keyword">day</span><span class="token operator">=</span><span class="token string">'2020-04-05'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">-- 二级分区：同理比如partitioned by(dt string,ts double)  partition(dt = '',ts = xxx)</span>
+
+<span class="token operator">=</span><span class="token operator">=</span><span class="token punctuation">[</span>动态分区<span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+<span class="token comment">-- 动态分区设置非严格方式：</span>
+<span class="token keyword">set</span> hive<span class="token punctuation">.</span><span class="token keyword">exec</span><span class="token punctuation">.</span>dynamic<span class="token punctuation">.</span><span class="token keyword">partition</span><span class="token punctuation">.</span><span class="token keyword">mode</span><span class="token operator">=</span>nonstrict<span class="token punctuation">;</span>
+<span class="token comment">-- 设定可以一共设置多少动态分区: </span>
+hive<span class="token punctuation">.</span><span class="token keyword">exec</span><span class="token punctuation">.</span>max<span class="token punctuation">.</span>dynamic<span class="token punctuation">.</span>partitions<span class="token operator">=</span><span class="token number">1000</span>
+<span class="token comment">-- 设置每个节点可以拥有多少分区: </span>
+hive<span class="token punctuation">.</span><span class="token keyword">exec</span><span class="token punctuation">.</span>max<span class="token punctuation">.</span>dynamic<span class="token punctuation">.</span>partitions<span class="token punctuation">.</span>pernode<span class="token operator">=</span><span class="token number">100</span>
+<span class="token comment">-- 整个MR Job中，最大可以创建多少个HDFS文件。默认100000</span>
+hive<span class="token punctuation">.</span><span class="token keyword">exec</span><span class="token punctuation">.</span>max<span class="token punctuation">.</span>created<span class="token punctuation">.</span>files<span class="token operator">=</span><span class="token number">100000</span>
+<span class="token comment">-- 当有空分区生成时，是否抛出异常。一般不需要设置。默认false</span>
+hive<span class="token punctuation">.</span>error<span class="token punctuation">.</span><span class="token keyword">on</span><span class="token punctuation">.</span>empty<span class="token punctuation">.</span><span class="token keyword">partition</span><span class="token operator">=</span><span class="token boolean">false</span>
+
+<span class="token comment">-- 创建动态分区表:和前面创建分区表一模一样</span>
+<span class="token keyword">create</span> <span class="token keyword">table</span> student_partition<span class="token punctuation">(</span>
+    id <span class="token keyword">int</span><span class="token punctuation">,</span>
+    name string<span class="token punctuation">,</span>
+    class <span class="token keyword">int</span> <span class="token comment">--直接使用表中字段做分区,报错</span>
+   <span class="token punctuation">)</span>
+partitioned <span class="token keyword">by</span> <span class="token punctuation">(</span>class <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 正确建表与插入数据方法</span>
+<span class="token keyword">set</span> hive<span class="token punctuation">.</span><span class="token keyword">exec</span><span class="token punctuation">.</span>dynamic<span class="token punctuation">.</span><span class="token keyword">partition</span><span class="token punctuation">.</span><span class="token keyword">mode</span><span class="token operator">=</span>nonstrict<span class="token punctuation">;</span>
+<span class="token keyword">create</span> <span class="token keyword">table</span> student_partition<span class="token punctuation">(</span>
+    id <span class="token keyword">int</span><span class="token punctuation">,</span>
+    name string
+<span class="token punctuation">)</span>partitioned <span class="token keyword">by</span> <span class="token punctuation">(</span>class <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">-- 查询插入 为则正常字段+分区字段(类型相同) (这个字段多了没事不符合不报错)</span>
+<span class="token keyword">insert</span> overwrite <span class="token keyword">table</span>  student_partition 
+<span class="token keyword">select</span> 
+	empno<span class="token punctuation">,</span>ename<span class="token punctuation">,</span>deptno 
+<span class="token keyword">from</span> emp<span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> student_partition<span class="token punctuation">;</span>
+<span class="token keyword">show</span> partitions student_partition<span class="token punctuation">;</span>
+
+<span class="token comment">-- 查询插入,也可以这样,直接给定</span>
+<span class="token keyword">insert</span> overwrite <span class="token keyword">table</span> dept_partition_dy <span class="token keyword">partition</span><span class="token punctuation">(</span>loc<span class="token punctuation">)</span> <span class="token keyword">select</span> deptno<span class="token punctuation">,</span> dname<span class="token punctuation">,</span> <span class="token string">'2020-04-05'</span> <span class="token keyword">from</span> dept<span class="token punctuation">;</span>
+
+<span class="token comment">-- load文件数据经列分隔符列数 = 表正常字段 + 分区字段数。(这个不符合会报错)</span>
+<span class="token keyword">load</span> <span class="token keyword">data</span> <span class="token keyword">local</span> inpath <span class="token string">'/opt/module/hive/datas/dept_20200403.log'</span> <span class="token keyword">into</span> <span class="token keyword">table</span> dept_partition<span class="token punctuation">;</span>
+
+<span class="token comment">-- [注意]假如分区字段有null值(普通加载方式指定特定分区值所以不会。动态分区的话假如有null ，null就当做一个分区;</span>
+<span class="token comment">-- [筛选null值]在hdfs上显示</span>
+dt<span class="token operator">=</span>__HIVE_DEFAULT_PARTITION_
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> student <span class="token keyword">where</span> dt <span class="token operator">is</span> <span class="token boolean">null</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="分桶"><a href="#分桶" class="headerlink" title="分桶"></a>分桶</h3><p>分桶是分文件</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">分桶 
+<span class="token comment">-- 就是分文件，分桶字段必须是上面已经定义的</span>
+<span class="token comment">-- 与分区的另一个区别是字段的重用,必须使用建表语句中的字段</span>
+
+<span class="token comment">--查看num buckets</span>
+<span class="token comment">--用的很少</span>
+<span class="token keyword">desc</span> formatted 表名<span class="token punctuation">;</span>
+
+<span class="token comment">-- 创建分桶表</span>
+<span class="token keyword">create</span> <span class="token keyword">table</span> stu_buck<span class="token punctuation">(</span>
+    id <span class="token keyword">int</span><span class="token punctuation">,</span>
+    name string
+<span class="token punctuation">)</span>
+<span class="token keyword">clustered</span> <span class="token keyword">by</span> <span class="token punctuation">(</span>id<span class="token punctuation">)</span>
+<span class="token keyword">into</span> <span class="token number">4</span> buckets 
+<span class="token keyword">row</span> format delimited <span class="token keyword">fields</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">'\t'</span><span class="token punctuation">;</span>
+<span class="token comment">-- 对分桶字段排序已经不玩了</span>
+<span class="token comment">-- 采用对分桶字段的值进行哈希，取模。</span>
+<span class="token keyword">set</span> mapreduce<span class="token punctuation">.</span>job<span class="token punctuation">.</span>reduces<span class="token operator">=</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token comment">-- job自行决定reduce数量</span>
+<span class="token comment">-- 不要使用本地模式 本地模式防止数据找不到</span>
+<span class="token comment">-- 往分桶表放数据</span>
+<span class="token keyword">load</span> <span class="token keyword">data</span> inpath <span class="token string">'/datas/student.txt'</span> <span class="token keyword">into</span> <span class="token keyword">table</span> stu_buck<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="数据抽样查询"><a href="#数据抽样查询" class="headerlink" title="数据抽样查询"></a>数据抽样查询</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token operator">=</span><span class="token operator">=</span><span class="token punctuation">[</span>数据块抽样<span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> emp tablesample<span class="token punctuation">(</span><span class="token number">10</span> <span class="token keyword">percent</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">-- 抽取比例</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> emp tablesample<span class="token punctuation">(</span><span class="token number">5</span> <span class="token keyword">rows</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">-- 每个map抽取5行</span>
+
+<span class="token operator">=</span><span class="token operator">=</span><span class="token punctuation">[</span>分桶随机抽象<span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> emp tablesample<span class="token punctuation">(</span>bucket <span class="token number">1</span> <span class="token keyword">out</span> <span class="token keyword">of</span> <span class="token number">10</span> <span class="token keyword">on</span> rand<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> emp tablesample<span class="token punctuation">(</span>bucket <span class="token number">1</span> <span class="token keyword">out</span> <span class="token keyword">of</span> <span class="token number">10</span> <span class="token keyword">on</span> empno<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">-- bucket 1 表示从几号桶开始</span>
+<span class="token comment">-- of 10 表示一共抽象10个桶</span>
+<span class="token comment">-- rand() 函数</span>
+<span class="token keyword">select</span> rand<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">--随机产生一个(0-1)内的数字</span>
+
+<span class="token operator">=</span><span class="token operator">=</span><span class="token punctuation">[</span>随机抽样<span class="token punctuation">]</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+<span class="token comment">-- 随机抽样(妙用rand()函数)</span>
+<span class="token keyword">select</span> empno <span class="token keyword">from</span> emp distribute <span class="token keyword">by</span> rand<span class="token punctuation">(</span><span class="token punctuation">)</span> sort <span class="token keyword">by</span> rand<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">limit</span> <span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> empno <span class="token keyword">from</span> emp cluster <span class="token keyword">by</span> rand<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">limit</span> <span class="token number">3</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="附录1"><a href="#附录1" class="headerlink" title="附录1"></a>附录1</h3><p><strong>person表数据</strong></p>
+<pre class="line-numbers language-csv" data-language="csv"><code class="language-csv">songsong,bingbing_lili,xiao song:18_xiaoxiao song:19,hui long guan_beijing_1001
+yangyang,caicai_susu,xiao yang:18_xiaoxiao yang:19,chao yang_beijing_1002<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">vim</span> /opt/module/hive-3.1.2/datas/person.txt
+<span class="token comment">#上传hdfs</span>
+hadoop fs -put /opt/module/hive-3.1.2/datas/person.txt  /input/<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 建立text表,用于输入非格式化的数据</span>
+<span class="token keyword">create</span> <span class="token keyword">table</span> person_text<span class="token punctuation">(</span><span class="token comment">---建表</span>
+  name string <span class="token punctuation">,</span>
+  friends array<span class="token operator">&lt;</span>string<span class="token operator">></span><span class="token punctuation">,</span>
+  child  map<span class="token operator">&lt;</span>string<span class="token punctuation">,</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">,</span>
+  address struct<span class="token operator">&lt;</span>street:string<span class="token punctuation">,</span>city:string<span class="token punctuation">,</span>mph:<span class="token keyword">int</span><span class="token operator">></span>
+<span class="token punctuation">)</span>
+partitioned <span class="token keyword">by</span> <span class="token punctuation">(</span><span class="token keyword">day</span> string<span class="token punctuation">,</span> <span class="token keyword">hour</span> string<span class="token punctuation">)</span>      <span class="token comment">--设置分区字段--对应导入时的分区条件的选择</span>
+<span class="token keyword">clustered</span> <span class="token keyword">by</span> <span class="token punctuation">(</span>name<span class="token punctuation">)</span> <span class="token keyword">into</span> <span class="token number">3</span> buckets 	          <span class="token comment">--分桶表：用的少</span>
+<span class="token keyword">row</span> format delimited <span class="token keyword">fields</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">','</span> <span class="token comment">-- 列分隔符-不同字段的分隔符必须一致，一般是'/t'制表符</span>
+collection items <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">'_'</span>            <span class="token comment">--MAP STRUCT和ARRAY的分隔符(数据分割符号)--集合中不同元素分隔符必须统一处理</span>
+map <span class="token keyword">keys</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">':'</span>                    <span class="token comment">-- MAP与STRUCT中的key与value的分隔符</span>
+<span class="token keyword">lines</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">'\n'</span>                      <span class="token comment">-- 行分隔符，\n可默认不写</span>
+stored <span class="token keyword">as</span> textfile<span class="token punctuation">;</span>
+<span class="token keyword">load</span> <span class="token keyword">data</span> inpath <span class="token string">'/input/person.txt'</span> <span class="token keyword">into</span> <span class="token keyword">table</span> person_text <span class="token keyword">partition</span><span class="token punctuation">(</span><span class="token keyword">day</span><span class="token operator">=</span><span class="token string">'20200401'</span><span class="token punctuation">,</span><span class="token keyword">hour</span><span class="token operator">=</span><span class="token string">'12'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">-- 建立压缩表</span>
+<span class="token keyword">create</span> <span class="token keyword">table</span> <span class="token keyword">if</span> <span class="token operator">not</span> <span class="token keyword">exists</span> person<span class="token punctuation">(</span><span class="token comment">---建表</span>
+  name string <span class="token punctuation">,</span>
+  friends array<span class="token operator">&lt;</span>string<span class="token operator">></span><span class="token punctuation">,</span>
+  child  map<span class="token operator">&lt;</span>string<span class="token punctuation">,</span><span class="token keyword">int</span><span class="token operator">></span><span class="token punctuation">,</span>
+  address struct<span class="token operator">&lt;</span>street:string<span class="token punctuation">,</span>city:string<span class="token punctuation">,</span>mph:<span class="token keyword">int</span><span class="token operator">></span>
+<span class="token punctuation">)</span>
+partitioned <span class="token keyword">by</span> <span class="token punctuation">(</span><span class="token keyword">day</span> string<span class="token punctuation">,</span> <span class="token keyword">hour</span> string<span class="token punctuation">)</span>      <span class="token comment">--设置分区字段--对应导入时的分区条件的选择</span>
+<span class="token keyword">clustered</span> <span class="token keyword">by</span> <span class="token punctuation">(</span>name<span class="token punctuation">)</span> <span class="token keyword">into</span> <span class="token number">3</span> buckets 	          <span class="token comment">--分桶表：用的少</span>
+<span class="token keyword">row</span> format delimited <span class="token keyword">fields</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">','</span> <span class="token comment">-- 列分隔符-不同字段的分隔符必须一致，一般是'/t'制表符</span>
+collection items <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">'_'</span>            <span class="token comment">--MAP STRUCT和ARRAY的分隔符(数据分割符号)</span>
+<span class="token comment">-- --集合中不同元素分隔符必须统一处理</span>
+map <span class="token keyword">keys</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">':'</span>                    <span class="token comment">-- MAP与STRUCT中的key与value的分隔符</span>
+<span class="token keyword">lines</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">'\n'</span>                      <span class="token comment">-- 行分隔符，\n可默认不写</span>
+stored <span class="token keyword">as</span> parquet                             <span class="token comment">-- 指定存储方式</span>
+tblproperties<span class="token punctuation">(</span><span class="token string">"parquet.compression"</span><span class="token operator">=</span><span class="token string">"LZO"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">--指定压缩格式</span>
+
+
+<span class="token keyword">show</span> <span class="token keyword">tables</span><span class="token punctuation">;</span>
+<span class="token keyword">desc</span> person<span class="token punctuation">;</span>
+<span class="token keyword">desc</span> formatted person<span class="token punctuation">;</span>
+
+<span class="token comment">--todo 插入数据</span>
+<span class="token keyword">insert</span> <span class="token keyword">into</span> person <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> person_text<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="附录2"><a href="#附录2" class="headerlink" title="附录2"></a>附录2</h3><pre class="line-numbers language-csv" data-language="csv"><code class="language-csv">7369	SMITH	CLERK	7902	1980-12-17	800.00		20
+7499	ALLEN	SALESMAN	7698	1981-2-20	1600.00	300.00	30
+7521	WARD	SALESMAN	7698	1981-2-22	1250.00	500.00	30
+7566	JONES	MANAGER	7839	1981-4-2	2975.00		20
+7654	MARTIN	SALESMAN	7698	1981-9-28	1250.00	1400.00	30
+7698	BLAKE	MANAGER	7839	1981-5-1	2850.00		30
+7782	CLARK	MANAGER	7839	1981-6-9	2450.00		10
+7788	SCOTT	ANALYST	7566	1987-4-19	3000.00		20
+7839	KING	PRESIDENT		1981-11-17	5000.00		10
+7844	TURNER	SALESMAN	7698	1981-9-8	1500.00	0.00	30
+7876	ADAMS	CLERK	7788	1987-5-23	1100.00		20
+7900	JAMES	CLERK	7698	1981-12-3	950.00		30
+7902	FORD	ANALYST	7566	1981-12-3	3000.00		20
+7934	MILLER	CLERK	7782	1982-1-23	1300.00		10<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> <span class="token keyword">if</span> <span class="token operator">not</span> <span class="token keyword">exists</span> emp<span class="token punctuation">(</span>
+empno <span class="token keyword">int</span><span class="token punctuation">,</span>
+ename string<span class="token punctuation">,</span>
+job string<span class="token punctuation">,</span>
+mgr <span class="token keyword">int</span><span class="token punctuation">,</span>
+hiredate string<span class="token punctuation">,</span> 
+sal <span class="token keyword">double</span><span class="token punctuation">,</span> 
+comm <span class="token keyword">double</span><span class="token punctuation">,</span>
+deptno <span class="token keyword">int</span><span class="token punctuation">)</span>
+<span class="token keyword">row</span> format delimited <span class="token keyword">fields</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">'\t'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">load</span> <span class="token keyword">data</span> <span class="token keyword">local</span> inpath <span class="token string">'/opt/module/datas/emp.txt'</span> <span class="token keyword">into</span> <span class="token keyword">table</span> emp<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="附录3"><a href="#附录3" class="headerlink" title="附录3"></a>附录3</h3><pre class="line-numbers language-csv" data-language="csv"><code class="language-csv">10	ACCOUNTING	1700
+20	RESEARCH	1800
+30	SALES	1900
+40	OPERATIONS	1700<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> <span class="token keyword">if</span> <span class="token operator">not</span> <span class="token keyword">exists</span> dept<span class="token punctuation">(</span>
+deptno <span class="token keyword">int</span><span class="token punctuation">,</span>
+dname string<span class="token punctuation">,</span>
+loc <span class="token keyword">int</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">row</span> format delimited <span class="token keyword">fields</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">'\t'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">load</span> <span class="token keyword">data</span> <span class="token keyword">local</span> inpath <span class="token string">'/opt/module/datas/dept.txt'</span> <span class="token keyword">into</span> <span class="token keyword">table</span>
+dept<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="附录4"><a href="#附录4" class="headerlink" title="附录4"></a>附录4</h3><pre class="line-numbers language-csv" data-language="csv"><code class="language-csv">1700	Beijing
+1800	London
+1900	Tokyo<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">table</span> <span class="token keyword">if</span> <span class="token operator">not</span> <span class="token keyword">exists</span> location<span class="token punctuation">(</span>
+loc <span class="token keyword">int</span><span class="token punctuation">,</span>
+loc_name string
+<span class="token punctuation">)</span>
+<span class="token keyword">row</span> format delimited <span class="token keyword">fields</span> <span class="token keyword">terminated</span> <span class="token keyword">by</span> <span class="token string">'\t'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">load</span> <span class="token keyword">data</span> <span class="token keyword">local</span> inpath <span class="token string">'/opt/module/datas/location.txt'</span> <span class="token keyword">into</span> <span class="token keyword">table</span> location<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Jinxin Li</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://fourgold.github.io/2021/01/19/02hive02_hive%E5%87%BD%E6%95%B0/">http://fourgold.github.io/2021/01/19/02hive02_hive%E5%87%BD%E6%95%B0/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Jinxin Li</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/01/20/02hive03_hive%E9%AB%98%E7%BA%A7/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="hive03">
+                        
+                        <span class="card-title">hive03</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-20
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Jinxin Li
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/01/18/02hive01_hive%E5%9F%BA%E6%9C%AC/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="hive01">
+                        
+                        <span class="card-title">hive01</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Jinxin Li
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('1'),
+            headingSelector: 'h1,h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1,h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">Jinxin Li</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">232.3k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/fourgold" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:799392914@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=799392914" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 799392914" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

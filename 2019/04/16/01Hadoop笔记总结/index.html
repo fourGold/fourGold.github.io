@@ -1011,4 +1011,1190 @@ yarn    1<span aria-hidden="true" class="line-numbers-rows"><span></span><span><
     <span class="token comment">&lt;!-- 配置该atguigu(superUser)允许通过代理的用户--></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>hadoop.proxyuser.atguigu.users<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
-        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><spa
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>*<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">></span></span>
+   <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p><strong>hdfs-site.xml</strong> 这个是hdfs的核心配置文件，具体配置内容如下：</p>
+ <pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"> <span class="token prolog">&lt;?xml version="1.0" encoding="UTF-8"?></span>
+ <span class="token prolog">&lt;?xml-stylesheet type="text/xsl" href="configuration.xsl"?></span>
+ <span class="token comment">&lt;!--
+   Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+--></span>
+
+<span class="token comment">&lt;!-- Put site-specific property overrides in this file. --></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>configuration</span><span class="token punctuation">></span></span>
+    <span class="token comment">&lt;!--指定NameNode数据的存储目录--></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>dfs.namenode.name.dir<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>file://$&#123;hadoop.data.dir&#125;/name<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+    <span class="token comment">&lt;!--指定DataNode数据的存储目录--></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>dfs.datanode.data.dir<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>file://$&#123;hadoop.data.dir&#125;/data<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+    <span class="token comment">&lt;!--指定SecondaryNameNode数据的存储目录--></span>
+     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>dfs.namenode.checkpoint.dir<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>file://$&#123;hadoop.data.dir&#125;/namesecondary<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+    <span class="token comment">&lt;!-- nn web端访问地址--></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>dfs.namenode.http-address<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>hadoop102:9870<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+    <span class="token comment">&lt;!-- 2nn web端访问地址--></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>dfs.namenode.secondary.http-address<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>hadoop104:9868<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>yarn-site.xml 这个是Yarn的核心配置文件,具体内容如下：</p>
+ <pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token prolog">&lt;?xml version="1.0"?></span>
+<span class="token comment">&lt;!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+--></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>configuration</span><span class="token punctuation">></span></span>
+
+<span class="token comment">&lt;!-- Site specific YARN configuration properties --></span>
+        <span class="token comment">&lt;!-- 指定MR走shuffle --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>yarn.nodemanager.aux-services<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>mapreduce_shuffle<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+<span class="token comment">&lt;!-- 指定ResourceManager的地址--></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>yarn.resourcemanager.hostname<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>hadoop103<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+<span class="token comment">&lt;!-- 环境变量的继承 --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>yarn.nodemanager.env-whitelist<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>                         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>JAVA_HOME,HADOOP_COMMON_HOME,HADOOP_HDFS_HOME,HADOOP_CONF_DIR,CLASSPATH_PREPEND_DISTCACHE,HADOOP_YARN_HOME,HADOOP_MAPRED_HOME<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+<span class="token comment">&lt;!-- yarn容器允许分配的最大最小内存 --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>yarn.scheduler.minimum-allocation-mb<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>512<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>yarn.scheduler.maximum-allocation-mb<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>4096<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+<span class="token comment">&lt;!-- yarn容器允许管理的物理内存大小 --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>yarn.nodemanager.resource.memory-mb<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>4096<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+<span class="token comment">&lt;!-- 关闭yarn对物理内存和虚拟内存的限制检查 --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>yarn.nodemanager.pmem-check-enabled<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>false<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>yarn.nodemanager.vmem-check-enabled<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>false<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>	
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>mapred-site.xml  这是MapReduce配置文件，配置内容如下：</p>
+ <pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token prolog">&lt;?xml version="1.0"?></span>
+<span class="token prolog">&lt;?xml-stylesheet type="text/xsl" href="configuration.xsl"?></span>
+<span class="token comment">&lt;!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+--></span>
+
+<span class="token comment">&lt;!-- Put site-specific property overrides in this file. --></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>configuration</span><span class="token punctuation">></span></span>
+<span class="token comment">&lt;!-- 指定MapReduce程序运行在Yarn上 --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>mapreduce.framework.name<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>yarn<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>configuration</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="4-启动HDFS，单独启动每一台机器上的组件（重点）"><a href="#4-启动HDFS，单独启动每一台机器上的组件（重点）" class="headerlink" title="4. 启动HDFS，单独启动每一台机器上的组件（重点）"></a><strong>4. 启动HDFS，单独启动每一台机器上的组件（重点）</strong></h5></li>
+<li><ol>
+<li><p>因为hdfs分布式文件系统本质是一个文件系统，固然在使用之前要进行格式化，那么在哪台机器格式化呢，就是hdfs的大哥NameNode所在的节点进行格式化，格式化命令如下：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop<span class="token punctuation">]</span>$ hdfs namenode -format<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+</ol>
+</li>
+<li><ol start="2">
+<li>启动HDFS文件系统，注意：我们现在是每台机器逐个启动所以一定要清晰之前定的集群规划的方案，现在要启动HDFS文件系统，而HDFS系统又包含 NameNode、SecondaryNameNode、DataNode，这三大组件有分别被规划在 NameNode在hadoop102、SecondaryNameNode在hadoop104、以及每一台机器上都有DataNode，所以启动流程如下：</li>
+</ol>
+<ul>
+<li><p>在hadoop102上 启动NameNode 命令如下：</p>
+ <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop<span class="token punctuation">]</span>$ hdfs --daemon start namenode<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>在hadoop104上 启动SecondaryNameNode 命令如下：</p>
+ <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop104 ~<span class="token punctuation">]</span>$ hdfs --daemon start secondarynamenode<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>在hadoop102 hadoop103 hadoop104 都启动DataNode 命令如下：</p>
+ <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop<span class="token punctuation">]</span>$ hdfs --daemon start datanode
+<span class="token punctuation">[</span>atguigu@hadoop103 hadoop<span class="token punctuation">]</span>$ hdfs --daemon start namenode
+<span class="token punctuation">[</span>atguigu@hadoop104 hadoop<span class="token punctuation">]</span>$ hdfs --daemon start namenode<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
+</ul>
+</li>
+<li><ol start="3">
+<li>检测hdfs是否启动成功 Web端查看HDFS的NameNode</li>
+</ol>
+</li>
+</ul>
+<p>（a）浏览器中输入：<a target="_blank" rel="noopener" href="http://hadoop102:9870/">http://hadoop102:9870</a></p>
+<p>（b）查看HDFS上存储的数据信息</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/hdfs%E9%A1%B5%E9%9D%A2%E5%9B%BE.png" alt="hdfs的页面图"></p>
+<h5 id="5-启动Yarn"><a href="#5-启动Yarn" class="headerlink" title="5. 启动Yarn"></a><strong>5. 启动Yarn</strong></h5><p>​        根据集群规划，Yarn的ResourceManager我们分布在hadoop103上，NodeManager每一台机器上都存在所以启动流程如下：</p>
+<ul>
+<li><p>1). 在hadoop103 启动resourcemanager 命令如下：</p>
+ <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop103 hadoop<span class="token punctuation">]</span>$ <span class="token function">yarn</span> --daemon start resourcemanager<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>2). 分别在hadoop102、hadoop103、hadoop104 启动nodemanager 命令如下：</p>
+ <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop<span class="token punctuation">]</span>$ hdfs --daemon start nodemanager
+<span class="token punctuation">[</span>atguigu@hadoop103 hadoop<span class="token punctuation">]</span>$ hdfs --daemon start nodemanager
+<span class="token punctuation">[</span>atguigu@hadoop104 hadoop<span class="token punctuation">]</span>$ hdfs --daemon start nodemanager<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
+<li><p>3). 检测Yarn是否启动成功 Web端查看YARN的ResourceManager</p>
+<p> （a）浏览器中输入：<a target="_blank" rel="noopener" href="http://hadoop103:8088/">http://hadoop103:8088</a></p>
+<p> （b）查看YARN上运行的Job信息</p>
+<p> <img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/Yarn%E9%A1%B5%E9%9D%A2%E4%BF%A1%E6%81%AF.png" alt="yarn页面信息"></p>
+</li>
+</ul>
+<h5 id="6-简单测试使用集群"><a href="#6-简单测试使用集群" class="headerlink" title="6.简单测试使用集群"></a>6.简单测试使用集群</h5><p>​    <strong>前言：</strong> 接下来简单测试试用一下我们搭建好的集群环境，操作的目标就是在HDFS 文件系统上上传文件以及运行一下简单的MapReduce程序即可！但是这里需要我们注意的一个 <strong>问题就是 HDFS系统所指向的物理路径究竟是哪 一会应该往哪个路径下上传文件！</strong></p>
+<p>​    <strong>问题一：HDFS文件系统怎么定位？</strong></p>
+<p>​    首先我们清楚，当前集群是运行在Linux上的，而Linux又是在Windows系统中的通过虚拟机的方式运行的，所以HDFS文件系统本质上也是占用了我们当前电脑硬盘的一部分，通过hadoop体系为HDFS分配出的一块存储空间。但是一定要注意它具有独立性，是由Hadoop独立来管理的。</p>
+<p>​    <strong>问题二：在操作HDFS文件系统的时候如何理解它的输入路径和输出路径？</strong></p>
+<p>​    Hadoop如何识别是Linux路径还是HDFS路径呢？本质上还得看 Hadoop的核心配置文件的fs.defaultFS的配置信息。</p>
+<p>当前我们搭建的集群配置如下：</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>fs.defaultFS<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>hdfs://hadoop102:9820<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考官网默认配置如下：</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>fs.defaultFS<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>file:///<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>对比分析：</strong></p>
+<p>1). Hadoop的fs.defaultFS的默认配置是file:///  如果解析的是这个配置，file:/// 本质上所表示的就是Linux本地路径，那么在操作中写输入输出就按照Linux的规则正常写就行，例如编写执行wordcount程序的命令如下：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop<span class="token punctuation">]</span>$ hadoop jar share/hadoop/mapredece/hadoop-mapreduce-ecanples.jar wordcount wcinput/wc.input wcoutput<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2). 如果我们自己修改了core-site.xml 核心配置文件配置 fs.defaultFS 的值为hdfs://hadoop102:9820 那么意味着在解析输入输出路径的时候指向的是HDFS系统维护的目录结构 在HDFS系统底层维护的路径是  <strong>/user/atguigu/wcinput</strong> 所以如果是在这个情况下我们要操作wordcount程序就应该这么写了 命令如下：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop<span class="token punctuation">]</span>$ hadoop jar share/hadoop/mapredece/hadoop-mapreduce-ecanples.jar wordcount /user/atguigu/wcinput/wc.input /user/atguigu/wcoutput<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>OK! 有了上面的内容作为支撑，下面我们就正式对Hadoop集群进行简单测试操作！！！</strong></p>
+<h6 id="6-1-在HDFS中创建一个目录-user-atguigu-input-目录"><a href="#6-1-在HDFS中创建一个目录-user-atguigu-input-目录" class="headerlink" title="6.1 在HDFS中创建一个目录 /user/atguigu/input 目录"></a>6.1 在HDFS中创建一个目录 /user/atguigu/input 目录</h6><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop-3.1.3<span class="token punctuation">]</span>$ hdfs dfs -rm -R /user/atguigu/input<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h6 id="6-2-将hadoop安装目下的wcinput-wc-input-文件上传到HDFS文件系统上的-user-atguigu-input-目录下"><a href="#6-2-将hadoop安装目下的wcinput-wc-input-文件上传到HDFS文件系统上的-user-atguigu-input-目录下" class="headerlink" title="6.2 将hadoop安装目下的wcinput/wc.input 文件上传到HDFS文件系统上的 /user/atguigu/input 目录下"></a>6.2 将hadoop安装目下的wcinput/wc.input 文件上传到HDFS文件系统上的 /user/atguigu/input 目录下</h6><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop-3.1.3<span class="token punctuation">]</span>$ hdfs dfs -put wciput/wc.input /user/atguigu/input<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h6 id="6-3-如何在HDFS上查看具体存储的文件"><a href="#6-3-如何在HDFS上查看具体存储的文件" class="headerlink" title="6.3 如何在HDFS上查看具体存储的文件"></a>6.3 如何在HDFS上查看具体存储的文件</h6><p>DataNode的存储目录：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop103 hadoop-3.1.3<span class="token punctuation">]</span>$ <span class="token builtin class-name">cd</span> data/data/current/BP-1528516923-192.168.2.102-1597943910514/current/finalized/subdir0/subdir0/<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h6 id="6-4-测试Yarn是否能正常使用-还是以Mapreduce的wordcount程序为例"><a href="#6-4-测试Yarn是否能正常使用-还是以Mapreduce的wordcount程序为例" class="headerlink" title="6.4 测试Yarn是否能正常使用 还是以Mapreduce的wordcount程序为例"></a>6.4 测试Yarn是否能正常使用 还是以Mapreduce的wordcount程序为例</h6><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop104 hadoop-3.1.3<span class="token punctuation">]</span>$ hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.3.jar wordcount /user/atguigu/input /user/atguigu/output<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>6.5 在hdfs上面查看执行后的结果</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop-3.1.3<span class="token punctuation">]</span>$ hdfs dfs -cat /user/atguigu/output/part-r-00000<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="7-SSH免密登录"><a href="#7-SSH免密登录" class="headerlink" title="7. SSH免密登录"></a>7. SSH免密登录</h5><p><strong>存在的问题：</strong> 集群启动和关闭，目前我们都是通过单点操作完成的，这样很不方便，于是就考虑能不能在一台机器上就能搞定集群的启动和关闭？</p>
+<p><strong>分析：</strong></p>
+<p>参照之前的脚本分发的思路，我们可以编写一个集群启动和关闭的脚本，就是把哪些在每一台机器上输入的命令封装到一个脚本中，然后通过执行脚本来实现集群启动关闭的目的。</p>
+<p><strong>脚本的大概思路：</strong></p>
+<p>​    登录到hadoop102  启动/关闭 namenode</p>
+<p>​    登录到hadoop104  启动/关闭 secondarynamenode</p>
+<p>​    登录到hadoop102   hadoop103   hadoop104  启动/关闭 datanode</p>
+<p>​    登录到hadoop103 启动/关闭 resourcemanager </p>
+<p>​    登录到hadoop102 hadoop103 hadoop104  启动/关闭 nodemanager</p>
+<p><strong>如何登录远程的机器：</strong></p>
+<p>语法：ssh ip/主机名 </p>
+<p><strong>无密钥配置：</strong> 单纯的 ssh 命令操作，虽然可以只在一台机器操作了但是操作步骤较多，而且登录的时候每次都需要输入密码，我们接下来要做到免密登录+脚本控制</p>
+<p><strong>免密登录的原理：</strong></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E5%8E%9F%E7%90%86.png" alt="免密登录原理"></p>
+<p><strong>实现步骤：</strong></p>
+<p>1). 生成公钥和私钥：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 .ssh<span class="token punctuation">]</span>$ ssh-keygen -t rsa<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>然后敲（四次回车），就会生成两个文件id_rsa（私钥）、id_rsa.pub（公钥）</p>
+<p>2). 将公钥拷贝到要免密登录的目标机器上</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 .ssh<span class="token punctuation">]</span>$ ssh-copy-id hadoop102
+<span class="token punctuation">[</span>atguigu@hadoop102 .ssh<span class="token punctuation">]</span>$ ssh-copy-id hadoop103
+<span class="token punctuation">[</span>atguigu@hadoop102 .ssh<span class="token punctuation">]</span>$ ssh-copy-id hadoop104<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>3). 注意，集群机器的配置</p>
+<ul>
+<li><p> 还需要在hadoop103上采用atguigu账号配置一下无密登录到hadoop102、hadoop103、hadoop104服务器上。</p>
+</li>
+<li><p> 还需要在hadoop104上采用atguigu账号配置一下无密登录到hadoop102、hadoop103、hadoop104服务器上。</p>
+</li>
+<li><p> 还需要在hadoop102上采用atguigu账号，配置一下无密登录到hadoop102、hadoop103、hadoop104；</p>
+</li>
+</ul>
+<p>4).  .ssh文件夹下（~/.ssh）的文件功能解释</p>
+<table>
+<thead>
+<tr>
+<th>known_hosts</th>
+<th>记录ssh访问过计算机的公钥(public  key)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id_rsa</td>
+<td>生成的私钥</td>
+</tr>
+<tr>
+<td>id_rsa.pub</td>
+<td>生成的公钥</td>
+</tr>
+<tr>
+<td>authorized_keys</td>
+<td>存放授权过的无密登录服务器公钥</td>
+</tr>
+</tbody></table>
+<h5 id="8-集群的群起操作"><a href="#8-集群的群起操作" class="headerlink" title="8.集群的群起操作"></a>8.集群的群起操作</h5><p>​    当配置过了ssh免密登录，就可以对hadoop进行群起了（多台机器通过脚本一起启动），群起的脚本hadoop已经帮我们内置好了直接使用即可！但是要最终完成群起操作我们必须让启动/关闭脚本知道 NameNode  SecondaryNameNode  DataNode ResourceManager  NodeManager都在哪一台机器上分配，这个怎么做到呢？这个是由  hadoop安装目录下的 etc/hadoop/workers 配置文件来控制。</p>
+<ul>
+<li> 配置 workers 文件，内容如下：</li>
+</ul>
+<pre class="line-numbers language-mark" data-language="mark"><code class="language-mark">hadoop102
+hadoop103
+hadoop104<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><strong>注意：</strong>该文件中添加的内容结尾不允许有空格，文件中不允许有空行。</p>
+<ul>
+<li><p>启动集群</p>
+<p>1). <strong>如果集群是第一次启动</strong>，需要在hadoop102节点格式化NameNode（注意格式化NameNode，会产生新的集群id，导致NameNode和DataNode的集群id不一致，集群找不到已往数据。如果集群在运行过程中报错，需要重新格式化NameNode的话，一定要先停止namenode和datanode进程，并且要删除所有机器的data和logs目录，然后再进行格式化。</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ hdfs namenode -format<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>2). 启动HDFS</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop-3.1.3<span class="token punctuation">]</span>$ sbin/start-dfs.sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>3). 在配置了ResourceManager的节点（hadoop103）启动YARN</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop103 hadoop-3.1.3<span class="token punctuation">]</span>$ sbin/start-yarn.sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="9-群起群停脚本的编写"><a href="#9-群起群停脚本的编写" class="headerlink" title="9.群起群停脚本的编写"></a>9.群起群停脚本的编写</h5></li>
+</ul>
+<p>​    上面我们已经完成对集群的群起，但是还不够完美，我们操作执行了两个脚本才启动了hdfs和yarn，虽然hadoop也给我们提供了start-all.sh 脚本，但是通常开发中不建议使用，因为start-all.sh脚本启动的话会默认启动一些不必要的组件。我们想更加完美的群起 只执行一个脚本就能把hdfs和yarn都启动或者停止。接下来我们自己封装一个脚本来实现，步骤如下：</p>
+<p>1). 进入到/home/atguigu/bin目录下创建一个<strong>群起/群停</strong>脚本，这样操作为了在任何位置都能执行脚本</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ <span class="token builtin class-name">cd</span> /home/atguigu/bin
+<span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ <span class="token function">vim</span> mycluster.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>2). 编写脚本内容：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token shebang important">#!/bin/bash</span>
+<span class="token keyword">if</span> <span class="token punctuation">[</span> <span class="token variable">$#</span> -lt <span class="token number">1</span> <span class="token punctuation">]</span>
+<span class="token keyword">then</span>
+         <span class="token builtin class-name">echo</span> <span class="token string">"No Args Input..."</span>
+         <span class="token builtin class-name">exit</span>
+<span class="token keyword">fi</span>
+<span class="token keyword">case</span> <span class="token variable">$1</span> <span class="token keyword">in</span>
+<span class="token string">"start"</span><span class="token punctuation">)</span>
+         <span class="token builtin class-name">echo</span> <span class="token string">"==================START HDFS==================="</span> 
+         <span class="token function">ssh</span> hadoop102 /opt/module/hadoop-3.1.3/sbin/start-dfs.sh
+         <span class="token builtin class-name">echo</span> <span class="token string">"==================START YARN==================="</span>
+         <span class="token function">ssh</span> hadoop103 /opt/module/hadoop-3.1.3/sbin/start-yarn.sh
+<span class="token punctuation">;</span><span class="token punctuation">;</span>
+<span class="token string">"stop"</span><span class="token punctuation">)</span>
+         <span class="token builtin class-name">echo</span> <span class="token string">"==================STOP YARN==================="</span>
+         <span class="token function">ssh</span> hadoop103 /opt/module/hadoop-3.1.3/sbin/stop-yarn.sh
+         <span class="token builtin class-name">echo</span> <span class="token string">"==================STOP HDFS==================="</span> 
+         <span class="token function">ssh</span> hadoop102 /opt/module/hadoop-3.1.3/sbin/stop-dfs.sh
+
+<span class="token punctuation">;</span><span class="token punctuation">;</span>
+*<span class="token punctuation">)</span>
+  <span class="token builtin class-name">echo</span> <span class="token string">"Input Args Error!!!!"</span>
+<span class="token punctuation">;</span><span class="token punctuation">;</span>
+<span class="token keyword">esac</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>3). 保存后退出，然后赋予脚本执行权限</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 bin<span class="token punctuation">]</span>$ <span class="token function">chmod</span> <span class="token number">777</span> myhadoop.sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>4). 分发/home/atguigu/bin目录，保证自定义脚本在三台机器上都可以使用</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ xsync /home/atguigu/bin/<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h5 id="10-编写统一查看jps的脚本"><a href="#10-编写统一查看jps的脚本" class="headerlink" title="10.编写统一查看jps的脚本"></a>10.编写统一查看jps的脚本</h5><p>​    上面我们做了一个频繁的操作，就是总是在每一机器上输入 jps 命令，来查看当前机器的java进程，而且每次输入都是切换到服务器上输入，很麻烦，接下来我们要实现在一台机器就能查看整个集群的java进程。</p>
+<p>1). 进入到/home/atguigu/bin目录下创建一个查看jps的脚本</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ <span class="token builtin class-name">cd</span> /home/atguigu/bin
+<span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ <span class="token function">vim</span> jpsall.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>2). 编辑脚本内容如下：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token shebang important">#!/bin/bash</span>
+<span class="token keyword">for</span> <span class="token for-or-select variable">i</span> <span class="token keyword">in</span> hadoop102 hadoop103 hadoop104
+<span class="token keyword">do</span>
+	<span class="token builtin class-name">echo</span> <span class="token string">"***************<span class="token variable">$i</span> JPS****************"</span>
+	<span class="token function">ssh</span> <span class="token variable">$i</span> /opt/module/jkd1.8.0_212/bin/jps
+<span class="token keyword">done</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>3).  保存后退出，然后赋予脚本执行权限</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 bin<span class="token punctuation">]</span>$ <span class="token function">chmod</span> <span class="token number">777</span> jpsall.sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>4). 测试</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 bin<span class="token punctuation">]</span>$ jpsall.sh <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>结果如下：</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/hadoop%E5%90%AF%E5%8A%A8%E7%A8%8B%E5%BA%8F%E5%B1%95%E7%A4%BA.png" alt="hadoop进程展示"></p>
+<h5 id="11-历史服务器的使用"><a href="#11-历史服务器的使用" class="headerlink" title="11.历史服务器的使用"></a>11.历史服务器的使用</h5><p>​    这一小节主要介绍hadoop的历史服务器的使用！什么是历史服务器呢？举个例子就是我们在YARN上跑的一些job的历史记录，当重启YARN后之前执行过的job任务记录就会消失，hadoop为了更好的追溯和记录这些job执行记录专门提供了一个历史服务器，只要我们在Hadoop中配置了历史服务器那么以后就可以很方便查看执行过的所有job。</p>
+<p>1).配置mapred-site.xml</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop<span class="token punctuation">]</span>$ <span class="token function">vim</span> mapred-site.xml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>在该文件里面增加如下配置:</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token comment">&lt;!-- 历史服务器端地址 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>mapreduce.jobhistory.address<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>hadoop102:10020<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+
+<span class="token comment">&lt;!-- 历史服务器web端地址 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>mapreduce.jobhistory.webapp.address<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>hadoop102:19888<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>2). 分发配置</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop<span class="token punctuation">]</span>$ xsync <span class="token variable">$HADOOP_HOME</span>/etc/hadoop/mapred-site.xml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>3). 在hadoop102启动历史服务器</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop<span class="token punctuation">]</span>$ mapred --daemon start historyserver<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>4). 查看历史服务器是否启动</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop<span class="token punctuation">]</span>$ jps<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ol start="5">
+<li>web端查看历史服务器的图形化界面</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="http://hadoop102:19888/jobhistory">http://hadoop102:19888/jobhistory</a></p>
+<h5 id="12-配置日志的聚集"><a href="#12-配置日志的聚集" class="headerlink" title="12.配置日志的聚集"></a>12.配置日志的聚集</h5><p>​    本小节主要对hadoop中的日志进行合理性的管理，方便我们更好的查阅。默认情况下 Hadoop作业执行的日志保存在hadoop的安装目录下logs下面。我们可以在linux上直接查看，但是这样操作不够人性化，查阅起来也比较麻烦。所以我们可以在执行job任务的时候产生日志后，让它自动的保存到hdfs系统中，这样就可以在网页中通过访问HDFS系统的web端地址来查看日志了！如果想完成上述操作需要我们进行以下几步配置和操作。</p>
+<p>1）配置yarn-site.xml</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop<span class="token punctuation">]</span>$ <span class="token function">vim</span> yarn-site.xml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>内容如下：</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token comment">&lt;!-- 开启日志聚集功能 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>yarn.log-aggregation-enable<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>true<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+<span class="token comment">&lt;!-- 设置日志聚集服务器地址 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>  
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>yarn.log.server.url<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>  
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>http://hadoop102:19888/jobhistory/logs<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span>
+<span class="token comment">&lt;!-- 设置日志保留时间为7天 --></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>property</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>yarn.log-aggregation.retain-seconds<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>value</span><span class="token punctuation">></span></span>604800<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>value</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>property</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>2）分发配置</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 hadoop<span class="token punctuation">]</span>$ xsync <span class="token variable">$HADOOP_HOME</span>/etc/hadoop/yarn-site.xml<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>3）关闭NodeManager、ResourceManager和HistoryServer</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop103 ~<span class="token punctuation">]</span>$ stop-yarn.sh
+<span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ mapred --daemon stop historyserver<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>4）启动NodeManager 、ResourceManage和HistoryServer </p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop103 ~<span class="token punctuation">]</span>$ start-yarn.sh
+<span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ mapred --daemon start historyserver<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>5）执行wordcount程序</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ hadoop jar  <span class="token variable">$HADOOP_HOME</span>/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.1.3.jar wordcount /input /output<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>6）Web端查看日志</p>
+<p>​    <a target="_blank" rel="noopener" href="http://hadoop102:19888/jobhistory">http://hadoop102:19888/jobhistory</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/web%E6%9F%A5%E7%9C%8B%E5%8E%86%E5%8F%B2%E6%9C%8D%E5%8A%A1%E5%99%A8.png" alt="web端查看历史服务器"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/jobManager.png" alt="job页面"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/hadoop%E5%8E%86%E5%8F%B2%E6%9C%8D%E5%8A%A1%E5%99%A8.png" alt="历史服务器"></p>
+<h5 id="13-集群时间同步"><a href="#13-集群时间同步" class="headerlink" title="13. 集群时间同步"></a>13. 集群时间同步</h5><p>​    本小节主要操作在集群环境下，每一台服务器之间的时间同步。时间同步是很有必要的，因为在多台机器协同工作的时候，必然要求时间统一 要不然就会出问题。以下内容只要求大致了解 这项工作一般在运维的范畴。</p>
+<p><strong>1）时间服务器配置(必须root用户</strong>)</p>
+<p>（0）查看所有节点ntpd服务状态和开机自启动状态</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ <span class="token function">sudo</span> systemctl status ntpd
+<span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ <span class="token function">sudo</span> systemctl is-enabled ntpd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>（1）在所有节点关闭ntpd服务和自启动</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ <span class="token function">sudo</span> systemctl stop ntpd
+<span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ <span class="token function">sudo</span> systemctl disable ntpd<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>（2）修改hadoop102的ntp.conf配置文件</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ <span class="token function">sudo</span> <span class="token function">vim</span> /etc/ntp.conf<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>修改内容如下:</p>
+<p>​    a）修改1（授权192.168.1.0-192.168.1.255网段上的所有机器可以从这台机器上查询和同步时间）</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment">#restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap</span>
+改为（就是把注释去掉）：
+restrict <span class="token number">192.168</span>.1.0 mask <span class="token number">255.255</span>.255.0 nomodify notrap<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>​    b）修改2（集群在局域网中，不使用其他互联网上的时间）</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">server <span class="token number">0</span>.centos.pool.ntp.org iburst
+server <span class="token number">1</span>.centos.pool.ntp.org iburst
+server <span class="token number">2</span>.centos.pool.ntp.org iburst
+server <span class="token number">3</span>.centos.pool.ntp.org iburst
+改为（都加上注释）：
+<span class="token comment">#server 0.centos.pool.ntp.org iburst</span>
+<span class="token comment">#server 1.centos.pool.ntp.org iburst</span>
+<span class="token comment">#server 2.centos.pool.ntp.org iburst</span>
+<span class="token comment">#server 3.centos.pool.ntp.org iburst</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>​    c）添加3（当该节点丢失网络连接，依然可以采用本地时间作为时间服务器为集群中的其他节点提供时间同步）</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">server <span class="token number">127.127</span>.1.0
+fudge <span class="token number">127.127</span>.1.0 stratum <span class="token number">10</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>（3）修改hadoop102的/etc/sysconfig/ntpd 文件</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ <span class="token function">sudo</span> <span class="token function">vim</span> /etc/sysconfig/ntpd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>增加内容如下（让硬件时间与系统时间一起同步）</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token assign-left variable">SYNC_HWCLOCK</span><span class="token operator">=</span>yes<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>（4）重新启动ntpd服务</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ <span class="token function">sudo</span> systemctl start ntpd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>（5）设置ntpd服务开机启动</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop102 ~<span class="token punctuation">]</span>$ <span class="token function">sudo</span> systemctl <span class="token builtin class-name">enable</span> ntpd<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+<p><strong>2）在其他机器进行时间同步操作（必须root用户）</strong></p>
+<p>（1）在其他机器配置1分钟与时间服务器同步一次</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop103 ~<span class="token punctuation">]</span>$ <span class="token function">sudo</span> <span class="token function">crontab</span> -e<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>编写定时任务如下：</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">*/1 * * * * /usr/sbin/ntpdate hadoop102<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>（2）修改任意机器时间</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop103 ~<span class="token punctuation">]</span>$ <span class="token function">sudo</span> <span class="token function">date</span> -s <span class="token string">"2018-8-08 08:08:08"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>（3）一分钟后查看机器是否与时间服务器同步</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>atguigu@hadoop103 ~<span class="token punctuation">]</span>$ <span class="token function">sudo</span> <span class="token function">date</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+<h2 id="五、Hadoop编译源码"><a href="#五、Hadoop编译源码" class="headerlink" title="五、Hadoop编译源码"></a>五、Hadoop编译源码</h2><h2 id="六、常见错误及解决方案"><a href="#六、常见错误及解决方案" class="headerlink" title="六、常见错误及解决方案"></a>六、常见错误及解决方案</h2>
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Jinxin Li</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://fourgold.github.io/2019/04/16/01Hadoop%E7%AC%94%E8%AE%B0%E6%80%BB%E7%BB%93/">http://fourgold.github.io/2019/04/16/01Hadoop%E7%AC%94%E8%AE%B0%E6%80%BB%E7%BB%93/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Jinxin Li</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/06/07/13Flink09_CEP/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Flink09_CEP">
+                        
+                        <span class="card-title">Flink09_CEP</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            对CEP库的API与CEP的时间算法介绍,同时进行简单的CEP尝试
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-06-07
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/flink/" class="post-category">
+                                    flink
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/flink/">
+                        <span class="chip bg-color">flink</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2018/06/12/00Java%E9%AB%98%E7%BA%A7%E7%BC%96%E7%A8%8B/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="Java02_中级">
+                        
+                        <span class="card-title">Java02_中级</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-06-12
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Jinxin Li
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('1'),
+            headingSelector: 'h1,h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1,h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">Jinxin Li</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">232.3k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/fourgold" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:799392914@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=799392914" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 799392914" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

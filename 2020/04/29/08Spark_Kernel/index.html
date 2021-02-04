@@ -1079,4 +1079,1001 @@ The life<span class="token operator">-</span><span class="token keyword">cycle</
                <span class="token comment">--backend.reviveOffers()</span>
                    <span class="token number">1.</span>driver的终端，自己给自己发消息
                     <span class="token comment">-- driverEndpoint.send(ReviveOffers)</span>
-                    <span class="token number">2.</span>在DriverEndpoint中，就有一个receive方法，在这个方法中，匹配获取的消息，如果是ReviveOffers<span class
+                    <span class="token number">2.</span>在DriverEndpoint中，就有一个receive方法，在这个方法中，匹配获取的消息，如果是ReviveOffers<span class="token punctuation">,</span>
+                    则执行makeOffers<span class="token punctuation">(</span><span class="token punctuation">)</span>方法，点击makeOffers<span class="token punctuation">(</span><span class="token punctuation">)</span>方法
+                     <span class="token comment">-- case ReviveOffers =>makeOffers()</span>
+                         a、DriverEndpoint调度器从任务池中取出任务，取任务的具体方式：点击resourceOffers
+                          <span class="token comment">-- val taskDescs = scheduler.resourceOffers(workOffers)</span>
+                               a、获取一个排好序的任务集合，实现方式，点击getSortedTaskSetQueue
+                                <span class="token comment">--val sortedTaskSets = rootPool.getSortedTaskSetQueue</span>
+                                     a、如下为任务集的调度的算法，依据算法对任务集进行比较排序，返回排好序的任务集，然后将
+                                     返回任务集存放到一个arraybuffer集合中，并返回给到sortedTaskSets，不同的调度的算法
+                                     是不一样的。
+                                     <span class="token string">"FIFO调度算法"</span>：先比较优先级，优先级高的先调度，如果优先级相等，则比较阶段id，阶段
+                                                    id小的先执行。
+                                     <span class="token string">"Fair调度算法"</span>：根据运行任务的数量、权重【默认值为<span class="token number">1</span>】、最小分配数量【默认值为<span class="token number">0</span>】，
+                                                    进行综合分配
+                                      <span class="token comment">-- val sortedSchedulableQueue =</span>
+      schedulableQueue<span class="token punctuation">.</span>asScala<span class="token punctuation">.</span>toSeq<span class="token punctuation">.</span>sortWith<span class="token punctuation">(</span>taskSetSchedulingAlgorithm<span class="token punctuation">.</span>comparator<span class="token punctuation">)</span>
+        
+                         b、如果任务不为空，则driver发射任务
+                          <span class="token comment">-- if (!taskDescs.isEmpty) &#123;launchTasks(taskDescs)&#125;             </span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 1.总结</span>
+   <span class="token number">1.</span> 一个stage生成tasks以后，由taskSchedule负责任务的调度
+   <span class="token number">2.</span> 一个stage就会有一个任务集，taskSet
+   <span class="token number">3.</span> 每一个taskSet都会被封装成TaskSetManager，负责监控管理同一个Stage中的Tasks，TaskScheduler调度模式有两种：
+        a、FIFOSchedulableBuilder <span class="token comment">--> 先进先出调度器【默认调度模式】</span>
+        b、FairSchedulableBuilder <span class="token comment">--> 公平调度器</span>
+
+   <span class="token number">4.</span> TaskScheduler初始化过程中会实例化rootPool任务池，driver准备的任务和管理者会发送到这个任务池中，
+      由TaskScheduler负责将任务调度结果发送给executor
+   <span class="token number">5.</span> driver的终端自己给自己发送一个消息<span class="token string">"ReviveOffers"</span>，driverEndpoint收到ReviveOffer消息后调用makeOffers方法，TaskScheduler就开始进行任务集的调度
+   <span class="token number">6.</span> 根据<span class="token string">"调度算法"</span>对任务集进行排序，获取一个排好序的队列<span class="token string">"排序在前的就先执行，排序在后的就后执行"</span>，将排好序的队列放到一个arraybuffer集合中，并返回给到sortedTaskSets
+       
+       <span class="token string">"FIFO调度算法"</span>：先比较优先级，优先级高的先调度，如果优先级相等，则比较阶段id，阶段 id小的先执行。
+        <span class="token string">"Fair调度算法"</span>：根据运行任务的数量、weight【默认值为<span class="token number">1</span>】、minShare【默认值为<span class="token number">0</span>】，进行综合分配
+        minShare、weight的值均在公平调度配置文件<span class="token string">"fairscheduler.xml"</span>中被指定，调度池在构建阶段会读取此文件的相关配置
+   <span class="token number">7.</span> <span class="token string">"driverEndpoint"</span>调度器就从这个排好序的任务队列的数组中取任务tasks。
+   <span class="token number">8.</span> 如果获取的任务不为空，则dirver开始发射任务
+   
+<span class="token comment">-- 2.说明：</span>
+   <span class="token number">1.</span> 从任务池中取出的任务，包含了本地化级别信息以及等待的时长<span class="token punctuation">(</span><span class="token string">"默认每个级别等待时间为3s，也可以单独设置每个级别的等待时间"</span><span class="token punctuation">)</span>，当在driver在发送任务的时候，会根据本地化级别进行发送任务<span class="token punctuation">.</span>
+   
+<span class="token comment">-- 3.区分本地化级别和调度算法</span>
+    调度算法：是指driverEndpoint在调度任务集时，确定哪个任务集先执行，哪个任务集后执行
+    本地化级别：是指driver在发送向executor发送任务的首选位置，确定任务发送到哪个executor中，如果发送不成功，并进行降级处理                                           <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="5-4-任务的计算"><a href="#5-4-任务的计算" class="headerlink" title="5.4  任务的计算"></a>5.4  任务的计算</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"> <span class="token number">1.</span> driver发送任务前，会将任务进行编码：
+ 	<span class="token comment">--val serializedTask = TaskDescription.encode(task)  </span>
+ 
+ <span class="token number">2.</span> 然后向executor发送已经编码和序列化的任务task
+		<span class="token comment">-- executorData.executorEndpoint.send(LaunchTask(new SerializableBuffer(serializedTask))</span>
+
+<span class="token number">3.</span> 在executorbackend就会收到任务<span class="token punctuation">(</span>receive<span class="token punctuation">)</span>并启动任务<span class="token punctuation">,</span>首先是对任务进行解码，然后executor启动任务，点击launchTask
+ 	<span class="token comment">--val taskDesc = TaskDescription.decode(data.value)</span>
+     logInfo<span class="token punctuation">(</span><span class="token string">"Got assigned task "</span> <span class="token operator">+</span> taskDesc<span class="token punctuation">.</span>taskId<span class="token punctuation">)</span>
+     executor<span class="token punctuation">.</span>launchTask<span class="token punctuation">(</span>this<span class="token punctuation">,</span> taskDesc<span class="token punctuation">)</span>
+
+<span class="token number">4.</span>  来一个task就使用一个线程来接收
+     <span class="token comment">--val tr = new TaskRunner(context, taskDescription)</span>
+     runningTasks<span class="token punctuation">.</span>put<span class="token punctuation">(</span>taskDescription<span class="token punctuation">.</span>taskId<span class="token punctuation">,</span> tr<span class="token punctuation">)</span>
+     threadPool<span class="token punctuation">.</span><span class="token keyword">execute</span><span class="token punctuation">(</span>tr<span class="token punctuation">)</span>
+ <span class="token number">5.</span> 线程中有一个run方法，方法中有一个逻辑为：task<span class="token punctuation">.</span>run，通过底层发现，其实调用的是具体task对象的runTask<span class="token punctuation">(</span><span class="token punctuation">)</span>方法<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="5-5-shuffle"><a href="#5-5-shuffle" class="headerlink" title="5.5 shuffle"></a>5.5 shuffle</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">【在<span class="token string">"shuffleMapTask类"</span>中的runTask<span class="token punctuation">(</span><span class="token punctuation">)</span>方法中】
+<span class="token number">1.</span> shuffle<span class="token string">"写操作"</span>
+<span class="token comment">--var writer: ShuffleWriter[Any, Any] = null</span>
+<span class="token number">2.</span> 在写操作之前，也会调用迭代器的方式，所以也可以实现<span class="token string">"读的操作"</span>
+<span class="token comment">--writer.write(rdd.iterator(partition, context)......</span>
+
+【在<span class="token string">"resultTask类"</span>中的runTask<span class="token punctuation">(</span><span class="token punctuation">)</span>方法中，那么就得有读数据的操作】
+<span class="token number">1.</span> RDD中不保存数据，所以操作的时候数据是一条一条的执行，则会调用迭代器的方法，点击iterator方法
+<span class="token comment">-- func(context, rdd.iterator(partition, context))</span>
+    <span class="token number">1.</span> 一层一层的调，在shuffleRDD中的computer中有：<span class="token string">"读的操作"</span>
+     <span class="token comment">-- SparkEnv.get.shuffleManager.getReader(dep.shuffleHandle, split.index, split.index + 1, context).read()   </span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token string">"分支1"</span>： Shuffle map<span class="token punctuation">(</span><span class="token keyword">Write</span><span class="token punctuation">)</span>
+      <span class="token number">1.</span> 点击getWrite
+      <span class="token comment">-- writer = manager.getWriter[Any, Any](dep.shuffleHandle, partitionId, context)</span>
+            <span class="token number">1.</span> getWriter是一个抽象方法，所在的类为：ShuffleManager，<span class="token string">'shuffle管理器'</span>，获取其实现类：<span class="token string">"SortShuffleManager"</span>
+               是一个可排序的shuffleManager管理器。查询这个管理类的getWriter方法，在这个方法中，对handle的类型进行模式匹
+               配，所以现在handle就很很重要了，从模式匹配项，可以知道有<span class="token number">3</span>种不同类型的handle，而且handle来自<span class="token string">"getWriter方法"</span>
+               <span class="token comment">-- handle match &#123;</span>
+                  <span class="token keyword">case</span> unsafeShuffleHandle: SerializedShuffleHandle
+                  <span class="token keyword">case</span> bypassMergeSortHandle: BypassMergeSortShuffleHandle
+                  <span class="token keyword">case</span> other: BaseShuffleHandle
+      <span class="token number">2.</span>在 <span class="token string">"manager.getWriter"</span>方法中的handle到底是什么？看源码
+             <span class="token number">1.</span> 是shuffle管理器注册shuffle获取的，点击registerShuffle
+             <span class="token comment">--val shuffleHandle: ShuffleHandle = _rdd.context.env.shuffleManager.registerShuffle(</span>
+        shuffleId<span class="token punctuation">,</span> _rdd<span class="token punctuation">.</span>partitions<span class="token punctuation">.</span>length<span class="token punctuation">,</span> this<span class="token punctuation">)</span>
+             <span class="token number">2.</span> 是一个抽象方法，获取抽象类<span class="token string">"ShuffleManager"</span>的实现类<span class="token string">"SortShuffleManager"</span><span class="token punctuation">,</span>查询<span class="token string">"registerShuffle"</span>方法
+                    从这里发现，确实有三种handle：
+                    a、如果忽略索引文件的排序 <span class="token comment">--> 创建BypassMergeSortShuffleHandle</span>
+                    b、如果可以实现序列化    <span class="token comment">--> 创建SerializedShuffleHandle</span>
+                    c、如果不是以上两种      <span class="token comment">--> 创建BaseShuffleHandle</span>
+                   <span class="token comment">--if (SortShuffleWriter.shouldBypassMergeSort(conf, dependency)) &#123;  </span>
+                          new BypassMergeSortShuffleHandle<span class="token punctuation">[</span>K<span class="token punctuation">,</span> V<span class="token punctuation">]</span><span class="token punctuation">(</span>
+                            shuffleId<span class="token punctuation">,</span> numMaps<span class="token punctuation">,</span> dependency<span class="token punctuation">.</span>asInstanceOf<span class="token punctuation">[</span>ShuffleDependency<span class="token punctuation">[</span>K<span class="token punctuation">,</span> V<span class="token punctuation">,</span> V<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+                        &#125; <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>SortShuffleManager<span class="token punctuation">.</span>canUseSerializedShuffle<span class="token punctuation">(</span>dependency<span class="token punctuation">)</span><span class="token punctuation">)</span> &#123;  
+                          new SerializedShuffleHandle<span class="token punctuation">[</span>K<span class="token punctuation">,</span> V<span class="token punctuation">]</span><span class="token punctuation">(</span>
+                            shuffleId<span class="token punctuation">,</span> numMaps<span class="token punctuation">,</span> dependency<span class="token punctuation">.</span>asInstanceOf<span class="token punctuation">[</span>ShuffleDependency<span class="token punctuation">[</span>K<span class="token punctuation">,</span> V<span class="token punctuation">,</span> V<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+                        &#125; <span class="token keyword">else</span> &#123;     
+                          new BaseShuffleHandle<span class="token punctuation">(</span>shuffleId<span class="token punctuation">,</span> numMaps<span class="token punctuation">,</span> dependency<span class="token punctuation">)</span>
+                        &#125;
+                      &#125;
+                      <span class="token number">1.</span> 点击<span class="token string">"shouldBypassMergeSort"</span><span class="token punctuation">,</span>查看什么情况下忽略排序，如果当前rdd的map端有预聚合功能，就
+                         不能忽略排序，如reduceByKey算子
+                        <span class="token comment">-- if (dep.mapSideCombine) &#123;false&#125;</span>
+                        如果map端没有预聚合功能，首先获取忽略合并的阈值，如果没有显示设置，就会默认给<span class="token number">200</span>，如果当前RDD的
+                        分区器的分区数量小于这个阈值，那么就返回<span class="token boolean">true</span>，则此时创建<span class="token string">"BypassMergeSortShuffleHandle"</span>
+                        <span class="token comment">--else &#123;</span>
+                        val bypassMergeThreshold: <span class="token keyword">Int</span> <span class="token operator">=</span> conf<span class="token punctuation">.</span>getInt<span class="token punctuation">(</span><span class="token string">"spark.shuffle.sortbypassMergeThreshold"</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">)</span>
+                        dep<span class="token punctuation">.</span>partitioner<span class="token punctuation">.</span>numPartitions <span class="token operator">&lt;=</span> bypassMergeThreshold
+                        <span class="token comment">-- 所以总结就是当rdd的map端没有预聚合功能，且分区器的分区数量小于阈值，那么就会创建</span>
+                            <span class="token string">"BypassMergeSortShuffleHandle"</span>
+                     <span class="token number">2.</span> 点击<span class="token string">"canUseSerializedShuffle"</span><span class="token punctuation">,</span>Spark的内存优化后的解决方案<span class="token punctuation">,</span>对象序列化后不需要反序列化。
+                          <span class="token comment">// 通过以下代码可知，创建"SerializedShuffleHandle"的条件为,满足以下三个条件即可：</span>
+                             a、序列化对象需要<span class="token string">"支持"</span>重定义
+                             b、依赖的map端<span class="token string">"没有"</span>预聚合功能
+                             c、分区数量<span class="token string">"小于"</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">24</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span> <span class="token operator">=</span> <span class="token number">16777215</span>
+                          <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>dependency<span class="token punctuation">.</span>serializer<span class="token punctuation">.</span>supportsRelocationOfSerializedObjects<span class="token punctuation">)</span> &#123; <span class="token boolean">false</span>&#125; 
+                          <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>dependency<span class="token punctuation">.</span>mapSideCombine<span class="token punctuation">)</span> &#123;<span class="token boolean">false</span> &#125; 
+                          <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>numPartitions <span class="token operator">></span> MAX_SHUFFLE_OUTPUT_PARTITIONS_FOR_SERIALIZED_MODE<span class="token punctuation">)</span> &#123; <span class="token boolean">false</span>&#125; 
+                          <span class="token keyword">else</span> &#123;<span class="token boolean">true</span> &#125;
+                     <span class="token number">3.</span> 如果以上两个handle都不满足，则选择最后一个handle：<span class="token string">"BaseShuffleHandle"</span> <span class="token comment">-->默认的handle</span>
+                                             
+<span class="token string">"分支2"</span>：Shuffle reduce<span class="token punctuation">(</span><span class="token keyword">Read</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 总结： shuffle的handle有三种：</span>
+     <span class="token number">1.</span> BypassMergeSortShuffleHandle  <span class="token comment">--> BypassMergeSortShuffleWriter</span>
+        <span class="token string">"条件"</span>：
+        a、当前rdd的map端没有预聚合功能，如groupBy
+        b、分区器的分区数量小于阈值<span class="token punctuation">,</span>默认为<span class="token number">200</span>        
+     <span class="token number">2.</span> SerializedShuffleHandle      <span class="token comment">--> UnsafeShuffleWriter</span>
+        <span class="token string">"条件"</span>：
+        a、序列化对象需要<span class="token string">"支持"</span>重定义
+        b、依赖的map端<span class="token string">"没有"</span>预聚合功能
+        c、分区数量<span class="token string">"小于"</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;&lt;</span> <span class="token number">24</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span> <span class="token operator">=</span> <span class="token number">16777215</span>
+     <span class="token number">3.</span> BaseShuffleHandle           <span class="token comment">--> SortShuffleWriter</span>
+        <span class="token string">"默认的handle"</span>
+如果前两种都不满足，那么就使用默认的<span class="token keyword">write</span>
+拿着这三种handle，再来看这个<span class="token string">"getWrite"</span>方法<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"> <span class="token comment">-- handle match &#123;</span>
+    <span class="token comment">-- case unsafeShuffleHandle: SerializedShuffleHandle =></span>
+       new UnsafeShuffleWriter<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>  
+    <span class="token comment">-- case bypassMergeSortHandle: BypassMergeSortShuffleHandle =></span>
+       new BypassMergeSortShuffleWriter<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token comment">-- case other: BaseShuffleHandle =></span>
+       new SortShuffleWriter<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token string">"不同的handle对应不同的writer"</span>
+    <span class="token number">1.</span> BypassMergeSortShuffleHandle  <span class="token comment">--> BypassMergeSortShuffleWriter</span>
+       <span class="token comment">// 点击"BypassMergeSortShuffleWriter"中的write方法，如下代码，根据分区的数量进行循环，'每一个分区就向磁盘写一个文</span>
+       件'。 即map端的每一个task会为reduce端的每一个task都创建一个临时磁盘文件<span class="token punctuation">,</span>根据<span class="token keyword">key</span>的hashcode<span class="token operator">%</span>分区数量，决定数据去到
+       哪个分区文件中。
+       <span class="token comment">-- for (int i = 0; i &lt; numPartitions; i++) &#123;</span>
+     partitionWriters<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> blockManager<span class="token punctuation">.</span>getDiskWriter<span class="token punctuation">(</span>blockId<span class="token punctuation">,</span> <span class="token keyword">file</span><span class="token punctuation">,</span> serInstance<span class="token punctuation">,</span> fileBufferSize<span class="token punctuation">,</span> writeMetrics<span class="token punctuation">)</span><span class="token punctuation">;</span>&#125;
+      
+    <span class="token number">2.</span> SerializedShuffleHandle       <span class="token comment">--> UnsafeShuffleWriter </span>
+  
+    <span class="token number">3.</span> BaseShuffleHandle<span class="token punctuation">,</span><span class="token string">"重要"</span>       <span class="token comment">--> SortShuffleWriter</span>
+        <span class="token comment">// 点击"SortShuffleWriter"中的write方法，如下代码：</span>
+       <span class="token comment">// 1. "写文件过程"：写磁盘文件时，首先将数据写到内存中，并在内存中的进行排序，如果内存（5M）不够，会溢写磁盘，</span>
+       生成临时文件<span class="token punctuation">(</span>一个数据文件，一个索引文件<span class="token punctuation">)</span>，最终将所有的临时文件合并<span class="token punctuation">(</span>原来的数据文件和索引文件会被删除<span class="token punctuation">)</span>成数据
+       文件和索引文件。
+          <span class="token number">2.</span> <span class="token string">"预聚和的原理"</span>：在排序时，构造了一种类似于hashtable的结构，所以相同的<span class="token keyword">key</span>就聚合在一起。
+          <span class="token number">3.</span> <span class="token string">"排序规则"</span>：首先会按照分区进行排序，然后按照<span class="token keyword">key</span><span class="token punctuation">.</span>
+          <span class="token number">4.</span> <span class="token string">"数据进入不同分区的原则"</span>：按照分区器的原则，默认是hashpartition，根据<span class="token keyword">key</span>的<span class="token keyword">hash</span><span class="token operator">%</span>分区数量。
+        val partitionLengths <span class="token operator">=</span> sorter<span class="token punctuation">.</span>writePartitionedFile<span class="token punctuation">(</span>blockId<span class="token punctuation">,</span> tmp<span class="token punctuation">)</span>
+        shuffleBlockResolver<span class="token punctuation">.</span>writeIndexFileAndCommit<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>![image-20200621180817513](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200621180817.png)</p>
+<p>![image-20200620004312766](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200620004312.png)</p>
+<pre class="line-numbers language-sqlite" data-language="sqlite"><code class="language-sqlite">-- 面试中常见shuffle的两个问题：
+1. 我们现在spark使用了哪种shuffle，哪一种类型的？
+   a、sortshuffle。
+2. 忽略排序过程的shuffle什么时候会触发？
+   a、map 端没有预聚合功能
+   b、reduce端的分区数量小于一个阈值，默认是200<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h2 id="六-、-Spark内存管理"><a href="#六-、-Spark内存管理" class="headerlink" title="六 、 Spark内存管理"></a>六 、 Spark内存管理</h2><h3 id="6-1-堆内内存和堆外内存"><a href="#6-1-堆内内存和堆外内存" class="headerlink" title="6.1 堆内内存和堆外内存"></a>6.1 堆内内存和堆外内存</h3><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">--1. "堆内内存"：</span>
+    是指jvm所能使用的内存，并不是完全可以控制，如GC垃圾回收器的执行时间是不可控的，当你需要内存进行数据处理时，GC并不能立
+    马释放内存给你使用。jvm虚拟机默认使用的内存大小是可用内存的<span class="token number">1</span><span class="token operator">/</span><span class="token number">64</span>，最大值是<span class="token number">1</span><span class="token operator">/</span><span class="token number">4</span>
+<span class="token comment">--2. "堆外内存"：</span>
+     在jvm虚拟机之外的内存，可以存储我们的数据，这个内存是咱们向操作系统申请过来的，完全可控。<span class="token string">"默认是不启用堆外内存"</span>
+<span class="token comment">--3. 设置堆外内存的参数：</span>
+    a、启动堆外内存参数：spark<span class="token punctuation">.</span>memory<span class="token punctuation">.</span>offHeap<span class="token punctuation">.</span>enabled
+    b、设定堆外内存的大小： spark<span class="token punctuation">.</span>memory<span class="token punctuation">.</span>offHeap<span class="token punctuation">.</span>size 
+<span class="token comment">--4. 在spark中，堆内和堆外内存可以进行统一的管理。</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="6-2-内存空间分配"><a href="#6-2-内存空间分配" class="headerlink" title="6.2 内存空间分配"></a>6.2 内存空间分配</h3><h4 id="6-2-1-早期内存管理"><a href="#6-2-1-早期内存管理" class="headerlink" title="6.2.1 早期内存管理"></a>6.2.1 早期内存管理</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token string">"早期各个区域的内存分配好了以后，就需要严格遵守这个规则，内存大小不可变。"</span>
+<span class="token comment">--1. 内存空间的分配：</span>
+<span class="token number">1.</span> Storage：缓存RDD数据和广播变量的数据， <span class="token string">"内存大小占比60%"</span>
+<span class="token number">2.</span> Execution：用于缓存在shuffle过程中的中间数据， <span class="token string">"内存大小占比20%"</span>
+<span class="token number">3.</span> Other：用户自定义的一些数据结构或者是Spark内部的元数据 ： <span class="token string">"内存大小占比20%"</span>
+
+
+<span class="token comment">-- 2. Storage内存和Execution内存都有预留空间，目的是防止OOM，因为Spark堆内内存大小的记录是不准确的，需要留出保险区域。</span>
+<span class="token comment">-- 3. 当前不同区域内存大小分配存在的问题：</span>
+      Execution的内存过小，而Storage内存大小过多。
+      
+ 从而就产生了新的内存分配原则<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>堆内内存</li>
+</ul>
+<p>![image-20200620012427321](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200620012427.png)</p>
+<ul>
+<li>堆外内存</li>
+</ul>
+<p>![image-20200620015214858](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200620015214.png)</p>
+<h4 id="6-2-2-统一内存管理"><a href="#6-2-2-统一内存管理" class="headerlink" title="6.2.2 统一内存管理"></a>6.2.2 统一内存管理</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 1. 什么是统一内存管理？</span>
+   Spark1<span class="token punctuation">.</span><span class="token number">6</span> 之后引入的统一内存管理机制，各个区域内存的大小是可变的<span class="token punctuation">.</span>
+ <span class="token comment">--2.与静态内存管理的区别:</span>
+   统一内存管理<span class="token string">"存储内存"</span>和<span class="token string">"执行内存共享"</span>同一块空间，可以动态占用对方的空闲区域
+<span class="token comment">-- 3. 当前spark默认的内存分配是按照统一内存管理的模式。</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>堆内内存</li>
+</ul>
+<p>![image-20200620015026859](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200620015026.png)</p>
+<ul>
+<li>堆外内存</li>
+</ul>
+<p>![image-20200620015251558](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200620015251.png)</p>
+<h4 id="6-2-3-同一管理内存的优点"><a href="#6-2-3-同一管理内存的优点" class="headerlink" title="6.2.3 同一管理内存的优点"></a>6.2.3 同一管理内存的优点</h4><pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 1. 优点</span>
+<span class="token number">1</span><span class="token punctuation">)</span>设定基本的存储内存和执行内存区域（spark<span class="token punctuation">.</span>storage<span class="token punctuation">.</span>storageFraction参数），该设定确定了双方各自拥有的空间的范围；
+<span class="token number">2</span><span class="token punctuation">)</span>双方的空间都不足时，则存储到硬盘；若己方空间不足而对方空余时，可借用对方的空间<span class="token punctuation">;</span>（存储空间不足是指不足以放下一个完整的Block）
+<span class="token number">3</span><span class="token punctuation">)</span>执行内存的空间被对方占用后，可让对方将占用的部分转存到硬盘，然后”归还”借用的空间；
+<span class="token number">4</span><span class="token punctuation">)</span>存储内存的空间被对方占用后，无法让对方”归还”，因为需要考虑 Shuffle过程中的很多因素，实现起来较为复杂。
+
+<span class="token comment">-- 2. 统一内存管理的动态占用机制图如下：</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>![image-20200620015447725](<a target="_blank" rel="noopener" href="https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic">https://lian-zp.oss-cn-shenzhen.aliyuncs.com/pic</a> GO/20200620015447.png)</p>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 注意事项</span>
+<span class="token number">1.</span> 如果是storage借了Execution的内存，那么当Execution需使用时，storage占用Execution的内存就要想办法还给Execution，一般可以进行落盘，但是在内存中的数据有一个存储级别，如果仅仅是Memory_Only的话，那么此时占用内存的数据就会丢失。
+<span class="token number">2.</span>  如果是Execution借了storage的内存，那么当storage需使用时，Execution并不会把内存还给storage，那么此时storage的数据就会溢写磁盘，如果不能溢写的话，那么就会丢失或淘汰。<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-sql" data-language="sql"><code class="language-sql"><span class="token comment">-- 面试题：</span>
+<span class="token number">1.</span> 动态占用机制图是什么情况？
+<span class="token number">2.</span> 为什么cache为丢失数据？
+<span class="token number">3.</span> 阶段的划分
+<span class="token number">4.</span> task的发送<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Jinxin Li</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://fourgold.github.io/2020/04/29/08Spark_Kernel/">http://fourgold.github.io/2020/04/29/08Spark_Kernel/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Jinxin Li</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/spark/">
+                                    <span class="chip bg-color">spark</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/05/21/13Flink01_%E5%B7%A5%E5%85%B7%E4%B8%8E%E6%9E%B6%E6%9E%84/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Flink01_工具与架构">
+                        
+                        <span class="card-title">Flink01_工具与架构</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-05-21
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/flink/" class="post-category">
+                                    flink
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/flink/">
+                        <span class="chip bg-color">flink</span>
+                    </a>
+                    
+                    <a href="/tags/structure/">
+                        <span class="chip bg-color">structure</span>
+                    </a>
+                    
+                    <a href="/tags/procedure/">
+                        <span class="chip bg-color">procedure</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/04/15/07blog%E4%BB%8EScala%E8%B0%88%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/21.jpg" class="responsive-img" alt="从TCP传输谈到Scala分布式逻辑传输">
+                        
+                        <span class="card-title">从TCP传输谈到Scala分布式逻辑传输</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-15
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Jinxin Li
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('1'),
+            headingSelector: 'h1,h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1,h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">Jinxin Li</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">232.3k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/fourgold" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:799392914@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=799392914" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 799392914" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

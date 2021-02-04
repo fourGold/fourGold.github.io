@@ -642,4 +642,1154 @@ DataStream&lt;SensorReading&gt; dataStream &#x3D; inputStream
     <span class="token class-name">SingleOutputStreamOperator</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">SensorReading</span><span class="token punctuation">></span></span>  sensorDataStream <span class="token operator">=</span> readTextFile<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>line <span class="token operator">-></span> <span class="token punctuation">&#123;</span>         <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> fields <span class="token operator">=</span>  line<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token operator">*</span><span class="token string">","</span><span class="token operator">*</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">;</span>         <span class="token operator">*</span><span class="token operator">*</span><span class="token keyword">return</span> <span class="token keyword">new</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token class-name">SensorReading</span><span class="token punctuation">(</span>fields<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token class-name">Long</span><span class="token punctuation">.</span>*parseLong<span class="token operator">*</span><span class="token punctuation">(</span>fields<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">Double</span><span class="token punctuation">.</span>*parseDouble<span class="token operator">*</span><span class="token punctuation">(</span>fields<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>          <span class="token operator">*</span><span class="token comment">//4.**创建**TableAPI**执行环境 *      StreamTableEnvironment  tableEnv = StreamTableEnvironment.*create*(env);          *//5.**从流中创建表 *     </span>
     <span class="token class-name">Table</span> table <span class="token operator">=</span>  tableEnv<span class="token punctuation">.</span><span class="token function">fromDataStream</span><span class="token punctuation">(</span>sensorDataStream<span class="token punctuation">)</span><span class="token punctuation">;</span>          <span class="token operator">*</span><span class="token comment">//6.**转换数据 *      </span>
     tableEnv<span class="token punctuation">.</span><span class="token function">createTemporaryView</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token operator">*</span><span class="token string">"sensor"</span><span class="token operator">*</span><span class="token operator">*</span><span class="token punctuation">,</span> table<span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token class-name">Table</span> sqlQuery <span class="token operator">=</span>  tableEnv<span class="token punctuation">.</span><span class="token function">sqlQuery</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token operator">*</span><span class="token string">"select id,count(\*) as ct from sensor  group by id"</span><span class="token operator">*</span><span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">;</span>          <span class="token operator">*</span><span class="token comment">//7.**定义**MySQL**连接器 *      </span>
-    <span class="token class-name">String</span> sinkDDL <span class="token operator">=</span>  <span class="token operator">*</span><span class="token operator">*</span><span class="token string">"create table jdbcOutputTable ("</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">" id  varchar(20) not null, "</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">" ct bigint  not null "</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">") with  ("</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">"  'connector.type' = 'jdbc', "</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">"  'connector.url' = 'jdbc:mysql://hadoop102:3306/test', "</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">"  'connector.table' = 'sensor_count', "</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">"  'connector.driver' = 'com.mysql.jdbc.Driver', "</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token oper
+    <span class="token class-name">String</span> sinkDDL <span class="token operator">=</span>  <span class="token operator">*</span><span class="token operator">*</span><span class="token string">"create table jdbcOutputTable ("</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">" id  varchar(20) not null, "</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">" ct bigint  not null "</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">") with  ("</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">"  'connector.type' = 'jdbc', "</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">"  'connector.url' = 'jdbc:mysql://hadoop102:3306/test', "</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">"  'connector.table' = 'sensor_count', "</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">"  'connector.driver' = 'com.mysql.jdbc.Driver', "</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">"  'connector.username' = 'root', "</span><span class="token operator">*</span><span class="token operator">*</span> <span class="token operator">+</span>           <span class="token operator">*</span><span class="token operator">*</span><span class="token string">"  'connector.password' = '000000' )"</span><span class="token operator">*</span><span class="token operator">*</span><span class="token punctuation">;</span>       tableEnv<span class="token punctuation">.</span><span class="token function">sqlUpdate</span><span class="token punctuation">(</span>sinkDDL<span class="token punctuation">)</span><span class="token punctuation">;</span>          <span class="token operator">*</span><span class="token comment">//8.**将数据写入**MySQL *      sqlQuery.insertInto(**"jdbcOutputTable"**);           *//9.**执行任务 *      env.execute();        &#125;   &#125;  </span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<h2 id="2-8-Query的解释和执行"><a href="#2-8-Query的解释和执行" class="headerlink" title="2.8 Query的解释和执行"></a>2.8 Query的解释和执行</h2><p>Table API提供了一种机制来解释（Explain）计算表的逻辑和优化查询计划。这是通过TableEnvironment.explain（table）方法或TableEnvironment.explain（）方法完成的。</p>
+<p>explain方法会返回一个字符串，描述三个计划：</p>
+<p>未优化的逻辑查询计划</p>
+<p>优化后的逻辑查询计划</p>
+<p>实际执行计划</p>
+<p>我们可以在代码中查看执行计划：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">String</span> explaination <span class="token operator">=</span> tableEnv<span class="token punctuation">.</span><span class="token function">explain</span><span class="token punctuation">(</span>resultTable<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>explaination<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>Query的解释和执行过程，老planner和blink planner大体是一致的，又有所不同。整体来讲，Query都会表示成一个逻辑查询计划，然后分两步解释：</p>
+<ol>
+<li><p>优化查询计划</p>
+</li>
+<li><p>解释成 DataStream 或者 DataSet程序</p>
+</li>
+</ol>
+<p>而Blink版本是批流统一的，所以所有的Query，只会被解释成DataStream程序；另外在批处理环境TableEnvironment下，Blink版本要到tableEnv.execute()执行调用才开始解释。</p>
+<h1 id="第三章-流处理中的特殊概念"><a href="#第三章-流处理中的特殊概念" class="headerlink" title="第三章 流处理中的特殊概念"></a>第三章 流处理中的特殊概念</h1><p>Table API和SQL，本质上还是基于关系型表的操作方式；而关系型表、关系代数，以及SQL本身，一般是有界的，更适合批处理的场景。这就导致在进行流处理的过程中，理解会稍微复杂一些，需要引入一些特殊概念。</p>
+<h2 id="3-1-流处理和关系代数（表，及SQL）的区别"><a href="#3-1-流处理和关系代数（表，及SQL）的区别" class="headerlink" title="3.1 流处理和关系代数（表，及SQL）的区别"></a>3.1 流处理和关系代数（表，及SQL）的区别</h2><p><img src="C:/Users/89388/AppData/Local/Temp/msohtmlclip1/01/clip_image002.jpg" alt="img"></p>
+<p>可以看到，其实关系代数（主要就是指关系型数据库中的表）和SQL，主要就是针对批处理的，这和流处理有天生的隔阂。</p>
+<h2 id="3-2-动态表（Dynamic-Tables）"><a href="#3-2-动态表（Dynamic-Tables）" class="headerlink" title="3.2 动态表（Dynamic Tables）"></a>3.2 动态表（Dynamic Tables）</h2><p>因为流处理面对的数据，是连续不断的，这和我们熟悉的关系型数据库中保存的“表”完全不同。所以，如果我们把流数据转换成Table，然后执行类似于table的select操作，结果就不是一成不变的，而是随着新数据的到来，会不停更新。</p>
+<p>我们可以随着新数据的到来，不停地在之前的基础上更新结果。这样得到的表，在Flink Table API概念里，就叫做“<strong>动态表</strong>”（Dynamic Tables）。</p>
+<p>动态表是Flink对流数据的Table API和SQL支持的核心概念。与表示批处理数据的静态表不同，动态表是随时间变化的。动态表可以像静态的批处理表一样进行查询，查询一个动态表会产生持续查询（Continuous Query）。</p>
+<p>连续查询永远不会终止，并会生成另一个动态表。查询（Query）会不断更新其动态结果表，以反映其动态输入表上的更改。</p>
+<h2 id="3-3-流式持续查询的过程"><a href="#3-3-流式持续查询的过程" class="headerlink" title="3.3 流式持续查询的过程"></a>3.3 流式持续查询的过程</h2><p>下图显示了流、动态表和连续查询的关系：</p>
+<p><img src="C:/Users/89388/AppData/Local/Temp/msohtmlclip1/01/clip_image004.jpg" alt="img"></p>
+<p>流式持续查询的过程为：</p>
+<p>\1. 流被转换为动态表。</p>
+<p>\2. 对动态表计算连续查询，生成新的动态表。</p>
+<p>\3. 生成的动态表被转换回流。</p>
+<h3 id="3-3-1-将流转换成表（Table）"><a href="#3-3-1-将流转换成表（Table）" class="headerlink" title="3.3.1 将流转换成表（Table）"></a>3.3.1 将流转换成表（Table）</h3><p>为了处理带有关系查询的流，必须先将其转换为表。</p>
+<p>从概念上讲，流的每个数据记录，都被解释为对结果表的插入（Insert）修改。因为流式持续不断的，而且之前的输出结果无法改变。本质上，我们其实是从一个、只有插入操作的changelog（更新日志）流，来构建一个表。</p>
+<p>为了更好地说明动态表和持续查询的概念，我们来举一个具体的例子。</p>
+<p>比如，我们现在的输入数据，就是用户在网站上的访问行为，数据类型（Schema）如下：</p>
+<p>[</p>
+<p> user: VARCHAR,  // 用户名</p>
+<p> cTime: TIMESTAMP, // 访问某个URL的时间戳</p>
+<p> url:  VARCHAR   // 用户访问的URL</p>
+<p>]</p>
+<p>下图显示了如何将访问URL事件流，或者叫点击事件流（左侧）转换为表（右侧）。</p>
+<p><img src="C:/Users/89388/AppData/Local/Temp/msohtmlclip1/01/clip_image006.jpg" alt="img"></p>
+<p>随着插入更多的访问事件流记录，生成的表将不断增长。</p>
+<h3 id="3-3-2-持续查询（Continuous-Query）"><a href="#3-3-2-持续查询（Continuous-Query）" class="headerlink" title="3.3.2 持续查询（Continuous Query）"></a>3.3.2 持续查询（Continuous Query）</h3><p>持续查询，会在动态表上做计算处理，并作为结果生成新的动态表。与批处理查询不同，连续查询从不终止，并根据输入表上的更新更新其结果表。</p>
+<p>在任何时间点，连续查询的结果在语义上，等同于在输入表的快照上，以批处理模式执行的同一查询的结果。</p>
+<p>在下面的示例中，我们展示了对点击事件流中的一个持续查询。</p>
+<p>这个Query很简单，是一个分组聚合做count统计的查询。它将用户字段上的clicks表分组，并统计访问的url数。图中显示了随着时间的推移，当clicks表被其他行更新时如何计算查询。</p>
+<p><img src="C:/Users/89388/AppData/Local/Temp/msohtmlclip1/01/clip_image008.jpg" alt="img"></p>
+<h3 id="3-3-3-将动态表转换成流"><a href="#3-3-3-将动态表转换成流" class="headerlink" title="3.3.3 将动态表转换成流"></a>3.3.3 将动态表转换成流</h3><p>与常规的数据库表一样，动态表可以通过插入（Insert）、更新（Update）和删除（Delete）更改，进行持续的修改。将动态表转换为流或将其写入外部系统时，需要对这些更改进行编码。Flink的Table API和SQL支持三种方式对动态表的更改进行编码：</p>
+<h4 id="1）仅追加（Append-only）流"><a href="#1）仅追加（Append-only）流" class="headerlink" title="1）仅追加（Append-only）流"></a>1）仅追加（Append-only）流</h4><p>仅通过插入（Insert）更改，来修改的动态表，可以直接转换为“仅追加”流。这个流中发出的数据，就是动态表中新增的每一行。</p>
+<h4 id="2）撤回（Retract）流"><a href="#2）撤回（Retract）流" class="headerlink" title="2）撤回（Retract）流"></a>2）撤回（Retract）流</h4><p>Retract流是包含两类消息的流，添加（Add）消息和撤回（Retract）消息。</p>
+<p>动态表通过将INSERT 编码为add消息、DELETE 编码为retract消息、UPDATE编码为被更改行（前一行）的retract消息和更新后行（新行）的add消息，转换为retract流。</p>
+<p>下图显示了将动态表转换为Retract流的过程。</p>
+<p><img src="C:/Users/89388/AppData/Local/Temp/msohtmlclip1/01/clip_image010.jpg" alt="img"></p>
+<h4 id="3）Upsert（更新插入）流"><a href="#3）Upsert（更新插入）流" class="headerlink" title="3）Upsert（更新插入）流"></a>3）Upsert（更新插入）流</h4><p>Upsert流包含两种类型的消息：Upsert消息和delete消息。转换为upsert流的动态表，需要有唯一的键（key）。</p>
+<p>通过将INSERT和UPDATE更改编码为upsert消息，将DELETE更改编码为DELETE消息，就可以将具有唯一键（Unique Key）的动态表转换为流。</p>
+<p>下图显示了将动态表转换为upsert流的过程。</p>
+<p><img src="C:/Users/89388/AppData/Local/Temp/msohtmlclip1/01/clip_image012.jpg" alt="img"></p>
+<p>这些概念我们之前都已提到过。需要注意的是，在代码里将动态表转换为DataStream时，仅支持Append和Retract流。而向外部系统输出动态表的TableSink接口，则可以有不同的实现，比如之前我们讲到的ES，就可以有Upsert模式。</p>
+<h2 id="3-4-时间特性"><a href="#3-4-时间特性" class="headerlink" title="3.4 时间特性"></a>3.4 时间特性</h2><p>基于时间的操作（比如Table API和SQL中窗口操作），需要定义相关的时间语义和时间数据来源的信息。所以，Table可以提供一个逻辑上的时间字段，用于在表处理程序中，指示时间和访问相应的时间戳。</p>
+<p>时间属性，可以是每个表schema的一部分。一旦定义了时间属性，它就可以作为一个字段引用，并且可以在基于时间的操作中使用。</p>
+<p>时间属性的行为类似于常规时间戳，可以访问，并且进行计算。</p>
+<h3 id="3-4-1-处理时间（Processing-Time）"><a href="#3-4-1-处理时间（Processing-Time）" class="headerlink" title="3.4.1 处理时间（Processing Time）"></a>3.4.1 处理时间（Processing Time）</h3><p>处理时间语义下，允许表处理程序根据机器的本地时间生成结果。它是时间的最简单概念。它既不需要提取时间戳，也不需要生成watermark。</p>
+<p>定义处理时间属性有三种方法：在DataStream转化时直接指定；在定义Table Schema时指定；在创建表的DDL中指定。</p>
+<h4 id="1）DataStream转化成Table时指定"><a href="#1）DataStream转化成Table时指定" class="headerlink" title="1）DataStream转化成Table时指定"></a>1）DataStream转化成Table时指定</h4><p>由DataStream转换成表时，可以在后面指定字段名来定义Schema。在定义Schema期间，可以使用.proctime，定义处理时间字段。</p>
+<p>注意，这个proctime属性只能通过附加逻辑字段，来扩展物理schema。因此，只能在schema定义的末尾定义它。</p>
+<p>代码如下：</p>
+<p>  <strong>import</strong> com.atguigu.bean.SensorReading;   <strong>import</strong> org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;   <strong>import</strong> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;   <strong>import</strong> org.apache.flink.table.api.Table;   <strong>import</strong> org.apache.flink.table.api.java.StreamTableEnvironment;      <strong>public class</strong> FlinkSQL_Test09 {        <strong>public static void</strong> main(String[]  args) {          <em>//1.**创建执行环境 *      StreamExecutionEnvironment  env = StreamExecutionEnvironment.*getExecutionEnvironment</em>();       env.setParallelism(1);       StreamTableEnvironment tableEnv  = StreamTableEnvironment.<em>create</em>(env);          <em>//2.<strong>读取端口数据创建流并转换为</strong>JavaBean *      SingleOutputStreamOperator<SensorReading>  sensorDataStream = env.socketTextStream(*</em>“hadoop102”<strong>, 7777)           .map(line -&gt; {             String[] fields =  line.split(</strong>“,”<strong>);             **return new</strong> SensorReading(fields[0], Long.<em>parseLong</em>(fields[1]), Double.<em>parseDouble</em>(fields[2]));           });          <em>//3.<strong>将流转换为</strong>Table,**并设定处理时间语义 *        Table table = tableEnv.fromDataStream(sensorDataStream,  *</em>“id, ts, temp,** <strong>pt.proctime**</strong>“*<em>);          <em>//4.</em></em>打印<strong>schema</strong>信息 *      table.printSchema();        }      }  </p>
+<h4 id="2）定义Table-Schema时指定"><a href="#2）定义Table-Schema时指定" class="headerlink" title="2）定义Table Schema时指定"></a>2）定义Table Schema时指定</h4><p>这种方法其实也很简单，只要在定义Schema的时候，加上一个新的字段，并指定成proctime就可以了。</p>
+<p>代码如下：</p>
+<p>  <strong>import</strong> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;   <strong>import</strong> org.apache.flink.table.api.DataTypes;   <strong>import</strong> org.apache.flink.table.api.Table;   <strong>import</strong> org.apache.flink.table.api.java.StreamTableEnvironment;   <strong>import</strong> org.apache.flink.table.descriptors.FileSystem;   <strong>import</strong> org.apache.flink.table.descriptors.OldCsv;   <strong>import</strong> org.apache.flink.table.descriptors.Schema;      <strong>public class</strong> FlinkSQL_Test10 {        <strong>public static void</strong> main(String[]  args) <strong>throws</strong> Exception {          <em>//1.**创建执行环境 *      StreamExecutionEnvironment  env = StreamExecutionEnvironment.*getExecutionEnvironment</em>();       env.setParallelism(1);       StreamTableEnvironment tableEnv  = StreamTableEnvironment.<em>create</em>(env);          <em>//2.**创建文件连接器 *      tableEnv.connect(*</em>new** FileSystem().path(<strong>“sensor”</strong>))           .withSchema(<strong>new</strong> Schema()               .field(<strong>“id”</strong>, DataTypes.<em>STRING</em>())               .field(<strong>“ts”</strong>, DataTypes.<em>BIGINT</em>())               .field(<strong>“temp”</strong>, DataTypes.<em>DOUBLE</em>())                .field(<strong>“pt”</strong>,  DataTypes.<em>TIMESTAMP</em>(3)).proctime())           .withFormat(<strong>new</strong> OldCsv())           .createTemporaryTable(<strong>“fileInput”</strong>);          <em>//3.<strong>打印</strong>schema**信息 *      Table table =  tableEnv.from(*</em>“fileInput”**);       table.printSchema();        }      }  </p>
+<h4 id="3）创建表的DDL中指定"><a href="#3）创建表的DDL中指定" class="headerlink" title="3）创建表的DDL中指定"></a>3）创建表的DDL中指定</h4><p>在创建表的DDL中，增加一个字段并指定成proctime，也可以指定当前的时间字段。</p>
+<p>代码如下：</p>
+<p>注意：运行这段DDL，必须使用Blink Planner。</p>
+<p>  <strong>import</strong> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;   <strong>import</strong> org.apache.flink.table.api.EnvironmentSettings;   <strong>import</strong> org.apache.flink.table.api.Table;   <strong>import</strong> org.apache.flink.table.api.java.StreamTableEnvironment;      <strong>public class</strong> FlinkSQL_Test11 {        <strong>public static void</strong> main(String[]  args) <strong>throws</strong> Exception {          <em>//1.**创建执行环境 *      StreamExecutionEnvironment  env = StreamExecutionEnvironment.*getExecutionEnvironment</em>();       EnvironmentSettings  blinkStreamSettings = EnvironmentSettings.<em>newInstance</em>()           .useBlinkPlanner()           .inStreamingMode()           .build();       StreamTableEnvironment tableEnv  = StreamTableEnvironment.<em>create</em>(env, blinkStreamSettings);          <em>//2.**创建文件连接器 *      String sinkDDL =  *</em>“create table dataTable (“** +           <strong>“ id  varchar(20) not null, “</strong> +           <strong>“ ts  bigint, “</strong> +           <strong>“ temp  double, “</strong> +           <strong>“ pt AS  PROCTIME() “</strong> +           <strong>“) with  (“</strong> +           <strong>“  ‘connector.type’ = ‘filesystem’, “</strong> +           <strong>“  ‘connector.path’ = ‘sensor’, “</strong> +           <strong>“  ‘format.type’ = ‘csv’)”</strong>;       tableEnv.sqlUpdate(sinkDDL);          <em>//3.<strong>打印</strong>schema**信息 *      Table table =  tableEnv.from(*</em>“dataTable”**);       table.printSchema();        }      }  </p>
+<h3 id="3-4-2-事件时间（Event-Time）"><a href="#3-4-2-事件时间（Event-Time）" class="headerlink" title="3.4.2 事件时间（Event Time）"></a>3.4.2 事件时间（Event Time）</h3><p>事件时间语义，允许表处理程序根据每个记录中包含的时间生成结果。这样即使在有乱序事件或者延迟事件时，也可以获得正确的结果。</p>
+<p>为了处理无序事件，并区分流中的准时和迟到事件；Flink需要从事件数据中，提取时间戳，并用来推进事件时间的进展（watermark）。</p>
+<h4 id="1）DataStream转化成Table时指定-1"><a href="#1）DataStream转化成Table时指定-1" class="headerlink" title="1）DataStream转化成Table时指定"></a>1）DataStream转化成Table时指定</h4><p>在DataStream转换成Table，schema的定义期间，使用.rowtime可以定义事件时间属性。注意，必须在转换的数据流中分配时间戳和watermark。</p>
+<p>在将数据流转换为表时，有两种定义时间属性的方法。根据指定的.rowtime字段名是否存在于数据流的架构中，timestamp字段可以：</p>
+<p>l 作为新字段追加到schema</p>
+<p>l 替换现有字段</p>
+<p>在这两种情况下，定义的事件时间戳字段，都将保存DataStream中事件时间戳的值。</p>
+<p>代码如下：</p>
+<p>  <strong>import</strong> com.atguigu.bean.SensorReading;   <strong>import</strong> org.apache.flink.streaming.api.TimeCharacteristic;   <strong>import</strong> org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;   <strong>import</strong> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;   <strong>import</strong> org.apache.flink.streaming.api.functions.timestamps.BoundedOutOfOrdernessTimestampExtractor;   <strong>import</strong> org.apache.flink.streaming.api.windowing.time.Time;   <strong>import</strong> org.apache.flink.table.api.Table;   <strong>import</strong> org.apache.flink.table.api.java.StreamTableEnvironment;      <strong>public class</strong> FlinkSQL_Test12 {        <strong>public static void</strong> main(String[]  args) {          <em>//1.**创建执行环境 *      StreamExecutionEnvironment  env = StreamExecutionEnvironment.*getExecutionEnvironment</em>();       env.setParallelism(1);       env.setStreamTimeCharacteristic(TimeCharacteristic.<strong><em>EventTime\</em></strong>);       StreamTableEnvironment tableEnv  = StreamTableEnvironment.<em>create</em>(env);          <em>//2.<strong>读取端口数据创建流并转换为</strong>JavaBean *      SingleOutputStreamOperator<SensorReading>  sensorDataStream = env.socketTextStream(*</em>“hadoop102”<strong>, 7777)             .assignTimestampsAndWatermarks(**new</strong> BoundedOutOfOrdernessTimestampExtractor<String>(Time.<em>seconds</em>(1)) {             @Override             <strong>public long</strong> extractTimestamp(String  element) {               <strong>return</strong> Long.<em>parseLong</em>(element.split(<strong>“,”</strong>)[1]) * 1000L;             }           })           .map(line -&gt; {             String[] fields =  line.split(<strong>“,”</strong>);             <strong>return new</strong> SensorReading(fields[0], Long.<em>parseLong</em>(fields[1]), Double.<em>parseDouble</em>(fields[2]));           });          <em>//3.<strong>将流转换为</strong>Table,**并设定处理时间语义 *      Table table =  tableEnv.fromDataStream(sensorDataStream, *</em>“id, ts, temp,  rt.rowtime”*<em>);          <em>//4.</em></em>打印<strong>schema</strong>信息 *      table.printSchema();        }      }  </p>
+<h4 id="2）定义Table-Schema时指定-1"><a href="#2）定义Table-Schema时指定-1" class="headerlink" title="2）定义Table Schema时指定"></a>2）定义Table Schema时指定</h4><p>这种方法只要在定义Schema的时候，将事件时间字段，并指定成rowtime就可以了。</p>
+<p>代码如下：</p>
+<p>  <strong>import</strong> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;   <strong>import</strong> org.apache.flink.table.api.DataTypes;   <strong>import</strong> org.apache.flink.table.api.Table;   <strong>import</strong> org.apache.flink.table.api.java.StreamTableEnvironment;   <strong>import</strong> org.apache.flink.table.descriptors.Csv;   <strong>import</strong> org.apache.flink.table.descriptors.FileSystem;   <strong>import</strong> org.apache.flink.table.descriptors.Rowtime;   <strong>import</strong> org.apache.flink.table.descriptors.Schema;      <strong>public class</strong> FlinkSQL_Test13 {        <strong>public static void</strong> main(String[]  args) <strong>throws</strong> Exception {          <em>//1.**创建执行环境 *      StreamExecutionEnvironment  env = StreamExecutionEnvironment.*getExecutionEnvironment</em>();       env.setParallelism(1);  env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime);       StreamTableEnvironment tableEnv  = StreamTableEnvironment.<em>create</em>(env);          <em>//2.**创建文件连接器 *      tableEnv.connect(*</em>new** FileSystem().path(<strong>“sensor”</strong>))           .withSchema(<strong>new</strong> Schema()               .field(<strong>“id”</strong>, DataTypes.<em>STRING</em>())               .field(<strong>“ts”</strong>, DataTypes.<em>BIGINT</em>()).rowtime(<strong>new</strong> Rowtime()                     .timestampsFromField(<strong>“ts”</strong>)  <em>//</em> <em>从字段中提取时间戳 *                  .watermarksPeriodicBounded(1000)  *// watermark<strong>延迟</strong>1**秒 *              )               .field(*</em>“temp”<strong>, DataTypes.<em>DOUBLE</em>())           )           .withFormat(**new</strong> Csv())           .createTemporaryTable(<strong>“fileInput”</strong>);          <em>//3.<strong>打印</strong>schema**信息 *      Table table =  tableEnv.from(*</em>“fileInput”**);       table.printSchema();        }      }  </p>
+<h4 id="3）创建表的DDL中指定-1"><a href="#3）创建表的DDL中指定-1" class="headerlink" title="3）创建表的DDL中指定"></a>3）创建表的DDL中指定</h4><p>事件时间属性，是使用CREATE TABLE DDL中的WARDMARK语句定义的。watermark语句，定义现有事件时间字段上的watermark生成表达式，该表达式将事件时间字段标记为事件时间属性。</p>
+<p>代码如下：</p>
+<p>  <strong>import</strong> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;   <strong>import</strong> org.apache.flink.table.api.EnvironmentSettings;   <strong>import</strong> org.apache.flink.table.api.Table;   <strong>import</strong> org.apache.flink.table.api.java.StreamTableEnvironment;      <strong>public class</strong> FlinkSQL_Test14 {        <strong>public static void</strong> main(String[]  args) <strong>throws</strong> Exception {          <em>//1.**创建执行环境 *      StreamExecutionEnvironment  env = StreamExecutionEnvironment.*getExecutionEnvironment</em>();       EnvironmentSettings  blinkStreamSettings = EnvironmentSettings.<em>newInstance</em>()           .useBlinkPlanner()           .inStreamingMode()           .build();       StreamTableEnvironment tableEnv  = StreamTableEnvironment.<em>create</em>(env, blinkStreamSettings);          <em>//2.**创建文件连接器 *      String sinkDDL =  *</em>“create table dataTable (“** +           <strong>“ id  varchar(20) not null, “</strong> +           <strong>“ ts  bigint, “</strong> +           <strong>“ temp  double, “</strong> +           <strong>“ rt AS  TO_TIMESTAMP( FROM_UNIXTIME(ts) ), “</strong> +           <strong>“ watermark  for rt as rt - interval ‘1’ second”</strong> +           <strong>“) with  (“</strong> +           <strong>“  ‘connector.type’ = ‘filesystem’, “</strong> +           <strong>“  ‘connector.path’ = ‘sensor’, “</strong> +           <strong>“  ‘format.type’ = ‘csv’)”</strong>;       tableEnv.sqlUpdate(sinkDDL);          <em>//3.<strong>打印</strong>schema**信息 *      Table table =  tableEnv.from(*</em>“dataTable”**);       table.printSchema();        }      }  </p>
+<p>这里<em>FROM_UNIXTIME</em>是系统内置的时间函数，用来将一个整数（秒数）转换成“YYYY-MM-DD hh:mm:ss”格式（默认，也可以作为第二个String参数传入）的日期时间字符串（date time string）；然后再用<em>TO_TIMESTAMP</em>将其转换成Timestamp。</p>
+<h1 id="第四章-窗口（Windows）"><a href="#第四章-窗口（Windows）" class="headerlink" title="第四章 窗口（Windows）"></a>第四章 窗口（Windows）</h1><p>时间语义，要配合窗口操作才能发挥作用。最主要的用途，当然就是开窗口、根据时间段做计算了。下面我们就来看看Table API和SQL中，怎么利用时间字段做窗口操作。</p>
+<p>在Table API和SQL中，主要有两种窗口：Group Windows和Over Windows</p>
+<h2 id="4-1-Group-Windows"><a href="#4-1-Group-Windows" class="headerlink" title="4.1 Group Windows"></a>4.1 Group Windows</h2><p>分组窗口（Group Windows）会根据时间或行计数间隔，将行聚合到有限的组（Group）中，并对每个组的数据执行一次聚合函数。</p>
+<p>Table API中的Group Windows都是使用.window（w:GroupWindow）子句定义的，并且必须由as子句指定一个别名。为了按窗口对表进行分组，窗口的别名必须在group by子句中，像常规的分组字段一样引用。</p>
+<p>Table <em>table</em> = input<br>  .window([w: GroupWindow] as <strong>“w”</strong>) <em>//</em> <em>定义窗口，别名</em> <em>w<br>\</em>  .groupBy(<strong>“w</strong>, <strong>a”</strong>) <em>//</em> <em>以属性<strong>a</strong>和窗口<strong>w</strong>作为分组的**key<br>\</em>  .select(<strong>“a</strong>, <strong>b</strong>.sum*<em>“**) <em>//</em> <em>聚合字段</em></em>b*<em>的值，求和</em></p>
+<p>或者，还可以把窗口的相关信息，作为字段添加到结果表中：</p>
+<p>Table <em>table</em> = input<br>  .window([w: GroupWindow] as <strong>“w”</strong>) *<br>*  .groupBy(<strong>“w</strong>, <strong>a”</strong>) </p>
+<p> .select(<strong>“a</strong>, <strong>w</strong>.start, <strong>w</strong>.end, <strong>w</strong>.rowtime, <strong>b</strong>.count**”**)</p>
+<p>Table API提供了一组具有特定语义的预定义Window类，这些类会被转换为底层DataStream或DataSet的窗口操作。</p>
+<p>Table API支持的窗口定义，和我们熟悉的一样，主要也是三种：滚动（Tumbling）、滑动（Sliding）和会话（Session）。</p>
+<h3 id="4-1-1-滚动窗口TableAPI方式"><a href="#4-1-1-滚动窗口TableAPI方式" class="headerlink" title="4.1.1 滚动窗口TableAPI方式"></a>4.1.1 滚动窗口TableAPI方式</h3><p>滚动窗口（Tumbling windows）要用Tumble类来定义，另外还有三个方法：</p>
+<p>l over：定义窗口长度</p>
+<p>l on：用来分组（按时间间隔）或者排序（按行数）的时间字段</p>
+<p>l as：别名，必须出现在后面的groupBy中</p>
+<p>代码如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; Tumbling Event-time Window
+.window(Tumble.over(&quot;10.minutes&quot;).on(&quot;rowtime&quot;).as(&quot;w&quot;))
+&#x2F;&#x2F; Tumbling Processing-time Window
+.window(Tumble.over(&quot;10.minutes&quot;).on(&quot;proctime&quot;).as(&quot;w&quot;))
+&#x2F;&#x2F; Tumbling Row-count Window
+.window(Tumble.over(&quot;10.rows&quot;).on(&quot;proctime&quot;).as(&quot;w&quot;))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-1-2-滑动窗口TableAPI方式"><a href="#4-1-2-滑动窗口TableAPI方式" class="headerlink" title="4.1.2 滑动窗口TableAPI方式"></a>4.1.2 滑动窗口TableAPI方式</h3><p>滑动窗口（Sliding windows）要用Slide类来定义，另外还有四个方法：</p>
+<p>l over：定义窗口长度</p>
+<p>l every：定义滑动步长</p>
+<p>l on：用来分组（按时间间隔）或者排序（按行数）的时间字段</p>
+<p>l as：别名，必须出现在后面的groupBy中</p>
+<p>代码如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; Sliding Event-time Window
+.window(Slide.over(&quot;10.minutes&quot;).every(&quot;5.minutes&quot;).on(&quot;rowtime&quot;).as(&quot;w&quot;))
+&#x2F;&#x2F; Sliding Processing-time window 
+.window(Slide.over(&quot;10.minutes&quot;).every(&quot;5.minutes&quot;).on(&quot;proctime&quot;).as(&quot;w&quot;))
+&#x2F;&#x2F; Sliding Row-count window
+.window(Slide.over(&quot;10.rows&quot;).every(&quot;5.rows&quot;).on(&quot;proctime&quot;).as(&quot;w&quot;))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-1-3-会话窗口TableAPI方式"><a href="#4-1-3-会话窗口TableAPI方式" class="headerlink" title="4.1.3 会话窗口TableAPI方式"></a>4.1.3 会话窗口TableAPI方式</h3><p>会话窗口（Session windows）要用Session类来定义，另外还有三个方法：</p>
+<p>l withGap：会话时间间隔</p>
+<p>l on：用来分组（按时间间隔）或者排序（按行数）的时间字段</p>
+<p>l as：别名，必须出现在后面的groupBy中</p>
+<p>代码如下：</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; Session Event-time Window
+.window(Session.withGap.(&quot;10.minutes&quot;).on(&quot;rowtime&quot;).as(&quot;w&quot;))
+&#x2F;&#x2F; Session Processing-time Window
+.window(Session.withGap.(&quot;10.minutes&quot;).on(&quot;proctime&quot;).as(&quot;w&quot;))<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-1-4-FlinkSQL方式"><a href="#4-1-4-FlinkSQL方式" class="headerlink" title="4.1.4 FlinkSQL方式"></a>4.1.4 FlinkSQL方式</h3><p>我们已经了解了在Table API里window的调用方式，同样，我们也可以在SQL中直接加入窗口的定义和使用。Group Windows在SQL查询的Group BY子句中定义。与使用常规GROUP BY子句的查询一样，使用GROUP BY子句的查询会计算每个组的单个结果行。</p>
+<p>SQL支持以下Group窗口函数:</p>
+<p>l TUMBLE(time_attr, interval)</p>
+<p>定义一个滚动窗口，第一个参数是时间字段，第二个参数是窗口长度。</p>
+<p>l HOP(time_attr, interval, interval)</p>
+<p>定义一个滑动窗口，第一个参数是时间字段，第二个参数是窗口滑动步长，第三个是窗口长度。</p>
+<p>l SESSION(time_attr, interval)</p>
+<p>定义一个会话窗口，第一个参数是时间字段，第二个参数是窗口间隔（Gap）。</p>
+<p>另外还有一些辅助函数，可以用来选择Group Window的开始和结束时间戳，以及时间属性。</p>
+<p>这里只写TUMBLE_<em>，滑动和会话窗口是类似的（HOP_</em>，SESSION_*）。</p>
+<pre class="line-numbers language-none"><code class="language-none">l &#96;&#96;TUMBLE_START(time_attr, interval)
+l &#96;&#96;TUMBLE_END(time_attr, interval)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>l TUMBLE_ROWTIME(time_attr, interval)</p>
+<p>l TUMBLE_PROCTIME(time_attr, interval)</p>
+<h2 id="4-2-Group-Windows案例实操"><a href="#4-2-Group-Windows案例实操" class="headerlink" title="4.2 Group Windows案例实操"></a>4.2 Group Windows案例实操</h2><h3 id="4-2-1-滚动窗口（时间）"><a href="#4-2-1-滚动窗口（时间）" class="headerlink" title="4.2.1 滚动窗口（时间）"></a>4.2.1 滚动窗口（时间）</h3><p>  <strong>import</strong> com.atguigu.bean.SensorReading;   <strong>import</strong> org.apache.flink.streaming.api.TimeCharacteristic;   <strong>import</strong> org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;   <strong>import</strong> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;   <strong>import</strong> org.apache.flink.table.api.Table;   <strong>import</strong> org.apache.flink.table.api.Tumble;   <strong>import</strong> org.apache.flink.table.api.java.StreamTableEnvironment;   <strong>import</strong> org.apache.flink.types.Row;      <strong>public class</strong> FlinkSQL_Test15 {        <strong>public static void</strong> main(String[]  args) <strong>throws</strong> Exception {          <em>//1.**创建执行环境 *      StreamExecutionEnvironment  env = StreamExecutionEnvironment.*getExecutionEnvironment</em>();       env.setParallelism(1);       StreamTableEnvironment tableEnv  = StreamTableEnvironment.<em>create</em>(env);          <em>//2.<strong>读取端口数据创建流并转换为</strong>JavaBean *      SingleOutputStreamOperator<SensorReading>  sensorDataStream = env.socketTextStream(*</em>“hadoop102”<strong>, 7777)           .map(line -&gt; {             String[] fields =  line.split(</strong>“,”<strong>);             **return new</strong> SensorReading(fields[0], Long.<em>parseLong</em>(fields[1]), Double.<em>parseDouble</em>(fields[2]));           });          <em>//3.<strong>将流转换为</strong>Table *      Table table =  tableEnv.fromDataStream(sensorDataStream, *</em>“id, ts, temp,  pt.proctime”<strong>);          <em>//4.TableAPI**实现滚动时间窗口 *      Table  tableResult = table  .window(Tumble.*over</em>(</strong>“10.seconds”<strong>).on(</strong>“pt”<strong>).as(</strong>“tw”<strong>))           .groupBy(</strong>“tw,id”<strong>)           .select(</strong>“id,  id.count as ct, temp.avg as avgTemp, tw.end”<strong>);          *//5.SQL<strong>实现滚动时间窗口</strong> *      tableEnv.createTemporaryView(</strong>“sensor”<strong>,table);       Table sqlResult =  tableEnv.sqlQuery(</strong>“select id ,count(id) ct,  avg(temp),tumble_end(pt,interval ‘10’ second) “** +           <strong>“ from  sensor group by id,tumble(pt,interval ‘10’ second)”</strong>);          <em>//6.**打印数据 *      tableEnv.toAppendStream(tableResult,  Row.*</em>class*<em>).print(<strong>“tableResult”</strong>);         tableEnv.toAppendStream(sqlResult, Row.<strong>class</strong>).print(<strong>“sqlResult”</strong>);          <em>//7.</em></em>开启任务 *      env.execute();        }      }  </p>
+<h3 id="4-2-2-滑动窗口（时间）"><a href="#4-2-2-滑动窗口（时间）" class="headerlink" title="4.2.2 滑动窗口（时间）"></a>4.2.2 滑动窗口（时间）</h3><p>  <strong>import</strong> com.atguigu.bean.SensorReading;   <strong>import</strong> org.apache.flink.streaming.api.TimeCharacteristic;   <strong>import</strong> org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;   <strong>import</strong> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;   <strong>import</strong> org.apache.flink.streaming.api.functions.timestamps.BoundedOutOfOrdernessTimestampExtractor;   <strong>import</strong> org.apache.flink.streaming.api.windowing.time.Time;   <strong>import</strong> org.apache.flink.table.api.Slide;   <strong>import</strong> org.apache.flink.table.api.Table;   <strong>import</strong> org.apache.flink.table.api.java.StreamTableEnvironment;   <strong>import</strong> org.apache.flink.types.Row;      <strong>public class</strong> FlinkSQL_Test16 {        <strong>public static void</strong> main(String[]  args) <strong>throws</strong> Exception {          <em>//1.**创建执行环境 *      StreamExecutionEnvironment  env = StreamExecutionEnvironment.*getExecutionEnvironment</em>();       env.setParallelism(1);         env.setStreamTimeCharacteristic(TimeCharacteristic.<strong><em>EventTime\</em></strong>);       StreamTableEnvironment tableEnv  = StreamTableEnvironment.<em>create</em>(env);          <em>//2.<strong>读取端口数据创建流并转换为</strong>JavaBean *      SingleOutputStreamOperator<SensorReading>  sensorDataStream = env.socketTextStream(*</em>“hadoop102”<strong>, 7777)             .assignTimestampsAndWatermarks(**new</strong> BoundedOutOfOrdernessTimestampExtractor<String>(Time.<em>seconds</em>(1)) {             @Override             <strong>public long</strong> extractTimestamp(String  element) {               <strong>return</strong> Long.<em>parseLong</em>(element.split(<strong>“,”</strong>)[1]) * 1000L;             }           })           .map(line -&gt; {              String[] fields = line.split(<strong>“,”</strong>);             <strong>return new</strong> SensorReading(fields[0], Long.<em>parseLong</em>(fields[1]), Double.<em>parseDouble</em>(fields[2]));           });          <em>//3.<strong>将流转换为</strong>Table,**并设定处理时间语义 *      Table table =  tableEnv.fromDataStream(sensorDataStream, *</em>“id, ts, temp,  rt.rowtime”<strong>);          <em>//4.TableAPI**实现滑动时间窗口 *      Table  tableResult = table  .window(Slide.*over</em>(</strong>“15.second”<strong>).every(</strong>“5.second”<strong>).on(</strong>“rt”<strong>).as(</strong>“tw”<strong>))           .groupBy(</strong>“tw,id”<strong>)           .select(</strong>“id,  id.count as ct, temp.avg as avgTemp, tw.end”<strong>);          *//5.SQL<strong>实现滑动时间窗口</strong> *      tableEnv.createTemporaryView(</strong>“sensor”<strong>,table);       Table sqlResult =  tableEnv.sqlQuery(</strong>“select id ,count(id) ct, avg(temp)  “** +           <strong>“ from  sensor group by id,hop(rt,interval ‘5’ second,interval ‘15’ second)”</strong>);          <em>//6.**打印数据 *      tableEnv.toAppendStream(tableResult,  Row.*</em>class*<em>).print(<strong>“tableResult”</strong>);       tableEnv.toAppendStream(sqlResult,  Row.<strong>class</strong>).print(<strong>“sqlResult”</strong>);          <em>//7.</em></em>开启任务 *      env.execute();        }      }  </p>
+<h3 id="4-2-3-会话窗口（时间）"><a href="#4-2-3-会话窗口（时间）" class="headerlink" title="4.2.3 会话窗口（时间）"></a>4.2.3 会话窗口（时间）</h3><p>  <strong>import</strong> com.atguigu.bean.SensorReading;   <strong>import</strong> org.apache.flink.streaming.api.TimeCharacteristic;   <strong>import</strong> org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;   <strong>import</strong> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;   <strong>import</strong> org.apache.flink.streaming.api.functions.timestamps.BoundedOutOfOrdernessTimestampExtractor;   <strong>import</strong> org.apache.flink.streaming.api.windowing.time.Time;   <strong>import</strong> org.apache.flink.table.api.Session;   <strong>import</strong> org.apache.flink.table.api.Table;   <strong>import</strong> org.apache.flink.table.api.Tumble;   <strong>import</strong> org.apache.flink.table.api.java.StreamTableEnvironment;   <strong>import</strong> org.apache.flink.types.Row;      <strong>public class</strong> FlinkSQL_Test17 {        <strong>public static void</strong> main(String[]  args) <strong>throws</strong> Exception {          <em>//1.**创建执行环境 *      StreamExecutionEnvironment  env = StreamExecutionEnvironment.*getExecutionEnvironment</em>();       env.setParallelism(1);         env.setStreamTimeCharacteristic(TimeCharacteristic.<strong><em>EventTime\</em></strong>);       StreamTableEnvironment tableEnv  = StreamTableEnvironment.<em>create</em>(env);          <em>//2.<strong>读取端口数据创建流并转换为</strong>JavaBean *      SingleOutputStreamOperator<SensorReading>  sensorDataStream = env.socketTextStream(*</em>“hadoop102”<strong>, 7777)           .assignTimestampsAndWatermarks(**new</strong> BoundedOutOfOrdernessTimestampExtractor<String>(Time.<em>seconds</em>(1)) {             @Override             <strong>public long</strong> extractTimestamp(String  element) {               <strong>return</strong> Long.<em>parseLong</em>(element.split(<strong>“,”</strong>)[1]) * 1000L;             }           })           .map(line -&gt; {             String[] fields =  line.split(<strong>“,”</strong>);             <strong>return new</strong> SensorReading(fields[0], Long.<em>parseLong</em>(fields[1]), Double.<em>parseDouble</em>(fields[2]));           });          <em>//3.<strong>将流转换为</strong>Table,**并设定处理时间语义 *      Table table =  tableEnv.fromDataStream(sensorDataStream, *</em>“id, ts, temp,  rt.rowtime”<strong>);          <em>//4.TableAPI**实现会话窗口 *      Table  tableResult = table.window(Session.*withGap</em>(</strong>“5.seconds”<strong>).on(</strong>“rt”<strong>).as(</strong>“tw”<strong>))           .groupBy(</strong>“tw,id”<strong>)           .select(</strong>“id,  id.count as ct, temp.avg as avgTemp, tw.end”<strong>);          *//5.SQL<strong>实现会话窗口</strong> *      tableEnv.createTemporaryView(</strong>“sensor”<strong>,table);       Table sqlResult =  tableEnv.sqlQuery(</strong>“select id ,count(id) ct, avg(temp)  “** +           <strong>“ from  sensor group by id,session(rt,interval ‘5’ second)”</strong>);          <em>//6.**打印数据 *      tableEnv.toAppendStream(tableResult,  Row.*</em>class*<em>).print(<strong>“tableResult”</strong>);         tableEnv.toAppendStream(sqlResult, Row.<strong>class</strong>).print(<strong>“sqlResult”</strong>);          <em>//7.</em></em>开启任务 *      env.execute();        }      }  </p>
+<h3 id="4-2-4-滚动窗口（计数）"><a href="#4-2-4-滚动窗口（计数）" class="headerlink" title="4.2.4 滚动窗口（计数）"></a>4.2.4 滚动窗口（计数）</h3><p>  <strong>import</strong> com.atguigu.bean.SensorReading;   <strong>import</strong> org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;   <strong>import</strong> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;   <strong>import</strong> org.apache.flink.table.api.Table;   <strong>import</strong> org.apache.flink.table.api.Tumble;   <strong>import</strong> org.apache.flink.table.api.java.StreamTableEnvironment;   <strong>import</strong> org.apache.flink.types.Row;      <strong>public class</strong> FlinkSQL_Test18 {        <strong>public static void</strong> main(String[]  args) <strong>throws</strong> Exception {          <em>//1.**创建执行环境 *      StreamExecutionEnvironment  env = StreamExecutionEnvironment.*getExecutionEnvironment</em>();       env.setParallelism(1);       StreamTableEnvironment tableEnv  = StreamTableEnvironment.<em>create</em>(env);          <em>//2.<strong>读取端口数据创建流并转换为</strong>JavaBean *      SingleOutputStreamOperator<SensorReading>  sensorDataStream = env.socketTextStream(*</em>“hadoop102”<strong>, 7777)           .map(line -&gt; {             String[] fields =  line.split(</strong>“,”<strong>);             **return new</strong> SensorReading(fields[0], Long.<em>parseLong</em>(fields[1]), Double.<em>parseDouble</em>(fields[2]));           });          <em>//3.<strong>将流转换为</strong>Table,**并设定处理时间语义 *      Table table =  tableEnv.fromDataStream(sensorDataStream, *</em>“id, ts, temp,  pt.proctime”<strong>);          <em>//4.TableAPI**实现滚动计数窗口 *      Table  tableResult = table.window(Tumble.*over</em>(</strong>“5.rows”<strong>).on(</strong>“pt”<strong>).as(</strong>“tw”<strong>))           .groupBy(</strong>“tw,id”<strong>)           .select(</strong>“id,  id.count as ct, temp.avg as avgTemp”<strong>);          <em>//5.**打印数据 *      tableEnv.toAppendStream(tableResult,  Row.*</em>class</strong>).print(<strong>“tableResult”</strong>);          *//6.**开启任务 *      env.execute();        }      }  </p>
+<h3 id="4-2-5-滑动窗口（计数）"><a href="#4-2-5-滑动窗口（计数）" class="headerlink" title="4.2.5 滑动窗口（计数）"></a>4.2.5 滑动窗口（计数）</h3><p>  <strong>import</strong> com.atguigu.bean.SensorReading;   <strong>import</strong> org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;   <strong>import</strong> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;   <strong>import</strong> org.apache.flink.table.api.Slide;   <strong>import</strong> org.apache.flink.table.api.Table;   <strong>import</strong> org.apache.flink.table.api.Tumble;   <strong>import</strong> org.apache.flink.table.api.java.StreamTableEnvironment;   <strong>import</strong> org.apache.flink.types.Row;      <strong>public class</strong> FlinkSQL_Test19 {        <strong>public static void</strong> main(String[]  args) <strong>throws</strong> Exception {          <em>//1.**创建执行环境 *      StreamExecutionEnvironment  env = StreamExecutionEnvironment.*getExecutionEnvironment</em>();       env.setParallelism(1);       StreamTableEnvironment tableEnv  = StreamTableEnvironment.<em>create</em>(env);          <em>//2.<strong>读取端口数据创建流并转换为</strong>JavaBean *      SingleOutputStreamOperator<SensorReading>  sensorDataStream = env.socketTextStream(*</em>“hadoop102”<strong>, 7777)            .map(line -&gt; {             String[] fields =  line.split(</strong>“,”<strong>);             **return new</strong> SensorReading(fields[0], Long.<em>parseLong</em>(fields[1]), Double.<em>parseDouble</em>(fields[2]));           });          <em>//3.<strong>将流转换为</strong>Table,**并设定处理时间语义 *      Table table =  tableEnv.fromDataStream(sensorDataStream, *</em>“id, ts, temp,  pt.proctime”<strong>);          <em>//4.TableAPI**实现滑动计数窗口 *      Table  tableResult = table.window(Slide.*over</em>(</strong>“5.rows”<strong>).every(</strong>“2.rows”<strong>).on(</strong>“pt”<strong>).as(</strong>“tw”<strong>))           .groupBy(</strong>“tw,id”<strong>)           .select(</strong>“id,  id.count as ct, temp.avg as avgTemp”<strong>);          <em>//5.**打印数据 *      tableEnv.toAppendStream(tableResult,  Row.*</em>class</strong>).print(<strong>“tableResult”</strong>);          *//6.**开启任务 *      env.execute();        }      }  </p>
+<h2 id="4-3-Over-Windows"><a href="#4-3-Over-Windows" class="headerlink" title="4.3 Over Windows"></a>4.3 Over Windows</h2><h3 id="4-3-2-FlinkSQL方式"><a href="#4-3-2-FlinkSQL方式" class="headerlink" title="4.3.2 FlinkSQL方式"></a>4.3.2 FlinkSQL方式</h3><p>由于Over本来就是SQL内置支持的语法，所以这在SQL中属于基本的聚合操作。所有聚合必须在同一窗口上定义，也就是说，必须是相同的分区、排序和范围。目前仅支持在当前行范围之前的窗口（无边界和有边界）。</p>
+<p>代码如下：</p>
+<p><strong>SELECT</strong> <strong>COUNT</strong>(amount) OVER (</p>
+<p> PARTITION <strong>BY</strong> <strong>user</strong></p>
+<p> <strong>ORDER</strong> <strong>BY</strong> proctime</p>
+<p> <strong>ROWS</strong> <strong>BETWEEN</strong> 2 PRECEDING <strong>AND</strong> <strong>CURRENT</strong> <strong>ROW</strong>)</p>
+<p><strong>FROM</strong> Orders</p>
+<p><em>//</em> <em>也可以做多个聚合</em></p>
+<p><strong>SELECT</strong> <strong>COUNT</strong>(amount) OVER w, <strong>SUM</strong>(amount) OVER w</p>
+<p><strong>FROM</strong> Orders</p>
+<p>WINDOW w <strong>AS</strong> (</p>
+<p> PARTITION <strong>BY</strong> <strong>user</strong></p>
+<p> <strong>ORDER</strong> <strong>BY</strong> proctime</p>
+<p> <strong>ROWS</strong> <strong>BETWEEN</strong> 2 PRECEDING <strong>AND</strong> <strong>CURRENT</strong> <strong>ROW</strong>)</p>
+<h3 id="4-3-1-TableAPI方式"><a href="#4-3-1-TableAPI方式" class="headerlink" title="4.3.1 TableAPI方式"></a>4.3.1 TableAPI方式</h3><p>Over window聚合是标准SQL中已有的（Over子句），可以在查询的SELECT子句中定义。Over window 聚合，会针对每个输入行，计算相邻行范围内的聚合。Over windows</p>
+<p>使用.window（w:overwindows*）子句定义，并在select（）方法中通过别名来引用。</p>
+<p>比如这样：</p>
+<p>Table <em>table</em> = input<br>  .window([w: OverWindow] as <strong>“w”</strong>)<br>  .select(<strong>“a</strong>, <strong>b</strong>.sum over <strong>w</strong>, <strong>c</strong>.min over <strong>w”</strong>)</p>
+<p>Table API提供了Over类，来配置Over窗口的属性。可以在事件时间或处理时间，以及指定为时间间隔、或行计数的范围内，定义Over windows。</p>
+<p>无界的over window是使用常量指定的。也就是说，时间间隔要指定UNBOUNDED_RANGE，或者行计数间隔要指定UNBOUNDED_ROW。而有界的over window是用间隔的大小指定的。</p>
+<p>实际代码应用如下：</p>
+<p>1） 无界的 over window</p>
+<p><em>//</em> <em>无界的事件时间</em> <em>over window<br>\</em> .window(Over.[<em>partitionBy</em>(<strong>“a”</strong>)].orderBy(<strong>“rowtime”</strong>).preceding.[(UNBOUNDED_RANGE)].as(<strong>“w”</strong>))<br> <em>//</em> <em>无界的处理时间</em> <em>over window<br>\</em> .window(Over.[<em>partitionBy</em>(<strong>“a”</strong>)].orderBy(<strong>“proctime”</strong>).preceding.[(UNBOUNDED_RANGE)].as(<strong>“w”</strong>))<br> <em>//</em> <em>无界的事件时间</em> <em>Row-count over window<br>\</em> .window(Over.[<em>partitionBy</em>(<strong>“a”</strong>)].orderBy(<strong>“rowtime”</strong>).[preceding.[(UNBOUNDED_ROW)].as(<strong>“w”</strong>))<br> <em>//**无界的处理时间</em> <em>Row-count over window<br>\</em> .window(Over.[<em>partitionBy</em>(<strong>“a”</strong>)].orderBy(<strong>“proctime”</strong>).preceding.[(UNBOUNDED_ROW)].as(<strong>“w”</strong>))</p>
+<p>2） 有界的over window</p>
+<p><em>//</em> <em>有界的事件时间</em> <em>over window<br>\</em> .window(Over.<em>partitionBy</em>(<strong>“a”</strong>).orderBy(<strong>“rowtime”</strong>).preceding(<strong>“1.minutes”</strong>).as(<strong>“w”</strong>))<br> <em>//</em> <em>有界的处理时间</em> <em>over window<br>\</em> .window(Over.<em>partitionBy</em>(<strong>“a”</strong>).orderBy(<strong>“proctime”</strong>).preceding(<strong>“1.minutes”</strong>).as(<strong>“w”</strong>))<br> <em>//</em> <em>有界的事件时间</em> <em>Row-count over window<br>\</em> .window(Over.<em>partitionBy</em>(<strong>“a”</strong>).orderBy(<strong>“rowtime”</strong>).preceding(<strong>“10.rows”</strong>).as(<strong>“w”</strong>))<br> <em>//</em> <em>有界的处理时间</em> <em>Row-count over window<br>\</em> .window(Over.<em>partitionBy</em>(<strong>“a”</strong>).orderBy(<strong>“procime”</strong>).preceding(<strong>“10.rows”</strong>).as(<strong>“w”</strong>))</p>
+<h2 id="4-4-Over-Windows案例实操"><a href="#4-4-Over-Windows案例实操" class="headerlink" title="4.4 Over Windows案例实操"></a>4.4 Over Windows案例实操</h2><p>  <strong>import</strong> com.atguigu.bean.SensorReading;   <strong>import</strong> org.apache.flink.streaming.api.TimeCharacteristic;   <strong>import</strong> org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;   <strong>import</strong> org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;   <strong>import</strong> org.apache.flink.streaming.api.functions.timestamps.BoundedOutOfOrdernessTimestampExtractor;   <strong>import</strong> org.apache.flink.streaming.api.windowing.time.Time;   <strong>import</strong> org.apache.flink.table.api.Over;   <strong>import</strong> org.apache.flink.table.api.Table;   <strong>import</strong> org.apache.flink.table.api.java.StreamTableEnvironment;   <strong>import</strong> org.apache.flink.types.Row;      <strong>public class</strong> FlinkSQL_Test28 {        <strong>public static void</strong> main(String[]  args) <strong>throws</strong> Exception {          <em>//1.**创建执行环境 *      StreamExecutionEnvironment  env = StreamExecutionEnvironment.*getExecutionEnvironment</em>();       env.setParallelism(1);         env.setStreamTimeCharacteristic(TimeCharacteristic.<strong><em>EventTime\</em></strong>);       StreamTableEnvironment tableEnv  = StreamTableEnvironment.<em>create</em>(env);          <em>//2.<strong>读取端口数据创建流并转换为</strong>JavaBean *      SingleOutputStreamOperator<SensorReading>  sensorDataStream = env.socketTextStream(*</em>“hadoop102”<strong>, 7777)             .assignTimestampsAndWatermarks(**new</strong> BoundedOutOfOrdernessTimestampExtractor<String>(Time.<em>seconds</em>(1)) {             @Override             <strong>public long</strong> extractTimestamp(String  element) {               <strong>return</strong> Long.<em>parseLong</em>(element.split(<strong>“,”</strong>)[1]) * 1000L;             }           })           .map(line -&gt; {              String[] fields = line.split(<strong>“,”</strong>);             <strong>return new</strong> SensorReading(fields[0], Long.<em>parseLong</em>(fields[1]), Double.<em>parseDouble</em>(fields[2]));           });          <em>//3.<strong>将流转换为</strong>Table,**并设定处理时间语义 *      Table table =  tableEnv.fromDataStream(sensorDataStream, *</em>“id, ts, temp,  rt.rowtime”<strong>);          <em>//4.TableAPI<strong>实现</strong>over**窗口 *      Table  tableResult = table.window(Over.*partitionBy</em>(</strong>“id”<strong>).orderBy(</strong>“rt”<strong>).preceding(</strong>“1.rows”<strong>).as(</strong>“w”<strong>))           .select(</strong>“id, id.count  over w as ct, temp.avg over w as avgTemp”<strong>);          *//5.SQL *      tableEnv.createTemporaryView(</strong>“sensor”<strong>,table);       Table sqlResult =  tableEnv.sqlQuery(</strong>“select id ,count(id) over w as ct,  avg(temp) over w”** +           <strong>“ from  sensor window w as (partition by id order by rt rows between 1 preceding and  current row)”</strong>);          <em>//6.**打印数据 *      tableEnv.toRetractStream(tableResult,  Row.*</em>class*<em>).print(<strong>“tableResult”</strong>);         tableEnv.toRetractStream(sqlResult, Row.<strong>class</strong>).print(<strong>“sqlResult”</strong>);          <em>//7.</em></em>开启任务 *      env.execute();        }      }  </p>
+<h1 id="第五章-函数（Functions）"><a href="#第五章-函数（Functions）" class="headerlink" title="第五章 函数（Functions）"></a>第五章 函数（Functions）</h1><p>Flink Table 和 SQL内置了很多SQL中支持的函数；如果有无法满足的需要，则可以实现用户自定义的函数（UDF）来解决。</p>
+<h2 id="5-1-系统内置函数"><a href="#5-1-系统内置函数" class="headerlink" title="5.1 系统内置函数"></a>5.1 系统内置函数</h2><p>Flink Table API 和 SQL为用户提供了一组用于数据转换的内置函数。SQL中支持的很多函数，Table API和SQL都已经做了实现，其它还在快速开发扩展中。</p>
+<p>以下是一些典型函数的举例，全部的内置函数，可以参考官网介绍。</p>
+<p>l 比较函数</p>
+<p>SQL：</p>
+<p>value1 = value2</p>
+<p>value1 &gt; value2</p>
+<p>Table API：</p>
+<p>ANY1 === ANY2</p>
+<p>ANY1 &gt; ANY2</p>
+<p>l 逻辑函数</p>
+<p>SQL：</p>
+<p>boolean1 OR boolean2</p>
+<p>boolean IS FALSE</p>
+<p>NOT boolean</p>
+<p>Table API：</p>
+<p>BOOLEAN1 || BOOLEAN2</p>
+<p>BOOLEAN.isFalse</p>
+<p>!BOOLEAN</p>
+<p>l 算术函数</p>
+<p>SQL：</p>
+<p>numeric1 + numeric2</p>
+<p>POWER(numeric1, numeric2)</p>
+<p>Table API：</p>
+<p>NUMERIC1 + NUMERIC2</p>
+<p>NUMERIC1.power(NUMERIC2)</p>
+<p>l 字符串函数</p>
+<p>SQL：</p>
+<p>string1 || string2</p>
+<p>UPPER(string)</p>
+<p>CHAR_LENGTH(string)</p>
+<p>Table API：</p>
+<p>STRING1 + STRING2</p>
+<p>STRING.upperCase()</p>
+<p>STRING.charLength()</p>
+<p>l 时间函数</p>
+<p>SQL：</p>
+<p>DATE string</p>
+<p>TIMESTAMP string</p>
+<p>CURRENT_TIME</p>
+<p>INTERVAL string range</p>
+<p>Table API：</p>
+<p>STRING.toDate</p>
+<p>STRING.toTimestamp</p>
+<p>currentTime()</p>
+<p>NUMERIC.days</p>
+<p>NUMERIC.minutes</p>
+<p>l 聚合函数</p>
+<p>SQL：</p>
+<p>COUNT(*)</p>
+<p>SUM([ ALL | DISTINCT ] expression)</p>
+<p>RANK()</p>
+<p>ROW_NUMBER()</p>
+<p>Table API：</p>
+<p>FIELD.count</p>
+<p>FIELD.sum0  </p>
+<h2 id="5-2-UDF"><a href="#5-2-UDF" class="headerlink" title="5.2 UDF"></a>5.2 UDF</h2><p>用户定义函数（User-defined Functions，UDF）是一个重要的特性，因为它们显著地扩展了查询（Query）的表达能力。一些系统内置函数无法解决的需求，我们可以用UDF来自定义实现。</p>
+<h3 id="5-2-1-注册用户自定义函数UDF"><a href="#5-2-1-注册用户自定义函数UDF" class="headerlink" title="5.2.1 注册用户自定义函数UDF"></a>5.2.1 注册用户自定义函数UDF</h3><p>在大多数情况下，用户定义的函数必须先注册，然后才能在查询中使用。不需要专门为Scala 的Table API注册函数。</p>
+<p>函数通过调用registerFunction()方法在TableEnvironment中注册。当用户定义的函数被注册时，它被插入到TableEnvironment的函数目录中，这样Table API或SQL解析器就可以识别并正确地解释它。</p>
+<h3 id="5-2-2-标量函数（Scalar-Functions）"><a href="#5-2-2-标量函数（Scalar-Functions）" class="headerlink" title="5.2.2 标量函数（Scalar Functions）"></a>5.2.2 标量函数（Scalar Functions）</h3><p>用户定义的标量函数，可以将0、1或多个标量值，映射到新的标量值。</p>
+<p>为了定义标量函数，必须在org.apache.flink.table.functions中扩展基类Scalar Function，并实现（一个或多个）求值（evaluation，eval）方法。标量函数的行为由求值方法决定，求值方法必须公开声明并命名为eval（直接def声明，没有override）。求值方法的参数类型和返回类型，确定了标量函数的参数和返回类型。</p>
+<p>在下面的代码中，我们定义自己的HashCode函数，在TableEnvironment中注册它，并在查询中调用它。</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 自定义一个标量函数
+public static class HashCode extends ScalarFunction &#123;
+    private int factor &#x3D; 13;
+
+    public HashCode(int factor) &#123;
+        this.factor &#x3D; factor;
+    &#125;
+
+    public int eval(String s) &#123;
+        return s.hashCode() * factor;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<p>主函数中调用，计算sensor id的哈希值（前面部分照抄，流环境、表环境、读取source、建表）：</p>
+<p><strong>public static void</strong> main(String[] args) <strong>throws</strong> Exception {<br>   <em>// 1.</em> <em>创建环境<br>\</em>   StreamExecutionEnvironment env = StreamExecutionEnvironment.<em>getExecutionEnvironment</em>();<br>   env.setParallelism(1);</p>
+<p>   StreamTableEnvironment tableEnv = StreamTableEnvironment.<em>create</em>(env);</p>
+<p>   <em>// 2.</em> <em>读取文件，得到</em> <em>DataStream<br>\</em>   String filePath = <strong>“sensor”</strong>;</p>
+<p>   DataStream<String> inputStream = env.readTextFile(filePath);</p>
+<p>   <em>// 3.</em> <em>转换成</em> <em>Java Bean<strong>，并指定</strong>timestamp<strong>和</strong>watermark<br>\</em>   DataStream<SensorReading> dataStream = inputStream<br>       .map( line -&gt; {<br>         String[] fields = line.split(<strong>“,”</strong>);<br>         <strong>return new</strong> SensorReading(fields[0], <strong>new</strong> Long(fields[1]), <strong>new</strong> Double(fields[2]));<br>       } );</p>
+<p>   <em>// 4.</em> <em>将</em> <em>DataStream</em> <em>转换为</em> <em>Table<br>\</em>   Table sensorTable = tableEnv.fromDataStream(dataStream, <strong>“id, timestamp as ts, temperature”</strong>);</p>
+<p>   <em>// 5.</em> <em>调用自定义<strong>hash</strong>函数，对<strong>id</strong>进行<strong>hash</strong>运算<br>\</em>   HashCode hashCode = <strong>new</strong> HashCode(23);<br>   tableEnv.registerFunction(<strong>“hashCode”</strong>, hashCode);<br>   Table resultTable = sensorTable<br>       .select(<strong>“id, ts, hashCode(id)”</strong>);</p>
+<p>   <em>//  sql<br>\</em>   tableEnv.createTemporaryView(<strong>“sensor”</strong>, sensorTable);<br>   Table resultSqlTable = tableEnv.sqlQuery(<strong>“select id, ts, hashCode(id) from sensor”</strong>);</p>
+<p>   tableEnv.toAppendStream(resultTable, Row.<strong>class</strong>).print(<strong>“result”</strong>);<br>   tableEnv.toRetractStream(resultSqlTable, Row.<strong>class</strong>).print(<strong>“sql”</strong>);</p>
+<p>   env.execute(<strong>“scalar function test”</strong>);<br> }</p>
+<h3 id="5-2-3-表函数（Table-Functions）"><a href="#5-2-3-表函数（Table-Functions）" class="headerlink" title="5.2.3 表函数（Table Functions）"></a>5.2.3 表函数（Table Functions）</h3><p>与用户定义的标量函数类似，用户定义的表函数，可以将0、1或多个标量值作为输入参数；与标量函数不同的是，它可以返回任意数量的行作为输出，而不是单个值。</p>
+<p>为了定义一个表函数，必须扩展org.apache.flink.table.functions中的基类TableFunction并实现（一个或多个）求值方法。表函数的行为由其求值方法决定，求值方法必须是public的，并命名为eval。求值方法的参数类型，决定表函数的所有有效参数。</p>
+<p>返回表的类型由TableFunction的泛型类型确定。求值方法使用protected collect（T）方法发出输出行。</p>
+<p>在Table API中，Table函数需要与.joinLateral或.leftOuterJoinLateral一起使用。</p>
+<p>joinLateral算子，会将外部表中的每一行，与表函数（TableFunction，算子的参数是它的表达式）计算得到的所有行连接起来。</p>
+<p>而leftOuterJoinLateral算子，则是左外连接，它同样会将外部表中的每一行与表函数计算生成的所有行连接起来；并且，对于表函数返回的是空表的外部行，也要保留下来。</p>
+<p>在SQL中，则需要使用Lateral Table（<TableFunction>），或者带有ON TRUE条件的左连接。</p>
+<p>下面的代码中，我们将定义一个表函数，在表环境中注册它，并在查询中调用它。</p>
+<p>自定义TableFunction：</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 自定义TableFunction
+public static class Split extends TableFunction&lt;Tuple2&lt;String, Integer&gt;&gt; &#123;
+    private String separator &#x3D; &quot;,&quot;;
+
+    public Split(String separator) &#123;
+        this.separator &#x3D; separator;
+    &#125;
+
+    &#x2F;&#x2F; 类似flatmap，没有返回值
+    public void eval(String str) &#123;
+        for (String s : str.split(separator)) &#123;
+            collect(new Tuple2&lt;String, Integer&gt;(s, s.length()));
+        &#125;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+<p>接下来，就是在代码中调用。首先是Table API的方式：</p>
+<p>Split split = <strong>new</strong> Split(<strong>“_”</strong>);<br> tableEnv.registerFunction(<strong>“split”</strong>, split);<br> Table resultTable = sensorTable<br>     .joinLateral( <strong>“split(id) as (word, length)”</strong>)<br>     .select(<strong>“id, ts, word, length”</strong>);</p>
+<p>然后是SQL的方式：</p>
+<p>tableEnv.createTemporaryView(<strong>“sensor”</strong>, sensorTable);<br> Table resultSqlTable = tableEnv.sqlQuery(<strong>“select id, ts, word, length “</strong> +<br>     <strong>“from sensor, lateral table( split(id) ) as splitId(word, length)”</strong>);</p>
+<h3 id="5-2-4-聚合函数（Aggregate-Functions）"><a href="#5-2-4-聚合函数（Aggregate-Functions）" class="headerlink" title="5.2.4 聚合函数（Aggregate Functions）"></a>5.2.4 聚合函数（Aggregate Functions）</h3><p>用户自定义聚合函数（User-Defined Aggregate Functions，UDAGGs）可以把一个表中的数据，聚合成一个标量值。用户定义的聚合函数，是通过继承AggregateFunction抽象类实现的。</p>
+<p><img src="C:/Users/89388/AppData/Local/Temp/msohtmlclip1/01/clip_image014.jpg" alt="img"></p>
+<p>上图中显示了一个聚合的例子。</p>
+<p>假设现在有一张表，包含了各种饮料的数据。该表由三列（id、name和price）、五行组成数据。现在我们需要找到表中所有饮料的最高价格，即执行max（）聚合，结果将是一个数值。</p>
+<p>AggregateFunction的工作原理如下。</p>
+<p>l 首先，它需要一个累加器，用来保存聚合中间结果的数据结构（状态）。可以通过调用AggregateFunction的createAccumulator（）方法创建空累加器。</p>
+<p>l 随后，对每个输入行调用函数的accumulate（）方法来更新累加器。</p>
+<p>l 处理完所有行后，将调用函数的getValue（）方法来计算并返回最终结果。</p>
+<p>AggregationFunction要求必须实现的方法：</p>
+<p>l createAccumulator()</p>
+<p>l accumulate()</p>
+<p>l getValue()</p>
+<p>除了上述方法之外，还有一些可选择实现的方法。其中一些方法，可以让系统执行查询更有效率，而另一些方法，对于某些场景是必需的。例如，如果聚合函数应用在会话窗口（session group window）的上下文中，则merge（）方法是必需的。</p>
+<p>l retract() </p>
+<p>l merge() </p>
+<p>l resetAccumulator()</p>
+<p>接下来我们写一个自定义AggregateFunction，计算一下每个sensor的平均温度值。</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 定义AggregateFunction的Accumulator
+public static class AvgTempAcc &#123;
+    double sum &#x3D; 0.0;
+    int count &#x3D; 0;
+&#125;
+
+&#x2F;&#x2F; 自定义一个聚合函数，求每个传感器的平均温度值，保存状态(tempSum, tempCount)
+public static class AvgTemp extends AggregateFunction&lt;Double, AvgTempAcc&gt;&#123;
+    @Override
+    public Double getValue(AvgTempAcc accumulator) &#123;
+        return accumulator.sum &#x2F; accumulator.count;
+    &#125;
+
+    @Override
+    public AvgTempAcc createAccumulator() &#123;
+        return new AvgTempAcc();
+    &#125;
+
+    &#x2F;&#x2F; 实现一个具体的处理计算函数，accumulate
+    public void accumulate( AvgTempAcc accumulator, Double temp) &#123;
+        accumulator.sum +&#x3D; temp;
+        accumulator.count +&#x3D; 1;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>接下来就可以在代码中调用了。</p>
+<p><em>//</em> <em>创建一个聚合函数实例<br>\</em> AvgTemp avgTemp = <strong>new</strong> AvgTemp();</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; Table API的调用 
+tableEnv.registerFunction(&quot;avgTemp&quot;, avgTemp);
+Table resultTable &#x3D; sensorTable
+        .groupBy(&quot;id&quot;)
+        .aggregate(&quot;avgTemp(temperature) as avgTemp&quot;)
+        .select(&quot;id, avgTemp&quot;);
+&#x2F;&#x2F; sql
+tableEnv.createTemporaryView(&quot;sensor&quot;, sensorTable);
+Table resultSqlTable &#x3D; tableEnv.sqlQuery(&quot;select id, avgTemp(temperature) &quot; +
+        &quot;from sensor group by id&quot;);
+
+tableEnv.toRetractStream(resultTable, Row.class).print(&quot;result&quot;);
+tableEnv.toRetractStream(resultSqlTable, Row.class).print(&quot;sql&quot;);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="5-2-5-表聚合函数（Table-Aggregate-Functions）"><a href="#5-2-5-表聚合函数（Table-Aggregate-Functions）" class="headerlink" title="5.2.5 表聚合函数（Table Aggregate Functions）"></a>5.2.5 表聚合函数（Table Aggregate Functions）</h3><p>用户定义的表聚合函数（User-Defined Table Aggregate Functions，UDTAGGs），可以把一个表中数据，聚合为具有多行和多列的结果表。这跟AggregateFunction非常类似，只是之前聚合结果是一个标量值，现在变成了一张表。</p>
+<p><img src="C:/Users/89388/AppData/Local/Temp/msohtmlclip1/01/clip_image016.jpg" alt="img"></p>
+<p>比如现在我们需要找到表中所有饮料的前2个最高价格，即执行top2（）表聚合。我们需要检查5行中的每一行，得到的结果将是一个具有排序后前2个值的表。</p>
+<p>用户定义的表聚合函数，是通过继承TableAggregateFunction抽象类来实现的。</p>
+<p>TableAggregateFunction的工作原理如下。</p>
+<p>l 首先，它同样需要一个累加器（Accumulator），它是保存聚合中间结果的数据结构。通过调用TableAggregateFunction的createAccumulator（）方法可以创建空累加器。</p>
+<p>l 随后，对每个输入行调用函数的accumulate（）方法来更新累加器。</p>
+<p>l 处理完所有行后，将调用函数的emitValue（）方法来计算并返回最终结果。</p>
+<p>AggregationFunction要求必须实现的方法：</p>
+<p>l createAccumulator()</p>
+<p>l accumulate()</p>
+<p>除了上述方法之外，还有一些可选择实现的方法。</p>
+<pre class="line-numbers language-none"><code class="language-none">l &#96;&#96;retract() 
+l &#96;&#96;merge() 
+l &#96;&#96;resetAccumulator() 
+l &#96;&#96;emitValue()&#96;&#96; <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>l <code>emitUpdateWithRetract()</code></p>
+<p>接下来我们写一个自定义TableAggregateFunction，用来提取每个sensor最高的两个温度值。</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 先定义一个 Accumulator
+public static class Top2TempAcc &#123;
+    double highestTemp &#x3D; Double.MIN_VALUE;
+    double secondHighestTemp &#x3D; Double.MIN_VALUE;
+&#125;
+
+&#x2F;&#x2F; 自定义表聚合函数
+public static class Top2Temp extends TableAggregateFunction&lt;Tuple2&lt;Double, Integer&gt;, Top2TempAcc&gt; &#123;
+    @Override
+    public Top2TempAcc createAccumulator() &#123;
+        return new Top2TempAcc();
+    &#125;
+
+    &#x2F;&#x2F; 实现计算聚合结果的函数accumulate
+    public void accumulate(Top2TempAcc acc, Double temp) &#123;
+        if (temp &gt; acc.highestTemp) &#123;
+            acc.secondHighestTemp &#x3D; acc.highestTemp;
+            acc.highestTemp &#x3D; temp;
+        &#125; else if (temp &gt; acc.secondHighestTemp) &#123;
+            acc.secondHighestTemp &#x3D; temp;
+        &#125;
+    &#125;
+    &#x2F;&#x2F; 实现一个输出结果的方法，最终处理完表中所有数据时调用
+    public void emitValue(Top2TempAcc acc, Collector&lt;Tuple2&lt;Double, Integer&gt;&gt; out) &#123;
+        out.collect(new Tuple2&lt;&gt;(acc.highestTemp, 1));
+        out.collect(new Tuple2&lt;&gt;(acc.secondHighestTemp, 2));
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>接下来就可以在代码中调用了。</p>
+<pre class="line-numbers language-none"><code class="language-none">&#x2F;&#x2F; 创建一个表聚合函数实例
+Top2Temp top2Temp &#x3D; new Top2Temp();
+tableEnv.registerFunction(&quot;top2Temp&quot;, top2Temp);
+Table resultTable &#x3D; sensorTable
+        .groupBy(&quot;id&quot;)
+        .flatAggregate(&quot;top2Temp(temperature) as (temp, rank)&quot;)
+        .select(&quot;id, temp, rank&quot;);
+
+tableEnv.toRetractStream(resultTable, Row.class).print(&quot;result&quot;);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Jinxin Li</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://fourgold.github.io/2020/02/15/13Flink07_TableAPI%E4%B8%8EFlinkSQL/">http://fourgold.github.io/2020/02/15/13Flink07_TableAPI%E4%B8%8EFlinkSQL/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Jinxin Li</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/02/15/07%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="Scala的模式匹配">
+                        
+                        <span class="card-title">Scala的模式匹配</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-02-15
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Jinxin Li
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2020/02/14/07Scala_%E9%9A%90%E5%BC%8F%E8%BD%AC%E6%8D%A2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Scala的隐式转换">
+                        
+                        <span class="card-title">Scala的隐式转换</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-14
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            Jinxin Li
+                            
+                        </span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('1'),
+            headingSelector: 'h1,h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1,h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">Jinxin Li</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">232.3k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/fourgold" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:799392914@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=799392914" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 799392914" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

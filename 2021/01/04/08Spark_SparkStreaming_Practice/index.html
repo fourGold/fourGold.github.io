@@ -813,4 +813,1050 @@
       <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token keyword">&lt;-</span> <span class="token number">1</span> to <span class="token namespace">opt<span class="token punctuation">.</span>weight</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
         <span class="token comment">// 男 男 男 男 男 男 男 男 女 女</span>
         randomOptions<span class="token punctuation">.</span>optsBuffer <span class="token operator">+=</span> opt<span class="token punctuation">.</span>value
-      <span class="
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    randomOptions
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token keyword">&lt;-</span> <span class="token number">1</span> to <span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      println<span class="token punctuation">(</span>RandomOptions<span class="token punctuation">(</span>RanOpt<span class="token punctuation">(</span><span class="token string">"男"</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">,</span> RanOpt<span class="token punctuation">(</span><span class="token string">"女"</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>getRandomOpt<span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">class</span> RandomOptions<span class="token punctuation">[</span>T<span class="token punctuation">]</span><span class="token punctuation">(</span>opts<span class="token operator">:</span> RanOpt<span class="token punctuation">[</span>T<span class="token punctuation">]</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+  <span class="token keyword">var</span> totalWeight <span class="token operator">=</span> <span class="token number">0</span>
+  <span class="token keyword">var</span> optsBuffer <span class="token operator">=</span> <span class="token keyword">new</span> ListBuffer<span class="token punctuation">[</span>T<span class="token punctuation">]</span>
+
+  <span class="token keyword">def</span> getRandomOpt<span class="token operator">:</span> T <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// 随机选择：0-9</span>
+    <span class="token keyword">val</span> randomNum<span class="token operator">:</span> <span class="token builtin">Int</span> <span class="token operator">=</span> <span class="token keyword">new</span> Random<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>nextInt<span class="token punctuation">(</span>totalWeight<span class="token punctuation">)</span>
+    <span class="token comment">// 根据随机数，作为角标取数</span>
+    optsBuffer<span class="token punctuation">(</span>randomNum<span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="4-黑名单业务"><a href="#4-黑名单业务" class="headerlink" title="4.黑名单业务"></a>4.黑名单业务</h2><p>实现实时的动态黑名单机制：将每天对某个广告点击超过30次的用户拉黑。</p>
+<p>注：黑名单保存到MySQL中。</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>app</span>
+
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>Properties
+
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>handler<span class="token punctuation">.</span></span>BlackListHandler
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>utils<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>MyKafkaUtil<span class="token punctuation">,</span> PropertiesUtil<span class="token punctuation">&#125;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>kafka<span class="token punctuation">.</span>clients<span class="token punctuation">.</span>consumer<span class="token punctuation">.</span></span>ConsumerRecord
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span></span>SparkConf
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>streaming<span class="token punctuation">.</span>dstream<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>DStream<span class="token punctuation">,</span> InputDStream<span class="token punctuation">&#125;</span>
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>streaming<span class="token punctuation">.</span></span><span class="token punctuation">&#123;</span>Seconds<span class="token punctuation">,</span> StreamingContext<span class="token punctuation">&#125;</span>
+
+
+<span class="token comment">/**
+ * @author Jinxin Li
+ * @create 2020-11-25 20:42
+ */</span>
+<span class="token keyword">object</span> RealTimeApp <span class="token punctuation">&#123;</span>
+
+  <span class="token keyword">def</span> main<span class="token punctuation">(</span>args<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token builtin">Unit</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> sparkConf<span class="token operator">:</span> SparkConf <span class="token operator">=</span> <span class="token keyword">new</span> SparkConf<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setAppName<span class="token punctuation">(</span><span class="token string">"RealTimeApp "</span><span class="token punctuation">)</span><span class="token punctuation">.</span>setMaster<span class="token punctuation">(</span><span class="token string">"local[*]"</span><span class="token punctuation">)</span>
+
+    <span class="token comment">//2.创建StreamingContext</span>
+    <span class="token keyword">val</span> ssc <span class="token operator">=</span> <span class="token keyword">new</span> StreamingContext<span class="token punctuation">(</span>sparkConf<span class="token punctuation">,</span> Seconds<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment">//    val topic = PropertiesUtil.load("config.perproties").getProperty("kafka.topic")</span>
+    <span class="token keyword">val</span> properties<span class="token operator">:</span> Properties <span class="token operator">=</span> PropertiesUtil<span class="token punctuation">.</span>load<span class="token punctuation">(</span><span class="token string">"config.properties"</span><span class="token punctuation">)</span>
+    <span class="token keyword">val</span> topic<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> properties<span class="token punctuation">.</span>getProperty<span class="token punctuation">(</span><span class="token string">"kafka.topic"</span><span class="token punctuation">)</span>
+
+
+    <span class="token comment">//从kafka中读取数据</span>
+    <span class="token keyword">val</span> kafkaDStream<span class="token operator">:</span> InputDStream<span class="token punctuation">[</span>ConsumerRecord<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> MyKafkaUtil<span class="token punctuation">.</span>getKafkaStream<span class="token punctuation">(</span>topic<span class="token punctuation">,</span> ssc<span class="token punctuation">)</span>
+
+    <span class="token comment">//将从kafka独处的数据转换为样例类对象</span>
+    <span class="token keyword">val</span> adsLogDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span> <span class="token operator">=</span> kafkaDStream<span class="token punctuation">.</span>map<span class="token punctuation">(</span>
+      record <span class="token keyword">=></span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">//kafka得到的是kv值,注意先取出v值</span>
+        <span class="token keyword">val</span> line<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> record<span class="token punctuation">.</span>value<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token comment">//拿出字段信息</span>
+        <span class="token keyword">val</span> info<span class="token operator">:</span> Array<span class="token punctuation">[</span><span class="token builtin">String</span><span class="token punctuation">]</span> <span class="token operator">=</span> line<span class="token punctuation">.</span>split<span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span>
+        <span class="token comment">//使用伴生对象的apply方法直接包装对象并返回</span>
+        Ads_log<span class="token punctuation">(</span>info<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span>toLong<span class="token punctuation">,</span> info<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> info<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span> info<span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> info<span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">)</span>
+    <span class="token comment">//-----------------------------------------------------------</span>
+    <span class="token comment">//现在已经万事具备,开始处理需求</span>
+    <span class="token comment">//需求1 BlackListHandler广告黑名单业务,</span>
+    <span class="token comment">// 将实现实时的动态黑名单机制：将每天对某个广告点击超过30次的用户拉黑。</span>
+    <span class="token keyword">val</span> filterAdsLogDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span> <span class="token operator">=</span> BlackListHandler<span class="token punctuation">.</span>filterByBlackList<span class="token punctuation">(</span>adsLogDStream<span class="token punctuation">)</span>
+    BlackListHandler<span class="token punctuation">.</span>addBlackList<span class="token punctuation">(</span>filterAdsLogDStream<span class="token punctuation">)</span>
+
+    filterAdsLogDStream<span class="token punctuation">.</span>cache<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    filterAdsLogDStream<span class="token punctuation">.</span>count<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>print<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment">//启动任务</span>
+    ssc<span class="token punctuation">.</span>start<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    ssc<span class="token punctuation">.</span>awaitTermination<span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">// 创建数据的样例类对象</span>
+<span class="token comment">// 时间 地区 城市 用户id 广告id</span>
+<span class="token keyword">case</span> <span class="token keyword">class</span> Ads_log<span class="token punctuation">(</span>timestamp<span class="token operator">:</span> <span class="token builtin">Long</span><span class="token punctuation">,</span> area<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">,</span> city<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">,</span> userid<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">,</span> adid<span class="token operator">:</span> <span class="token builtin">String</span><span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>handler</span>
+
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>sql<span class="token punctuation">.</span></span>Connection
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>text<span class="token punctuation">.</span></span>SimpleDateFormat
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>Date
+
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>app<span class="token punctuation">.</span></span>Ads_log
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>utils<span class="token punctuation">.</span></span>JDBCUtil
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>streaming<span class="token punctuation">.</span>dstream<span class="token punctuation">.</span></span>DStream
+
+<span class="token comment">/**
+ * @author Jinxin Li
+ * @create 2020-11-25 20:39
+ */</span>
+<span class="token keyword">object</span> BlackListHandler <span class="token punctuation">&#123;</span>
+  <span class="token comment">//实现实时的动态黑名单机制：将每天对某个广告点击超过30次的用户拉黑。</span>
+  <span class="token comment">//注：黑名单保存到MySQL中。</span>
+  <span class="token keyword">private</span> <span class="token keyword">val</span> sdf <span class="token operator">=</span> <span class="token keyword">new</span> SimpleDateFormat<span class="token punctuation">(</span><span class="token string">"yyyy-MM-dd"</span><span class="token punctuation">)</span>
+
+  <span class="token keyword">def</span> addBlackList<span class="token punctuation">(</span>filterAdsLogDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> dtAreaCityUserAdDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">Long</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> filterAdsLogDStream<span class="token punctuation">.</span>map <span class="token punctuation">&#123;</span>
+      <span class="token keyword">case</span> adsLog <span class="token keyword">=></span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">val</span> dt<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> sdf<span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token keyword">new</span> Date<span class="token punctuation">(</span>adsLog<span class="token punctuation">.</span>timestamp<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token punctuation">(</span><span class="token punctuation">(</span>dt<span class="token punctuation">,</span> adsLog<span class="token punctuation">.</span>userid<span class="token punctuation">,</span> adsLog<span class="token punctuation">.</span>adid<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1L</span><span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">.</span>reduceByKey<span class="token punctuation">(</span>_ <span class="token operator">+</span> _<span class="token punctuation">)</span>
+
+    <span class="token comment">//写出</span>
+    dtAreaCityUserAdDStream<span class="token punctuation">.</span>foreachRDD<span class="token punctuation">(</span>
+      <span class="token comment">//先把流中的foreachRDD写出,然后分流写出</span>
+      rdd<span class="token keyword">=></span>rdd<span class="token punctuation">.</span>foreachPartition<span class="token punctuation">(</span>
+        iter<span class="token keyword">=></span><span class="token punctuation">&#123;</span>
+          <span class="token keyword">val</span> connection<span class="token operator">:</span> Connection <span class="token operator">=</span> JDBCUtil<span class="token punctuation">.</span>getConnection
+          iter<span class="token punctuation">.</span>foreach<span class="token punctuation">&#123;</span>
+            <span class="token keyword">case</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>dt<span class="token punctuation">,</span>userid<span class="token punctuation">,</span>adid<span class="token punctuation">)</span><span class="token punctuation">,</span>count<span class="token punctuation">)</span><span class="token keyword">=></span>
+              JDBCUtil<span class="token punctuation">.</span>executeUpdate<span class="token punctuation">(</span>
+                connection<span class="token punctuation">,</span>
+                <span class="token triple-quoted-string string">"""
+                  |insert into user_ad_count (dt,userid,adid,count)
+                  |values (?,?,?,?)
+                  |on duplicate key
+                  |update count = count + ?
+                  |"""</span><span class="token punctuation">.</span>stripMargin<span class="token punctuation">,</span>Array<span class="token punctuation">(</span>dt<span class="token punctuation">,</span>userid<span class="token punctuation">,</span>adid<span class="token punctuation">,</span>count<span class="token punctuation">,</span>count<span class="token punctuation">)</span>
+              <span class="token punctuation">)</span>
+              <span class="token keyword">val</span> ct<span class="token operator">:</span> <span class="token builtin">Long</span> <span class="token operator">=</span> JDBCUtil<span class="token punctuation">.</span>getDataFromMysql<span class="token punctuation">(</span>
+                connection<span class="token punctuation">,</span>
+                <span class="token triple-quoted-string string">"""
+                  |select count from user_ad_count where dt=? and userid=? and adid=?
+                  |"""</span><span class="token punctuation">.</span>stripMargin<span class="token punctuation">,</span>Array<span class="token punctuation">(</span>dt<span class="token punctuation">,</span>userid<span class="token punctuation">,</span>adid<span class="token punctuation">)</span>
+              <span class="token punctuation">)</span>
+              <span class="token comment">//如果大于30就加入黑名单</span>
+              <span class="token keyword">if</span> <span class="token punctuation">(</span>ct<span class="token operator">>=</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                JDBCUtil<span class="token punctuation">.</span>executeUpdate<span class="token punctuation">(</span>
+                  connection<span class="token punctuation">,</span>
+                  <span class="token triple-quoted-string string">"""
+                    |insert into black_list (userid)
+                    |values (?)
+                    |on duplicate key
+                    |update userid=?
+                    |"""</span><span class="token punctuation">.</span>stripMargin<span class="token punctuation">,</span>Array<span class="token punctuation">(</span>userid<span class="token punctuation">,</span>userid<span class="token punctuation">)</span>
+                <span class="token punctuation">)</span>
+              <span class="token punctuation">&#125;</span>
+          <span class="token punctuation">&#125;</span>
+          connection<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">)</span>
+    <span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">def</span> filterByBlackList<span class="token punctuation">(</span>adsLogDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    adsLogDStream<span class="token punctuation">.</span>filter<span class="token punctuation">(</span>
+      adsLog<span class="token keyword">=></span><span class="token punctuation">&#123;</span>
+        <span class="token comment">//获取连接</span>
+        <span class="token keyword">val</span> connection<span class="token operator">:</span> Connection <span class="token operator">=</span> JDBCUtil<span class="token punctuation">.</span>getConnection
+        <span class="token keyword">val</span> bool<span class="token operator">:</span> <span class="token builtin">Boolean</span> <span class="token operator">=</span> JDBCUtil<span class="token punctuation">.</span>isExist<span class="token punctuation">(</span>
+          connection<span class="token punctuation">,</span>
+          <span class="token triple-quoted-string string">"""
+            |select * from black_list where userid=?
+            |"""</span><span class="token punctuation">.</span>stripMargin<span class="token punctuation">,</span> Array<span class="token punctuation">(</span>adsLog<span class="token punctuation">.</span>userid<span class="token punctuation">)</span>
+        <span class="token punctuation">)</span>
+        connection<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token operator">!</span>bool
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="5-统计点击总流量"><a href="#5-统计点击总流量" class="headerlink" title="5.统计点击总流量"></a>5.统计点击总流量</h2><p>描述：实时统计每天各地区各城市各广告的点击总流量，并将其存入MySQL。</p>
+<p>注意connection与connection.close要同时写</p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E6%8A%A5%E9%94%99%E4%BF%A1%E6%81%AF1.png" alt="connection报错"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/fourgold/images/fourgold/images/img_21_01/%E6%8A%A5%E9%94%99%E4%BF%A1%E6%81%AF2.png" alt="报错信息"></p>
+<p><img src="SparkStreaming_Case_%E6%80%BB%E7%BB%93.assets/1606325292658.png" alt="1606325292658"></p>
+<p><img src="SparkStreaming_Case_%E6%80%BB%E7%BB%93.assets/1606325343070.png" alt="1606325343070"></p>
+<p>功能:DateAreaCityAdCountHandler</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>handler</span>
+
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>sql<span class="token punctuation">.</span></span>Connection
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>text<span class="token punctuation">.</span></span>SimpleDateFormat
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>Date
+
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>app<span class="token punctuation">.</span></span>Ads_log
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>utils<span class="token punctuation">.</span></span>JDBCUtil
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>streaming<span class="token punctuation">.</span>dstream<span class="token punctuation">.</span></span>DStream
+
+<span class="token comment">/**
+ * @author Jinxin Li
+ * @create 2020-11-25 23:58
+ * 统计每天各大区各个城市广告点击总数并保存至MySQL中
+ */</span>
+<span class="token keyword">object</span> DateAreaCityAdCountHandler <span class="token punctuation">&#123;</span>
+  <span class="token keyword">private</span> <span class="token keyword">val</span> sdf <span class="token operator">=</span> <span class="token keyword">new</span> SimpleDateFormat<span class="token punctuation">(</span><span class="token string">"yyyy-MM-dd"</span><span class="token punctuation">)</span>
+  <span class="token keyword">def</span> saveDateAreaCityAdCountToMysql<span class="token punctuation">(</span>filterAdsLogDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">val</span> dateAreaCityAdToCount<span class="token operator">=</span> filterAdsLogDStream<span class="token punctuation">.</span>map<span class="token punctuation">(</span>ads_log <span class="token keyword">=></span> <span class="token punctuation">&#123;</span>
+      <span class="token comment">//a.格式化为日期字符串</span>
+      <span class="token keyword">val</span> dt<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> sdf<span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token keyword">new</span> Date<span class="token punctuation">(</span>ads_log<span class="token punctuation">.</span>timestamp<span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token comment">//b.组合,返回</span>
+      <span class="token punctuation">(</span><span class="token punctuation">(</span>dt<span class="token punctuation">,</span> ads_log<span class="token punctuation">.</span>area<span class="token punctuation">,</span> ads_log<span class="token punctuation">.</span>city<span class="token punctuation">,</span> ads_log<span class="token punctuation">.</span>adid<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1L</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">.</span>reduceByKey<span class="token punctuation">(</span>_ <span class="token operator">+</span> _<span class="token punctuation">)</span>
+    dateAreaCityAdToCount<span class="token punctuation">.</span>foreachRDD<span class="token punctuation">(</span>
+      <span class="token comment">//分配处理,是指遥控在executor进行执行</span>
+      rdd<span class="token keyword">=></span><span class="token punctuation">&#123;</span>
+        rdd<span class="token punctuation">.</span>foreachPartition<span class="token punctuation">(</span>
+          iter<span class="token keyword">=></span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">val</span> connection<span class="token operator">:</span> Connection <span class="token operator">=</span> JDBCUtil<span class="token punctuation">.</span>getConnection
+            iter<span class="token punctuation">.</span>foreach <span class="token punctuation">&#123;</span>
+              <span class="token keyword">case</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>dt<span class="token punctuation">,</span> area<span class="token punctuation">,</span> city<span class="token punctuation">,</span> adid<span class="token punctuation">)</span><span class="token punctuation">,</span> ct<span class="token punctuation">)</span> <span class="token keyword">=></span>
+                JDBCUtil<span class="token punctuation">.</span>executeUpdate<span class="token punctuation">(</span>
+                  connection<span class="token punctuation">,</span>
+                  <span class="token triple-quoted-string string">"""
+                    |INSERT INTO area_city_ad_count (dt)
+                    |VALUES(?)
+                    """</span><span class="token punctuation">.</span>stripMargin<span class="token punctuation">,</span>
+                  Array<span class="token punctuation">(</span>dt<span class="token punctuation">)</span>
+                <span class="token punctuation">)</span>
+            <span class="token punctuation">&#125;</span>
+            connection<span class="token punctuation">.</span>close<span class="token punctuation">(</span><span class="token punctuation">)</span>
+          <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="6-统计两分钟内广告点击量"><a href="#6-统计两分钟内广告点击量" class="headerlink" title="6.统计两分钟内广告点击量"></a>6.统计两分钟内广告点击量</h2><p>LastHourAdCountHandler</p>
+<p>说明：实际测试时，为了节省时间，统计的是2分钟内广告点击量</p>
+<pre class="line-numbers language-scala" data-language="scala"><code class="language-scala">
+<span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>handler</span>
+
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>text<span class="token punctuation">.</span></span>SimpleDateFormat
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span>Date
+
+<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>atguigu<span class="token punctuation">.</span>app<span class="token punctuation">.</span></span>Ads_log
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>streaming<span class="token punctuation">.</span></span>Minutes
+<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>spark<span class="token punctuation">.</span>streaming<span class="token punctuation">.</span>dstream<span class="token punctuation">.</span></span>DStream
+
+<span class="token keyword">object</span> LastHourAdCountHandler <span class="token punctuation">&#123;</span>
+
+  <span class="token comment">//时间格式化对象</span>
+  <span class="token keyword">private</span> <span class="token keyword">val</span> sdf<span class="token operator">:</span> SimpleDateFormat <span class="token operator">=</span> <span class="token keyword">new</span> SimpleDateFormat<span class="token punctuation">(</span><span class="token string">"HH:mm"</span><span class="token punctuation">)</span>
+
+  <span class="token comment">// 过滤后的数据集，统计最近一小时(2分钟)广告分时点击总数</span>
+  <span class="token keyword">def</span> getAdHourMintToCount<span class="token punctuation">(</span>filterAdsLogDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> List<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Long</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token comment">//1.开窗 => 时间间隔为1个小时 window()</span>
+    <span class="token keyword">val</span> windowAdsLogDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span>Ads_log<span class="token punctuation">]</span> <span class="token operator">=</span> filterAdsLogDStream<span class="token punctuation">.</span>window<span class="token punctuation">(</span>Minutes<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+    <span class="token comment">//2.转换数据结构 ads_log =>((adid,hm),1L) map()</span>
+    <span class="token keyword">val</span> adHmToOneDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">Long</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> windowAdsLogDStream<span class="token punctuation">.</span>map<span class="token punctuation">(</span>adsLog <span class="token keyword">=></span> <span class="token punctuation">&#123;</span>
+
+      <span class="token keyword">val</span> hm<span class="token operator">:</span> <span class="token builtin">String</span> <span class="token operator">=</span> sdf<span class="token punctuation">.</span>format<span class="token punctuation">(</span><span class="token keyword">new</span> Date<span class="token punctuation">(</span>adsLog<span class="token punctuation">.</span>timestamp<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+      <span class="token punctuation">(</span><span class="token punctuation">(</span>adsLog<span class="token punctuation">.</span>adid<span class="token punctuation">,</span> hm<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1L</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+
+    <span class="token comment">//3.统计总数 ((adid,hm),1L)=>((adid,hm),sum) reduceBykey(_+_)</span>
+    <span class="token keyword">val</span> adHmToCountDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">String</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token builtin">Long</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> adHmToOneDStream<span class="token punctuation">.</span>reduceByKey<span class="token punctuation">(</span>_ <span class="token operator">+</span> _<span class="token punctuation">)</span>
+
+    <span class="token comment">//4.转换数据结构 ((adid,hm),sum)=>(adid,(hm,sum)) map()</span>
+    <span class="token keyword">val</span> adToHmCountDStream<span class="token operator">:</span> DStream<span class="token punctuation">[</span><span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token builtin">String</span><span class="token punctuation">,</span> <span class="token builtin">Long</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">=</span> adHmToCountDStream<span class="token punctuation">.</span>map <span class="token punctuation">&#123;</span> <span class="token keyword">case</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>adid<span class="token punctuation">,</span> hm<span class="token punctuation">)</span><span class="token punctuation">,</span> count<span class="token punctuation">)</span> <span class="token keyword">=></span>
+      <span class="token punctuation">(</span>adid<span class="token punctuation">,</span> <span class="token punctuation">(</span>hm<span class="token punctuation">,</span> count<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">//5.按照adid分组 (adid,(hm,sum))=>(adid,Iter[(hm,sum),...]) groupByKey</span>
+    adToHmCountDStream
+      <span class="token punctuation">.</span>groupByKey<span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">.</span>mapValues<span class="token punctuation">(</span>iter <span class="token keyword">=></span> iter<span class="token punctuation">.</span>toList<span class="token punctuation">.</span>sortWith<span class="token punctuation">(</span>_<span class="token punctuation">.</span>_1 <span class="token operator">&lt;</span> _<span class="token punctuation">.</span>_1<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">Jinxin Li</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="http://fourgold.github.io/2021/01/04/08Spark_SparkStreaming_Practice/">http://fourgold.github.io/2021/01/04/08Spark_SparkStreaming_Practice/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">Jinxin Li</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/sparkStreaming/">
+                                    <span class="chip bg-color">sparkStreaming</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+    <div class="livere-card card" data-aos="fade-up">
+    <!-- 来必力City版安装代码 -->
+    <div id="lv-container" class="card-content" data-id="city" data-uid="">
+        <script type="text/javascript">
+            (function (d, s) {
+                let j, e = d.getElementsByTagName(s)[0];
+                if (typeof LivereTower === 'function') {
+                    return;
+                }
+
+                j = d.createElement(s);
+                j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                j.async = true;
+
+                e.parentNode.insertBefore(j, e);
+            })(document, 'script');
+        </script>
+        <noscript>为正常使用来必力评论功能请激活JavaScript。</noscript>
+    </div>
+    <!-- City版安装代码已完成 -->
+</div>
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2021/01/04/08Spark_SubmitSource/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Spark_SubmitSource">
+                        
+                        <span class="card-title">Spark_SubmitSource</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-04
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spark/" class="post-category">
+                                    spark
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/spark/">
+                        <span class="chip bg-color">spark</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/01/04/08Spark_SparkStreaming/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="Spark_SparkStreaming">
+                        
+                        <span class="card-title">Spark_SparkStreaming</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/spark/" class="post-category">
+                                    spark
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/sparkstreaming/">
+                        <span class="chip bg-color">sparkstreaming</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('1'),
+            headingSelector: 'h1,h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h1,h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2021</span>
+            
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">Jinxin Li</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">232.3k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/fourgold" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:799392914@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=799392914" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 799392914" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
